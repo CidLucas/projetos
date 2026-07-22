@@ -5,6 +5,8 @@
 > **Lucas:** responsável técnico
 > **Templo:** GP + AI Officer + infra
 
+> 🎯 **FOCO ATIVO:** Lucas definiu em 2026-07-22 que vamos trabalhar **100% no SENAC nos próximos dias**. Cladtek e MCP Brain ficam em standby (docs básicos mantidos, sem avanço).
+
 ## 🩺 Saúde geral
 
 🟡 **Em descoberta** — coletando requisitos, definindo escopo e stack.
@@ -62,3 +64,17 @@
 | 2026-07-22 | Criado PRD v0.1 ([docs/PRD.md](./docs/PRD.md)). |
 | 2026-07-22 | Criado ROADMAP v0.1 com Gantt Mermaid ([docs/ROADMAP.md](./docs/ROADMAP.md)). |
 | 2026-07-22 | Renomeado: repo CidLucas/cnac → CidLucas/senac; pasta cnac/ → senac/. |
+| 2026-07-22 | **Decisão: foco 100% no SENAC nos próximos dias.** Cladtek + MCP Brain em standby. |
+
+---
+
+## 🔜 Próxima conversa — quando você voltar
+
+Sugestão de pauta (você ajusta):
+
+1. **Data do kickoff (D+0)** — você já tem? Alinhamos o Gantt.
+2. **Credenciais OCI** — Templo já provisionou? Precisamos de Grok/Llama + Vector Store.
+3. **Acesso ao SAVE** — formato do export, periodicidade, campos?
+4. **Revisão do PRD** — o que ajustar, o que está bom, o que falta?
+5. **Revisão do ROADMAP** — fases, marcos, tarefas de alto nível.
+6. **Próximos passos práticos** — abrir issues F0 no repo `CidLucas/senac`? setup local? benchmark Grok vs Llama em amostras reais?
