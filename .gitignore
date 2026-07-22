@@ -1,0 +1,14 @@
+# .gitignore
+.DS_Store
+*.swp
+*.tmp
+*.bak
+node_modules/
+__pycache__/
+.venv/
+.env
+.env.local
+*.log
+
+# OS
+Thumbs.db
