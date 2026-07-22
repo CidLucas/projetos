@@ -1,9 +1,9 @@
-# 03 — Roadmap — CNAC
+# 03 — Roadmap — SENAC
 
 ## 🗺 Fases
 
 ### Fase 0 — Descoberta (atual 🟡)
-- [ ] Coletar requisitos com CNAC
+- [ ] Coletar requisitos com SENAC
 - [ ] Definir escopo da V1
 - [ ] Escolher stack
 - [ ] Acordar métricas de sucesso
@@ -27,12 +27,12 @@
 - [ ] Piloto com 1 turma / 1 professor
 - [ ] Coleta de feedback qualitativo
 - [ ] Ajustes de prompt / fluxo
-- [ ] Documentação para CNAC
+- [ ] Documentação para SENAC
 
 ### Fase 4 — Produção
 - [ ] Deploy prod
 - [ ] Monitoramento
-- [ ] Treinamento do time do CNAC
+- [ ] Treinamento do time do SENAC
 - [ ] Plano de suporte
 
 ## 📅 Milestones

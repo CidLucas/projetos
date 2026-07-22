@@ -1,8 +1,8 @@
-# Coclade Tech — Pipeline de Aprovação de Desenhos Técnicos
+# SENAC — Relatórios de Diário de Bordo com IA
 
-> **Slug:** `coclade-tech`
-> **Cliente / Tipo:** Coclade Tech (empresa de tubos de petróleo)
-> **Domínio:** Óleo & Gás / Industrial
+> **Slug:** `senac`
+> **Cliente / Tipo:** SENAC (cliente final, via Templo)
+> **Domínio:** Educação
 > **Fase atual:** Descoberta
 > **Início:** 2026-07-22
 > **Responsável:** Lucas Cid
@@ -11,7 +11,7 @@
 
 ## 🎯 Resumo
 
-Pipeline automatizado de **aprovação de desenhos técnicos** para a Coclade Tech. O sistema usa a **API do Sol de URX** para extrair informações dos desenhos, **compara com a especificação técnica** do projeto e **emite um parecer** (aprovado / reprovado / pedir revisão) com o objetivo de **agilizar** o ciclo de revisão que hoje é manual.
+Agente que consulta uma base vetorial alimentada por **diários de classe** e gera **relatórios personalizados para cada aluno**, com suporte a **perguntas em linguagem natural sobre o corpo de relatórios** (Q&A sobre os relatórios gerados).
 
 ## 📚 Índice
 
@@ -32,5 +32,4 @@ Pipeline automatizado de **aprovação de desenhos técnicos** para a Coclade Te
 - **Repo de código:** _a definir_
 - **Drive / Docs:** _a definir_
 - **Deploy / Demo:** _a definir_
-- **Cliente (contato):** Coclade Tech — _a definir_
-- **API Sol de URX:** _a definir (credenciais e docs)_
+- **Cliente (contato):** SENAC — _a definir_

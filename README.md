@@ -8,8 +8,8 @@ Repositório de documentação padrão para os projetos em andamento.
 .
 ├── README.md                      ← este arquivo
 ├── TEMPLATE-PROJETO.md            ← template base pra novos projetos
-├── cnac/                          ← Projeto CNAC
-├── coclade-tech/                  ← Projeto Coclade Tech
+├── senac/                          ← Projeto SENAC
+├── cladtek/                  ← Projeto Cladtek
 └── mcp-brain/                     ← Projeto MCP Brain
 ```
 
@@ -32,8 +32,8 @@ Cada projeto segue o mesmo padrão:
 
 | Slug | Nome | Cliente / Tipo | Fase |
 |---|---|---|---|
-| [cnac](./cnac) | Relatórios personalizados de alunos | CNAC (educação) | Descoberta |
-| [coclade-tech](./coclade-tech) | Pipeline de aprovação de desenhos técnicos | Coclade Tech (óleo & gás) | Descoberta |
+| [senac](./senac) | SENAC — Relatórios de Diário de Bordo com IA | SENAC (educação profissional, via Templo) | Descoberta |
+| [cladtek](./cladtek) | Pipeline de aprovação de desenhos técnicos | Cladtek (óleo & gás) | Descoberta |
 | [mcp-brain](./mcp-brain) | Conector de agentes IA a bases corporativas via Turso + grafo | Produto B2B próprio | Descoberta |
 
 ## 🔧 Como adicionar um novo projeto

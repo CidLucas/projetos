@@ -1,4 +1,4 @@
-# 02 — Arquitetura — Coclade Tech
+# 02 — Arquitetura — Cladtek
 
 > _A ser preenchido após definição de stack e validação da API Sol de URX._
 
@@ -49,11 +49,11 @@
 ## 🔌 Integrações externas
 
 - **API Sol de URX** (crítico — credenciais e contrato ainda não conhecidos).
-- Possível: sistema interno da Coclade para registro de aprovação.
+- Possível: sistema interno da Cladtek para registro de aprovação.
 
 ## 🔐 Considerações de segurança
 
-- Desenhos técnicos são **propriedade intelectual** da Coclade / cliente final.
+- Desenhos técnicos são **propriedade intelectual** da Cladtek / cliente final.
 - Credenciais da API Sol de URX em cofre (Bitwarden / env var).
 - Logs: nunca persistir desenho bruto em log, só IDs e metadados.
 - Acesso por papel: desenhista, revisor, coordenador.

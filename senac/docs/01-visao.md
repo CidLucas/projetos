@@ -1,8 +1,8 @@
-# 01 — Visão do Projeto CNAC
+# 01 — Visão do Projeto SENAC
 
 ## 🧩 Problema
 
-_Descrever o problema que o CNAC quer resolver. Em coleta — vai ser refinado após conversa com o cliente._
+_Descrever o problema que o SENAC quer resolver. Em coleta — vai ser refinado após conversa com o cliente._
 
 **Hipótese inicial:** professores/coordenação gastam tempo significativo lendo diários de classe manualmente e escrevendo relatórios individualizados por aluno. O processo é repetitivo, sujeito a viés, e consome horas que poderiam ir pra interação direta com o aluno.
 
@@ -38,7 +38,7 @@ Sugestões a discutir:
 
 Sugestões razoáveis de exclusão pra V1:
 - Geração de relatórios em outros idiomas (PT-BR only).
-- Integração com sistema acadêmico existente do CNAC (a menos que pedido).
+- Integração com sistema acadêmico existente do SENAC (a menos que pedido).
 - App mobile (começar com web).
 
 ## 📝 Notas / Premissas

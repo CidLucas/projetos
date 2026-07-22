@@ -1,4 +1,4 @@
-# 04 — Log de Reuniões e Decisões — Coclade Tech
+# 04 — Log de Reuniões e Decisões — Cladtek
 
 > Formato: 1 entrada por conversa/reunião relevante. Cronológico inverso (mais recente em cima).
 
@@ -10,8 +10,8 @@
 **Canal:** Telegram (DM)
 
 **Resumo:**
-- Lucas descreveu o projeto: pipeline de aprovação de desenhos técnicos para Coclade Tech (tubos de petróleo). Usa API "Sol de URX" para extrair info do desenho, compara com spec técnica, emite parecer pra agilizar revisão.
-- Cliente: Coclade Tech.
+- Lucas descreveu o projeto: pipeline de aprovação de desenhos técnicos para Cladtek (tubos de petróleo, via Templo). Usa API "Sol de URX" para extrair info do desenho, compara com spec técnica, emite parecer pra agilizar revisão.
+- Cliente: Cladtek.
 - Fase: descoberta — sem requisitos detalhados ainda. Especificamente, **API Sol de URX ainda não acessada** (sem credenciais/docs).
 - Estrutura padrão de documentação criada no repo `CidLucas/projetos`.
 

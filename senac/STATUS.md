@@ -1,4 +1,4 @@
-# Status — CNAC
+# Status — SENAC
 
 > Última atualização: 2026-07-22
 
@@ -22,7 +22,7 @@
 
 ## 🎯 Próximas ações (próximas 7 dias)
 
-- [ ] **Lucas** — detalhar requisitos com CNAC (formato do diário de classe, periodicidade dos relatórios, quem consome)
+- [ ] **Lucas** — detalhar requisitos com SENAC (formato do diário de classe, periodicidade dos relatórios, quem consome)
 - [ ] **Lucas** — definir stack inicial (provavelmente Agno + vector DB)
 - [ ] **Hermes** — propor arquitetura preliminar em `docs/02-arquitetura.md`
 - [ ] **Lucas** — confirmar se diários são texto livre, estruturados (tabela) ou ambos

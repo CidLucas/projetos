@@ -1,4 +1,4 @@
-# 04 — Log de Reuniões e Decisões — CNAC
+# 04 — Log de Reuniões e Decisões — SENAC
 
 > Formato: 1 entrada por conversa/reunião relevante. Cronológico inverso (mais recente em cima).
 
@@ -11,12 +11,12 @@
 
 **Resumo:**
 - Lucas descreveu o projeto: agente que consulta base vetorial de diários de classe e gera relatórios personalizados por aluno. Permite Q&A sobre o corpus de relatórios.
-- Cliente: CNAC (instituição de ensino).
+- Cliente: SENAC (cliente final, via Templo).
 - Fase: descoberta — sem requisitos detalhados ainda.
 - Estrutura padrão de documentação criada no repo `CidLucas/projetos`.
 
 **Próximos passos:**
-- Lucas detalhar requisitos com CNAC (formato do diário, periodicidade, quem consome).
+- Lucas detalhar requisitos com SENAC (formato do diário, periodicidade, quem consome).
 - Hermes propor arquitetura inicial.
 
 **Decisões tomadas:**

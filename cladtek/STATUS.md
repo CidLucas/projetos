@@ -1,4 +1,4 @@
-# Status — Coclade Tech
+# Status — Cladtek
 
 > Última atualização: 2026-07-22
 
@@ -23,7 +23,7 @@
 
 ## 🎯 Próximas ações (próximas 7 dias)
 
-- [ ] **Lucas** — solicitar credenciais e docs da **API Sol de URX** à Coclade Tech
+- [ ] **Lucas** — solicitar credenciais e docs da **API Sol de URX** à Cladtek
 - [ ] **Lucas** — coletar 2-3 exemplos reais de desenho + especificação para usar como golden set
 - [ ] **Lucas** — entender formato do parecer atual (o que o humano escreve hoje?)
 - [ ] **Hermes** — esboçar arquitetura em `docs/02-arquitetura.md`

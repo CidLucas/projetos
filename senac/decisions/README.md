@@ -1,4 +1,4 @@
-# Decisions — Coclade Tech
+# Decisions — SENAC
 
 > ADRs (Architecture Decision Records) do projeto. Um arquivo por decisão.
 

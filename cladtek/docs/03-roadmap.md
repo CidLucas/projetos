@@ -1,4 +1,4 @@
-# 03 — Roadmap — Coclade Tech
+# 03 — Roadmap — Cladtek
 
 ## 🗺 Fases
 
@@ -32,7 +32,7 @@
 
 ### Fase 4 — Produção
 - [ ] Deploy prod
-- [ ] Integração com fluxo existente da Coclade
+- [ ] Integração com fluxo existente da Cladtek
 - [ ] Monitoramento de SLA + acurácia
 - [ ] Dashboard de métricas
 

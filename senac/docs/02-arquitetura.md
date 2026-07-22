@@ -1,4 +1,4 @@
-# 02 — Arquitetura — CNAC
+# 02 — Arquitetura — SENAC
 
 > _A ser preenchido após definição de stack. Esboço abaixo._
 
@@ -43,7 +43,7 @@
 
 ## 🔌 Integrações externas
 
-- Nenhuma confirmada ainda. Possível: API do sistema acadêmico do CNAC se houver.
+- Nenhuma confirmada ainda. Possível: API do sistema acadêmico do SENAC se houver.
 
 ## 🔐 Considerações de segurança
 

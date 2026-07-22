@@ -1,8 +1,8 @@
-# 01 — Visão do Projeto Coclade Tech
+# 01 — Visão do Projeto Cladtek Tech
 
 ## 🧩 Problema
 
-A Coclade Tech (empresa de tubos de petróleo) tem um **fluxo manual de aprovação de desenhos técnicos** que hoje depende de um engenheiro especialista revisando cada desenho contra a especificação do projeto. O processo é:
+A Cladtek (empresa de tubos de petróleo) tem um **fluxo manual de aprovação de desenhos técnicos** que hoje depende de um engenheiro especialista revisando cada desenho contra a especificação do projeto. O processo é:
 
 - **Lento** — pode levar dias por desenho.
 - **Especialista-dependente** — gargalo se a pessoa sai de férias.
@@ -30,7 +30,7 @@ Pipeline automatizado que:
 
 ## 🎯 Objetivos de sucesso (métricas)
 
-- _a definir com a Coclade_
+- _a definir com a Cladtek_
 
 Sugestões:
 - Tempo médio de aprovação cai de N dias para < 1 dia.
@@ -44,12 +44,12 @@ Sugestões:
 
 Sugestões razoáveis de exclusão:
 - Geração de desenho (o sistema só **lê e aprova**, não desenha).
-- Integração com ERP/MES da Coclade (a menos que pedido).
+- Integração com ERP/MES da Cladtek (a menos que pedido).
 - Suporte a múltiplos idiomas (PT-BR only).
 - Auditoria completa / certificação ISO (pode ser fase posterior).
 
 ## 📝 Notas / Premissas
 
-- "Sol de URX" mencionado como API de extração — pode ser nome interno da Coclade ou fornecedor externo. **A confirmar.**
+- "Sol de URX" mencionado como API de extração — pode ser nome interno da Cladtek ou fornecedor externo. **A confirmar.**
 - Foco em **agilizar**, não em **substituir** o humano.
 - Desenhos técnicos industriais (tubos) — domínio bem específico, vocabulário controlado.
