@@ -16,9 +16,11 @@ Agente que consulta uma base vetorial alimentada por **diários de classe** e ge
 ## 📚 Índice
 
 - [STATUS.md](./STATUS.md) — saúde, blockers, próximas ações
+- [docs/PRD.md](./docs/PRD.md) — **Product Requirements Document** (v0.1)
+- [docs/ROADMAP.md](./docs/ROADMAP.md) — **Roadmap + Gantt** (v0.1, 24 sem)
 - [docs/01-visao.md](./docs/01-visao.md) — problema, público, proposta de valor
 - [docs/02-arquitetura.md](./docs/02-arquitetura.md) — stack, componentes, fluxos
-- [docs/03-roadmap.md](./docs/03-roadmap.md) — fases, milestones, tarefas
+- [docs/03-roadmap.md](./docs/03-roadmap.md) — roadmap detalhado por fase (legado, ver ROADMAP.md)
 - [docs/04-reunioes.md](./docs/04-reunioes.md) — log cronológico de decisões
 
 ## 🔑 Decisões-chave

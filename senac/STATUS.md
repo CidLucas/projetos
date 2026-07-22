@@ -1,6 +1,9 @@
 # Status — SENAC
 
 > Última atualização: 2026-07-22
+> **Contrato:** Templo × SENAC, 24 semanas, R$ 18.200 (pagamento final)
+> **Lucas:** responsável técnico
+> **Templo:** GP + AI Officer + infra
 
 ## 🩺 Saúde geral
 
@@ -10,11 +13,13 @@
 
 | Item | Status |
 |---|---|
-| Escopo definido | 🔴 não |
-| Stack escolhida | 🔴 não |
-| Repo de código criado | 🔴 não |
-| Primeiro entregável acordado | 🔴 não |
-| Prazo final definido | 🔴 não |
+| **Contrato assinado** | 🟡 pendente confirmação Templo |
+| **Data de kickoff (D+0)** | 🔴 a definir com SENAC |
+| **PRD v0.1** | 🟡 rascunho criado ([docs/PRD.md](./docs/PRD.md)) |
+| **ROADMAP v0.1 (24 sem + Gantt)** | 🟡 rascunho criado ([docs/ROADMAP.md](./docs/ROADMAP.md)) |
+| **Stack escolhida** | 🟡 Agno confirmado; resto em avaliação |
+| **Acesso ao SAVE** | 🔴 não |
+| **Repo de código** | 🟡 bootstrap criado ([CidLucas/senac](https://github.com/CidLucas/senac)) |
 
 ## 🚧 Blockers / Riscos
 
@@ -22,21 +27,38 @@
 
 ## 🎯 Próximas ações (próximas 7 dias)
 
-- [ ] **Lucas** — detalhar requisitos com SENAC (formato do diário de classe, periodicidade dos relatórios, quem consome)
-- [ ] **Lucas** — definir stack inicial (provavelmente Agno + vector DB)
-- [ ] **Hermes** — propor arquitetura preliminar em `docs/02-arquitetura.md`
-- [ ] **Lucas** — confirmar se diários são texto livre, estruturados (tabela) ou ambos
+- [ ] **Lucas** — alinhar com Templo a **data do kickoff** (D+0) para fixar o Gantt
+- [ ] **Lucas** — solicitar ao Templo **credenciais OCI GenAI + Vector Store** provisionadas
+- [ ] **Lucas** — solicitar ao SENAC **acesso ao SAVE** (formato do export + amostras reais)
+- [ ] **Hermes** — abrir issues de F0 no repo `CidLucas/senac` (setup, CI, estrutura)
+- [ ] **Lucas** — revisar o [PRD v0.1](./docs/PRD.md) e marcar o que precisa de ajuste
 
 ## ❓ Perguntas em aberto
 
-1. Os diários de classe já existem digitalizados ou precisam ser ingeridos de PDF/papel?
-2. Quem é o "personagem" que consome o relatório — professor, coordenador, família do aluno?
-3. Qual a periodicidade de geração — semanal, mensal, por bimestre?
-4. Há dados sensíveis (LGPD — menor de idade)?
-5. Volume estimado — quantos alunos, quantos diários/ano?
+(Atualizadas pós-recebimento do escopo contratual — Templo × SENAC)
+
+**Críticas (bloqueiam F1):**
+1. Data do kickoff com SENAC? (D+0 define o Gantt inteiro)
+2. Quem é o GP do Templo e o AI Officer? (contatos)
+3. Quem será o ponto focal no SENAC (pedagogia + TI)?
+
+**Importantes (definem arquitetura):**
+4. SAVE: confirmar formato do export, periodicidade, campos disponíveis
+5. Matriz de competências: vem no export ou é planilha separada?
+6. Formato final do relatório editável: Google Docs API ou .docx?
+7. Auth: SSO do SENAC ou independente?
+
+**De produto:**
+8. Turma-piloto: 1 turma acordada com o SENAC?
+9. Métricas de sucesso: confirmadas (NPS, tempo, taxa de aproveitamento)?
+10. SLA esperado (geração em < 60s é viável com o LLM escolhido)?
 
 ## 📅 Histórico de atualizações
 
 | Data | Atualização |
 |---|---|
 | 2026-07-22 | Criação do projeto. Pasta + docs placeholder. |
+| 2026-07-22 | Recebido escopo contratual (Templo × SENAC, 24 sem, R$ 18.200). |
+| 2026-07-22 | Criado PRD v0.1 ([docs/PRD.md](./docs/PRD.md)). |
+| 2026-07-22 | Criado ROADMAP v0.1 com Gantt Mermaid ([docs/ROADMAP.md](./docs/ROADMAP.md)). |
+| 2026-07-22 | Renomeado: repo CidLucas/cnac → CidLucas/senac; pasta cnac/ → senac/. |
