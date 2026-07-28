@@ -20,13 +20,11 @@
 | Documentação técnica, specs, ADRs, status | **GitHub** → `projetos/<projeto>/docs/` | Markdown | `docs/05-api.md` |
 | Cronogramas, planilhas, orçamentos | **Google Drive** → `Hermes - Entregáveis/<projeto>/` | Sheets (.gsheet) | Link compartilhável |
 | Apresentações para cliente | **Google Drive** → `Hermes - Entregáveis/Apresentações/` | Slides (.gslides) | Link compartilhável |
-| HTML previews, dashboards, protótipos | **EC2 Preview** → `http://100.69.231.7:8080/<projeto>/` | HTML estático | URL Tailscale |
+| HTML previews, dashboards, protótipos | **EC2 via Tailscale** → `http://100.69.231.7:8081/<projeto>/` | HTML | URL Tailscale |
 | Código, migrações, scripts | **GitHub** → repo de código do projeto | Pull Request | PR link |
-| Relatórios curtos, briefings | **Esta conversa** (Telegram) + GitHub copy | Markdown ou texto | Mensagem + commit |
+| Relatórios curtos, briefings | **Telegram** + commit no GitHub | Markdown | Mensagem + commit |
 
 ## Estrutura de Arquivo (Markdown)
-
-Quando escrever um documento em markdown para o repo:
 
 ```markdown
 # [Título do Documento]
