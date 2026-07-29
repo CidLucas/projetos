@@ -262,7 +262,7 @@ gantt
 ## 7. Próximo passo imediato
 
 - [ ] **Lucas** — aguardar assinatura do contrato Cladtek (15-30 dias)
-- [ ] **Lucas** — decidir N8N vs Agno (contratual vs padrão interno)
+- [x] ~~**Lucas** — decidir N8N vs Agno~~ → Agno confirmado
 - [ ] **Hermes** — quando D+0 estiver definido, ajustar Gantt e abrir issues
 
 ---

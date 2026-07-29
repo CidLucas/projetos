@@ -78,7 +78,7 @@ Sistema agêntico **único e integrado** com:
 
 | Camada | Candidato | Nota |
 |---|---|---|
-| **Orquestrador de agentes** | **N8N** (contratual) ou **Agno** (padrão interno) | ⚠️ A decidir — contrato menciona N8N |
+| **Orquestrador de agentes** | **Agno** | Confirmado pelo Lucas (29/07). Padrão interno, mesmo do `agente-bloquo` e Plataforma Blu |
 | **LLM** | A definir | Precisa de visão (desenhos) + texto (RFQs) |
 | **RAG / base semântica** | A definir | Base de parâmetros Cladtek + capacidades internas |
 | **API / Backend** | FastAPI (provável) | Padrão dos outros projetos |
@@ -165,7 +165,7 @@ _Valores exatos a definir no discovery com Cladtek._
 
 ## 📝 Pendências para fechar este PRD
 
-- [ ] Confirmar stack: N8N (contratual) vs Agno (padrão interno)
+- [x] ~~Confirmar stack: N8N (contratual) vs Agno (padrão interno)~~ → **Agno confirmado (29/07)**
 - [ ] Obter amostras reais de desenho + RFQ + parâmetros Cladtek
 - [ ] Confirmar formato dos desenhos (SolidWorks/PDL/PDF) e método de extração
 - [ ] Confirmar formato das RFQs e método de parsing

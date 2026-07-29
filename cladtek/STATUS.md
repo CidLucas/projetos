@@ -18,9 +18,9 @@
 | **Contrato Templo × Cladtek** | 🟡 em discussão jurídica (15-30 dias) |
 | **Contrato Lucas × Templo** | 🟢 escopo formalizado (29/07) |
 | **Data de kickoff (D+0)** | 🔴 depende de assinatura Cladtek |
-| **PRD v0.1** | 🔴 não criado |
-| **ROADMAP v0.1 (Gantt)** | 🔴 não criado |
-| **Stack escolhida** | 🔴 não |
+| **PRD v0.1** | 🟢 criado ([docs/PRD.md](./docs/PRD.md)) |
+| **ROADMAP v0.1 (Gantt)** | 🟢 criado ([docs/ROADMAP.md](./docs/ROADMAP.md)) |
+| **Stack escolhida** | 🟢 Agno confirmado (29/07); LLM e resto em avaliação |
 | **Repo de código** | 🟢 bootstrap criado ([CidLucas/cladtek](https://github.com/CidLucas/cladtek)) |
 
 ## 🎯 Escopo do contrato
@@ -70,15 +70,15 @@ Sistema agêntico **único e integrado** (interface própria com login, dashboar
 ## 🎯 Próximas ações (pré-ativação)
 
 - [ ] **Lucas** — aguardar assinatura do contrato Cladtek (15-30 dias)
-- [ ] **Hermes** — criar PRD.md com os 2 casos de uso
-- [ ] **Hermes** — criar ROADMAP.md com Gantt
-- [ ] **Lucas** — mapear stack: N8N vs Agno? (escopo contratual menciona N8N)
+- [x] ~~Hermes — criar PRD.md com os 2 casos de uso~~ ✅
+- [x] ~~Hermes — criar ROADMAP.md com Gantt~~ ✅
+- [x] ~~Lucas — mapear stack: N8N vs Agno~~ → **Agno confirmado**
 - [ ] **Lucas** — solicitar ao Templo design system da interface
 
 ## ❓ Perguntas em aberto
 
 **Críticas (bloqueiam F1):**
-1. O contrato menciona N8N — manter N8N ou usar Agno (padrão dos outros projetos)?
+1. ~~O contrato menciona N8N — manter N8N ou usar Agno?~~ → **Agno confirmado (29/07)**
 2. Qual o formato real dos desenhos (SolidWorks/PDL/PDF) e como extrair dados?
 3. O "bot consultor que fala com a base" é similar ao Q&A do SENAC? Mesma stack?
 4. Quem é o ponto focal na Cladtek (engenharia + TI)?
@@ -108,7 +108,7 @@ Sistema agêntico **único e integrado** (interface própria com login, dashboar
 
 Sugestão de pauta (você ajusta):
 
-1. **N8N vs Agno** — confirma stack? (contrato diz N8N, padrão interno é Agno)
+1. ~~N8N vs Agno~~ → **Agno confirmado.**
 2. **Dados reais** — como conseguir amostras antes do contrato assinar?
 3. **Revisão do PRD** — validar os 2 casos de uso descritos
 4. **Priorização** — enquanto aguarda Cladtek, foco 100% no SENAC?
