@@ -1,9 +1,11 @@
 # Guanabara — Escopo da Proposta de Serviço
 
-> **Versão:** v0.1 — 2026-07-29
+> **Versão:** v0.2 — 2026-07-29
 > **Cliente:** Supermercados Guanabara
+> **Patrocinador:** Fábio
 > **Contrato:** Deep Blue → Guanabara (direto)
 > **Investimento:** R$ 60.000 (Fase 0 isolada) ou R$ 200.000 (projeto completo, 12 meses)
+> **Status:** Proposta em preparação — houve conversa inicial, ainda não foi apresentada formalmente
 
 ---
 
@@ -32,10 +34,12 @@ O projeto é estruturado em três fases:
 Mapear o terreno antes de construir. Entender profundamente os processos, identificar onde o resultado vaza e quais práticas diferenciam as lojas de melhor desempenho.
 
 **Atividades:**
-- Entrevistas exploratórias com diretoria e responsáveis de cada área para montar o mapa macro da operação
-- Co-design de questionários por função (gerente, perecíveis, frente de caixa, manutenção, RH), cada um focado no que o colaborador vê no dia a dia
-- Aplicação dos questionários em amostra de lojas, com refinamento iterativo conforme padrões emergem
+- Entrevistas exploratórias com Fábio (patrocinador) e responsáveis de cada área para montar o mapa macro da operação
+- Co-design de questionários por função (gerente, perecíveis, frente de caixa, manutenção, RH), cada um focado no que o colaborador vê no dia a dia. Aceitam múltipla escolha, texto livre e áudio
+- Aplicação dos questionários em amostra de lojas, com refinamento iterativo conforme padrões emergem. As respostas em áudio serão transcritas via Groq e processadas por agente IA
 - Cruzamento das respostas com indicadores operacionais existentes
+
+**Ferramenta de questionários:** site simples com endpoint Groq para transcrição de áudio + agente de processamento (API Deep Blue ou Hermes) para análise das respostas transcritas. Dados já ficam armazenados em base estruturada.
 
 **Entregáveis da Fase 0:**
 - Mapa de processos da rede
@@ -107,15 +111,16 @@ A plataforma cruza os dados operacionais de cada loja com seus atributos estrutu
 | Banco de dados | PostgreSQL (data warehouse unificado) |
 | Pipeline de ingestão | Automatizado — detecção de colunas, mapeamento de schemas |
 | Backend | FastAPI + Python |
-| IA / Agentes | Modelos LLM para chat, relatórios e recomendações |
+| IA / Agentes | DeepSeek (LLM principal) + Groq (transcrição de áudio) |
 | Frontend | Painel web + chat em linguagem natural |
+| Infraestrutura | AWS ou própria do cliente (a definir) |
 | Autenticação | A definir (integração com AD/existente ou própria) |
 
 ---
 
 ## 6. Cronograma
 
-**Duração total: 12 meses**
+**Duração total: 12 meses** (a confirmar com o cliente)
 
 | Fase | Período | Descrição |
 |---|---|---|
@@ -124,16 +129,30 @@ A plataforma cruza os dados operacionais de cada loja com seus atributos estrutu
 | Fase 1 — Unificar | Meses 4–7 | Integração de dados, pipeline automático, painel comparativo |
 | Fase 2 — Agir | Meses 8–12 | Direcionadores, chat, relatórios automáticos, recomendações, agentes IA |
 
+> 📅 Os 3 meses da Fase 0 são estimativa interna. O cronograma será ajustado com o cliente.
+
 ---
 
-## 7. Investimento
+## 7. Investimento e pagamento
 
-| Opção | Valor | Prazo |
-|---|---|---|
-| **Fase 0 isolada** | R$ 60.000 | 3 meses |
-| **Projeto completo** (Fases 0+1+2) | R$ 200.000 | 12 meses |
+### Projeto completo (12 meses): R$ 200.000
 
-> 💡 As Fases 1 e 2 só têm investimento definido após o diagnóstico da Fase 0. Os valores do projeto completo são uma estimativa-base que será refinada com os achados reais.
+Contrato de 1 ano com pagamento fracionado, atrelado a entregas e eventos:
+
+| # | Parcela | Valor | Gatilho |
+|---|---|---|---|
+| 1 | Kickoff | R$ 40.000 (20%) | Na assinatura do contrato |
+| 2 | Entrega Fase 0 | R$ 40.000 (20%) | Ao final do Mês 3 — diagnóstico + especificação entregues e aprovados |
+| 3 | Entrega Fase 1 | R$ 50.000 (25%) | Ao final do Mês 7 — banco unificado + pipeline + painel em produção |
+| 4 | Entrega Fase 2 | R$ 50.000 (25%) | Ao final do Mês 12 — plataforma completa em produção |
+| 5 | Sustentação | R$ 20.000 (10%) | 30 dias após entrega final — período de estabilização e ajustes |
+
+### Fase 0 isolada: R$ 60.000
+
+| # | Parcela | Valor | Gatilho |
+|---|---|---|---|
+| 1 | Kickoff | R$ 30.000 (50%) | Na assinatura do contrato |
+| 2 | Entrega | R$ 30.000 (50%) | Ao final do Mês 3 — diagnóstico + especificação entregues e aprovados |
 
 ---
 
@@ -146,12 +165,14 @@ A plataforma cruza os dados operacionais de cada loja com seus atributos estrutu
 | **Dependência de acesso aos sistemas (TOTVS, RP)** | Alto | Alinhamento prévio com TI do Guanabara; a Fase 0 já levanta isso |
 | **Escopo das Fases 1–2 muda radicalmente após diagnóstico** | Médio | Isso é esperado e desejável — o modelo prevê refinamento ao final da Fase 0 |
 | **30+ lojas = volume e variabilidade alta** | Médio | Pipeline automatizado desde o início; a plataforma é desenhada para escala |
+| **Time enxuto (só Lucas)** | Alto | Fases 1 e 2 podem exigir contratação de apoio técnico. Definir após Fase 0 |
+| **Concorrência (outras propostas)** | Incerto | Ainda não sabemos se o Guanabara avalia outros fornecedores. Mitigação: diagnóstico gera valor tangível em 3 meses, independente da continuidade |
 
 ---
 
 ## 9. Próximos passos
 
-- [ ] Lucas validar este documento de escopo
+- [ ] Lucas validar este documento de escopo (v0.2)
 - [ ] Ajustar com base no alinhamento
-- [ ] Apresentar proposta ao Guanabara
-- [ ] Se aprovado: agendar kickoff da Fase 0
+- [ ] Apresentar proposta ao Guanabara (Fábio)
+- [ ] Se aprovado: assinar contrato e agendar kickoff da Fase 0
