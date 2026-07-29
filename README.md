@@ -5,7 +5,7 @@ Todo profile Hermes entrega os artefatos aqui seguindo o [`TEMPLATE-DELIVERABLE.
 
 ## 🗂 Estrutura
 
-```
+```structure
 .
 ├── README.md                      ← este arquivo
 ├── TEMPLATE-PROJETO.md            ← template base pra novos projetos
@@ -15,7 +15,8 @@ Todo profile Hermes entrega os artefatos aqui seguindo o [`TEMPLATE-DELIVERABLE.
 ├── cladtek/                        ← Projeto Cladtek
 ├── mcp-brain/                      ← Projeto MCP Brain
 ├── plataforma-blu/                 ← Plataforma Blu (escritório virtual IA)
-└── agente-bloquo/                  ← Agente Bloqüo (RAG + MCP)
+├── agente-bloquo/                  ← Agente Bloqüo (RAG + MCP)
+└── rastro/                        ← Projeto Rastro
 ```
 
 Cada projeto segue o mesmo padrão:
@@ -44,6 +45,7 @@ Os perfis de agente documentam seus entregáveis em `__profiles__/<nome>/`.
 | [senac](./senac) | SENAC — Relatórios de Diário de Bordo com IA | SENAC (via Templo) | Pré-kickoff |
 | [cladtek](./cladtek) | Cladtek — Sistema agêntico de engenharia (desenhos + BID) | Cladtek (via Templo) | Pré-contrato |
 | [mcp-brain](./mcp-brain) | Conector de agentes IA a bases corporativas | Produto B2B próprio | Descoberta |
+| [rastro](./rastro) | Consultoria de Fluxo de Propostas + MCP Brain Lite | Rastro (agência de publicidade) | Pré-proposta |
 
 ## 🔧 Como adicionar um novo projeto
 
