@@ -41,8 +41,8 @@ Os perfis de agente documentam seus entregáveis em `__profiles__/<nome>/`.
 |---|---|---|---|
 | [plataforma-blu](./plataforma-blu) | Plataforma Blu — Escritório virtual com IA | Produto próprio | Build |
 | [agente-bloquo](./agente-bloquo) | Agente Bloqüo — RAG + MCP autônomo | Produto próprio | Build |
-| [senac](./senac) | SENAC — Relatórios de Diário de Bordo com IA | SENAC (via Templo) | Descoberta |
-| [cladtek](./cladtek) | Pipeline de aprovação de desenhos técnicos | Cladtek (óleo & gás) | Descoberta |
+| [senac](./senac) | SENAC — Relatórios de Diário de Bordo com IA | SENAC (via Templo) | Pré-contrato |
+| [cladtek](./cladtek) | Cladtek — Sistema agêntico de engenharia (desenhos + BID) | Cladtek (via Templo) | Pré-contrato |
 | [mcp-brain](./mcp-brain) | Conector de agentes IA a bases corporativas | Produto B2B próprio | Descoberta |
 
 ## 🔧 Como adicionar um novo projeto

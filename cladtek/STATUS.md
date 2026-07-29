@@ -1,45 +1,114 @@
 # Status — Cladtek
 
-> Última atualização: 2026-07-22
+> Última atualização: 2026-07-29
+> **Contrato:** Templo × Cladtek, 24 semanas, R$ 61.300 (3 parcelas)
+> **Lucas:** responsável técnico
+> **Templo:** GP + AI Officer + infra
+
+> ⏳ **ATIVAÇÃO PENDENTE:** Contrato com Cladtek em negociação jurídica. Expectativa de assinatura: **15-30 dias**. Só inicia após assinatura do cliente final.
 
 ## 🩺 Saúde geral
 
-🟡 **Em descoberta** — coletando requisitos, entendendo a API Sol de URX e o formato dos desenhos/especificações.
+🟡 **Pré-contrato** — escopo contratual definido (Templo formalizou), aguardando assinatura do cliente final para ativar.
 
 ## 📊 Resumo executivo
 
 | Item | Status |
 |---|---|
-| Escopo definido | 🔴 não |
-| Stack escolhida | 🔴 não |
-| API Sol de URX — acesso | 🔴 não |
-| Repos de código criado | 🔴 não |
-| Primeiro entregável acordado | 🔴 não |
-| Prazo final definido | 🔴 não |
+| **Contrato Templo × Cladtek** | 🟡 em discussão jurídica (15-30 dias) |
+| **Contrato Lucas × Templo** | 🟢 escopo formalizado (29/07) |
+| **Data de kickoff (D+0)** | 🔴 depende de assinatura Cladtek |
+| **PRD v0.1** | 🔴 não criado |
+| **ROADMAP v0.1 (Gantt)** | 🔴 não criado |
+| **Stack escolhida** | 🔴 não |
+| **Repo de código** | 🟢 bootstrap criado ([CidLucas/cladtek](https://github.com/CidLucas/cladtek)) |
+
+## 🎯 Escopo do contrato
+
+Sistema agêntico **único e integrado** (interface própria com login, dashboard, histórico e rastreabilidade, para ~20 usuários) com **2 casos de uso**:
+
+### Caso 1 — Revisão e aprovação de desenhos técnicos
+- Leitura de desenhos (SolidWorks/PDL/PDF)
+- Verificação de cotas, tolerâncias e notas técnicas contra parâmetros Cladtek
+- Laudo de conformidade + revisão humana
+- Outputs: relatórios por área, bot consultor, dashboard agregado
+
+### Caso 2 — Análise crítica de BID
+- Leitura e interpretação de RFQs
+- Cruzamento com capacidades/procedimentos internos da Cladtek
+- Geração de Technical Comment com validação humana em sandbox
+- Outputs: relatórios por área, bot consultor, dashboard agregado
+
+### Escopo técnico (Lucas)
+- Workflow de agentes em N8N
+- Interface da aplicação
+- Base de dados semântica
+- Integração de dados via APIs (sem integrações customizadas para sistemas internos)
+- Login/autenticação
+- Suporte no discovery e workshops/entrevistas
+
+### Condições contratuais
+- **Prazo máximo:** 24 semanas (entrega intermediária 12s, discovery 4s)
+- **Valor:** R$ 61.300,00 (3 parcelas, liberadas após Templo receber do cliente)
+- **Custos IA:** Templo cobre até R$ 10.000 (total 2 projetos), teto R$ 3.000/mês
+- **Rituais:** kickoff presencial, pré-kickoff interno, weekly (GP + cliente alternado), workshop discovery, até 10 entrevistas, showcase
+
+### Fora do escopo do Lucas
+- Integração ao Orchestra — **Templo fará após este contrato** ou negociará à parte
+- Infraestrutura e ambiente de produção (Templo)
+- Direção técnica / Chief AI Officer (Templo)
+- Atendimento ao cliente e gestão de projeto (GP Templo)
+- Design system da interface (Templo)
 
 ## 🚧 Blockers / Riscos
 
-- _nenhum registrado_
+| Blocker | Impacto | Status |
+|---|---|---|
+| Contrato Cladtek não assinado | Projeto não pode começar | ⏳ 15-30 dias |
+| Sem acesso a dados reais (desenhos, RFQs) | Discovery não pode começar | 🔴 |
 
-## 🎯 Próximas ações (próximas 7 dias)
+## 🎯 Próximas ações (pré-ativação)
 
-- [ ] **Lucas** — solicitar credenciais e docs da **API Sol de URX** à Cladtek
-- [ ] **Lucas** — coletar 2-3 exemplos reais de desenho + especificação para usar como golden set
-- [ ] **Lucas** — entender formato do parecer atual (o que o humano escreve hoje?)
-- [ ] **Hermes** — esboçar arquitetura em `docs/02-arquitetura.md`
+- [ ] **Lucas** — aguardar assinatura do contrato Cladtek (15-30 dias)
+- [ ] **Hermes** — criar PRD.md com os 2 casos de uso
+- [ ] **Hermes** — criar ROADMAP.md com Gantt
+- [ ] **Lucas** — mapear stack: N8N vs Agno? (escopo contratual menciona N8N)
+- [ ] **Lucas** — solicitar ao Templo design system da interface
 
 ## ❓ Perguntas em aberto
 
-1. A API "Sol de URX" é nome interno ou tem nome público? URL da doc?
-2. Os desenhos são em que formato? (DWG, DXF, PDF, SVG, TIFF?)
-3. A "especificação técnica" vem em que formato? (PDF, planilha, doc estruturado?)
-4. O parecer humano atual tem template ou é texto livre?
-5. Qual o volume — quantos desenhos/mês passam por aprovação?
-6. O sistema substitui o humano ou só sugere? Quem tem a palavra final?
-7. Há SLA atual? (ex: aprovação leva hoje 5 dias úteis, meta é 1 dia)
+**Críticas (bloqueiam F1):**
+1. O contrato menciona N8N — manter N8N ou usar Agno (padrão dos outros projetos)?
+2. Qual o formato real dos desenhos (SolidWorks/PDL/PDF) e como extrair dados?
+3. O "bot consultor que fala com a base" é similar ao Q&A do SENAC? Mesma stack?
+4. Quem é o ponto focal na Cladtek (engenharia + TI)?
+
+**Importantes (definem arquitetura):**
+5. "Integração simples" de dados — quais fontes? S3? SFTP? API REST própria?
+6. O "bot consultor" é o mesmo para os 2 casos de uso ou agents separados?
+7. Auth: SSO da Cladtek ou independente?
+8. Os dois casos de uso compartilham a mesma interface ou abas/seções diferentes?
+
+**De produto:**
+9. ~20 usuários — são todos engenheiros revisores? Ou inclui gestão?
+10. "Relatórios em diferentes documentos para diferentes áreas" — quais áreas e formatos?
+11. Métricas de sucesso: SLA atual de revisão de desenho? Meta?
 
 ## 📅 Histórico de atualizações
 
 | Data | Atualização |
 |---|---|
+| 2026-07-29 | Contrato formalizado pelo Templo: escopo completo (2 casos de uso, R$ 61.300, 3 parcelas). |
+| 2026-07-29 | STATUS.md reescrito — antes dizia "escopo não definido"; agora reflete contrato real. |
 | 2026-07-22 | Criação do projeto. Pasta + docs placeholder. |
+
+---
+
+## 🔜 Próxima conversa — quando você voltar
+
+Sugestão de pauta (você ajusta):
+
+1. **N8N vs Agno** — confirma stack? (contrato diz N8N, padrão interno é Agno)
+2. **Dados reais** — como conseguir amostras antes do contrato assinar?
+3. **Revisão do PRD** — validar os 2 casos de uso descritos
+4. **Priorização** — enquanto aguarda Cladtek, foco 100% no SENAC?

@@ -1,55 +1,75 @@
-# 01 — Visão do Projeto Cladtek Tech
+# 01 — Visão do Projeto Cladtek
+
+> Atualizado em 2026-07-29 com escopo contratual formalizado (Templo × Cladtek)
 
 ## 🧩 Problema
 
-A Cladtek (empresa de tubos de petróleo) tem um **fluxo manual de aprovação de desenhos técnicos** que hoje depende de um engenheiro especialista revisando cada desenho contra a especificação do projeto. O processo é:
+A Cladtek, empresa de óleo & gás, tem **dois fluxos críticos de engenharia** que hoje são manuais e dependentes de especialistas:
 
-- **Lento** — pode levar dias por desenho.
-- **Especialista-dependente** — gargalo se a pessoa sai de férias.
-- **Inconsistente** — revisores diferentes aplicam critérios diferentes.
-- **Caro** — horas de engenharia em verificação mecânica.
+### Fluxo 1 — Revisão de desenhos técnicos
+Engenheiros revisam desenhos (SolidWorks/PDL/PDF) manualmente — verificam cotas, tolerâncias e notas contra parâmetros internos. É lento, inconsistente e gera documentação fragmentada.
+
+### Fluxo 2 — Análise crítica de BID
+Quando chega uma RFQ, engenheiros leem, interpretam e cruzam com capacidades internas para gerar um Technical Comment. É intensivo em conhecimento tácito e difícil de escalar.
+
+**O cliente unificou os dois casos em um único contrato, projeto e sistema.**
 
 ## 👥 Público-alvo
 
 | Persona | Papel | Necessidade |
 |---|---|---|
-| Engenheiro revisor | Revisa cada desenho hoje | Acelerar checagem, focar em exceções |
-| Coordenação de projetos | Gerencia fila de aprovação | SLA previsível, rastreabilidade |
-| Cliente final (interno ou externo) | Espera aprovação | Receber retorno mais rápido |
+| Engenheiro revisor | Revisa desenhos e emite parecer | Acelerar checagem, focar em exceções |
+| Analista de BID | Lê RFQs e gera Technical Comment | Cruzamento rápido com capacidades internas |
+| Coordenação de projetos | Gerencia fila de aprovação/BID | SLA previsível, rastreabilidade |
+| Gestão | Consome relatórios agregados | Visão consolidada por área |
+
+~20 usuários.
 
 ## 💡 Proposta de valor
 
-Pipeline automatizado que:
+Sistema agêntico **único e integrado** (interface própria com login, dashboard, histórico e rastreabilidade) com:
 
-1. **Extrai** dados estruturados do desenho via **API Sol de URX** (dimensões, materiais, tolerâncias, simbologia).
-2. **Compara** automaticamente esses dados com a **especificação técnica** do projeto.
-3. **Emite um parecer** com: ✅ aprovado / ⚠️ aprovado com ressalvas / ❌ reprovado + justificativa por item.
-4. **Encaminha pro humano** apenas os casos duvidosos (revisor continua sendo a palavra final).
+### Caso 1 — Revisão de desenhos técnicos
+1. **Lê** desenhos (SolidWorks/PDL/PDF) e extrai dados estruturados
+2. **Verifica** cotas, tolerâncias e notas contra parâmetros Cladtek
+3. **Gera** laudo de conformidade (✅/⚠️/❌) com justificativas
+4. **Encaminha** para revisão humana (palavra final é do engenheiro)
+5. **Outputs:** relatórios por área, bot consultor, dashboard agregado
 
-**Resultado esperado:** reduzir tempo médio de aprovação e liberar o engenheiro pra focar em casos que realmente precisam de julgamento humano.
+### Caso 2 — Análise crítica de BID
+1. **Lê e interpreta** RFQs
+2. **Cruza** com capacidades e procedimentos internos da Cladtek
+3. **Gera** Technical Comment com validação humana em sandbox
+4. **Outputs:** relatórios por área, bot consultor, dashboard agregado
+
+### Compartilhado
+- **Bot consultor** que fala com a base (desenhos + BIDs)
+- **Dashboard agregado** de gestão (ambos os casos)
+- **Histórico e rastreabilidade** completos
+
+**Resultado esperado:** reduzir tempo de revisão, liberar engenheiro para casos que realmente precisam de julgamento humano, e unificar a documentação em um só lugar.
 
 ## 🎯 Objetivos de sucesso (métricas)
 
-- _a definir com a Cladtek_
+- _A definir com a Cladtek no discovery._
 
 Sugestões:
-- Tempo médio de aprovação cai de N dias para < 1 dia.
-- % de desenhos que vão direto pro humano sem revisão automatizada < 30%.
-- Precisão do parecer automatizado (vs. decisão final do engenheiro) > 90%.
-- NPS interno do revisor humano.
+- Tempo médio de revisão de desenho: redução de X para Y dias
+- Tempo médio de análise de BID: redução de X para Y horas/dias
+- Precisão do parecer automatizado vs. decisão do engenheiro > 90%
+- NPS interno do engenheiro ≥ 8
 
-## 🚫 Fora de escopo (versão inicial)
+## 🚫 Fora de escopo (V1)
 
-- _a definir_
-
-Sugestões razoáveis de exclusão:
-- Geração de desenho (o sistema só **lê e aprova**, não desenha).
-- Integração com ERP/MES da Cladtek (a menos que pedido).
-- Suporte a múltiplos idiomas (PT-BR only).
-- Auditoria completa / certificação ISO (pode ser fase posterior).
+- Integrações customizadas para sistemas internos da Cladtek (ERP, MES)
+- Integração ao Orchestra — **Templo fará após este contrato** ou negociará à parte
+- Geração/edição de desenhos (sistema só lê e analisa)
+- Certificação ISO / auditoria formal
+- App mobile
 
 ## 📝 Notas / Premissas
 
-- "Sol de URX" mencionado como API de extração — pode ser nome interno da Cladtek ou fornecedor externo. **A confirmar.**
-- Foco em **agilizar**, não em **substituir** o humano.
-- Desenhos técnicos industriais (tubos) — domínio bem específico, vocabulário controlado.
+- O contrato menciona **N8N** como orquestrador; internamente usamos **Agno**. Decisão a tomar no pré-kickoff.
+- Fase 1 de setup — expectativa de virar contrato de recorrência integrado ao Orchestra (fora do escopo do Lucas).
+- "Integração simples" de dados = APIs padrão, sem customização para sistemas internos da Cladtek.
+- Foco em **agilizar**, não em **substituir** o humano. Palavra final sempre é do engenheiro.

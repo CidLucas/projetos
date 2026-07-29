@@ -4,6 +4,34 @@
 
 ---
 
+## 2026-07-29 — Formalização do contrato (Templo)
+
+**Participantes:** Templo (e-mail) + Lucas + Hermes
+**Canal:** E-mail formal + Telegram (DM)
+
+**Resumo:**
+- Templo formalizou a contratação: **contrato único** com Cladtek (não são 2 contratos separados como inicialmente considerado).
+- Sistema agêntico **único e integrado** com 2 casos de uso no mesmo workflow/sistema: (1) Revisão e aprovação de desenhos técnicos, (2) Análise crítica de BID.
+- Valor: **R$ 61.300,00** em 3 parcelas, liberadas após Templo receber do cliente.
+- Prazo: **24 semanas** (máx), entrega intermediária 12s, discovery 4s.
+- Custos de IA por conta do Templo (teto R$ 10k total, R$ 3k/mês).
+- **Fase 1 de setup** — expectativa de recorrência futura integrada ao Orchestra (fora do escopo do Lucas).
+- Contrato com Cladtek ainda em discussão jurídica: expectativa de assinatura em **15-30 dias**.
+- Contrato com Lucas só ativa após assinatura do cliente final.
+
+**Próximos passos:**
+- Aguardar assinatura do contrato Cladtek.
+- Hermes criou PRD.md e ROADMAP.md com base no escopo formalizado.
+- Decidir N8N (contratual) vs Agno (padrão interno) no pré-kickoff.
+
+**Decisões tomadas:**
+- Documentação atualizada: STATUS.md, PRD.md, ROADMAP.md, 01-visao.md, README.md.
+- Stack N8N vs Agno: deixado como pergunta aberta para o pré-kickoff.
+
+**Perguntas registradas:** ver `STATUS.md` (11 perguntas em aberto, categorizadas).
+
+---
+
 ## 2026-07-22 — Criação do projeto
 
 **Participantes:** Lucas + Hermes

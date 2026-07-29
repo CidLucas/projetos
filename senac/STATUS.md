@@ -1,43 +1,73 @@
 # Status — SENAC
 
-> Última atualização: 2026-07-22
+> Última atualização: 2026-07-29
 > **Contrato:** Templo × SENAC, 24 semanas, R$ 18.200 (pagamento final)
 > **Lucas:** responsável técnico
 > **Templo:** GP + AI Officer + infra
 
-> 🎯 **FOCO ATIVO:** Lucas definiu em 2026-07-22 que vamos trabalhar **100% no SENAC nos próximos dias**. Cladtek e MCP Brain ficam em standby (docs básicos mantidos, sem avanço).
+> ⏳ **ATIVAÇÃO IMINENTE:** Contrato com SENAC em discussão jurídica. Expectativa de assinatura: **próxima semana**. Projeto pode começar em breve.
 
 ## 🩺 Saúde geral
 
-🟡 **Em descoberta** — coletando requisitos, definindo escopo e stack.
+🟡 **Pré-contrato** — escopo contratual formalizado (Templo, 29/07), documentação base pronta (PRD + ROADMAP v0.1). Aguardando assinatura do cliente final para ativar.
 
 ## 📊 Resumo executivo
 
 | Item | Status |
 |---|---|
-| **Contrato assinado** | 🟡 pendente confirmação Templo |
-| **Data de kickoff (D+0)** | 🔴 a definir com SENAC |
-| **PRD v0.1** | 🟡 rascunho criado ([docs/PRD.md](./docs/PRD.md)) |
-| **ROADMAP v0.1 (24 sem + Gantt)** | 🟡 rascunho criado ([docs/ROADMAP.md](./docs/ROADMAP.md)) |
+| **Contrato Templo × SENAC** | 🟡 em discussão jurídica (expectativa: próxima semana) |
+| **Contrato Lucas × Templo** | 🟢 escopo formalizado (29/07) |
+| **Data de kickoff (D+0)** | 🔴 depende de assinatura SENAC |
+| **PRD v0.1** | 🟢 criado ([docs/PRD.md](./docs/PRD.md)) |
+| **ROADMAP v0.1 (24 sem + Gantt)** | 🟢 criado ([docs/ROADMAP.md](./docs/ROADMAP.md)) |
 | **Stack escolhida** | 🟡 Agno confirmado; resto em avaliação |
 | **Acesso ao SAVE** | 🔴 não |
-| **Repo de código** | 🟡 bootstrap criado ([CidLucas/senac](https://github.com/CidLucas/senac)) |
+| **Repo de código** | 🟢 bootstrap criado ([CidLucas/senac](https://github.com/CidLucas/senac)) |
+
+## 🎯 Escopo do contrato (atualizado 29/07)
+
+### O que o sistema faz
+Sistema agêntico que automatiza a geração de **relatórios pedagógicos** a partir dos **diários de classe** (exportados do SAVE):
+
+1. **Upload e processamento** dos dados do SAVE
+2. **Cruzamento** de dados quantitativos + qualitativos por aluno conforme a **matriz de competências**
+3. **Geração** de relatório no formato oficial (introdução + 5 capítulos), **editável** para a equipe pedagógica validar
+4. **Dashboard/painel** de visualização, revisão e exportação
+5. **Agent conversacional** que fala com a base agregada
+6. **Relatório individual por aluno + dashboard agregado interativo**
+
+### Condições contratuais
+- **Prazo máximo:** 24 semanas (entrega intermediária 12s, discovery 4s)
+- **Valor:** R$ 18.200,00 (pagamento único ao final, após Templo receber do SENAC)
+- **Custos IA:** Templo cobre até R$ 10.000 (total 2 projetos), teto R$ 3.000/mês
+- **Rituais:** kickoff presencial, pré-kickoff interno, weekly (GP + cliente alternado), workshop discovery, até 10 entrevistas, showcase
+
+### Fora do escopo do Lucas
+- Integração ao Orchestra — **Templo fará após este contrato** ou negociará à parte
+- Infraestrutura e ambiente de produção (Templo)
+- Direção técnica / Chief AI Officer (Templo)
+- Atendimento ao cliente e gestão de projeto (GP Templo)
+- Design system da interface (Templo)
+- Custos de IA (tokens, licenças)
+
+> ⚠️ **Fase 1 de setup** — expectativa de virar contrato de recorrência integrado ao Orchestra (fora do escopo do Lucas).
 
 ## 🚧 Blockers / Riscos
 
-- _nenhum registrado_
+| Blocker | Impacto | Status |
+|---|---|---|
+| Contrato SENAC não assinado | Projeto não pode começar | ⏳ ~1 semana |
+| Sem acesso ao SAVE | Discovery não pode começar | 🔴 |
 
-## 🎯 Próximas ações (próximas 7 dias)
+## 🎯 Próximas ações (pré-ativação)
 
-- [ ] **Lucas** — alinhar com Templo a **data do kickoff** (D+0) para fixar o Gantt
-- [ ] **Lucas** — solicitar ao Templo **credenciais OCI GenAI + Vector Store** provisionadas
-- [ ] **Lucas** — solicitar ao SENAC **acesso ao SAVE** (formato do export + amostras reais)
-- [ ] **Hermes** — abrir issues de F0 no repo `CidLucas/senac` (setup, CI, estrutura)
-- [ ] **Lucas** — revisar o [PRD v0.1](./docs/PRD.md) e marcar o que precisa de ajuste
+- [ ] **Lucas** — aguardar assinatura do contrato SENAC (~1 semana)
+- [ ] **Lucas** — alinhar com Templo a data do kickoff assim que assinar
+- [ ] **Lucas** — solicitar ao Templo credenciais OCI GenAI + Vector Store
+- [ ] **Lucas** — solicitar ao SENAC acesso ao SAVE (formato + amostras reais)
+- [ ] **Hermes** — quando D+0 definido, ajustar Gantt e abrir issues F0
 
 ## ❓ Perguntas em aberto
-
-(Atualizadas pós-recebimento do escopo contratual — Templo × SENAC)
 
 **Críticas (bloqueiam F1):**
 1. Data do kickoff com SENAC? (D+0 define o Gantt inteiro)
@@ -59,6 +89,7 @@
 
 | Data | Atualização |
 |---|---|
+| 2026-07-29 | Contrato formalizado pelo Templo: escopo completo confirmado. STATUS.md atualizado com dados do contrato. |
 | 2026-07-22 | Criação do projeto. Pasta + docs placeholder. |
 | 2026-07-22 | Recebido escopo contratual (Templo × SENAC, 24 sem, R$ 18.200). |
 | 2026-07-22 | Criado PRD v0.1 ([docs/PRD.md](./docs/PRD.md)). |
@@ -72,9 +103,8 @@
 
 Sugestão de pauta (você ajusta):
 
-1. **Data do kickoff (D+0)** — você já tem? Alinhamos o Gantt.
-2. **Credenciais OCI** — Templo já provisionou? Precisamos de Grok/Llama + Vector Store.
+1. **Data do kickoff (D+0)** — assim que SENAC assinar, agendamos
+2. **Credenciais OCI** — Templo já provisionou?
 3. **Acesso ao SAVE** — formato do export, periodicidade, campos?
-4. **Revisão do PRD** — o que ajustar, o que está bom, o que falta?
-5. **Revisão do ROADMAP** — fases, marcos, tarefas de alto nível.
-6. **Próximos passos práticos** — abrir issues F0 no repo `CidLucas/senac`? setup local? benchmark Grok vs Llama em amostras reais?
+4. **Revisão do PRD** — algo mudou com a formalização do contrato?
+5. **N8N vs Agno** — o contrato do Cladtek menciona N8N. SENAC mantém Agno?
