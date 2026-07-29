@@ -1,29 +1,34 @@
-# Rastro — Consultoria de Fluxo de Propostas + MCP Brain Lite
+# Rastro — Consultoria de Fluxo de Propostas + Rastro Brain
 
 > **Slug:** `rastro`
 > **Cliente:** Rastro ([rastro.cc](https://rastro.cc/)) — agência-studio de inteligência criativa (Rio de Janeiro)
 > **Tipo:** Consultoria + Implementação (Fase A + Fase B)
 > **Contrato:** Deep Blue → Rastro (direto, sem intermediário)
-> **Fase atual:** Descoberta / Pré-proposta
-> **Início:** 2026-08-03 (estimado)
+> **Investimento:** R$ 25.000 (2 meses)
+> **Fase atual:** Escopo fechado — aguardando apresentação da proposta
+> **Início:** A definir
 > **Responsável:** Lucas Cid
+> **Case autorizado:** ✅
 
 ---
 
 ## 🎯 Resumo
 
-A Rastro é uma agência-studio com +10 anos de mercado, 3 divisões (Agency, Films, Labs) e clientes como Nubank, HBO Max, Globo, iFood, Itaú, Unilever. Eles já usam Claude intensamente e têm um pipeline de IA próprio — incluindo uma wiki LLM de 60MB.
+A Rastro é uma agência-studio com +10 anos de mercado, 3 divisões (Agency, Films, Labs) e clientes como Nubank, HBO Max, Globo, iFood, Itaú, Unilever. Eles já usam Claude intensamente e têm o **[Rastro Mind](https://rastro-mind-25619.netlify.app/)** — uma wiki LLM de 60MB com conhecimento institucional.
 
-O problema: **dificuldade em vender projetos**. O fluxo de criação de propostas, orçamentos e briefings está fragmentado — conhecimento preso em pessoas, documentos espalhados, sem uma base central acessível a todo o time.
+O problema: o Rastro Mind é uma ilha fora do Claude. O time não consegue consultar o conhecimento da empresa de dentro do assistente que já usam o dia todo.
 
-**Solução proposta:** engajamento em duas fases:
+**Solução:** implantar a **Rastro Brain** — instância do MCP Brain Lite que conecta o corpus documental da Rastro aos Claude Desktop do time via MCP, com grafo de conhecimento automático (Mnemosyne) e curadoria humana.
 
-| Fase | O quê | Duração |
-|---|---|---|
-| **Fase A — Consultoria** | Revisão do fluxo atual de propostas, diagnóstico, recomendações de melhoria de processos e documentos | 1–2 semanas |
-| **Fase B — Implementação** | Deploy do MCP Brain Lite como memória central corporativa, ingestão do corpus documental, configuração dos MCPs nos Claude Desktop do time (5–10 pessoas), treinamento | 2–3 semanas |
+| Fase | O quê | Duração | Pagamento |
+|---|---|---|---|
+| **Fase A — Consultoria** | Revisão do fluxo de propostas, inventário documental, diagnóstico | ~3 semanas | R$ 12.500 na entrega |
+| **Fase B — Implementação** | Deploy da Rastro Brain, ingestão do corpus, conexão dos MCPs, treinamento | ~5 semanas | R$ 12.500 na entrega |
 
-**Produto utilizado:** [MCP Brain Lite](https://github.com/CidLucas/mcp_brain_lite) — conector MCP remoto que expõe o corpus documental da empresa via gateway FastAPI+FastMCP sobre banks Mnemosyne, com 3 escopos (pessoal, corporativo, restrito) e auth OAuth 2.1 via Supabase.
+**Produto:** [MCP Brain Lite](https://github.com/CidLucas/mcp_brain_lite) — gateway FastAPI+FastMCP sobre Mnemosyne, OAuth 2.1 via Supabase, escopos pessoal + corporativo.
+
+**Curadoria:** Fábio e Lucas Diárea (Rastro)
+**Deploy:** Provável EC2
 
 ## 📚 Índice
 

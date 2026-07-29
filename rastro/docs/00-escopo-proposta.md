@@ -1,6 +1,6 @@
 # Rastro — Escopo da Proposta de Trabalho
 
-> **Versão:** v0.2 — 2026-07-29
+> **Versão:** v0.3 — 2026-07-29
 > **Cliente:** Rastro ([rastro.cc](https://rastro.cc/))
 > **Contrato:** Deep Blue → Rastro (direto)
 > **Investimento:** R$ 25.000 (projeto completo, 2 meses)
@@ -21,11 +21,11 @@ O conhecimento da empresa já existe e está organizado no **[Rastro Mind](https
 
 ## 2. O que propomos
 
-**Conectar o Rastro Mind ao Claude Desktop do time inteiro**, transformando o conhecimento que já existe numa memória corporativa viva que responde dentro do assistente que eles já usam.
+**Conectar o conhecimento da Rastro ao Claude Desktop do time inteiro**, transformando o que já existe numa memória corporativa viva — a **Rastro Brain** — que responde dentro do assistente que eles já usam.
 
 O projeto tem duas fases:
 
-### Fase A — Consultoria de fluxo (1–2 semanas)
+### Fase A — Consultoria de fluxo (~3 semanas)
 
 Revisar como as propostas são criadas hoje, mapear gargalos, e desenhar o processo ideal com a memória corporativa no centro.
 
@@ -35,20 +35,25 @@ Revisar como as propostas são criadas hoje, mapear gargalos, e desenhar o proce
 - Mapeamento do fluxo atual (AS-IS) e desenho do fluxo-alvo (TO-BE)
 - Recomendações de padronização de templates e documentos
 
-**Entrega:** Relatório de diagnóstico + recomendações + diagrama do fluxo-alvo
+**Entregáveis:**
+- **Processo de propostas atualizado** — a partir do pipeline definido durante a consultoria
+- **Relatório sobre o estado do corpus documental** — o que existe, qualidade, gaps, plano de curadoria
 
-### Fase B — Conexão MCP Brain Lite (2–3 semanas)
+### Fase B — Implementação Rastro Brain (~5 semanas)
 
-Implantar o **MCP Brain Lite** como ponte entre o conhecimento da Rastro e os Claude Desktop do time.
+Implantar a **Rastro Brain** como ponte entre o conhecimento da empresa e os Claude Desktop do time.
 
 **Atividades:**
-- Preparar o corpus documental (limpeza, categorização)
-- Deploy do gateway MCP Brain Lite (servidor que serve o conhecimento)
+- Preparar o corpus documental (limpeza, categorização, curadoria)
+- Deploy do gateway MCP (servidor que serve o conhecimento)
 - Ingestão do corpus com criação automática de grafo de conhecimento (Mnemosyne)
 - Configurar o conector MCP em cada Claude Desktop do time (5–10 pessoas)
 - Treinamento do time: como consultar a memória da empresa direto do Claude
 
-**Entrega:** Time inteiro conectado. Qualquer pessoa digita no Claude "me mostra propostas de branded content acima de R$ 100k" e recebe resposta com fontes.
+**Critério de pronto:**
+- ✅ Todo o time conectado via MCP
+- ✅ Todo conteúdo curado e disponibilizado na nuvem ou servidor próprio da Rastro
+- ✅ Conteúdo acessível via MCP por todos os usuários
 
 ---
 
@@ -61,11 +66,17 @@ Implantar o **MCP Brain Lite** como ponte entre o conhecimento da Rastro e os Cl
 
 ---
 
-## 4. Produto utilizado
+## 4. Produto utilizado: Rastro Brain
 
-**MCP Brain Lite** — gateway MCP que expõe documentos corporativos como ferramentas acessíveis por qualquer cliente MCP (Claude Desktop, Cursor, etc.). Usa Mnemosyne como motor de busca vetorial + grafo de conhecimento, com autenticação OAuth 2.1 e três escopos de acesso (pessoal, corporativo, restrito).
+**Rastro Brain** é a instância do **MCP Brain Lite** configurada para a Rastro — gateway MCP que expõe documentos corporativos como ferramentas acessíveis por qualquer cliente MCP (Claude Desktop, Cursor, etc.). Usa Mnemosyne como motor de busca vetorial + grafo de conhecimento, com autenticação OAuth 2.1.
 
-O produto está em desenvolvimento ativo (repo: `CidLucas/mcp_brain_lite`), com a Fase 0 (fundação, OAuth, CI/CD) concluída. **As ferramentas MCP ainda não foram testadas em produção.** A Fase B inclui a primeira implantação real do Brain Lite com um cliente, o que pode revelar necessidade de ajustes.
+**Configuração para a Rastro:**
+- **Escopos:** pessoal (cada pessoa tem seu banco privado) + corporativo (conhecimento curado da empresa)
+- **Curadoria:** Fábio e Lucas Diárea (Rastro) — escrita no corpus corporativo é controlada
+- **Deploy:** servidor próprio da Rastro (provável EC2)
+- **Clientes:** 5–10 Claude Desktops
+
+O MCP Brain Lite está em desenvolvimento ativo (repo: `CidLucas/mcp_brain_lite`), com a Fase 0 (fundação, OAuth, CI/CD) concluída. **As ferramentas MCP ainda não foram testadas em produção.** A Fase B inclui a primeira implantação real com um cliente, o que pode revelar necessidade de ajustes.
 
 ---
 
@@ -85,8 +96,8 @@ O produto está em desenvolvimento ativo (repo: `CidLucas/mcp_brain_lite`), com 
 
 - Acesso ao corpus documental da Rastro (conteúdo do Rastro Mind + documentos complementares)
 - Time com Claude Desktop instalado (já têm)
-- 1–2 pessoas designadas como "curadores" do conhecimento corporativo
-- Definição de onde o servidor será hospedado (sugestão: cloud Hetzner ou OCI)
+- Fábio e Lucas Diárea como curadores do conhecimento corporativo
+- Servidor para deploy (provável EC2)
 
 ---
 
@@ -94,26 +105,26 @@ O produto está em desenvolvimento ativo (repo: `CidLucas/mcp_brain_lite`), com 
 
 | Risco | Mitigação |
 |---|---|
-| **Brain Lite não testado em produção** | Fase A (consultoria) roda em paralelo com a finalização e teste das tools MCP. Se houver atraso, a Fase B só inicia quando as tools estiverem validadas |
-| **Corpus desorganizado ou desatualizado** | A Fase A mapeia o que existe → já entramos na Fase B com o inventário pronto |
-| **Time não adota** | Eles já usam Claude diariamente. A barreira é zero — é só adicionar um endpoint. Treinamento de 1h resolve |
-| **Aprovação da Rastro entre fases** | Proposta já prevê as duas fases. Gate claro: relatório aprovado → implementação |
+| **Brain Lite não testado em produção** | Fase A roda em paralelo com a finalização e teste das tools MCP. Plano B: conector MCP simples direto no Rastro Mind |
+| **Corpus desorganizado ou desatualizado** | Fase A mapeia o que existe → já entramos na Fase B com o inventário pronto |
+| **Time não adota** | Eles já usam Claude diariamente. A barreira é zero — é só adicionar um endpoint. Treinamento resolve |
+| **Aprovação da Rastro entre fases** | Proposta já prevê as duas fases. Gate claro: diagnóstico aprovado → implementação |
 
 ---
 
 ## 8. Investimento
 
-**R$ 25.000** pelo projeto completo (Fase A + Fase B), dividido em:
+**R$ 25.000** pelo projeto completo (Fase A + Fase B):
 
 | Parcela | Valor | Condição |
 |---|---|---|
-| 1ª parcela (50%) | R$ 12.500 | Na entrega da Fase A (relatório de diagnóstico) |
-| 2ª parcela (50%) | R$ 12.500 | Na entrega da Fase B (time conectado + treinamento) |
+| 1ª parcela (50%) | R$ 12.500 | Na entrega da Fase A (processo atualizado + relatório do corpus) |
+| 2ª parcela (50%) | R$ 12.500 | Na entrega da Fase B (time conectado + conteúdo curado e disponível via MCP) |
 
 ---
 
 ## 9. Próximos passos
 
-1. ✅ Lucas validou este escopo (v0.2)
+1. ✅ Lucas validou este escopo (v0.3)
 2. Apresentar proposta à Rastro
 3. Se aprovado: agendar kickoff (D+0)
