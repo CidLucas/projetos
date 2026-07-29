@@ -9,18 +9,18 @@
 
 ## 🩺 Saúde geral
 
-🟡 **Pré-contrato** — escopo contratual formalizado (Templo, 29/07), documentação base pronta (PRD + ROADMAP v0.1). Aguardando assinatura do cliente final para ativar.
+🟢 **Pré-kickoff** — contrato SENAC assinado (29/07). Aguardando Templo agendar alinhamento para definir D+0.
 
 ## 📊 Resumo executivo
 
 | Item | Status |
 |---|---|
-| **Contrato Templo × SENAC** | 🟡 em discussão jurídica (expectativa: próxima semana) |
+| **Contrato Templo × SENAC** | 🟢 **assinado (29/07)** |
 | **Contrato Lucas × Templo** | 🟢 escopo formalizado (29/07) |
-| **Data de kickoff (D+0)** | 🔴 depende de assinatura SENAC |
+| **Data de kickoff (D+0)** | 🟡 a agendar — D+1 da conversa de alinhamento |
 | **PRD v0.1** | 🟢 criado ([docs/PRD.md](./docs/PRD.md)) |
 | **ROADMAP v0.1 (24 sem + Gantt)** | 🟢 criado ([docs/ROADMAP.md](./docs/ROADMAP.md)) |
-| **Stack escolhida** | 🟡 Agno confirmado; resto em avaliação |
+| **Stack escolhida** | 🟢 Agno confirmado; LLM em avaliação |
 | **Acesso ao SAVE** | 🔴 não |
 | **Repo de código** | 🟢 bootstrap criado ([CidLucas/senac](https://github.com/CidLucas/senac)) |
 
@@ -56,7 +56,6 @@ Sistema agêntico que automatiza a geração de **relatórios pedagógicos** a p
 
 | Blocker | Impacto | Status |
 |---|---|---|
-| Contrato SENAC não assinado | Projeto não pode começar | ⏳ ~1 semana |
 | Sem acesso ao SAVE | Discovery não pode começar | 🔴 |
 
 ## 🎯 Próximas ações (pré-ativação)
@@ -70,15 +69,15 @@ Sistema agêntico que automatiza a geração de **relatórios pedagógicos** a p
 ## ❓ Perguntas em aberto
 
 **Críticas (bloqueiam F1):**
-1. Data do kickoff com SENAC? (D+0 define o Gantt inteiro)
-2. Quem é o GP do Templo e o AI Officer? (contatos)
-3. Quem será o ponto focal no SENAC (pedagogia + TI)?
+1. Data do kickoff com SENAC? — Aguardando Templo agendar (D+1)
+2. ~~Quem é o GP do Templo e o AI Officer?~~ → ainda não definidos (Templo vai informar)
+3. ~~Quem será o ponto focal no SENAC?~~ → ainda não definido
 
 **Importantes (definem arquitetura):**
-4. SAVE: confirmar formato do export, periodicidade, campos disponíveis
+4. SAVE: muito provavelmente **CSV + docs não estruturados** (notas → base vetorial). Confirmar com acesso real.
 5. Matriz de competências: vem no export ou é planilha separada?
-6. Formato final do relatório editável: Google Docs API ou .docx?
-7. Auth: SSO do SENAC ou independente?
+6. Formato final do relatório editável: **Google Docs API ou .docx** — em aberto, definir no discovery
+7. Auth: **SSO do SENAC** ✅
 
 **De produto:**
 8. Turma-piloto: 1 turma acordada com o SENAC?
@@ -89,7 +88,8 @@ Sistema agêntico que automatiza a geração de **relatórios pedagógicos** a p
 
 | Data | Atualização |
 |---|---|
-| 2026-07-29 | Contrato formalizado pelo Templo: escopo completo confirmado. STATUS.md atualizado com dados do contrato. |
+| 2026-07-29 | **Contrato SENAC assinado.** Projeto avança para pré-kickoff. |
+| 2026-07-29 | Respostas parciais do Lucas: SAVE = CSV + docs não estruturados, auth = SSO SENAC. |
 | 2026-07-22 | Criação do projeto. Pasta + docs placeholder. |
 | 2026-07-22 | Recebido escopo contratual (Templo × SENAC, 24 sem, R$ 18.200). |
 | 2026-07-22 | Criado PRD v0.1 ([docs/PRD.md](./docs/PRD.md)). |

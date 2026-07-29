@@ -78,16 +78,17 @@ Sistema agêntico **único e integrado** (interface própria com login, dashboar
 ## ❓ Perguntas em aberto
 
 **Críticas (bloqueiam F1):**
-1. ~~O contrato menciona N8N — manter N8N ou usar Agno?~~ → **Agno confirmado (29/07)**
-2. Qual o formato real dos desenhos (SolidWorks/PDL/PDF) e como extrair dados?
+1. ~~N8N vs Agno~~ → **Agno confirmado (29/07)**
+2. Formato real dos desenhos: **SolidWorks** (API nativa extrai dados deterministicamente)
 3. O "bot consultor que fala com a base" é similar ao Q&A do SENAC? Mesma stack?
-4. Quem é o ponto focal na Cladtek (engenharia + TI)?
+4. ~~Quem é o ponto focal na Cladtek?~~ → ainda não definido
 
 **Importantes (definem arquitetura):**
 5. "Integração simples" de dados — quais fontes? S3? SFTP? API REST própria?
 6. O "bot consultor" é o mesmo para os 2 casos de uso ou agents separados?
-7. Auth: SSO da Cladtek ou independente?
+7. Auth: **proprietário da Cladtek** ✅
 8. Os dois casos de uso compartilham a mesma interface ou abas/seções diferentes?
+9. LLM: pode não precisar de visão (API SolidWorks extrai dados deterministicamente). Avaliar no discovery.
 
 **De produto:**
 9. ~20 usuários — são todos engenheiros revisores? Ou inclui gestão?

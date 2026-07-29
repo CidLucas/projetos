@@ -1,12 +1,12 @@
 # 02 — Arquitetura — Cladtek
 
-> _A ser preenchido após definição de stack e validação da API Sol de URX._
+> _A ser preenchido após definição de stack e validação da SolidWorks (API nativa)._
 
 ## 🧱 Stack proposta (inicial)
 
 | Camada | Tecnologia | Por quê |
 |---|---|---|
-| Ingestão de desenho | API Sol de URX (externa) | conforme requisito do cliente |
+| Ingestão de desenho | SolidWorks (API nativa) | conforme requisito do cliente |
 | Parser/Extrator | LLM + regras determinísticas | LLM pra entender linguagem natural da spec, regras pra checagens numéricas |
 | Comparador | Engine de regras + LLM | regras pra "dimensão X ∈ [a,b]", LLM pra "atende norma Y?" |
 | Orquestrador | _a definir_ (Agno?) | coordena etapas, agrega parecer |
@@ -21,7 +21,7 @@
 ```
 [Desenho técnico] + [Especificação técnica]
             ↓                   ↓
-    [API Sol de URX]      [Parser da spec]
+    [SolidWorks (API nativa)]      [Parser da spec]
             ↓                   ↓
    [Dados estruturados]  [Requisitos estruturados]
             ↓                   ↓
@@ -39,7 +39,7 @@
 
 ## 🧩 Componentes
 
-- **Adapter Sol de URX:** cliente HTTP/RPC para a API, com retry e cache.
+- **Adapter SolidWorks (API nativa):** cliente HTTP/RPC para a API, com retry e cache.
 - **Parser de especificação:** converte spec (PDF/doc) em lista de requisitos estruturados.
 - **Comparador:** engine de regras (checagens numéricas/lógicas) + LLM (checagens semânticas).
 - **Gerador de parecer:** monta documento com resultado, evidências e citações do desenho/spec.
@@ -48,13 +48,13 @@
 
 ## 🔌 Integrações externas
 
-- **API Sol de URX** (crítico — credenciais e contrato ainda não conhecidos).
+- **SolidWorks (API nativa)** (crítico — credenciais e contrato ainda não conhecidos).
 - Possível: sistema interno da Cladtek para registro de aprovação.
 
 ## 🔐 Considerações de segurança
 
 - Desenhos técnicos são **propriedade intelectual** da Cladtek / cliente final.
-- Credenciais da API Sol de URX em cofre (Bitwarden / env var).
+- Credenciais da SolidWorks (API nativa) em cofre (Bitwarden / env var).
 - Logs: nunca persistir desenho bruto em log, só IDs e metadados.
 - Acesso por papel: desenhista, revisor, coordenador.
 

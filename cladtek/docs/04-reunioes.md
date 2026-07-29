@@ -38,13 +38,13 @@
 **Canal:** Telegram (DM)
 
 **Resumo:**
-- Lucas descreveu o projeto: pipeline de aprovação de desenhos técnicos para Cladtek (tubos de petróleo, via Templo). Usa API "Sol de URX" para extrair info do desenho, compara com spec técnica, emite parecer pra agilizar revisão.
+- Lucas descreveu o projeto: pipeline de aprovação de desenhos técnicos para Cladtek (tubos de petróleo, via Templo). Usa SolidWorks (API nativa) para extrair info do desenho, compara com spec técnica, emite parecer pra agilizar revisão.
 - Cliente: Cladtek.
-- Fase: descoberta — sem requisitos detalhados ainda. Especificamente, **API Sol de URX ainda não acessada** (sem credenciais/docs).
+- Fase: descoberta — sem requisitos detalhados ainda. Especificamente, **SolidWorks (API nativa) ainda não acessada** (sem credenciais/docs).
 - Estrutura padrão de documentação criada no repo `CidLucas/projetos`.
 
 **Próximos passos:**
-- Lucas obter acesso à API Sol de URX (credenciais + docs).
+- Lucas obter acesso à SolidWorks (API nativa) (credenciais + docs).
 - Lucas coletar exemplos reais (desenho + spec + parecer humano atual).
 - Hermes propor arquitetura inicial.
 
