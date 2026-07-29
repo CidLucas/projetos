@@ -10,10 +10,10 @@ A Rastro é uma agência-studio premium com +10 anos de mercado e clientes de pe
 
 | Dor | Sintoma | Impacto |
 |---|---|---|
-| **Conhecimento preso em pessoas** | Cada pessoa tem seu próprio modelo de proposta, seu jeito de montar orçamento, seus cases de referência | Se a pessoa sai ou está ocupada, o conhecimento some |
-| **Documentos espalhados** | Templates, briefings, propostas passadas, orçamentos — cada um num canto (Drive, Desktop, Slack, e-mail) | Ninguém encontra nada quando precisa |
-| **Falta de padrão** | Não existe um modelo canônico de proposta, briefing ou orçamento que todo mundo use | Propostas inconsistentes, retrabalho, qualidade variável |
-| **Reuso zero** | Cases de sucesso, propostas vencedoras, argumentos que funcionaram — não são catalogados nem reutilizáveis | Toda venda começa do zero |
+| **Conhecimento preso em pessoas** | Cada pessoa tem seus próprios documentos que servem de apoio ao processo | Se a pessoa sai ou está ocupada, o conhecimento some |
+| **Documentos espalhados** | Templates, briefings, propostas passadas, orçamentos — cada um num canto (Drive, Desktop, Slack, e-mail) | Hoje existe o Rastro Mind que nao está acessível para ninguém |
+| **Falta de padrão** | Os modelos canônicos de proposta, briefing ou orçamento não está acessível para todos | Propostas inconsistentes, retrabalho, qualidade variável |
+| **Reuso zero** | Cases de sucesso, propostas vencedoras, argumentos que funcionaram — não são catalogados e reutilizádos adequadamente| Toda venda começa do zero |
 | **Claude subutilizado** | Usam Claude, mas cada um no seu contexto isolado. O Claude não "conhece" a empresa | O assistente mais poderoso deles está cego ao conhecimento corporativo |
 
 ### Raiz do problema
