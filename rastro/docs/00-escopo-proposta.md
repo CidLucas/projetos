@@ -1,8 +1,9 @@
 # Rastro — Escopo da Proposta de Trabalho
 
-> **Versão:** v0.1 — 2026-07-29
+> **Versão:** v0.2 — 2026-07-29
 > **Cliente:** Rastro ([rastro.cc](https://rastro.cc/))
 > **Contrato:** Deep Blue → Rastro (direto)
+> **Investimento:** R$ 25.000 (projeto completo, 2 meses)
 
 ---
 
@@ -70,11 +71,13 @@ O produto está em desenvolvimento ativo (repo: `CidLucas/mcp_brain_lite`), com 
 
 ## 5. Cronograma
 
-| Fase | Duração | Previsão |
+**Duração total: 2 meses (8 semanas)**
+
+| Fase | Duração | Descrição |
 |---|---|---|
-| Fase A — Consultoria | 1–2 semanas | A definir (D+0) |
-| Fase B — Implementação | 2–3 semanas | Imediatamente após aprovação da Fase A |
-| **Total** | **3–5 semanas** | |
+| Fase A — Consultoria | ~3 semanas | Entrevistas, inventário documental, mapeamento AS-IS/TO-BE, diagnóstico, recomendações |
+| Fase B — Implementação | ~5 semanas | Preparação do corpus, deploy do gateway, ingestão, configuração dos MCPs, validação, treinamento |
+| **Total** | **8 semanas** | |
 
 ---
 
@@ -96,9 +99,21 @@ O produto está em desenvolvimento ativo (repo: `CidLucas/mcp_brain_lite`), com 
 | **Time não adota** | Eles já usam Claude diariamente. A barreira é zero — é só adicionar um endpoint. Treinamento de 1h resolve |
 | **Aprovação da Rastro entre fases** | Proposta já prevê as duas fases. Gate claro: relatório aprovado → implementação |
 
-## 8. Próximos passos
+---
 
-1. Lucas valida este escopo
-2. Definir precificação (por fase ou pacote fechado)
-3. Apresentar proposta à Rastro
-4. Se aprovado: agendar kickoff (D+0)
+## 8. Investimento
+
+**R$ 25.000** pelo projeto completo (Fase A + Fase B), dividido em:
+
+| Parcela | Valor | Condição |
+|---|---|---|
+| 1ª parcela (50%) | R$ 12.500 | No kickoff (início da Fase A) |
+| 2ª parcela (50%) | R$ 12.500 | Na entrega final (fim da Fase B) |
+
+---
+
+## 9. Próximos passos
+
+1. ✅ Lucas validou este escopo (v0.2)
+2. Apresentar proposta à Rastro
+3. Se aprovado: agendar kickoff (D+0)
