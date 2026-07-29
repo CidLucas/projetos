@@ -2,7 +2,7 @@
 
 > Última atualização: 2026-07-29
 > **Contrato:** Deep Blue → Rastro (direto)
-> **Investimento:** R$ 25.000 (2 meses, 2 parcelas de R$ 12.500)
+> **Investimento:** R$ 25.000 (2 meses, pagamento por entrega: 50% após Fase A + 50% após Fase B)
 > **Lucas:** responsável técnico + consultor
 > **Foco:** Escopo validado — próximo passo é apresentar proposta à Rastro
 

@@ -107,8 +107,8 @@ O produto está em desenvolvimento ativo (repo: `CidLucas/mcp_brain_lite`), com 
 
 | Parcela | Valor | Condição |
 |---|---|---|
-| 1ª parcela (50%) | R$ 12.500 | No kickoff (início da Fase A) |
-| 2ª parcela (50%) | R$ 12.500 | Na entrega final (fim da Fase B) |
+| 1ª parcela (50%) | R$ 12.500 | Na entrega da Fase A (relatório de diagnóstico) |
+| 2ª parcela (50%) | R$ 12.500 | Na entrega da Fase B (time conectado + treinamento) |
 
 ---
 
