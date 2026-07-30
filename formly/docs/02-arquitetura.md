@@ -9,16 +9,16 @@
 
 | Camada | Tecnologia | Decisão |
 |---|---|---|
-| Frontend | **Next.js App Router** + React + Tailwind | App Router (server components, streaming, SSR/SSG) |
-| Backend | **FastAPI** (Python) | Padrão Deep Blue, async, validação Pydantic |
-| Banco | **PostgreSQL** (via Supabase) | Dados relacionais, JSONB pra config flexível |
-| Arquivos | **S3** (AWS) ou Cloudflare R2 | Binários (áudios, uploads, logos) |
+| Frontend | **Vite + React 18** + Blu DS (CSS tokens) | Padrão Blu V3: Zustand + React Query + Phosphor Icons |
+| Backend | **FastAPI** (Python) | Padrão Deep Blue, async, Pydantic |
+| Banco | **PostgreSQL** (via Supabase) | Relacional, JSONB, RLS |
+| Arquivos | **S3** (AWS) ou R2 | Binários (áudios, uploads) |
 | Transcrição | **Groq Whisper** | STT rápido e barato |
-| LLM | OCI GenAI (Llama) ou Groq | Builder assistido + análise de resultados |
-| Auth | **Supabase Auth** | Integrado com PostgreSQL, OAuth social |
-| Pagamento | Stripe | Assinatura (Free/Pro/Business) + add-on IA |
-| E-mail | Resend | Transacional (link de pesquisa, convite) |
-| Infra | Vercel (front) + Railway (back) | Deploy simples, escala automática |
+| LLM | OCI GenAI (Llama) ou Groq | Builder + análise |
+| Auth | **Supabase Auth** | Integrado com PostgreSQL |
+| Pagamento | Stripe | Free/Pro/Business + add-on |
+| E-mail | Resend | Transacional |
+| Infra | Vercel (front) + Railway (back) | Deploy simples |
 
 ---
 
@@ -188,5 +188,5 @@ GET    /api/surveys/:id/export?format=csv  ← Exportar
 | 1 | PostgreSQL via Supabase (não Turso) | 2026-07-30 | Dados altamente relacionais (surveys→questions→answers), RLS nativo, Supabase Auth integrado |
 | 2 | JSONB pra `questions.config` | 2026-07-30 | Cada tipo de pergunta tem parâmetros diferentes; evitar tabela por tipo ou colunas nullable |
 | 3 | S3 pra binários (áudio/upload) | 2026-07-30 | PostgreSQL não é eficiente pra blobs; presigned URLs eliminam gargalo de upload |
-| 4 | Next.js App Router | 2026-07-30 | Server components reduzem JS no cliente, SSR pra página pública melhor SEO, streaming |
+| 4 | Vite + React 18 (não Next.js App Router) | 2026-07-30 | Padrão Blu V3; Blu DS tokens nativos; Zustand + React Query já dominados |
 | 5 | Supabase Auth (não Clerk) | 2026-07-30 | Integração nativa com PostgreSQL, RLS, OAuth social incluso |
