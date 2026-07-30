@@ -1,6 +1,6 @@
 # Guanabara — Escopo da Proposta de Serviço
 
-> **Versão:** v0.2 — 2026-07-29
+> **Versão:** v0.3 — 2026-07-29
 > **Cliente:** Supermercados Guanabara
 > **Patrocinador:** Fábio
 > **Contrato:** Deep Blue → Guanabara (direto)
@@ -86,7 +86,42 @@ Ir além do "o que aconteceu" e chegar no "por que aconteceu e o que fazer a res
 
 ---
 
-## 3. Diferencial estratégico: Direcionadores de custo
+## 3. Entregáveis por fase
+
+Cada fase tem entregáveis concretos e verificáveis. Nenhuma fase avança sem que os entregáveis da fase anterior estejam concluídos e aprovados.
+
+### Fase 0 — Diagnóstico (Mês 3)
+
+| # | Entregável | Descrição | Validação |
+|---|---|---|---|
+| 0.1 | **Mapa de processos da rede** | Diagrama AS-IS dos fluxos operacionais: abastecimento, perecíveis, frente de caixa, fechamento, gestão de pessoas. Cobre as 30+ lojas consolidado por região/porte. | Validado em reunião com Fábio e área responsável |
+| 0.2 | **Matriz de maturidade** | Tabela comparativa loja a loja com scores por dimensão (processos, sistemas, pessoas), gerada a partir dos questionários inteligentes. Inclui visão agregada por região e porte. | Entregue como relatório + apresentação executiva |
+| 0.3 | **Relatório de diagnóstico** | Documento com os vazamentos priorizados por impacto financeiro e facilidade de correção. Inclui recomendações de curto prazo (quick wins) e estruturais. | Aprovado pelo patrocinador |
+| 0.4 | **Especificação técnica da plataforma** | Documento de arquitetura e escopo detalhado para Fases 1 e 2: schemas de dados, APIs, interfaces, infraestrutura, cronograma revisado, requisitos de acesso a sistemas | Validado com TI do Guanabara |
+| 0.5 | **Proposta de investimento revisada** | Valores, prazos e parcelas das Fases 1 e 2 ajustados com base nos achados reais do diagnóstico | Aprovada pelo patrocinador |
+
+### Fase 1 — Unificar e enxergar (Mês 7)
+
+| # | Entregável | Descrição | Validação |
+|---|---|---|---|
+| 1.1 | **Data warehouse unificado** | Banco PostgreSQL com dados de TOTVS, RP e planilhas integrados, padronizados e documentados. Schema documentado com dicionário de dados. | Query de validação cruzada com relatórios existentes |
+| 1.2 | **Pipeline de ingestão automático** | Sistema que recebe arquivos (CSV, planilhas) e automaticamente detecta colunas, mapeia schemas e sincroniza com o warehouse. Interface simples de upload. | Teste com arquivo real: upload → disponível no banco em < 5 min |
+| 1.3 | **Painel de comparação entre lojas** | Dashboard web com indicadores normalizados por faturamento, porte e região. Filtros por loja, região, período. Comparação lado a lado de qualquer conjunto de lojas. | Sessão de validação com diretoria |
+| 1.4 | **Documentação de padronização** | Catálogo de cadastros padronizados (produtos, categorias, centros de custo) e regras de normalização aplicadas | Entregue como documento + glossário no painel |
+
+### Fase 2 — Entender e agir (Mês 12)
+
+| # | Entregável | Descrição | Validação |
+|---|---|---|---|
+| 2.1 | **Modelo de direcionadores de custo** | Sistema que cruza custo operacional com atributos estruturais de cada loja e classifica cada componente como passivo (estrutural) ou gerenciável (decisão). Interface mostra drivers por loja com recomendações. | Sessão com diretoria: "o que explica a diferença de margem entre loja X e Y?" |
+| 2.2 | **Chat com dados** | Interface de chat em linguagem natural conectada ao warehouse. Usuário pergunta em português, sistema busca, cruza tabelas e responde com números e gráficos. Sem SQL. | Teste com 10 perguntas reais de negócio definidas com o cliente |
+| 2.3 | **Relatórios automáticos** | Sistema que gera e distribui relatórios em datas determinadas ou sob demanda. Cada relatório chega com desvios destacados, comparação com período anterior e ações sugeridas baseadas nas melhores lojas. | Primeiro relatório automático entregue e aprovado |
+| 2.4 | **Motor de recomendações** | Sistema que identifica correlações entre práticas operacionais e resultados, sugerindo ações para lojas com desempenho abaixo da média da rede. | Pelo menos 3 recomendações geradas e validadas como aplicáveis |
+| 2.5 | **Agentes de IA por domínio** | Conjunto de agentes especializados (análise financeira, CRM de fornecedores, compras/procurement, análise estratégica) operando sobre o warehouse unificado | Cada agente responde a perguntas do seu domínio com dados reais |
+
+---
+
+## 4. Diferencial estratégico: Direcionadores de custo
 
 A pergunta que toda rede se faz: *"Por que esta loja fatura X% mais que a outra e ainda assim dá menos lucro?"*
 
@@ -94,7 +129,7 @@ A plataforma cruza os dados operacionais de cada loja com seus atributos estrutu
 
 ---
 
-## 4. O que NÃO está incluso
+## 5. O que NÃO está incluso
 
 - Substituição ou migração do TOTVS ou RP existentes — a plataforma integra, não substitui
 - Criação de conteúdo operacional (procedimentos, manuais) — podemos recomendar padrões, não escrever do zero
@@ -104,7 +139,7 @@ A plataforma cruza os dados operacionais de cada loja com seus atributos estrutu
 
 ---
 
-## 5. Stack prevista
+## 6. Stack prevista
 
 | Camada | Tecnologia |
 |---|---|
@@ -118,7 +153,7 @@ A plataforma cruza os dados operacionais de cada loja com seus atributos estrutu
 
 ---
 
-## 6. Cronograma
+## 7. Cronograma
 
 **Duração total: 12 meses** (a confirmar com o cliente)
 
@@ -133,7 +168,7 @@ A plataforma cruza os dados operacionais de cada loja com seus atributos estrutu
 
 ---
 
-## 7. Investimento e pagamento
+## 8. Investimento e pagamento
 
 ### Projeto completo (12 meses): R$ 200.000
 
@@ -156,7 +191,7 @@ Contrato de 1 ano com pagamento fracionado, atrelado a entregas e eventos:
 
 ---
 
-## 8. Riscos e mitigação
+## 9. Riscos e mitigação
 
 | Risco | Nível | Mitigação |
 |---|---|---|
@@ -170,7 +205,7 @@ Contrato de 1 ano com pagamento fracionado, atrelado a entregas e eventos:
 
 ---
 
-## 9. Próximos passos
+## 10. Próximos passos
 
 - [ ] Lucas validar este documento de escopo (v0.2)
 - [ ] Ajustar com base no alinhamento
