@@ -1,6 +1,6 @@
 # Guanabara — Escopo da Proposta de Serviço
 
-> **Versão:** v0.3 — 2026-07-29
+> **Versão:** v0.4 — 2026-07-29
 > **Cliente:** Supermercados Guanabara
 > **Patrocinador:** Fábio
 > **Contrato:** Deep Blue → Guanabara (direto)
@@ -75,7 +75,8 @@ Ir além do "o que aconteceu" e chegar no "por que aconteceu e o que fazer a res
 - Chat com dados em linguagem natural conectado ao banco unificado
 - Relatórios automáticos com desvios destacados e ações sugeridas
 - Motor de recomendações que aprende quais práticas estão associadas a melhores resultados
-- Agentes de IA por domínio: análise financeira, CRM de fornecedores, compras e procurement, análise estratégica
+- Agentes de IA que automatizam processos por domínio: análise financeira, CRM de fornecedores, compras e procurement, análise estratégica
+- Plataforma web unificada reunindo todos os módulos num ambiente único com autenticação centralizada
 
 **Entregáveis da Fase 2:**
 - Modelo de direcionadores de custo (separa custo passivo do gerenciável)
@@ -83,6 +84,7 @@ Ir além do "o que aconteceu" e chegar no "por que aconteceu e o que fazer a res
 - Sistema de relatórios automáticos (agendados e sob demanda)
 - Motor de recomendações conectando práticas a resultados
 - Agentes de IA por domínio em produção
+- Plataforma unificada com todos os módulos integrados
 
 ---
 
@@ -117,7 +119,8 @@ Cada fase tem entregáveis concretos e verificáveis. Nenhuma fase avança sem q
 | 2.2 | **Chat com dados** | Interface de chat em linguagem natural conectada ao warehouse. Usuário pergunta em português, sistema busca, cruza tabelas e responde com números e gráficos. Sem SQL. | Teste com 10 perguntas reais de negócio definidas com o cliente |
 | 2.3 | **Relatórios automáticos** | Sistema que gera e distribui relatórios em datas determinadas ou sob demanda. Cada relatório chega com desvios destacados, comparação com período anterior e ações sugeridas baseadas nas melhores lojas. | Primeiro relatório automático entregue e aprovado |
 | 2.4 | **Motor de recomendações** | Sistema que identifica correlações entre práticas operacionais e resultados, sugerindo ações para lojas com desempenho abaixo da média da rede. | Pelo menos 3 recomendações geradas e validadas como aplicáveis |
-| 2.5 | **Agentes de IA por domínio** | Conjunto de agentes especializados (análise financeira, CRM de fornecedores, compras/procurement, análise estratégica) operando sobre o warehouse unificado | Cada agente responde a perguntas do seu domínio com dados reais |
+| 2.5 | **Automatização de processos com agentes** | Agentes de IA especializados por domínio (análise financeira, CRM de fornecedores, compras/procurement, análise estratégica) que automatizam tarefas recorrentes e respondem a perguntas com dados reais do warehouse | Cada agente executa pelo menos um processo ponta a ponta com dados reais |
+| 2.6 | **Plataforma unificada** | Aplicação web que unifica todos os módulos num ambiente único: painel comparativo, chat com dados, direcionadores de custo, relatórios e agentes. Autenticação centralizada, navegação por loja/região/período. | Sessão de uso com diretoria: executar um fluxo completo (ex: "mostre a loja com pior margem em perecíveis, explique o driver e sugira ação") |
 
 ---
 
