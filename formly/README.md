@@ -30,5 +30,6 @@ Plataforma web para **criação, coleta e análise de questionários** com:
 ## 🔗 Links úteis
 
 - **Google Doc (escopo):** https://docs.google.com/document/d/1V539iHGWJq-4qMA30YS7FbRCo023rwYm7rwbMkfGhEw/edit
-- **Repo de código:** _a definir_
+- **Repo de código:** https://github.com/CidLucas/formly
+- **PLANO.md:** https://github.com/CidLucas/formly/blob/main/PLANO.md
 - **Stack:** Next.js + FastAPI + PostgreSQL + Groq Whisper + OCI GenAI

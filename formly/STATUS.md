@@ -19,7 +19,8 @@
 | Arquitetura documentada | 🟢 `docs/02-arquitetura.md` criado |
 | Schema do banco | 🟢 definido (5 tabelas: users, surveys, questions, responses, answers, contacts) |
 | Protótipo Fase 0 | 🔴 não iniciado |
-| Repo de código | 🔴 não criado |
+| Repo de código | 🟢 https://github.com/CidLucas/formly |
+| PLANO.md | 🟢 criado (41 tasks, 4 workstreams, 9 decisões) |
 | Modelo de precificação | 🟡 premissas no Google Doc |
 
 ## 🔑 Decisões recentes
