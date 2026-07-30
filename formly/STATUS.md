@@ -14,8 +14,10 @@
 | Item | Status |
 |---|---|
 | Escopo macro definido | 🟢 Google Doc criado (2026-07-30) |
-| Escopo detalhado (páginas) | 🟡 em andamento |
-| Stack escolhida | 🟡 preliminar (Next.js + FastAPI + Groq) |
+| Escopo detalhado (páginas) | 🟢 definido (Criador, Resposta, Dashboard) |
+| Stack escolhida | 🟢 definida (Next.js App Router + FastAPI + PostgreSQL/Supabase + Groq + S3) |
+| Arquitetura documentada | 🟢 `docs/02-arquitetura.md` criado |
+| Schema do banco | 🟢 definido (5 tabelas: users, surveys, questions, responses, answers, contacts) |
 | Protótipo Fase 0 | 🔴 não iniciado |
 | Repo de código | 🔴 não criado |
 | Modelo de precificação | 🟡 premissas no Google Doc |
@@ -28,6 +30,8 @@
 | 2 | Estrutura de requisitos: mesmo modelo do Blue V3 e Context-MCP (6 seções por página) | 2026-07-30 |
 | 3 | Fluxo do criador em 6 etapas (não 3 modos): Input → Refinamento → Geração → Ajuste → Publicação → Distribuição | 2026-07-30 |
 | 4 | Publicação gera página web funcional com componentes ligados na API | 2026-07-30 |
+| 5 | Stack: PostgreSQL (Supabase) + Next.js App Router + Supabase Auth + S3 | 2026-07-30 |
+| 6 | Schema: 5 tabelas (surveys, questions, responses, answers, contacts) com JSONB pra config flexível | 2026-07-30 |
 
 ## 🎯 Próximas ações
 
