@@ -1,43 +1,63 @@
 # 📋 Requisitos Blue V3 — Índice de Páginas
 
 > Documento vivo. Cada página do Blue V3 tem seu próprio arquivo de requisitos.
+> Baseado no código atual em `CidLucas/monorepo` → `apps/blu_web/src/pages/`.
 > Atualizado conforme as conversas com o fundador.
 
 ---
 
-## 🗂 Páginas
+## 🗂 Páginas (baseado no código atual)
+
+### Shell / Layout Global
+
+| # | Componente | Arquivo | Status |
+|---|---|---|---|
+| — | AppShell (layout) | [shell.md](./shell.md) | 🟡 Em andamento |
+| — | ChatPanel | [chat.md](./chat.md) | 🟡 Em andamento |
+
+### Onboarding
 
 | # | Página | Arquivo | Status |
 |---|---|---|---|
 | 00 | Landing Page | [landing.md](./landing.md) | 🔴 Pendente |
-| 01 | Onboarding — Step 1 | [onboarding-01.md](./onboarding-01.md) | 🔴 Pendente |
-| 02 | Onboarding — Step 2 | [onboarding-02.md](./onboarding-02.md) | 🔴 Pendente |
-| 03 | Onboarding — Step 3+ | [onboarding-03.md](./onboarding-03.md) | 🔴 Pendente |
-| 10 | Chat (Agentes) | [chat.md](./chat.md) | 🔴 Pendente |
-| 20 | Documentos | [documentos.md](./documentos.md) | 🟡 Em andamento |
-| 30 | Estratégia | [estrategia.md](./estrategia.md) | 🔴 Pendente |
-| 40 | Conhecimento | [conhecimento.md](./conhecimento.md) | 🔴 Pendente |
-| 50 | Configurações | [configuracoes.md](./configuracoes.md) | 🔴 Pendente |
+| 01 | Onboarding (5 steps) | [onboarding.md](./onboarding.md) | 🟡 Em andamento |
+
+### App (pós-login)
+
+| # | Screen | Rota | Arquivo | Status |
+|---|---|---|---|---|
+| 10 | Início (Home) | `home` | [home.md](./home.md) | 🟡 Em andamento |
+| 20 | Compras | `compras` | [compras.md](./compras.md) | 🟡 Em andamento |
+| 30 | Financeiro | `financeiro` | [financeiro.md](./financeiro.md) | 🟡 Em andamento |
+| 40 | Agenda | `agenda` | [agenda.md](./agenda.md) | 🟡 Em andamento |
+| 50 | Estratégia | `estrategia` | [estrategia.md](./estrategia.md) | 🟡 Em andamento |
+| 60 | Clientes | `clientes` | [clientes.md](./clientes.md) | 🟡 Em andamento |
+| 70 | Biblioteca | `biblioteca` | [biblioteca.md](./biblioteca.md) | 🟡 Em andamento |
+| 80 | Atividade | `atividade` | [atividade.md](./atividade.md) | 🟡 Em andamento |
+| 90 | Admin | `admin` | [admin.md](./admin.md) | 🟡 Em andamento |
+| 100 | AgentOps | `blu_ops` | [agentops.md](./agentops.md) | 🟡 Em andamento |
 
 ---
 
 ## 📐 Template de documento de página
 
-Cada arquivo segue esta estrutura:
+Cada arquivo segue esta estrutura (6 seções):
 
-1. **Visão Geral** — objetivo, contexto, relação com outras páginas
-2. **Estrutura de Elementos (Front-End)** — um subtópico por elemento da UI
-3. **Fluxos de Processo** — criação, edição, exclusão, transições de estado
-4. **Regras de Negócio** — validações, permissões, restrições
-5. **Integrações** — APIs, eventos, websockets
-6. **Cenários de Teste** — happy path + edge cases
+| # | Seção | Descrição |
+|---|---|---|
+| **1** | Visão Geral | Objetivo, contexto, relação com outras páginas |
+| **2** | Estrutura de Elementos | Um subtópico por elemento da UI (tipo, posição, dados, interações, estados) |
+| **3** | Fluxos de Processo | Criação, edição, exclusão, transições de estado |
+| **4** | Regras de Negócio | Validações, permissões, restrições |
+| **5** | Integrações | APIs, eventos, websockets |
+| **6** | Cenários de Teste | Happy path + edge cases |
 
 ### Subtemplate de elemento de UI
 
 ```
 ### 2.X [Nome do Elemento]
 - **Tipo:** tab | botão | card | lista | modal | formulário | sidebar | barra inferior
-- **Posição:** topo / lateral esquerda / conteúdo central / barra inferior
+- **Posição:** topo / lateral / conteúdo central / barra inferior
 - **Conteúdo/Dados:** o que está representado e de onde vem
 - **Interações:** clicar, arrastar, preencher, expandir...
 - **Estados visuais:** loading, vazio, erro, desabilitado
