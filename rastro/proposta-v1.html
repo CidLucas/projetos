@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DeepBlue — Proposta Rastro</title>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+  :root {
+    --color-bg: #fafaf9; --color-surface: #fff; --color-text: #141311;
+    --color-neutral-100: #f0efed; --color-neutral-200: #e2e0dc;
+    --color-neutral-300: #b8b5ae; --color-neutral-500: #8a8680;
+    --color-neutral-700: #4a4640; --color-neutral-900: #1a1816;
+    --color-accent: #2563eb; --color-accent-500: #3b82f6; --color-accent-700: #1d4ed8;
+    --color-divider: #e2e0dc;
+    --font-heading: 'Inter', -apple-system, sans-serif;
+    --font-body: 'Inter', -apple-system, sans-serif;
+    --font-heading-weight: 700;
+    --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+    --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+    --space-12: 48px; --space-16: 64px; --space-20: 80px;
+    --radius-sm: 4px; --radius-md: 8px;
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.14);
+  }
+  body { margin: 0; background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+  a { color: var(--color-accent-700); } a:hover { color: var(--color-accent); }
+  .section { max-width: 1120px; margin: 0 auto; padding: var(--space-16) var(--space-8); }
+  .kicker { font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.12em; font-size: 13px; color: var(--color-accent-700); font-variant-numeric: tabular-nums; }
+  .node-btn { all: unset; cursor: pointer; display: block; width: 100%; box-sizing: border-box; }
+  .node-btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  .concept-btn { all: unset; cursor: pointer; display: block; width: 100%; box-sizing: border-box; }
+  .concept-btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  .phase-card { border: 1px solid var(--color-divider); border-radius: var(--radius-md); padding: var(--space-6); transition: box-shadow 0.2s ease, border-color 0.2s ease; background: var(--color-surface); }
+  .phase-card:hover { box-shadow: var(--shadow-md); border-color: var(--color-accent-500); }
+  .drawer-backdrop { position: fixed; inset: 0; background: rgba(20,19,17,0.4); z-index: 40; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+  .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+  .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(520px, 92vw); background: var(--color-bg); z-index: 41; box-shadow: var(--shadow-lg); transform: translateX(100%); transition: transform 0.3s ease; overflow-y: auto; }
+  .drawer.open { transform: translateX(0); }
+  .drawer-inner { padding: var(--space-12) var(--space-8) var(--space-8); }
+  .close-btn { all: unset; cursor: pointer; padding: var(--space-2); border-radius: var(--radius-sm); }
+  .close-btn:hover { background: var(--color-neutral-100); }
+  .close-btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  ul.plain { margin: 0; padding: 0; list-style: none; }
+  ul.plain li { padding-left: 1.4em; position: relative; margin-bottom: var(--space-3); }
+  ul.plain li::before { content: "—"; position: absolute; left: 0; color: var(--color-accent-700); }
+  .divider { border: none; border-top: 1px solid var(--color-divider); margin: var(--space-8) 0; }
+  .tag { display: inline-block; font-family: var(--font-body); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: var(--radius-sm); }
+  .tag-accent { background: #dbeafe; color: var(--color-accent-700); }
+  .tag-neutral { background: var(--color-neutral-100); color: var(--color-neutral-700); }
+  .metric-row { display: flex; gap: var(--space-4); flex-wrap: wrap; }
+  .metric-pill { background: var(--color-neutral-100); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); font-size: 13px; color: var(--color-neutral-700); }
+  .metric-pill strong { color: var(--color-text); font-size: 15px; }
+  .pullquote { font-family: var(--font-heading); font-size: 17px; line-height: 1.5; color: var(--color-neutral-700); border-left: 3px solid var(--color-accent-500); padding-left: var(--space-4); margin: var(--space-6) 0; }
+  .chave-bar { padding: var(--space-2) var(--space-4); border-radius: var(--radius-sm) var(--radius-sm) 0 0; font-family: var(--font-body); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; text-align: center; }
+  .chave-accent { background: var(--color-accent-700); color: #fff; }
+  .chave-neutral { background: var(--color-neutral-700); color: #fff; }
+  @media (max-width: 800px) { .grid-3, .grid-2 { grid-template-columns: 1fr !important; } }
+</style>
+</head>
+<body>
+
+<!-- ====== HERO ====== -->
+<div style="background: var(--color-neutral-900); color: var(--color-bg);">
+  <nav style="max-width:1120px;margin:0 auto;padding: var(--space-5) var(--space-8); display:flex; align-items:center; justify-content:space-between; background:transparent; border:none;">
+    <div style="color: var(--color-bg); font-family: var(--font-heading); font-size: 20px;">DeepBlue</div>
+    <div style="font-family: var(--font-body); font-size: 14px; color: var(--color-neutral-300);">Proposta · Rastro</div>
+  </nav>
+  <div class="section" style="padding-top: var(--space-16); padding-bottom: var(--space-20);">
+    <p class="kicker" style="color: var(--color-accent-500);">DeepBlue × Rastro</p>
+    <div style="display:grid; grid-template-columns: 1.3fr 1fr; gap: var(--space-12); align-items: end; margin-top: var(--space-4);">
+      <h1 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(40px, 5.8vw, 68px); line-height: 1.02; margin: 0;">O conhecimento da Rastro, a uma pergunta de distância — direto no Claude</h1>
+      <div>
+        <p style="font-family: var(--font-body); font-size: 20px; color: var(--color-neutral-200); margin: 0 0 var(--space-5);">O time da Rastro já usa Claude o dia todo. A questão é fazer o conhecimento que a empresa já tem — propostas vencedoras, briefings, orçamentos, cases — responder dentro do assistente que eles já conhecem, sem abrir outro site, sem login separado, sem sair do fluxo.</p>
+      </div>
+    </div>
+    <div class="metric-row" style="margin-top: var(--space-8);">
+      <div class="metric-pill" style="background: rgba(255,255,255,0.08); color: var(--color-neutral-200);"><strong style="color:#fff;">5–10</strong> pessoas conectadas</div>
+      <div class="metric-pill" style="background: rgba(255,255,255,0.08); color: var(--color-neutral-200);"><strong style="color:#fff;">60MB</strong> de conhecimento corporativo</div>
+      <div class="metric-pill" style="background: rgba(255,255,255,0.08); color: var(--color-neutral-200);"><strong style="color:#fff;">8</strong> semanas de projeto</div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 01 · O PONTO CEGO ====== -->
+<div class="section">
+  <p class="kicker">01 · O ponto cego</p>
+  <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(28px,3.5vw,40px); margin: var(--space-2) 0 var(--space-3);">O conhecimento existe. Ele só não está onde o time trabalha.</h2>
+  <p style="font-family: var(--font-body); font-size: 16px; line-height:1.6; color: var(--color-neutral-700); max-width: 68ch; margin: 0 0 var(--space-8);">A Rastro tem maturidade técnica e um corpus documental de ~60MB no Rastro Mind. Também tem clientes que exigem precisão e velocidade: Nubank, Globo, HBO Max. O desgaste não está em criar — está em recuperar o que já foi criado.</p>
+  <div class="grid-3" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6);">
+    <div class="phase-card">
+      <i data-lucide="book-open" style="color: var(--color-accent-700); width: 28px; height: 28px;"></i>
+      <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 21px; margin: var(--space-4) 0 var(--space-2);">Conhecimento isolado</h3>
+      <p style="font-family: var(--font-body); font-size: 15px; line-height: 1.6; color: var(--color-neutral-700); margin: 0;">O Rastro Mind existe e funciona. Mas é uma ilha: o time precisa abrir outro site, fazer login, digitar a pergunta — enquanto o Claude Desktop, que eles já usam o dia todo, não tem acesso a nada disso.</p>
+    </div>
+    <div class="phase-card">
+      <i data-lucide="file-plus" style="color: var(--color-accent-700); width: 28px; height: 28px;"></i>
+      <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 21px; margin: var(--space-4) 0 var(--space-2);">Toda proposta começa do zero</h3>
+      <p style="font-family: var(--font-body); font-size: 15px; line-height: 1.6; color: var(--color-neutral-700); margin: 0;">Propostas vencedoras, orçamentos de referência, cases de sucesso — esse conhecimento está preso em pessoas ou num site que ninguém consulta durante o fluxo de trabalho. Cada nova venda reinventa a roda.</p>
+    </div>
+    <div class="phase-card">
+      <i data-lucide="user" style="color: var(--color-accent-700); width: 28px; height: 28px;"></i>
+      <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 21px; margin: var(--space-4) 0 var(--space-2);">Claude no escuro</h3>
+      <p style="font-family: var(--font-body); font-size: 15px; line-height: 1.6; color: var(--color-neutral-700); margin: 0;">Cada pessoa do time usa o Claude no seu contexto isolado. O assistente mais poderoso do mercado não sabe nada sobre a Rastro — não conhece os cases, não referencia briefings passados, não sugere orçamentos típicos.</p>
+    </div>
+  </div>
+  <div class="pullquote">
+    O time já usa IA todo dia. O que falta é a IA saber o que a empresa sabe.
+  </div>
+</div>
+
+<hr class="divider" style="max-width:1120px; margin: 0 auto;">
+
+<!-- ====== 02 · FERRAMENTAS ====== -->
+<div class="section">
+  <p class="kicker">02 · Ferramentas</p>
+  <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(28px,3.5vw,40px); margin: var(--space-2) 0 var(--space-3);">O que entregamos: Rastro Brain</h2>
+  <p style="font-family: var(--font-body); font-size: 16px; line-height:1.6; color: var(--color-neutral-700); max-width: 68ch; margin: 0 0 var(--space-8);">A Rastro Brain conecta o conhecimento corporativo ao Claude Desktop de cada pessoa. Não é um novo site, não é um dashboard — é uma ponte entre o que a empresa já sabe e o assistente que o time já usa. Clique em cada conceito para entender.</p>
+  <div class="grid-3" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6);">
+    <button class="concept-btn" onClick="openDrawer('c1')" aria-haspopup="dialog">
+      <div class="phase-card" style="border-left: 3px solid var(--color-accent-700);">
+        <i data-lucide="cpu" style="color: var(--color-accent-700); width: 26px; height: 26px;"></i>
+        <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 19px; margin: var(--space-4) 0 var(--space-2);">Gateway MCP</h3>
+        <p style="font-family: var(--font-body); font-size: 14px; line-height: 1.55; color: var(--color-neutral-700); margin: 0;">Um servidor que expõe documentos corporativos como ferramentas para qualquer cliente MCP — Claude Desktop, Cursor, o que o time preferir. Quem já está no Claude ganha a memória da empresa sem sair de lá.</p>
+        <span class="tag tag-accent" style="margin-top: var(--space-3); display:inline-block;">MCP Brain Lite</span>
+      </div>
+    </button>
+    <button class="concept-btn" onClick="openDrawer('c2')" aria-haspopup="dialog">
+      <div class="phase-card">
+        <i data-lucide="brain" style="color: var(--color-accent-700); width: 26px; height: 26px;"></i>
+        <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 19px; margin: var(--space-4) 0 var(--space-2);">Mnemosyne</h3>
+        <p style="font-family: var(--font-body); font-size: 14px; line-height: 1.55; color: var(--color-neutral-700); margin: 0;">Motor de busca vetorial com grafo de conhecimento. Cada documento ingerido vira um nó conectado — citações, temas, autorias. A busca não é keyword: é semântica.</p>
+      </div>
+    </button>
+    <button class="concept-btn" onClick="openDrawer('c3')" aria-haspopup="dialog">
+      <div class="phase-card">
+        <i data-lucide="shield-check" style="color: var(--color-accent-700); width: 26px; height: 26px;"></i>
+        <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 19px; margin: var(--space-4) 0 var(--space-2);">Curadoria com governança</h3>
+        <p style="font-family: var(--font-body); font-size: 14px; line-height: 1.55; color: var(--color-neutral-700); margin: 0;">Dois escopos: corporativo (conhecimento curado, escrita controlada por Fábio e Lucas Diárea) e pessoal (cada pessoa tem seu banco privado). O que entra no corporativo passa por curadoria humana.</p>
+      </div>
+    </button>
+    <button class="concept-btn" onClick="openDrawer('c4')" aria-haspopup="dialog">
+      <div class="phase-card">
+        <i data-lucide="users" style="color: var(--color-accent-700); width: 26px; height: 26px;"></i>
+        <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 19px; margin: var(--space-4) 0 var(--space-2);">Claude Desktop do time</h3>
+        <p style="font-family: var(--font-body); font-size: 14px; line-height: 1.55; color: var(--color-neutral-700); margin: 0;">5 a 10 pessoas conectadas via conector MCP. Perguntar "quanto cobramos no projeto da Globo?" ou "quais cases usamos com varejo?" vira uma conversa, não uma busca em pastas.</p>
+      </div>
+    </button>
+    <button class="concept-btn" onClick="openDrawer('c5')" aria-haspopup="dialog">
+      <div class="phase-card">
+        <i data-lucide="search" style="color: var(--color-accent-700); width: 26px; height: 26px;"></i>
+        <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 19px; margin: var(--space-4) 0 var(--space-2);">Busca em linguagem natural</h3>
+        <p style="font-family: var(--font-body); font-size: 14px; line-height: 1.55; color: var(--color-neutral-700); margin: 0;">Sem SQL, sem prompt engineering, sem operador booleano. O time pergunta em português e recebe resposta com contexto, fonte e referência cruzada entre documentos.</p>
+      </div>
+    </button>
+    <button class="concept-btn" onClick="openDrawer('c6')" aria-haspopup="dialog">
+      <div class="phase-card">
+        <i data-lucide="graduation-cap" style="color: var(--color-accent-700); width: 26px; height: 26px;"></i>
+        <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 19px; margin: var(--space-4) 0 var(--space-2);">Treinamento e onboarding</h3>
+        <p style="font-family: var(--font-body); font-size: 14px; line-height: 1.55; color: var(--color-neutral-700); margin: 0;">Sessão de treinamento com o time + documento de boas práticas. Como consultar, como o corpus se mantém atualizado, como onboardar gente nova. O negócio é independência.</p>
+      </div>
+    </button>
+  </div>
+</div>
+
+<hr class="divider" style="max-width:1120px; margin: 0 auto;">
+
+<!-- ====== 03 · ROADMAP ====== -->
+<div class="section">
+  <p class="kicker">03 · Roadmap</p>
+  <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(28px,3.5vw,40px); margin: var(--space-2) 0 var(--space-3);">8 semanas — do diagnóstico ao time conectado</h2>
+  <p style="font-family: var(--font-body); font-size: 16px; line-height:1.6; color: var(--color-neutral-700); max-width: 68ch; margin: 0 0 var(--space-4);">A Fase A mapeia o fluxo de propostas e prepara o corpus. A Fase B implanta o gateway e conecta o time. Entre as fases, um gate claro: diagnóstico aprovado → implementação autorizada.</p>
+  <p style="font-family: var(--font-body); font-size: 14px; color: var(--color-neutral-500); margin: 0 0 var(--space-10);">Clique em cada fase para ver objetivo, atividades e entregáveis.</p>
+
+  <!-- Chaves visuais -->
+  <div style="display:grid; grid-template-columns: 1fr 1.6fr; gap: 0; margin-bottom: var(--space-3);">
+    <div class="chave-bar chave-accent">Consultoria de fluxo</div>
+    <div class="chave-bar chave-neutral">Implementação do gateway</div>
+  </div>
+
+  <!-- Timeline -->
+  <div style="position:relative; padding: var(--space-4) 0;">
+    <div style="position:absolute; left:0; right:0; top:68px; height:3px; background: var(--color-neutral-200);"></div>
+
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); position:relative; margin-bottom: var(--space-12);">
+
+      <button class="node-btn" onClick="openDrawer('r0')" aria-haspopup="dialog" style="position:relative; z-index:1;">
+        <div class="phase-card" style="border-top: 4px solid var(--color-accent-700); text-align:left;">
+          <div style="display:flex; align-items:center; gap: var(--space-3); margin-bottom: var(--space-3);">
+            <span class="tag tag-accent">Fase A</span><span style="font-size: 13px; color: var(--color-neutral-500);">Semanas 1–3</span>
+          </div>
+          <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 20px; margin: 0 0 var(--space-2);">Diagnóstico e curadoria</h3>
+          <p style="font-size: 14px; line-height:1.5; color: var(--color-neutral-700); margin: 0;">Entrevistas, inventário documental, mapeamento AS-IS/TO-BE, recomendações de padronização e relatório de diagnóstico.</p>
+          <i data-lucide="chevron-right" style="color: var(--color-neutral-500); width: 20px; height: 20px; margin-top: var(--space-3);"></i>
+        </div>
+      </button>
+
+      <button class="node-btn" onClick="openDrawer('r1')" aria-haspopup="dialog" style="position:relative; z-index:1;">
+        <div class="phase-card" style="border-top: 4px solid var(--color-neutral-700); text-align:left;">
+          <div style="display:flex; align-items:center; gap: var(--space-3); margin-bottom: var(--space-3);">
+            <span class="tag tag-neutral">Fase B</span><span style="font-size: 13px; color: var(--color-neutral-500);">Semanas 4–8</span>
+          </div>
+          <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 20px; margin: 0 0 var(--space-2);">Rastro Brain no ar</h3>
+          <p style="font-size: 14px; line-height:1.5; color: var(--color-neutral-700); margin: 0;">Deploy do gateway MCP, ingestão do corpus, configuração dos Claude Desktops, treinamento e período de observação.</p>
+          <i data-lucide="chevron-right" style="color: var(--color-neutral-500); width: 20px; height: 20px; margin-top: var(--space-3);"></i>
+        </div>
+      </button>
+
+    </div>
+
+    <!-- Barra de progresso -->
+    <div style="display:flex; align-items:center; gap: var(--space-4); padding: var(--space-4) 0;">
+      <div style="flex:1; height:8px; background: var(--color-accent-700); border-radius:4px; max-width:37%;"></div>
+      <div style="flex:1; height:8px; background: var(--color-neutral-300); border-radius:4px; max-width:63%;"></div>
+    </div>
+    <div style="display:flex; justify-content:space-between; font-size: 13px; color: var(--color-neutral-500); margin-bottom: var(--space-6);">
+      <span>Semana 1</span><span>Semana 3</span><span>Semana 8</span>
+    </div>
+  </div>
+
+  <!-- Entregáveis -->
+  <p style="font-family: var(--font-body); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-accent-700); margin: var(--space-10) 0 var(--space-3);">Entregáveis</p>
+
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-6);">
+    <div class="phase-card" style="border-left: 3px solid var(--color-accent-700);">
+      <span class="tag tag-accent" style="margin-bottom: var(--space-3); display:inline-block;">Fase A · Semana 3</span>
+      <ul class="plain" style="font-size: 15px;">
+        <li>Relatório de diagnóstico (PDF)</li>
+        <li>Diagrama AS-IS / TO-BE do fluxo de propostas</li>
+        <li>Inventário documental comentado — o que existe, qualidade, gaps</li>
+        <li>Recomendações priorizadas de padronização (templates, pastas, convenções)</li>
+      </ul>
+    </div>
+    <div class="phase-card" style="border-left: 3px solid var(--color-neutral-700);">
+      <span class="tag tag-neutral" style="margin-bottom: var(--space-3); display:inline-block;">Fase B · Semana 8</span>
+      <ul class="plain" style="font-size: 15px;">
+        <li>Gateway MCP Brain Lite em produção no servidor da Rastro</li>
+        <li>Corpus documental ingerido com grafo de conhecimento ativo (Mnemosyne)</li>
+        <li>5–10 Claude Desktops conectados via MCP</li>
+        <li>Sessão de treinamento com o time</li>
+        <li>Documento de boas práticas e onboarding</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" style="max-width:1120px; margin: 0 auto;">
+
+<!-- ====== 04 · INVESTIMENTO ====== -->
+<div class="section">
+  <p class="kicker">04 · Investimento</p>
+  <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(28px,3.5vw,40px); margin: var(--space-2) 0 var(--space-8);">Projeto completo, pagamento por entrega</h2>
+  <p style="font-family: var(--font-body); font-size: 16px; line-height:1.6; color: var(--color-neutral-700); max-width: 68ch; margin: 0 0 var(--space-6);">O investimento cobre as duas fases. O pagamento é atrelado a cada entrega — Fase A concluída, primeira parcela; Fase B entregue, segunda. Se a Rastro optar por não seguir para a Fase B após o diagnóstico, o projeto se encerra sem custo adicional.</p>
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); margin-top: var(--space-8);">
+    <div class="phase-card" style="border-left: 3px solid var(--color-accent-700); text-align:center;">
+      <span class="tag tag-accent">Fase A — Consultoria</span>
+      <p style="font-family: var(--font-heading); font-size: 32px; font-weight: 700; color: var(--color-text); margin: var(--space-4) 0 var(--space-1);">R$ 12.500</p>
+      <p style="font-size: 14px; color: var(--color-neutral-500); margin:0;">na entrega do relatório · ~Semana 3</p>
+    </div>
+    <div class="phase-card" style="border-left: 3px solid var(--color-neutral-700); text-align:center;">
+      <span class="tag tag-neutral">Fase B — Implementação</span>
+      <p style="font-family: var(--font-heading); font-size: 32px; font-weight: 700; color: var(--color-text); margin: var(--space-4) 0 var(--space-1);">R$ 12.500</p>
+      <p style="font-size: 14px; color: var(--color-neutral-500); margin:0;">na entrega final · ~Semana 8</p>
+    </div>
+  </div>
+  <p style="font-family: var(--font-heading); font-size: 20px; font-weight: 700; text-align: center; margin: var(--space-8) 0 0;">Total: R$ 25.000</p>
+</div>
+
+<hr class="divider" style="max-width:1120px; margin: 0 auto;">
+
+<!-- ====== 05 · PRÓXIMOS PASSOS ====== -->
+<div class="section">
+  <p class="kicker">05 · Próximos passos</p>
+  <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(28px,3.5vw,40px); margin: var(--space-2) 0 var(--space-8);">Como seguimos</h2>
+  <ul class="plain" style="font-size: 17px; max-width: 60ch;">
+    <li>Apresentar esta proposta à Rastro, alinhar escopo e cronograma.</li>
+    <li>Se aprovado: agendar kickoff (D+0), entrevistas com 2–3 pessoas-chave e início do inventário documental.</li>
+    <li>Em 3 semanas: relatório de diagnóstico entregue, decisão sobre seguir para a Fase B.</li>
+    <li>Em 8 semanas: time conectado, corpus vivo, treinamento concluído.</li>
+  </ul>
+</div>
+
+<!-- ====== FOOTER ====== -->
+<div style="background: var(--color-neutral-900); color: var(--color-neutral-300); margin-top: var(--space-16);">
+  <div class="section" style="display:flex; flex-wrap:wrap; justify-content:space-between; gap: var(--space-6); padding-top: var(--space-10); padding-bottom: var(--space-10);">
+    <div>
+      <div style="font-family: var(--font-heading); font-size: 20px; color: var(--color-bg); margin-bottom: var(--space-2);">DeepBlue</div>
+      <div style="font-size: 13px; color: var(--color-neutral-500);">Ferramentas de IA para quem já faz bem-feito.</div>
+    </div>
+    <div style="font-size: 14px; display:flex; gap: var(--space-6); flex-wrap:wrap;">
+      <span>lucas@deepblue.ai</span><span>deepblue.ai</span>
+    </div>
+  </div>
+</div>
+
+<!-- ====== DRAWERS ====== -->
+<div class="drawer-backdrop" id="backdrop" onClick="closeDrawer()"></div>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Detalhe">
+  <div class="drawer-inner">
+    <div style="display:flex; justify-content:flex-end;">
+      <button class="close-btn" onClick="closeDrawer()" aria-label="Fechar"><i data-lucide="x" style="width:22px;height:22px;"></i></button>
+    </div>
+    <div id="drawer-content"></div>
+  </div>
+</div>
+
+<script>
+const data = {
+  // ── Conceitos (seção 02) ──
+  c1: {
+    tag: 'MCP Brain Lite', tagClass: 'tag-accent',
+    title: 'Gateway MCP',
+    body: 'O MCP Brain Lite é um servidor MCP (Model Context Protocol) que expõe documentos corporativos como ferramentas. Qualquer cliente compatível com MCP — Claude Desktop, Cursor, ou outro — se conecta e ganha acesso ao conhecimento da empresa. A autenticação é OAuth 2.1, o deploy é em servidor próprio da Rastro (provável EC2), e a configuração de cada cliente leva minutos. Não é um novo site, não é um dashboard — é uma camada que roda em segundo plano e responde quando o time pergunta.'
+  },
+  c2: {
+    tag: 'Motor de busca', tagClass: 'tag-neutral',
+    title: 'Mnemosyne',
+    body: 'Mnemosyne é o motor de busca vetorial com grafo de conhecimento que roda dentro do Brain Lite. Cada documento ingerido é processado em duas camadas: uma busca vetorial (embedding) para similaridade semântica, e um grafo de conhecimento que conecta documentos por citações, temas, autorias e metadados. O resultado é uma busca que entende contexto — não precisa acertar a palavra-chave exata para encontrar o documento certo.'
+  },
+  c3: {
+    tag: 'Governança', tagClass: 'tag-neutral',
+    title: 'Curadoria com governança',
+    body: 'O sistema opera com dois escopos: corporativo e pessoal. O escopo corporativo contém o conhecimento curado da empresa — propostas vencedoras, briefings, orçamentos, cases — e a escrita é controlada por Fábio e Lucas Diárea, que decidem o que entra e o que sai. O escopo pessoal é de cada usuário: anotações, rascunhos, documentos em progresso. Essa separação garante que o que o Claude responde no contexto corporativo é confiável e passa por curadoria humana. Sem ingestão automática de dados sensíveis ou não verificados.'
+  },
+  c4: {
+    tag: 'Conexão', tagClass: 'tag-neutral',
+    title: 'Claude Desktop do time',
+    body: 'Configuramos o conector MCP em cada Claude Desktop do time — de 5 a 10 pessoas. Depois de configurado, a experiência é transparente: a pessoa pergunta algo sobre a Rastro, o Claude consulta o gateway, e a resposta vem com contexto corporativo. \n\nExemplos reais de uso:\n— "Qual foi o orçamento do projeto da HBO Max?"\n— "Temos algum case de branding para varejo?"\n— "Quais propostas usamos que mencionam pesquisa quantitativa?"\n\nO time não precisa abrir outro site, decorar comandos ou aprender prompt engineering.'
+  },
+  c5: {
+    tag: 'Ferramenta', tagClass: 'tag-neutral',
+    title: 'Busca em linguagem natural',
+    body: 'A busca é em português natural. O Mnemosyne processa a pergunta, busca por similaridade semântica no corpus, cruza com o grafo de conhecimento para trazer documentos relacionados, e devolve a resposta com fonte e contexto. O time não escreve SQL, não usa operadores booleanos, não faz prompt engineering. Perguntou, recebeu. A barreira de adoção é zero — especialmente para um time que já usa Claude diariamente.'
+  },
+  c6: {
+    tag: 'Handoff', tagClass: 'tag-neutral',
+    title: 'Treinamento e onboarding',
+    body: 'Sessão de treinamento com o time inteiro: como consultar o corpus, como os curadores mantêm o conteúdo atualizado, boas práticas de curadoria. Entregamos também um documento de onboarding para quando entrar gente nova na Rastro — o que é a Rastro Brain, como conectar, como usar. A ideia é que a Rastro não fique dependente da Deep Blue para operar a ferramenta. O conhecimento é de vocês, a ferramenta é de vocês.'
+  },
+
+  // ── Roadmap (seção 03) ──
+  r0: {
+    tag: 'Fase A · Consultoria', tagClass: 'tag-accent',
+    title: 'Diagnóstico e curadoria · Semanas 1–3',
+    objetivo: 'Mapear o fluxo de propostas da Rastro, fazer o inventário do corpus documental e preparar o terreno para a implementação. O diagnóstico define o que ingerir, como categorizar e quais gaps existem no conhecimento corporativo.',
+    atividades: [
+      'Kickoff com stakeholders da Rastro (1h).',
+      'Entrevistas com 2–3 pessoas-chave do time para entender o fluxo real de criação de propostas — do briefing à entrega.',
+      'Coleta e inventário de documentos: templates, propostas passadas, briefings, orçamentos, cases. O que existe, em que estado, onde está.',
+      'Mapeamento do fluxo atual (AS-IS): como uma proposta é criada hoje, onde o conhecimento é consultado (ou não).',
+      'Identificação de gargalos: onde o time perde tempo, onde o conhecimento existe mas não é usado.',
+      'Desenho do fluxo-alvo (TO-BE): como o processo funciona com a memória corporativa acessível direto no Claude.',
+      'Recomendações de padronização: templates, convenções de nomenclatura, estrutura de pastas.',
+      'Entrega do relatório de diagnóstico + apresentação para a Rastro (1h).'
+    ],
+    entregaveis: 'Relatório de diagnóstico (PDF), diagrama AS-IS / TO-BE, inventário documental comentado com gaps e prioridades, recomendações de padronização.'
+  },
+  r1: {
+    tag: 'Fase B · Implementação', tagClass: 'tag-neutral',
+    title: 'Rastro Brain no ar · Semanas 4–8',
+    objetivo: 'Implantar o gateway MCP, ingerir o corpus documental e conectar o time inteiro. Ao final da Fase B, qualquer pessoa da Rastro pergunta sobre a empresa dentro do Claude e recebe resposta com contexto corporativo.',
+    atividades: [
+      'Preparação do corpus: limpeza, deduplicação, categorização dos documentos inventariados na Fase A. Curadoria feita em conjunto com Fábio e Lucas Diárea.',
+      'Deploy do MCP Brain Lite: provisionar servidor (provável EC2), configurar gateway, OAuth 2.1, escopos corporativo e pessoal.',
+      'Configurar tenant "rastro" com 5–10 usuários e permissões.',
+      'Ingestão do corpus no escopo corporativo: upload dos documentos, processamento pelo Mnemosyne, criação do grafo de conhecimento.',
+      'Validação pós-ingestão: testar queries reais do time, ajustar chunking/embedding se necessário.',
+      'Configurar conector MCP em cada Claude Desktop do time (5–10 pessoas).',
+      'Treinamento: sessão de 1h com o time + documento de boas práticas.',
+      'Período de observação de 1 semana: suporte a dúvidas, ajustes finos, correções.',
+      'Entrega final: handoff com documento de manutenção do corpus.'
+    ],
+    entregaveis: 'Gateway MCP Brain Lite em produção no servidor da Rastro, corpus documental ingerido com grafo de conhecimento ativo, 5–10 Claude Desktops conectados, sessão de treinamento realizada, documento de boas práticas e onboarding.'
+  }
+};
+
+function openDrawer(id) {
+  const item = data[id];
+  if (!item) return;
+  const content = document.getElementById('drawer-content');
+  let html = `<span class="${item.tagClass || 'tag-neutral'} tag">${item.tag}</span>
+    <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 30px; margin: var(--space-4) 0 var(--space-5);">${item.title}</h2>`;
+  if (item.objetivo) html += `<p style="font-size: 13px; text-transform:uppercase; letter-spacing:0.08em; color: var(--color-accent-700); margin: 0 0 var(--space-2);">Objetivo</p>
+    <p style="font-size: 16px; line-height:1.6; margin: 0 0 var(--space-6);">${item.objetivo}</p>`;
+  if (item.atividades) {
+    html += `<p style="font-size: 13px; text-transform:uppercase; letter-spacing:0.08em; color: var(--color-accent-700); margin: 0 0 var(--space-2);">Atividades</p><ul class="plain" style="font-size: 15px; margin: 0 0 var(--space-6);">`;
+    item.atividades.forEach(a => { html += `<li>${a}</li>`; });
+    html += `</ul>`;
+  }
+  if (item.entregaveis) html += `<p style="font-size: 13px; text-transform:uppercase; letter-spacing:0.08em; color: var(--color-accent-700); margin: 0 0 var(--space-2);">Entregáveis</p>
+    <p style="font-size: 15px; line-height:1.6; margin:0;">${item.entregaveis}</p>`;
+  if (item.body) html += `<p style="font-size: 16px; line-height:1.6; margin: 0; white-space: pre-line;">${item.body}</p>`;
+  content.innerHTML = html;
+  document.getElementById('backdrop').classList.add('open');
+  document.getElementById('drawer').classList.add('open');
+  if (window.lucide) window.lucide.createIcons();
+}
+function closeDrawer() {
+  document.getElementById('backdrop').classList.remove('open');
+  document.getElementById('drawer').classList.remove('open');
+}
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
+window.addEventListener('load', () => { if (window.lucide) window.lucide.createIcons(); });
+</script>
+</body>
+</html>
