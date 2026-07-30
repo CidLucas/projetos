@@ -1,330 +1,387 @@
-# ✏️ Página 01 — Criador (Builder)
+# 📝 Página 01 — Criador de Questionário
 
+> **Status:** ⚠️ Aspiracional — sem código ainda. Baseado no Google Doc + input do Lucas (2026-07-30, revisado)
 > **Template:** 6 seções (visão geral, elementos UI, fluxos, regras, integrações, testes)
 
 ---
 
 ## 1. Visão Geral
 
-O **Criador** é a experiência core do Formly — um builder híbrido onde o usuário monta questionários **conversando com uma IA** (chat) e **editando diretamente** os elementos na tela (canvas). Inspirado em v0.dev / Bolt.new: o chat gera, o canvas exibe, e o usuário refina nos dois canais simultaneamente.
+Tela principal onde o usuário **constrói questionários** em um **fluxo contínuo**, não em modos separados. O usuário começa descrevendo o que precisa (texto ou voz), o sistema faz perguntas de refinamento, gera um esqueleto, e o usuário ajusta usando **três formas de interação complementares**:
 
-### Layout
+1. **Conversa (chat/voz)** — descrever, responder perguntas do sistema, pedir ajustes
+2. **Manipulação direta** — arrastar caixinhas, reordenar, editar inline
+3. **Edição textual** — editar o esqueleto como texto antes ou depois da versão visual
+
+**Essas formas não são modos separados — coexistem na mesma tela e o usuário flui entre elas naturalmente.**
+
+### Layout proposto
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│ 🧠 Formly    [Nome do Questionário]            [🔗 Publicar] │
-├─────────────────────────┬────────────────────────────────────┤
-│                         │                                    │
-│  ┌───────────────────┐  │  ┌────────────────────────────┐   │
-│  │ 💬 Chat           │  │  │ 📋 Preview                 │   │
-│  │                   │  │  │                            │   │
-│  │ IA: "Vi que você  │  │  │  1. 📝 Qual seu nome?     │   │
-│  │ está montando uma │  │  │     [___________________]  │   │
-│  │ pesquisa de clima.│  │  │                            │   │
-│  │ Quer incluir      │  │  │  2. ⭐ Avalie o serviço    │   │
-│  │ perguntas de      │  │  │     ○ 1 ○ 2 ○ 3 ○ 4 ○ 5  │   │
-│  │ múltipla escolha?"│  │  │                            │   │
-│  │                   │  │  │  3. 🎤 Conte sua exp.     │   │
-│  │ Você: "Sim, e     │  │  │     [🎙️ Gravar áudio]     │   │
-│  │ também uma de     │  │  │                            │   │
-│  │ áudio no final"   │  │  │  [+ Adicionar pergunta]   │   │
-│  │                   │  │  │                            │   │
-│  │ [🎤 ou digite...] │  │  └────────────────────────────┘   │
-│  └───────────────────┘  │                                    │
-│                         │  ┌────────────────────────────┐   │
-│                         │  │ ⚙️ Propriedades            │   │
-│                         │  │ (ao selecionar pergunta)    │   │
-│                         │  │ Tipo: [Múlt. escolha ▾]    │   │
-│                         │  │ Obrigatória: [✓]            │   │
-│                         │  │ Opções: [+ adicionar]       │   │
-│                         │  └────────────────────────────┘   │
-└─────────────────────────┴────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│  ← Meus questionários     |     [Nome do questionário]           │
+├──────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  ┌────────────────────────────────────────────────────────────┐  │
+│  │  💬 O que você precisa?                                    │  │
+│  │  ┌──────────────────────────────────────────────────────┐  │  │
+│  │  │ Descreva o questionário que você quer criar...       │  │  │
+│  │  │ ou 🎤 ditar                                          │  │  │
+│  │  └──────────────────────────────────────────────────────┘  │  │
+│  │                                                    [Enviar] │  │
+│  └────────────────────────────────────────────────────────────┘  │
+│                                                                  │
+│  ┌────────────────────────────────────────────────────────────┐  │
+│  │  🤖 Assistente: Entendi! Algumas perguntas:               │  │
+│  │  • Qual o público-alvo?                                   │  │
+│  │  • Quantas perguntas você imagina?                        │  │
+│  │  • Precisa de áudio ou só texto?                          │  │
+│  │  ┌──────────────────────────────────────────────────┐    │  │
+│  │  │ [Responder...]                            [Enviar]│    │  │
+│  │  └──────────────────────────────────────────────────┘    │  │
+│  └────────────────────────────────────────────────────────────┘  │
+│                                                                  │
+│  ─────────── após 1-2 rounds, sistema gera esqueleto ──────────  │
+│                                                                  │
+│  ┌────────────────────────────────────────────────────────────┐  │
+│  │  📋 Esqueleto gerado                          [Editar texto]│  │
+│  │                                                            │  │
+│  │  ┌─ ⋮⋮ ───────────────────────────────────────────────┐   │  │
+│  │  │ 1. [Texto curto ▾] Qual é o seu nome?  [Obrigatória ✓]│  │
+│  │  └─────────────────────────────────────────────────────┘   │  │
+│  │  ┌─ ⋮⋮ ───────────────────────────────────────────────┐   │  │
+│  │  │ 2. [Múltipla escolha ▾] Como avalia o atendimento?  │   │  │
+│  │  │    ○ Ótimo  ○ Bom  ○ Regular  ○ Ruim  [+ opção]    │   │  │
+│  │  └─────────────────────────────────────────────────────┘   │  │
+│  │  ┌─ ⋮⋮ ───────────────────────────────────────────────┐   │  │
+│  │  │ 3. [Áudio ▾] Deixe um depoimento         [Opcional] │   │  │
+│  │  └─────────────────────────────────────────────────────┘   │  │
+│  │                                                            │  │
+│  │  [+ Nova pergunta]  [🔄 Refinar com assistente]            │  │
+│  └────────────────────────────────────────────────────────────┘  │
+│                                                                  │
+│  ┌────────────────────────────────────────────────────────────┐  │
+│  │  [🎨 Personalizar]  [👁 Preview]  [💾 Salvar]  [🚀 Publicar] │
+│  └────────────────────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
 ## 2. Estrutura de Elementos
 
-### 2.1 Topbar
+### 2.1 Área de Input Inicial (Fase 1 — Descrever)
 
-| Elemento | Tipo | Detalhes |
+- **Tipo:** caixa de texto grande + opção de voz
+- **Posição:** topo da área principal, destaque visual
+- **Conteúdo/Dados:**
+  - Textarea grande com placeholder: "Descreva o questionário que você quer criar... Ex: 'Preciso de uma pesquisa de satisfação para pacientes de uma clínica médica, com umas 5-6 perguntas'"
+  - Botão 🎤 para ditar (voice input)
+  - Botão "Enviar"
+- **Interações:**
+  - Digitar texto livre → clicar Enviar
+  - Clicar 🎤 → grava voz, transcreve, preenche o campo
+- **Estados visuais:**
+  - Vazio: placeholder visível
+  - Com texto: botão Enviar habilitado
+  - Ditando: 🎤 pulsando, transcrição aparecendo em tempo real
+
+### 2.2 Conversa de Refinamento (Fase 2 — Refinar)
+
+- **Tipo:** thread de chat inline (2-3 mensagens)
+- **Posição:** abaixo do input inicial
+- **Conteúdo/Dados:**
+  - Bolhas do assistente com perguntas de refinamento
+  - Campo de resposta do usuário
+- **Interações:**
+  - Usuário responde perguntas do assistente
+  - 1-2 rounds até o sistema ter informação suficiente
+  - Usuário pode pular ("Já sei o que quero, gera o esqueleto")
+- **Estados visuais:**
+  - Digitando: input ativo
+  - Processando: "Analisando suas respostas..."
+  - Concluído: thread colapsa, esqueleto aparece abaixo
+
+### 2.3 Esqueleto Visual (Fase 3 — Ajustar)
+
+O esqueleto aparece como **cards de pergunta** que o usuário pode manipular de 3 formas.
+
+#### 2.3.1 Cards de Pergunta (caixinhas)
+
+Cada pergunta é um card expansível:
+
+| Elemento | Tipo | Interação |
 |---|---|---|
-| Logo | ícone + texto | 🧠 Formly |
-| Nome do questionário | input inline editável | Clique → edita título |
-| Status | indicador | Rascunho / Publicado |
-| Botão Publicar | btn primário | Gera link público |
-| Botão Preview | btn secundário | Abre preview em nova aba |
+| **Alça de arraste** (⋮⋮) | handle esquerdo | Arrasta para reordenar |
+| **Número** | badge | "1.", "2.", automático |
+| **Tipo de pergunta** | dropdown inline | Alterna entre: Texto curto, Texto longo, Múltipla escolha, Áudio, Upload de documento |
+| **Título** | input editável | Clique → edita inline |
+| **Opções** (múltipla escolha) | lista editável | Adicionar/remover/editar opções inline |
+| **Toggle "Obrigatória"** | switch | Ativa/desativa |
+| **Menu ⋯** | dropdown | Duplicar, Excluir, Mover para cima/baixo |
+| **Preview do tipo** | miniatura | Mostra como o respondente verá esse componente |
 
-### 2.2 Chat Panel (coluna esquerda)
+- **Estados visuais:**
+  - Normal: card branco com borda sutil
+  - Arrastando: sombra elevada, opacidade levemente reduzida na origem
+  - Foco: borda destacada na cor accent
 
-| Elemento | Tipo | Detalhes |
-|---|---|---|
-| Área de mensagens | scroll vertical | Bolhas user (direita) + IA (esquerda) |
-| Mensagem IA | bolha | Markdown, pode conter cards interativos (ex: "Aceitar esqueleto proposto?") |
-| Mensagem user | bolha | Texto ou transcrição de áudio |
-| Input | campo texto | Placeholder: "Descreva seu questionário ou peça uma mudança..." |
-| Botão 🎤 | btn ícone | Grava áudio do criador → transcreve → envia como texto |
-| Spinner "Pensando..." | indicador | Enquanto IA processa |
+#### 2.3.2 "Nova pergunta" (final da lista)
 
-### 2.3 Canvas / Preview (coluna direita)
+- **Tipo:** área de placeholder
+- **Interação:** clique → dropdown com tipos de pergunta → cria card
 
-| Elemento | Tipo | Detalhes |
-|---|---|---|
-| Lista de perguntas | coluna vertical | Ordem editável por drag & drop |
-| Card de pergunta | card | Número, tipo (ícone), texto da pergunta |
-| ↳ Ícone do tipo | ícone à esquerda | 📝 texto, ☑️ múltipla, 🎤 áudio, ⭐ escala, 📎 upload |
-| ↳ Preview da resposta | mock | Mostra como o respondente verá (input, opções, gravador) |
-| ↳ Handle de arraste | ícone ≡ | Reordenar pergunta |
-| ↳ Botão ⋮ | menu contextual | Editar, duplicar, excluir |
-| Botão "+ Adicionar pergunta" | btn outline | Insere nova pergunta no final |
-| Seletor de tema | dropdown | Escolhe tema visual do questionário |
-| Indicador de progresso | barra | "5/10 perguntas" |
+#### 2.3.3 Barra de Ações do Esqueleto
 
-### 2.4 Painel de Propriedades (coluna direita, condicional)
+| Ação | Descrição |
+|---|---|
+| **+ Nova pergunta** | Adiciona card ao final |
+| **🔄 Refinar com assistente** | Volta a conversar com o sistema sobre ajustes pontuais |
+| **[Editar como texto]** | Abre visão textual do esqueleto para edição rápida |
 
-Aparece quando uma pergunta está selecionada no canvas:
+### 2.4 Edição Textual do Esqueleto (Fase 3b)
 
-| Elemento | Tipo | Detalhes |
-|---|---|---|
-| Tipo de pergunta | select | 📝 Texto curto, 📄 Parágrafo, ☑️ Múltipla escolha, 🎤 Áudio, ⭐ Escala, 📎 Upload |
-| Texto da pergunta | textarea | Editável |
-| Obrigatória | toggle | Sim / Não |
-| Placeholder | input | Texto de ajuda para o respondente |
-| **Opções (se múltipla escolha)** | lista editável | Adicionar/remover/editar opções |
-| **Labels da escala (se escala)** | 2 inputs | Label mínimo + Label máximo |
-| **Máx. caracteres (se texto)** | number | Limite de caracteres |
-| **Formatos aceitos (se upload)** | checkboxes | PDF, imagem, DOCX |
-| Agente de follow-up | toggle | Ativar/desativar aprofundamento de resposta |
+- **Tipo:** painel toggle — editável como texto puro
+- **Acionamento:** botão "[Editar como texto]" no topo do esqueleto visual
+- **Conteúdo/Dados:**
+  - Textarea com o esqueleto em formato legível/estruturado
+  - Exemplo:
 
-### 2.5 Modal de Publicação
+```
+1. Qual é o seu nome?
+   tipo: texto curto
+   obrigatória: sim
 
-| Elemento | Tipo | Detalhes |
-|---|---|---|
-| Link público | input readonly + btn copiar | `https://formly.app/s/abc123` |
-| QR code | imagem | Gerado automaticamente |
-| Preview do questionário | iframe/thumbnail | Miniatura de como ficou |
-| Aba "Distribuir" | tab | Lista de contatos + envio |
-| Lista de contatos | tabela/lista | Nome, e-mail/telefone, checkbox selecionar |
-| Campo de busca | input | Filtrar contatos |
-| Botão "Enviar por e-mail" | btn | Dispara envio (Fase 3) |
-| Botão "Enviar por WhatsApp" | btn | Abre WhatsApp Web com link (Fase 3) |
-| Botão "Copiar link" | btn outline | Copia para clipboard |
+2. Como você avalia o atendimento?
+   tipo: múltipla escolha
+   opções: Ótimo, Bom, Regular, Ruim
+   obrigatória: sim
 
-### 2.6 Gerenciador de Contatos (seção do criador)
+3. Deixe um depoimento em áudio:
+   tipo: áudio
+   obrigatória: não
+```
 
-| Elemento | Tipo | Detalhes |
-|---|---|---|
-| Lista de contatos | tabela | Nome, e-mail, telefone, total de pesquisas respondidas |
-| Adicionar contato | btn + modal | Nome, e-mail, telefone |
-| Importar CSV | btn upload | Upload de lista de contatos |
-| Grupos | tags | Organizar contatos em grupos (ex: "Clientes", "Equipe") |
+- **Interações:**
+  - Editar texto livremente
+  - Clicar "Aplicar alterações" → re-parse e atualiza cards visuais
+  - Clicar "Cancelar" → descarta alterações textuais
+  - Pode ser usado **antes** da primeira geração visual (sistema entrega o texto, usuário edita, depois gera os cards)
+  - Pode ser usado **depois** (a qualquer momento para edições rápidas)
+- **Estados visuais:**
+  - Fechado: só botão "[Editar como texto]"
+  - Aberto: textarea ocupa o espaço do esqueleto visual, botões Aplicar/Cancelar
+
+### 2.5 Chat de Ajuste (Fase 3c)
+
+- **Tipo:** thread de chat reaberta para ajustes
+- **Acionamento:** botão "🔄 Refinar com assistente"
+- **Contexto:** o assistente já sabe o esqueleto atual
+- **Interações:**
+  - "Troca a pergunta 2 por uma de múltipla escolha"
+  - "Adiciona uma pergunta de NPS no final"
+  - "A pergunta 3 ficou muito longa, resume"
+  - Sistema aplica as mudanças diretamente nos cards visuais
+
+### 2.6 Preview
+
+- **Tipo:** toggle visual (desktop + mobile)
+- **Posição:** acessível via botão na barra inferior
+- **Conteúdo/Dados:** simulação fiel de como o questionário aparece para o respondente
+- **Interações:** navegar entre perguntas, testar validações
+
+### 2.7 Barra Inferior (ações globais)
+
+| Ação | Descrição |
+|---|---|
+| 🎨 **Personalizar** | Cores, logo, textos de abertura/encerramento |
+| 👁 **Preview** | Visualização completa (desktop + mobile) |
+| 💾 **Salvar** | Salva rascunho |
+| 🚀 **Publicar** | Gera link público |
 
 ---
 
-## 3. Fluxos de Processo
+## 3. Fluxo de Processo (completo)
 
-### 3.1 Fluxo completo de criação (4 passos + publicação)
-
-```
-┌─────────────────────────────────────────────────────────┐
-│ PASSO 1: INPUT                                          │
-│ ─────────────                                           │
-│ Usuário digita ou fala no chat:                         │
-│ "Preciso de uma pesquisa de satisfação pós-evento       │
-│  com 8 perguntas, público corporativo"                  │
-│                                                         │
-│ Interação: CONVERSA (chat)                              │
-└─────────────────────────────────────────────────────────┘
-                        ↓
-┌─────────────────────────────────────────────────────────┐
-│ PASSO 2: REFINAMENTO                                    │
-│ ─────────────────────                                   │
-│ IA responde com 1-2 perguntas de afinação:              │
-│ "Certo! Algumas perguntas:                              │
-│  1. Quer incluir áudio como opção de resposta?          │
-│  2. Prefere escala 1-5 ou 1-10?"                        │
-│                                                         │
-│ Usuário responde no chat                                │
-│ Interação: CONVERSA (chat)                              │
-└─────────────────────────────────────────────────────────┘
-                        ↓
-┌─────────────────────────────────────────────────────────┐
-│ PASSO 3: GERAÇÃO                                        │
-│ ─────────────────                                       │
-│ IA monta esqueleto e exibe no canvas:                   │
-│                                                         │
-│  1. 📝 Nome completo (texto curto)                      │
-│  2. 📝 Empresa (texto curto)                            │
-│  3. ⭐ Satisfação geral (escala 1-5)                    │
-│  4. ⭐ Organização (escala 1-5)                         │
-│  5. ⭐ Conteúdo (escala 1-5)                            │
-│  6. ☑️ O que mais gostou? (múltipla escolha)            │
-│  7. 📄 Sugestões de melhoria (parágrafo)                │
-│  8. 🎤 Comentário livre (áudio)                         │
-│                                                         │
-│ Interação: VISUAL (canvas) — IA gerou, usuário vê       │
-└─────────────────────────────────────────────────────────┘
-                        ↓
-┌─────────────────────────────────────────────────────────┐
-│ PASSO 4: AJUSTE                                         │
-│ ───────────────                                         │
-│ 3 formas de interação COEXISTINDO:                      │
-│                                                         │
-│ A) CONVERSA: "Troca a pergunta 6 por escala"            │
-│    → IA processa, canvas atualiza                       │
-│                                                         │
-│ B) EDIÇÃO DIRETA: Clica no texto da pergunta 1          │
-│    → Edita inline, muda placeholder                     │
-│                                                         │
-│ C) DRAG & DROP: Arrasta pergunta 8 para posição 3       │
-│    → Reordena instantaneamente                          │
-│                                                         │
-│ D) PAINEL DE PROPRIEDADES: Clica na pergunta 3          │
-│    → Abre painel direito, muda tipo, obrigatoriedade    │
-└─────────────────────────────────────────────────────────┘
-                        ↓
-┌─────────────────────────────────────────────────────────┐
-│ PASSO 5: PUBLICAÇÃO                                     │
-│ ──────────────────                                      │
-│ Usuário clica "Publicar"                                │
-│ → Sistema valida: todas as perguntas têm texto?         │
-│ → Gera link único: formly.app/s/abc123                  │
-│ → Gera QR code                                          │
-│ → Página web renderiza com design system + componentes  │
-│ → Todos os componentes já ligados na API                │
-│   (POST /api/responses/:surveyId)                       │
-│                                                         │
-│ Modal de publicação abre com:                           │
-│  • Link copiável                                        │
-│  • QR code                                              │
-│  • Preview em thumbnail                                 │
-└─────────────────────────────────────────────────────────┘
-                        ↓
-┌─────────────────────────────────────────────────────────┐
-│ PASSO 6: DISTRIBUIÇÃO                                   │
-│ ─────────────────────                                   │
-│ Da modal de publicação, usuário pode:                   │
-│                                                         │
-│ V1:                                                     │
-│  • Copiar link (colar onde quiser)                      │
-│  • Baixar QR code (imprimir, postar)                    │
-│                                                         │
-│ FASE 3:                                                 │
-│  • Selecionar contatos da lista                         │
-│  • Enviar por e-mail (template com link)                │
-│  • Enviar por WhatsApp (link direto)                    │
-│  • Agendar follow-up (reenviar para quem não respondeu) │
-└─────────────────────────────────────────────────────────┘
-```
-
-### 3.2 Edição de questionário já publicado
+### Etapa 1: Input
 
 ```
-1. Criador acessa questionário publicado no dashboard
-2. Clica "Editar" → volta ao builder
-3. Alterações são salvas como rascunho
-4. Clica "Publicar alterações" → atualiza link público
-5. Respostas já coletadas não são afetadas
+1. Usuário chega no criador (em branco)
+   → Vê uma caixa de texto grande, convidativa
+
+2. Usuário digita ou dita:
+   "Preciso de um questionário de NPS para uma academia,
+    umas 5 perguntas, incluindo uma de áudio para depoimento"
+   
+   → Clica [Enviar] ou 🎤 grava e envia
+```
+
+### Etapa 2: Refinamento (1-2 rounds)
+
+```
+3. Sistema processa o input e responde:
+   "Entendi! Algumas perguntas rápidas:
+    • O questionário é para alunos ou ex-alunos?
+    • Quer uma escala de 0-10 na pergunta de NPS?
+    • Alguma pergunta demográfica (idade, gênero)?"
+
+4. Usuário responde:
+   "Alunos atuais. Sim, escala 0-10. Não precisa demográfico."
+   
+   → (Opcional: sistema faz mais 1 pergunta se necessário)
+
+5. Sistema: "Perfeito! Gerando o esqueleto..."
+```
+
+### Etapa 3: Geração + Ajuste
+
+```
+6. Esqueleto aparece como cards visuais:
+
+   ┌─ ⋮⋮ ────────────────────────────────────────┐
+   │ 1. [Múltipla escolha ▾] NPS: Recomendaria?  │
+   │    0 1 2 3 4 5 6 7 8 9 10    [Obrigatória ✓] │
+   └──────────────────────────────────────────────┘
+   ┌─ ⋮⋮ ────────────────────────────────────────┐
+   │ 2. [Texto curto ▾] O que mais gosta?         │
+   └──────────────────────────────────────────────┘
+   ┌─ ⋮⋮ ────────────────────────────────────────┐
+   │ 3. [Texto longo ▾] O que pode melhorar?      │
+   └──────────────────────────────────────────────┘
+   ┌─ ⋮⋮ ────────────────────────────────────────┐
+   │ 4. [Múltipla escolha ▾] Frequência semanal   │
+   │    ○ 1-2x  ○ 3-4x  ○ 5x+     [Obrigatória ✓] │
+   └──────────────────────────────────────────────┘
+   ┌─ ⋮⋮ ────────────────────────────────────────┐
+   │ 5. [Áudio ▾] Deixe um depoimento  [Opcional] │
+   └──────────────────────────────────────────────┘
+
+7. Usuário ajusta:
+   
+   Forma A — Manipulação direta:
+   • Arrasta ⋮⋮ da pergunta 5 para posição 1 (áudio primeiro)
+   • Clica no título da pergunta 2, edita: "O que você mais gosta na academia?"
+   • Muda tipo da pergunta 3 de "Texto longo" para "Áudio"
+   
+   Forma B — Edição textual:
+   • Clica "[Editar como texto]"
+   • Vê o esqueleto em formato texto
+   • Troca "Texto longo" por "Áudio" na pergunta 3
+   • Adiciona uma opção na pergunta 4
+   • Clica "Aplicar alterações" → cards atualizam
+   
+   Forma C — Chat de ajuste:
+   • Clica "🔄 Refinar com assistente"
+   • "Troca a pergunta 4 para ser sobre horários preferidos"
+   • Sistema atualiza os cards
+
+8. Usuário satisfeito → clica [💾 Salvar] ou [🚀 Publicar]
 ```
 
 ---
 
 ## 4. Regras de Negócio
 
-### Comportamento do chat
+### Fluxo único (não são modos separados)
 
-- IA tem contexto do questionário inteiro (memória da conversa)
-- IA pode propor cards interativos: "Aceitar esqueleto?", "Qual tema prefere?"
-- IA NÃO edita diretamente — sempre propõe, usuário confirma
-- Chat e canvas são bidirecionais: mudar no canvas atualiza contexto do chat, e vice-versa
+- As 3 formas de interagir **coexistem** na mesma tela
+- O usuário **não escolhe** um modo — ele flui entre as formas conforme a necessidade
+- O estado é **compartilhado**: editar no texto reflete nos cards, arrastar cards reflete no texto
+- O chat de refinamento (etapa 2) é **obrigatório na primeira criação**, opcional depois
 
-### Comportamento do canvas
+### Ordem das etapas
 
-- Sempre mostra o estado real do questionário
-- Drag & drop para reordenar
-- Clique em pergunta → painel de propriedades abre
-- Preview inline de cada tipo de resposta
-- Preview em tempo real das mudanças do chat
-- Indicador visual quando IA está sugerindo alteração (borda pulsante na pergunta afetada)
+```
+ETAPA 1: INPUT
+  → Usuário descreve (texto ou voz)
 
-### Tipos de pergunta e seus controles
+ETAPA 2: REFINAMENTO
+  → Sistema pergunta (1-2 rounds)
+  → Usuário pode pular ("Gerar esqueleto")
 
-| Tipo | Controles no painel de propriedades |
+ETAPA 3: GERAÇÃO
+  → Sistema propõe esqueleto visual
+
+ETAPA 4: AJUSTE (loop)
+  → Usuário manipula (arrasta, edita inline)
+  → OU edita como texto
+  → OU conversa com assistente
+  → Pode alternar entre as 3 formas livremente
+
+ETAPA 5: PUBLICAÇÃO
+  → Salvar + Publicar
+```
+
+### Edição textual — regras
+
+- Disponível **antes** da geração visual (sistema pode entregar o texto primeiro, usuário edita, depois gera os cards)
+- Disponível **depois** (toggle a qualquer momento)
+- Sintaxe clara e legível (não é código — é texto estruturado simples)
+- Parse reverso: cards visuais → texto é sempre possível
+
+### Tipos de pergunta
+
+| Tipo | Componente de resposta |
 |---|---|
-| 📝 Texto curto | Placeholder, máx. caracteres, obrigatória |
-| 📄 Parágrafo | Placeholder, máx. caracteres, obrigatória |
-| ☑️ Múltipla escolha | Opções (add/remove/edit), seleção única ou múltipla, obrigatória |
-| 🎤 Áudio | Duração máx. (30s/60s/120s), obrigatória, follow-up |
-| ⭐ Escala | Mín 1–Máx 10, labels dos extremos, obrigatória |
-| 📎 Upload | Formatos aceitos (checkbox), tamanho máx., obrigatória |
+| Texto curto | `<input text>` |
+| Texto longo | `<textarea>` |
+| Múltipla escolha (única) | Radio buttons |
+| Múltipla escolha (múltipla) | Checkboxes |
+| Áudio | Gravador de voz |
+| Upload de documento | File input (PDF, imagem) |
 
-### Temas
+### Perguntas
 
-- 3-4 temas pré-construídos na Fase 1
-- Cada tema define: cores, tipografia, espaçamento, bordas, tom
-- Brand kit: logo + cor primária do criador (sobrescreve tema)
-- Preview mostra tema selecionado
+- Máximo por questionário: 50 (Free), 200 (Pro), ilimitado (Business)
+- Toda pergunta tem: título, tipo, obrigatoriedade (toggle)
+- Objetivo do assistente na etapa 2: chegar a 80%+ de completude antes de gerar o esqueleto
 
 ---
 
 ## 5. Integrações
 
-| Elemento | Integração | Status |
+| Integração | Descrição | Status |
 |---|---|---|
-| Chat IA | LLM (Groq/OCI) com prompt de sistema + histórico | A construir |
-| Transcrição de voz (criador) | Groq Whisper | A construir |
-| Geração de esqueleto | LLM com output estruturado (JSON schema das perguntas) | A construir |
-| Salvar questionário | POST/PUT /api/surveys | A construir |
-| Publicar | POST /api/surveys/:id/publish → retorna link | A construir |
-| Upload de áudio (criador) | S3 presigned URL | A construir |
-| Envio de e-mail | Resend / SES | Fase 3 |
-| Envio WhatsApp | WhatsApp Business API | Fase 3 |
+| **LLM (OCI/Groq)** | Assistente de refinamento + geração de esqueleto | 🔴 |
+| **STT (Groq Whisper)** | Transcrição do input de voz na etapa 1 | 🔴 |
+| **Backend Formly** | Salvar questionário, gerar link | 🔴 |
 
 ---
 
 ## 6. Cenários de Teste
 
-### Passo 1 — Input
-- [ ] Digitar descrição da pesquisa → IA responde em < 5s
-- [ ] Gravar áudio com descrição → transcrito → IA responde
-- [ ] Descrição vazia → IA pede mais detalhes
-- [ ] Descrição muito vaga ("faz uma pesquisa") → IA faz perguntas de refinamento
+### Fluxo completo feliz
 
-### Passo 2 — Refinamento
-- [ ] IA pergunta sobre incluir áudio → usuário diz sim → esqueleto inclui pergunta de áudio
-- [ ] IA pergunta sobre escala → usuário escolhe 1-5 → esqueleto usa 1-5
-- [ ] Usuário responde "não sei" → IA escolhe default razoável
+- [ ] Etapa 1: Usuário digita descrição → sistema entende
+- [ ] Etapa 1: Usuário dita descrição → transcrito corretamente
+- [ ] Etapa 2: Sistema faz perguntas pertinentes (1-2 rounds)
+- [ ] Etapa 2: Usuário responde → sistema refina entendimento
+- [ ] Etapa 2: Usuário pula refinamento → vai direto para geração
+- [ ] Etapa 3: Sistema gera esqueleto com tipos corretos de pergunta
+- [ ] Etapa 4: Arrastar ⋮⋮ reordena cards
+- [ ] Etapa 4: Clicar título → edita inline
+- [ ] Etapa 4: Mudar tipo via dropdown → card se adapta
+- [ ] Etapa 4: Adicionar opção em múltipla escolha
+- [ ] Etapa 5: Salvar persiste, Publicar gera link
 
-### Passo 3 — Geração
-- [ ] Esqueleto aparece no canvas em < 10s
-- [ ] Tipos de pergunta são variados (não tudo igual)
-- [ ] Número de perguntas corresponde ao pedido
-- [ ] Preview de cada tipo renderiza corretamente
+### Edição textual
 
-### Passo 4 — Ajuste
-- [ ] Comando no chat "troca pergunta 3 por áudio" → canvas atualiza tipo
-- [ ] Comando no chat "remove pergunta 5" → pergunta some do canvas
-- [ ] Comando no chat "adiciona pergunta de texto no final" → nova pergunta aparece
-- [ ] Edição direta: clicar no texto → editar → salvar
-- [ ] Drag & drop: arrastar pergunta → reordenar → salvar
-- [ ] Painel de propriedades: mudar tipo, opções, obrigatoriedade
-- [ ] Alteração no chat + alteração direta simultâneas → sem conflito
+- [ ] Abrir "[Editar como texto]" → vê esqueleto formatado
+- [ ] Editar texto → "Aplicar alterações" → cards atualizam
+- [ ] Cards visuais → texto sempre consistente (ida e volta)
+- [ ] Cancelar edição textual → cards voltam ao estado anterior
+- [ ] Usar edição textual ANTES da geração visual → mesma experiência
 
-### Passo 5 — Publicação
-- [ ] Clicar Publicar → questionário validado
-- [ ] Questionário sem perguntas → erro "Adicione pelo menos 1 pergunta"
-- [ ] Pergunta sem texto → erro "Todas as perguntas precisam de texto"
-- [ ] Link gerado → copiável → funcional
-- [ ] QR code gerado → escaneável
-- [ ] Página pública renderiza com tema correto
-- [ ] Componentes respondem (POST funciona)
+### Chat de ajuste
 
-### Passo 6 — Distribuição
-- [ ] Copiar link → cola no navegador → questionário abre
-- [ ] Selecionar contatos → enviar e-mail → e-mail chega com link (Fase 3)
-- [ ] WhatsApp → abre com link preenchido (Fase 3)
+- [ ] "🔄 Refinar com assistente" com esqueleto existente → assistente contextualizado
+- [ ] "Troca a pergunta X por tipo Y" → sistema aplica
+- [ ] "Adiciona pergunta sobre Z" → sistema adiciona
+- [ ] Chat mantém histórico da conversa inicial
 
-### Edge cases
-- [ ] Criador fecha browser durante edição → rascunho salvo
-- [ ] Dois criadores editando mesmo questionário → ? (v1: último salva ganha)
-- [ ] Questionário publicado é editado → link permanece mesmo, conteúdo atualiza
+### Cross-interação
+
+- [ ] Editar no texto → cards atualizam em tempo real
+- [ ] Arrastar cards → texto atualiza se aberto
+- [ ] Chat altera pergunta → card atualiza
+- [ ] Voltar ao chat depois de editar cards → assistente sabe o estado atual

@@ -1,186 +1,196 @@
 # 📊 Página 03 — Dashboard de Resultados
 
+> **Status:** ⚠️ Aspiracional — sem código ainda. Baseado no Google Doc + input do Lucas (2026-07-30)
 > **Template:** 6 seções (visão geral, elementos UI, fluxos, regras, integrações, testes)
 
 ---
 
 ## 1. Visão Geral
 
-Dashboard onde o criador visualiza as respostas coletadas. Exibe dados agregados por pergunta, permite filtrar e exportar. Na Fase 4, inclui relatórios de IA com insights automáticos.
+Tela onde o criador do questionário **visualiza as respostas agregadas**. Oferece cards de resumo, gráficos por pergunta, filtros por período, e exportação.
 
 ### Layout
 
 ```
-┌──────────────────────────────────────────────────────────┐
-│ ← Meus Questionários    Pesquisa de Satisfação           │
-│ 12 respostas · Publicado há 3 dias                       │
-├──────────────────────────────────────────────────────────┤
-│ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────┐ │
-│ │ 12       │ │ 85%      │ │ 4.2/5    │ │ 3:42         │ │
-│ │ Respostas│ │ Conclusão│ │ Nota média│ │ Tempo médio  │ │
-│ └──────────┘ └──────────┘ └──────────┘ └──────────────┘ │
-├──────────────────────────────────────────────────────────┤
-│ Filtros: [Período ▾] [Pergunta ▾]   [Exportar CSV ▾]    │
-├──────────────────────────────────────────────────────────┤
-│                                                          │
-│  1. ⭐ Satisfação geral                                  │
-│  ┌──────────────────────────────────────────────────┐    │
-│  │ 5 ★★★★★   ████████████████████████  8 (67%)     │    │
-│  │ 4 ★★★★    ████████                  3 (25%)     │    │
-│  │ 3 ★★★     ██                        1 (8%)      │    │
-│  │ 2 ★★      │                         0           │    │
-│  │ 1 ★       │                         0           │    │
-│  └──────────────────────────────────────────────────┘    │
-│                                                          │
-│  2. 📄 Sugestões de melhoria                             │
-│  ┌──────────────────────────────────────────────────┐    │
-│  │ "Mais opções de comida vegana" — 3 menções  🔗    │    │
-│  │ "Ar condicionado muito forte" — 2 menções   🔗   │    │
-│  │ "Excelente organização" — 1 menção           🔗   │    │
-│  └──────────────────────────────────────────────────┘    │
-│                                                          │
-│  3. 🎤 Comentário livre (áudio)                          │
-│  ┌──────────────────────────────────────────────────┐    │
-│  │ 🎤 Transcrição 1 — 0:42                     ▶    │    │
-│  │ "Achei o evento muito bem organizado..."          │    │
-│  │ 🎤 Transcrição 2 — 1:15                     ▶    │    │
-│  │ "Sugiro que na próxima tenham mais..."            │    │
-│  └──────────────────────────────────────────────────┘    │
-│                                                          │
-└──────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│  ← Voltar   |   Resultados: Satisfação Clínica               │
+│             |   [7 dias ▾] [Filtrar] [📥 Exportar ▾]         │
+├──────────────────────────────────────────────────────────────┤
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐        │
+│  │ 243      │ │ 87%      │ │ 12       │ │ 4.2/5    │        │
+│  │ Respostas│ │ Taxa de  │ │ Áudios   │ │ Satisfação│        │
+│  │          │ │ conclusão│ │ gravados │ │ média     │        │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘        │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌─────────────────────────────────┐ ┌──────────────────────┐│
+│  │ 1. Como avalia o atendimento?  │ │ 2. Tempo de espera?  ││
+│  │                                 │ │                      ││
+│  │ ████████████░░░░ 65% Ótimo     │ │ ████████░░░░ 52% Sim ││
+│  │ ██████░░░░░░░░░ 25% Bom        │ │ ██████░░░░░░ 35% Não ││
+│  │ ██░░░░░░░░░░░░░ 8% Regular     │ │ ██░░░░░░░░░░ 13% Melh││
+│  │ █░░░░░░░░░░░░░░ 2% Ruim        │ │                      ││
+│  └─────────────────────────────────┘ └──────────────────────┘│
+│                                                              │
+│  ┌──────────────────────────────────────────────────────────┐│
+│  │ 3. Depoimento em áudio (12 respostas)                    ││
+│  │ ┌──────────────────────────────────────────────────────┐ ││
+│  │ │ "Fui muito bem atendido..." — 15/07  [▶️ ouvir]     │ ││
+│  │ │ "A recepcionista foi ótima..." — 15/07  [▶️ ouvir]  │ ││
+│  │ │ "Demorou um pouco mas..."    — 14/07  [▶️ ouvir]    │ ││
+│  │ └──────────────────────────────────────────────────────┘ ││
+│  └──────────────────────────────────────────────────────────┘│
+│                                                              │
+│  ┌──────────────────────────────────────────────────────────┐│
+│  │ 📥 Exportar                                              ││
+│  │ [CSV] [PDF]                                              ││
+│  └──────────────────────────────────────────────────────────┘│
+└──────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
 ## 2. Estrutura de Elementos
 
-### 2.1 Header
+### 2.1 Header do Dashboard
 
-| Elemento | Tipo | Detalhes |
+| Elemento | Tipo | Descrição |
 |---|---|---|
-| Breadcrumb | link | ← Meus Questionários |
-| Título | texto | Nome da pesquisa |
-| Meta | texto | "12 respostas · Publicado há 3 dias" |
-| Status | badge | Ativo (verde) / Pausado (amarelo) / Encerrado (cinza) |
-| Botão Editar | btn outline | Volta ao builder |
-| Botão Pausar/Reabrir | btn | Pausa coleta de respostas |
-| Botão Compartilhar | btn outline | Abre modal de link/QR code |
+| Breadcrumb | link | "← Meus questionários" |
+| Título | heading | nome do questionário |
+| Status | badge | "Ativo" (verde), "Pausado" (amarelo), "Encerrado" (cinza) |
+| Link público | cópia rápida | URL + botão copiar |
+| Período | dropdown | "7 dias", "30 dias", "90 dias", "Tudo" |
+| Exportar | dropdown btn | CSV, PDF |
 
-### 2.2 Cards de Métricas (KPI row)
+### 2.2 Cards de Resumo (KPI)
+
+- **Tipo:** 4 cards lado a lado
+- **Posição:** topo, abaixo do header
+- **Conteúdo/Dados:**
 
 | Card | Métrica | Cálculo |
 |---|---|---|
-| Respostas | Total | Contagem de submissões completas |
-| Conclusão | % | Respostas completas / (completas + parciais) |
-| Nota média | Número | Média das perguntas de escala (se houver) |
-| Tempo médio | Minutos | Tempo mediano de resposta |
+| Respostas | número total | count(responses) |
+| Taxa de conclusão | % | completas / iniciadas × 100 |
+| Áudios gravados | número | count(responses com áudio) |
+| Nota média | X/Y | média da pergunta de escala (se houver) |
 
-### 2.3 Filtros
+- **Interações:** clique no card → filtra ou expande detalhes
+- **Estados visuais:** cards brancos com sombra sutil, número grande + label pequeno
 
-| Elemento | Tipo | Detalhes |
+### 2.3 Gráficos por Pergunta
+
+Para cada pergunta do questionário, um card com visualização adequada ao tipo:
+
+| Tipo de pergunta | Visualização |
+|---|---|
+| Múltipla escolha | **Barra horizontal** — barras coloridas com % e contagem |
+| Texto curto | **Lista de respostas** — scroll com as respostas mais recentes |
+| Texto longo | **Lista de respostas** — truncada com "Ver mais", expandível |
+| Áudio | **Lista de cards** — transcrição + player de áudio |
+
+#### Card de pergunta (múltipla escolha)
+
+```
+┌──────────────────────────────────────────┐
+│ 1. Como avalia o atendimento?            │
+│                                          │
+│ Ótimo     ████████████████ 65%  (158)   │
+│ Bom       ██████░░░░░░░░░░░ 25%  (61)   │
+│ Regular   ██░░░░░░░░░░░░░░░ 8%   (19)   │
+│ Ruim      █░░░░░░░░░░░░░░░░ 2%   (5)    │
+│                                          │
+│ Total: 243 respostas                     │
+└──────────────────────────────────────────┘
+```
+
+#### Card de pergunta (áudio)
+
+```
+┌──────────────────────────────────────────┐
+│ 3. Deixe um depoimento em áudio   (12)   │
+│                                          │
+│ ┌──────────────────────────────────────┐ │
+│ │ "Fui muito bem atendido pela equipe" │ │
+│ │ 15/07/2026 — 0:32  [▶️ ouvir]      │ │
+│ └──────────────────────────────────────┘ │
+│ ┌──────────────────────────────────────┐ │
+│ │ "A recepcionista foi ótima..."       │ │
+│ │ 15/07/2026 — 0:18  [▶️ ouvir]      │ │
+│ └──────────────────────────────────────┘ │
+│ ...                                      │
+│                          [Ver todos →]   │
+└──────────────────────────────────────────┘
+```
+
+### 2.4 Player de Áudio (inline)
+
+| Elemento | Tipo | Descrição |
 |---|---|---|
-| Período | date range picker | "Últimos 7 dias", "30 dias", "Tudo", personalizado |
-| Pergunta | select | "Todas as perguntas" ou específica |
-| Status da resposta | select | "Completas", "Parciais", "Todas" |
-| Exportar | dropdown btn | CSV, PDF, Excel |
+| Botão Play/Pause | ▶️/⏸️ | mini player inline |
+| Timeline | barra de progresso | arrastável |
+| Duração | texto | "0:32" |
+| Transcrição | texto | abaixo do player, colapsável |
 
-### 2.4 Visualizações por tipo de pergunta
+### 2.5 Exportação
 
-**⭐ Escala (gráfico de barras horizontais):**
-| Elemento | Tipo | Detalhes |
+| Elemento | Tipo | Descrição |
 |---|---|---|
-| Barra de distribuição | bar chart | Uma linha por valor da escala |
-| Barra | div com width % | Cor gradiente (1=vermelho → 5=verde) |
-| Contagem | número | Total de respostas por valor |
-| Porcentagem | % | Ex: "8 (67%)" |
-
-**☑️ Múltipla escolha (gráfico de barras):**
-| Elemento | Tipo | Detalhes |
-|---|---|---|
-| Barra por opção | bar chart | Uma linha por opção |
-| Barra | div com width % | Cor do tema |
-| Contagem | número + % | Ex: "15 (63%)" |
-
-**📝 Texto curto / 📄 Parágrafo (nuvem de temas):**
-| Elemento | Tipo | Detalhes |
-|---|---|---|
-| Tema/tópico | chip/tag | Agrupamento automático (IA) |
-| Contagem | badge | "3 menções" |
-| Link | btn 🔗 | "Ver todas as respostas" → expande lista |
-| Lista completa | expansível | Mostra todas as respostas individuais |
-
-**🎤 Áudio (lista de transcrições):**
-| Elemento | Tipo | Detalhes |
-|---|---|---|
-| Item da lista | card | Ícone 🎤 + duração + transcrição + player ▶ |
-| Player de áudio | controle | Ouvir áudio original |
-| Transcrição | texto | Texto completo da transcrição |
-| Expandir | btn | Ver transcrição completa se truncada |
-
-**📎 Upload (galeria de arquivos):**
-| Elemento | Tipo | Detalhes |
-|---|---|---|
-| Grid de arquivos | miniaturas | Preview de imagens, ícones para PDF/DOCX |
-| Nome do arquivo | texto | Nome original |
-| Download | btn | Baixar arquivo original |
-
-### 2.5 Visualização por respondente (linha do tempo)
-
-| Elemento | Tipo | Detalhes |
-|---|---|---|
-| Lista de respondentes | tabela/lista | Um por linha |
-| Row do respondente | expansível | ID anônimo + data/hora + duração |
-| Expandir | painel | Mostra todas as respostas daquele respondente |
-
-### 2.6 Exportação
-
-| Elemento | Tipo | Detalhes |
-|---|---|---|
-| Dropdown Exportar | btn + menu | CSV, PDF, Excel |
-| Modal de exportação | modal | Opções: incluir transcrições, incluir áudios, período |
-| Download | btn | Gera e baixa arquivo |
+| Botão CSV | btn | download de todas as respostas em CSV |
+| Botão PDF | btn | gera relatório resumido em PDF |
+| Loading | spinner | "Gerando arquivo..." durante processamento |
+| Sucesso | toast | "Download iniciado" |
 
 ---
 
 ## 3. Fluxos de Processo
 
-### 3.1 Acessar dashboard
+### 3.1 Visualizar resultados
 
 ```
-1. Criador acessa "Meus Questionários"
-2. Clica na pesquisa → dashboard abre
-3. Cards de métricas carregam
-4. Visualizações por pergunta renderizam
+1. Criador clica em "Ver resultados" na lista de questionários
+   → Dashboard carrega com período padrão "7 dias"
+
+2. Vê cards de resumo no topo
+   → 243 respostas, 87% conclusão, 12 áudios, 4.2/5
+
+3. Scrolla para ver gráficos por pergunta
+   → Cada pergunta tem seu card com visualização adequada
+
+4. Clica no player de áudio ▶️
+   → Áudio toca inline, transcrição visível abaixo
+
+5. Altera período para "30 dias"
+   → Todos os dados recalculam para o novo período
 ```
 
-### 3.2 Filtrar resultados
+### 3.2 Exportar dados
 
 ```
-1. Criador seleciona período "Últimos 7 dias"
-   → Todas as visualizações se atualizam
-2. Criador seleciona pergunta específica
-   → Dashboard mostra só aquela pergunta
-3. Criador limpa filtros → volta ao padrão (tudo, 30 dias)
+1. Criador clica "📥 Exportar" → escolhe "CSV"
+   → Spinner: "Gerando CSV..."
+   → Download inicia automaticamente
+   → Toast: "Download iniciado — 243 linhas"
+
+2. Criador clica "PDF"
+   → Spinner: "Gerando relatório..."
+   → PDF com gráficos e resumo é baixado
 ```
 
-### 3.3 Exportar
+### 3.3 Filtrar respostas
 
 ```
-1. Criador clica Exportar → CSV
-2. Período selecionado é aplicado ao export
-3. CSV gerado com:
-   - Colunas: ID respondente, data, pergunta, tipo, resposta, transcrição
-4. Download inicia
-```
+1. Criador clica "Filtrar"
+   → Painel lateral ou modal abre com opções:
+     - Data (de/até)
+     - Status (completa/incompleta)
+     - Tem áudio? (sim/não)
 
-### 3.4 Pausar / Reabrir questionário
-
-```
-1. Criador clica "Pausar"
-   → Link público mostra "Pesquisa encerrada"
-   → Respostas já coletadas permanecem
-2. Criador clica "Reabrir"
-   → Link volta a funcionar
+2. Aplica filtros
+   → Dados recalculam
+   → Badge "Filtros ativos: 2" aparece
+   → Botão "Limpar filtros" disponível
 ```
 
 ---
@@ -189,72 +199,79 @@ Dashboard onde o criador visualiza as respostas coletadas. Exibe dados agregados
 
 ### Métricas
 
-- Respostas: só conta submissões completas (chegaram na tela de agradecimento)
-- Conclusão: respostas completas / (completas + parciais)
-- Nota média: calculada sobre perguntas de escala (soma dos valores / total de respostas)
-- Tempo médio: mediana dos tempos de resposta (evita outliers de quem deixou aberto)
-- Parciais: respondentes que começaram mas não enviaram (expira em 7 dias)
+| Métrica | Fórmula | Atualização |
+|---|---|---|
+| Total de respostas | `count(responses)` | near real-time |
+| Taxa de conclusão | `count(complete) / count(started) × 100` | near real-time |
+| Áudios gravados | `count(responses where question.type == 'audio')` | near real-time |
+| Nota média | `avg(value) where question.type == 'scale'` | near real-time |
 
-### Agregação de texto
+### Período
 
-- Fase 1: lista simples de respostas, agrupada manualmente
-- Fase 4: IA categoriza e agrupa temas similares automaticamente
+- **Default:** 7 dias
+- **Opções:** 7, 30, 90 dias, Todo o período
+- **Filtro customizado:** datas livre (de/até)
+
+### Gráficos
+
+- **Múltipla escolha:** sempre mostrar % e contagem absoluta
+- **Ordenação:** por contagem (maior → menor)
+- **Cores:** paleta consistente por opção (ex: Ótimo=verde, Ruim=vermelho)
+- **Sem respostas:** empty state "Nenhuma resposta ainda. Compartilhe o link para começar!"
+
+### Áudios
+
+- **Lista ordenada por:** data (mais recente primeiro)
+- **Limite inicial:** 5 exibidos, "Ver todos" para expandir
+- **Player:** não faz autoplay — sempre requer clique do usuário
+
+### Exportação
+
+- **CSV:** uma linha por resposta, colunas = perguntas, encoding UTF-8 BOM (compatível Excel)
+- **PDF:** capa + cards de resumo + gráficos + tabela de respostas textuais
+- **Limite:** máximo 10.000 linhas no PDF (oferecer CSV para volumes maiores)
 
 ### Privacidade
 
-- Respondentes são anônimos por padrão
-- Criador vê "Respondente #1", "Respondente #2"
-- Se criador adicionou pergunta de identificação (nome, e-mail), esses dados aparecem
-- Dados não são compartilhados entre questionários
-
-### Retenção
-
-- Dados de respostas: retidos enquanto o questionário existir
-- Áudios: armazenados no S3 com política de ciclo de vida (90 dias free, depois archive)
-- Questionário excluído → todos os dados são deletados (GDPR/LGPD)
+- **Dados individuais:** visíveis apenas para o criador (autenticado)
+- **Dados agregados:** podem ser compartilhados (link de resultados públicos — futuro)
+- **Áudios:** accesso restrito via URL assinada (expira em 24h)
 
 ---
 
 ## 5. Integrações
 
-| Elemento | Integração | Status |
+| Integração | Descrição | Status |
 |---|---|---|
-| Carregar métricas | GET /api/surveys/:id/stats | A construir |
-| Carregar respostas | GET /api/surveys/:id/responses?page=&filters= | A construir |
-| Pausar/Reabrir | PATCH /api/surveys/:id/status | A construir |
-| Exportar CSV | GET /api/surveys/:id/export?format=csv | A construir |
-| Download áudios | S3 presigned GET URL | A construir |
-| Análise IA | POST /api/surveys/:id/analyze (Fase 4) | Fase 4 |
+| **Backend Formly** | GET /api/questionnaires/:id/responses | 🔴 não implementado |
+| **S3 / Blob** | URLs assinadas para download de áudio | 🔴 não implementado |
+| **Gerador de PDF** | Puppeteer ou similar para relatório | 🔴 não implementado |
 
 ---
 
 ## 6. Cenários de Teste
 
-### Métricas
-- [ ] 0 respostas → cards mostram 0, 0%, —, —
-- [ ] 12 respostas → cards atualizados corretamente
-- [ ] Resposta parcial → não conta em "Respostas", conta em "Conclusão"
-- [ ] Pergunta de escala → nota média calculada corretamente
+### Visualização
+- [ ] Dashboard carrega com período "7 dias"
+- [ ] Cards de resumo mostram métricas corretas
+- [ ] Gráfico de múltipla escolha: barras coloridas com % e contagem
+- [ ] Lista de áudios: cards com transcrição + player funcional
+- [ ] Mudar período → dados recalculam
+- [ ] Questionário sem respostas → empty states em todos os cards
 
-### Visualizações
-- [ ] Escala: gráfico de barras com distribuição correta
-- [ ] Múltipla escolha: cada opção com contagem e %
-- [ ] Texto/parágrafo: lista de respostas individuais
-- [ ] Áudio: transcrição visível + player funciona
-- [ ] Upload: preview de imagem, download de PDF
-
-### Filtros
-- [ ] Período "Últimos 7 dias" → só mostra respostas dessa janela
-- [ ] Período "30 dias" → amplia janela
-- [ ] Filtrar por pergunta específica → só aquela pergunta aparece
-- [ ] Limpar filtros → volta ao padrão
+### Áudio
+- [ ] Clicar ▶️ no card de áudio → áudio toca
+- [ ] Player mostra duração e timeline interativa
+- [ ] Transcrição visível e correta
+- [ ] "Ver todos" expande lista de áudios
 
 ### Exportação
-- [ ] CSV: colunas corretas, dados completos
-- [ ] CSV: transcrições incluídas quando checkbox marcado
-- [ ] Período selecionado afeta export
+- [ ] Exportar CSV → arquivo baixado com encoding correto (acentos funcionam)
+- [ ] CSV contém todas as perguntas como colunas
+- [ ] Exportar PDF → relatório com capa + gráficos + respostas
+- [ ] Spinner durante geração
 
-### Ações
-- [ ] Pausar → link mostra "Pesquisa encerrada"
-- [ ] Reabrir → link volta a funcionar
-- [ ] Editar → volta ao builder com dados do questionário
+### Filtros
+- [ ] Filtrar por data → dados recalculam
+- [ ] Filtrar por status "completa" → só mostra respostas finalizadas
+- [ ] Limpar filtros → volta ao estado padrão
