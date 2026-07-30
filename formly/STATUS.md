@@ -26,6 +26,8 @@
 |---|---|---|
 | 1 | Múltiplos modos de interação no criador: drag & drop, importação de texto, chat assistido | 2026-07-30 |
 | 2 | Estrutura de requisitos: mesmo modelo do Blue V3 e Context-MCP (6 seções por página) | 2026-07-30 |
+| 3 | Fluxo do criador em 6 etapas (não 3 modos): Input → Refinamento → Geração → Ajuste → Publicação → Distribuição | 2026-07-30 |
+| 4 | Publicação gera página web funcional com componentes ligados na API | 2026-07-30 |
 
 ## 🎯 Próximas ações
 

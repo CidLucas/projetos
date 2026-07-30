@@ -197,7 +197,53 @@ Cada pergunta é um card expansível:
 | 🎨 **Personalizar** | Cores, logo, textos de abertura/encerramento |
 | 👁 **Preview** | Visualização completa (desktop + mobile) |
 | 💾 **Salvar** | Salva rascunho |
-| 🚀 **Publicar** | Gera link público |
+| 🚀 **Publicar** | Gera link público e abre modal de distribuição |
+
+### 2.8 Modal de Publicação e Distribuição
+
+Após clicar "Publicar", o questionário é compilado como página web funcional (todos os componentes renderizados e ligados na API) e um modal aparece com:
+
+#### 2.8.1 Aba "Link"
+
+| Elemento | Tipo | Detalhes |
+|---|---|---|
+| Confirmação | banner verde | "✅ Questionário publicado com sucesso!" |
+| Link público | input readonly + btn copiar | `https://formly.app/s/abc123` |
+| QR code | imagem | Gerado automaticamente, escaneável |
+| Preview thumbnail | miniatura | Como o questionário aparece para o respondente |
+| Botão "Abrir em nova aba" | btn outline | Abre o questionário público |
+
+#### 2.8.2 Aba "Distribuir"
+
+| Elemento | Tipo | Detalhes |
+|---|---|---|
+| Seletor de contatos | lista com checkboxes | Contatos salvos pelo criador |
+| Buscar contatos | input com 🔍 | Filtra por nome, e-mail, grupo |
+| Selecionar todos | checkbox | Marca/desmarca todos |
+| Grupos | chips/tags | Filtrar por grupo (ex: "Clientes", "Equipe") |
+| Botão "Enviar por e-mail" | btn primário | Dispara envio com template (Fase 3) |
+| Botão "Enviar por WhatsApp" | btn verde | Abre WhatsApp Web com link (Fase 3) |
+| Botão "Copiar link" | btn outline | Copia para clipboard |
+| Contador de selecionados | texto | "3 contatos selecionados" |
+
+#### 2.8.3 Gerenciador de Contatos (seção acessível pelo criador)
+
+| Elemento | Tipo | Detalhes |
+|---|---|---|
+| Lista de contatos | tabela | Nome, e-mail, telefone, grupos |
+| Adicionar contato | btn + modal | Nome, e-mail, telefone, grupo |
+| Importar CSV | btn upload | Upload de lista de contatos |
+| Criar grupo | btn + input | "Clientes", "Equipe", "Alunos"... |
+| Editar/Excluir | ações inline | Por contato |
+
+#### 2.8.4 Página publicada (o que o respondente vê)
+
+Ao publicar, o sistema gera uma **página web funcional** onde:
+- O design system escolhido é aplicado (cores, tipografia, espaçamento)
+- Todos os componentes de pergunta renderizam corretamente
+- Os componentes já estão **ligados na API** — prontos para receber respostas
+- A página é responsiva (desktop + mobile)
+- Nenhum build ou deploy é necessário — a publicação é instantânea
 
 ---
 
@@ -310,6 +356,14 @@ ETAPA 4: AJUSTE (loop)
 
 ETAPA 5: PUBLICAÇÃO
   → Salvar + Publicar
+  → Sistema compila questionário como página web funcional
+  → Gera link público + QR code
+  → Abre modal de distribuição
+
+ETAPA 6: DISTRIBUIÇÃO
+  → Criador seleciona contatos (da lista de contatos)
+  → Envia link por e-mail, WhatsApp, ou copia manualmente
+  → (Fase 3) envio direto com template personalizado
 ```
 
 ### Edição textual — regras
@@ -385,3 +439,24 @@ ETAPA 5: PUBLICAÇÃO
 - [ ] Arrastar cards → texto atualiza se aberto
 - [ ] Chat altera pergunta → card atualiza
 - [ ] Voltar ao chat depois de editar cards → assistente sabe o estado atual
+
+### Publicação
+
+- [ ] Clicar Publicar → questionário compilado como página web funcional
+- [ ] Página publicada renderiza todos os componentes corretamente
+- [ ] Componentes na página publicada estão ligados na API (POST funciona)
+- [ ] Link gerado é único e copiável
+- [ ] QR code é gerado e escaneável
+- [ ] Preview thumbnail no modal mostra o questionário real
+- [ ] Modal tem abas: Link | Distribuir
+
+### Distribuição
+
+- [ ] Aba Distribuir mostra lista de contatos com checkboxes
+- [ ] Buscar contatos → filtra por nome/e-mail/grupo
+- [ ] Selecionar todos → marca/desmarca todos
+- [ ] Contador de selecionados atualiza em tempo real
+- [ ] "Copiar link" → copia para clipboard
+- [ ] "Enviar por e-mail" → dispara envio com link (Fase 3)
+- [ ] "Enviar por WhatsApp" → abre WhatsApp Web com link (Fase 3)
+- [ ] Gerenciador de contatos: adicionar, editar, excluir, importar CSV
