@@ -6,7 +6,7 @@
 
 ## Fase 0 — Fundação (semanas 1-3)
 
-**Objetivo:** Provar o conceito com um protótipo funcional mínimo.
+**Objetivo:** Protótipo funcional com transcrição real.
 
 ### 0.1 — Landing + Auth
 - [x] Landing page: "Precisa de um questionário?" + input + áudio
@@ -14,48 +14,45 @@
 - [ ] Lead capture: salva e-mail no Supabase antes de gerar questionário
 
 ### 0.2 — Geração por IA
-- [ ] Endpoint `POST /v1/forms/generate` — recebe prompt (texto ou transcrição), chama LLM, retorna JSON do questionário
+- [ ] Endpoint `POST /v1/forms/generate` — recebe prompt, chama DeepSeek Flash, retorna JSON
 - [ ] Prompt engineering: template que gera questionário com título + perguntas + opções
 - [ ] Fallback: se LLM falhar, retorna template genérico
 
 ### 0.3 — Builder mínimo
-- [ ] Renderizar questionário gerido como lista editável
-- [ ] Tipos suportados na Fase 0: texto curto, texto longo, múltipla escolha (única)
+- [ ] Renderizar questionário gerado como lista editável
+- [ ] Tipos: texto curto, texto longo (+ áudio companion), múltipla escolha (única)
 - [ ] Editar título e descrição
 - [ ] Adicionar/remover/reordenar perguntas
 - [ ] Salvar no Supabase
 
-### 0.4 — Página de resposta pública
-- [ ] Rota pública: `/r/{form_id}` — renderiza o questionário
-- [ ] Submit de respostas (texto)
-- [ ] Confirmação de envio
+### 0.4 — Áudio (transcrição REAL)
+- [ ] Endpoint `POST /v1/audio/transcribe` → Groq Whisper
+- [ ] Gravador de áudio no builder (criador dita prompt)
+- [ ] Gravador de áudio no respondente (companion do texto longo)
+- [ ] Player com waveform + transcrição
 
-### 0.5 — Teste de custo
-- [ ] 100+ transcrições Groq Whisper
-- [ ] Medir custo real por minuto de áudio
-- [ ] Validar viabilidade econômica
+### 0.5 — Página de resposta pública
+- [ ] Rota pública: `/r/{form_id}` — renderiza o questionário
+- [ ] Submit de respostas (texto + áudio)
+- [ ] Respondente anônimo (padrão) ou identificado (e-mail opcional)
+- [ ] Confirmação de envio
+- [ ] Link público + QR code
 
 ### 0.6 — Infra
-- [ ] Serviço `formly` rodando no monorepo (já scaffolded)
-- [ ] Supabase: tabelas `forms`, `questions`, `responses`
-- [ ] DuckDNS: `formly.duckdns.org` → servidor
+- [x] Serviço `formly` scaffolded no monorepo
+- [ ] Supabase: schema completo (forms, questions, responses, answers, contacts, sendings)
+- [x] DuckDNS: `formly.duckdns.org`
 - [ ] Observabilidade bootstrap ativa
 
-**Gate de saída:** Protótipo funcional — criar questionário por IA → editar → publicar → responder.
+**Gate:** Criar questionário por IA → editar → publicar → responder com texto e áudio.
 
 ---
 
 ## Fase 1 — MVP (semanas 4-9)
 
-**Objetivo:** Produto usável com áudio e identidade visual.
+**Objetivo:** Produto completo com todos os tipos de pergunta e envio.
 
-### 1.1 — Áudio como companion
-- [ ] Gravador de áudio no builder (criador dita perguntas)
-- [ ] Gravador de áudio no respondente (companion do texto longo)
-- [ ] Player com waveform + transcrição em tempo real
-- [ ] Armazenamento S3/R2
-
-### 1.2 — Todos os 11 tipos de pergunta
+### 1.1 — Todos os 11 tipos de pergunta
 - [ ] Texto curto, Texto longo (+ áudio), Múltipla escolha (única e múltipla)
 - [ ] Escala Likert (5 e 7 pontos)
 - [ ] NPS (0-10)
@@ -65,36 +62,41 @@
 - [ ] Data/Hora
 - [ ] Número
 
-### 1.3 — Temas visuais
-- [ ] 3-4 temas pré-construídos (design systems completos)
-- [ ] Customização: cor primária, logo, fonte
-- [ ] Preview em tempo real no builder
+### 1.2 — Temas visuais
+- [ ] 3-4 temas pré-construídos
+- [ ] Customização: cor, logo, fonte
+- [ ] Preview em tempo real
 
-### 1.4 — Modos de navegação
+### 1.3 — Modos de navegação
 - [ ] Modo etapas (uma pergunta por vez, barra de progresso)
 - [ ] Modo scroll (todas visíveis)
 
-### 1.5 — Distribuição básica
-- [ ] Link público gerado automaticamente
-- [ ] QR code para acesso rápido
-- [ ] Página web pública do questionário
+### 1.4 — Envio por e-mail
+- [ ] Tela Send: seleção de contatos (Google + CSV upload + manual)
+- [ ] Resend para e-mails transacionais
+- [ ] Mensagem personalizada opcional
+- [ ] Report de entrega (enviados, falhas, bounces)
 
-### 1.6 — Dashboard de respostas (v1)
-- [ ] KPIs: total de respostas, taxa de resposta
+### 1.5 — Home logada
+- [ ] `/home` — lista de questionários do usuário
+- [ ] Status: draft, published, closed
+- [ ] Botão "+ Novo questionário"
+- [ ] Ações: editar, enviar, ver resultados, duplicar, excluir
+
+### 1.6 — Dashboard de respostas v1
+- [ ] KPIs: total, taxa de resposta
 - [ ] Visualização por tipo: barras, lista de textos
 - [ ] Exportação CSV
 
-**Gate de saída:** MVP completo — criar, editar, enviar, responder, ver resultados.
+**Gate:** MVP completo — criar, editar, enviar, responder, ver resultados.
 
 ---
 
-## Fase 2 — Lançamento beta (semanas 10-12)
-
-**Objetivo:** Primeiros usuários reais com cobrança.
+## Fase 2 — Beta (semanas 10-12)
 
 ### 2.1 — Onboarding
 - [ ] Fluxo guiado: primeiro questionário em 3 passos
-- [ ] Templates sugeridos ("Pesquisa de clima", "Feedback de evento", "NPS")
+- [ ] Templates sugeridos
 
 ### 2.2 — Planos e pagamento
 - [ ] Free: 3 questionários, 100 respostas/mês, sem áudio
@@ -102,55 +104,41 @@
 - [ ] Stripe integration
 
 ### 2.3 — Domínio próprio
-- [ ] `formly.app` (ou similar)
-- [ ] Página institucional (landing de marketing)
-
-### 2.4 — Envio por e-mail
-- [ ] Seleção de contatos (Google Contacts + CSV upload)
-- [ ] Resend para e-mails transacionais
-- [ ] Report de entrega (enviados, falhas, bounces)
-
-**Gate de saída:** Beta público — usuários reais pagando.
+- [ ] `formly.app` (ou similar) — futuro
+- [ ] Página institucional
 
 ---
 
 ## Fase 3 — Agentes inteligentes (semanas 13-18)
 
-**Objetivo:** Diferenciais de IA que justificam o premium.
-
 ### 3.1 — Agente de follow-up
-- [ ] Detecta respostas curtas/superficiais em texto longo
+- [ ] Detecta respostas curtas/superficiais
 - [ ] Gera pergunta de aprofundamento contextual
-- [ ] Máximo de 1 follow-up por pergunta
-- [ ] Tom conversacional, não insistente
+- [ ] Máx. 1 follow-up por pergunta
 
-### 3.2 — Agente de validação (criador)
-- [ ] Ao montar questionário, sugere perguntas complementares
-- [ ] Detecta gaps: "Você perguntou sobre satisfação mas não sobre recommendação"
+### 3.2 — Agente de validação
+- [ ] Sugere perguntas complementares ao criar questionário
 
 ### 3.3 — Distribuição avançada
-- [ ] Envio por WhatsApp (blu_twilio_client)
-- [ ] Embutível em sites (iframe/embed)
+- [ ] WhatsApp (blu_twilio_client)
+- [ ] Embed (iframe)
 
 ---
 
 ## Fase 4 — Análise & Monetização (semanas 19-24)
 
-**Objetivo:** Serviço adicional de alto valor.
-
 ### 4.1 — Relatórios IA
-- [ ] Agente analisa todas as respostas
-- [ ] Gera documento de insights (Google Docs)
-- [ ] Análise estatística: correlações, tendências, segmentações
+- [ ] Agente analisa respostas → documento de insights
+- [ ] Análise estatística: correlações, tendências
 
-### 4.2 — Add-on por pesquisa
-- [ ] Cobrança avulsa: R$ 29-49 por análise
-- [ ] Ou inclusa no plano Business (R$ 149-199/mês)
+### 4.2 — Add-on
+- [ ] R$ 29-49 por análise avulsa
+- [ ] Ou incluso no plano Business
 
 ### 4.3 — Exportação avançada
-- [ ] PDF formatado (relatório executivo)
-- [ ] Google Sheets (dados brutos)
-- [ ] Agendamento de relatórios recorrentes
+- [ ] PDF formatado
+- [ ] Google Sheets
+- [ ] Relatórios recorrentes agendados
 
 ---
 
@@ -158,8 +146,8 @@
 
 | Marco | Semana | Status |
 |---|---|---|
-| Fase 0 — Protótipo funcional | 1-3 | 🔴 Não iniciado |
-| Fase 1 — MVP com áudio | 4-9 | ⚪ Planejado |
+| Fase 0 — Protótipo com áudio real | 1-3 | 🔴 Em andamento |
+| Fase 1 — MVP completo | 4-9 | ⚪ Planejado |
 | Fase 2 — Beta público | 10-12 | ⚪ Planejado |
 | Fase 3 — Agentes IA | 13-18 | ⚪ Planejado |
 | Fase 4 — Produto completo | 19-24 | ⚪ Planejado |

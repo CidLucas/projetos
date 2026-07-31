@@ -9,19 +9,19 @@
 ### 1.1 Monorepo
 - **Repo:** `CidLucas/monorepo`
 - **Backend:** `services/formly/` (FastAPI, UV workspace)
-- **Frontend:** `apps/formly_app/` (Vite + React 18 + Blu DS)
-- **Libs reutilizadas:** `blu_auth`, `blu_supabase_client`, `blu_llm_service`, `blu_google_suite_client`, `blu_parsers`, `blu_observability_bootstrap`
+- **Frontend:** `apps/formly_app/` (Vite + React 18 + Blu DS + Zustand + React Query)
+- **Libs:** `blu_auth`, `blu_supabase_client`, `blu_llm_service`, `blu_google_suite_client`, `blu_parsers`, `blu_observability_bootstrap`
 
 ### 1.2 Infra
 - **Domínio:** `formly.duckdns.org` → `177.19.44.93`
 - **Banco:** Supabase (PostgreSQL + RLS)
 - **Storage:** S3/R2 (áudios e arquivos)
 - **Email:** Resend (transacionais)
-- **Observabilidade:** OpenTelemetry + Langfuse (blu_observability_bootstrap)
+- **Observabilidade:** OpenTelemetry + Langfuse
 
 ### 1.3 APIs externas
 - **LLM:** DeepSeek Flash (geração de questionários)
-- **STT:** Groq Whisper (transcrição de áudio)
+- **STT:** Groq Whisper (transcrição de áudio) — **Fase 0: transcrição REAL**
 
 ---
 
@@ -30,7 +30,6 @@
 ### 2.1 Tabelas
 
 ```sql
--- Questionários
 CREATE TABLE forms (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     client_id UUID NOT NULL REFERENCES auth.users(id),
@@ -43,7 +42,6 @@ CREATE TABLE forms (
     updated_at TIMESTAMPTZ DEFAULT now()
 );
 
--- Perguntas
 CREATE TABLE questions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     form_id UUID NOT NULL REFERENCES forms(id) ON DELETE CASCADE,
@@ -57,28 +55,25 @@ CREATE TABLE questions (
     created_at TIMESTAMPTZ DEFAULT now()
 );
 
--- Respostas
 CREATE TABLE responses (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     form_id UUID NOT NULL REFERENCES forms(id) ON DELETE CASCADE,
-    respondent_email TEXT,  -- opcional, se capturado
+    respondent_email TEXT,       -- NULL = anônimo, preenchido = identificado
     completed BOOLEAN DEFAULT false,
     started_at TIMESTAMPTZ DEFAULT now(),
     completed_at TIMESTAMPTZ
 );
 
--- Respostas por pergunta
 CREATE TABLE answers (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     response_id UUID NOT NULL REFERENCES responses(id) ON DELETE CASCADE,
     question_id UUID NOT NULL REFERENCES questions(id) ON DELETE CASCADE,
-    value JSONB NOT NULL,  -- string, number, [strings], {row: value}
-    audio_url TEXT,         -- URL do áudio no S3 (se gravou)
-    transcription TEXT,     -- transcrição do áudio
+    value JSONB NOT NULL,        -- string, number, [strings], {row: value}
+    audio_url TEXT,              -- S3 (se gravou áudio)
+    transcription TEXT,          -- transcrição Groq
     created_at TIMESTAMPTZ DEFAULT now()
 );
 
--- Contatos do usuário
 CREATE TABLE contacts (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     client_id UUID NOT NULL REFERENCES auth.users(id),
@@ -89,20 +84,16 @@ CREATE TABLE contacts (
     UNIQUE(client_id, email)
 );
 
--- Envios
 CREATE TABLE sendings (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     form_id UUID NOT NULL REFERENCES forms(id) ON DELETE CASCADE,
     client_id UUID NOT NULL REFERENCES auth.users(id),
-    status TEXT DEFAULT 'sending',  -- sending | sent | partial | failed
-    total INT DEFAULT 0,
-    sent INT DEFAULT 0,
-    failed INT DEFAULT 0,
-    bounced INT DEFAULT 0,
+    status TEXT DEFAULT 'sending',
+    total INT DEFAULT 0, sent INT DEFAULT 0,
+    failed INT DEFAULT 0, bounced INT DEFAULT 0,
     created_at TIMESTAMPTZ DEFAULT now()
 );
 
--- Log de envio individual
 CREATE TABLE sending_logs (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     sending_id UUID NOT NULL REFERENCES sendings(id) ON DELETE CASCADE,
@@ -113,114 +104,121 @@ CREATE TABLE sending_logs (
 );
 ```
 
-### 2.2 RLS (Row Level Security)
+### 2.2 RLS
 
 ```sql
--- forms: só o dono vê
 ALTER TABLE forms ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "forms_owner" ON forms
-    FOR ALL USING (client_id = auth.uid());
+CREATE POLICY "forms_owner" ON forms FOR ALL USING (client_id = auth.uid());
 
--- questions: via form
 ALTER TABLE questions ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "questions_via_form" ON questions
-    FOR ALL USING (
-        form_id IN (SELECT id FROM forms WHERE client_id = auth.uid())
-    );
+CREATE POLICY "questions_via_form" ON questions FOR ALL USING (
+    form_id IN (SELECT id FROM forms WHERE client_id = auth.uid())
+);
 
--- responses/answers: dono do form vê
 ALTER TABLE responses ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "responses_via_form" ON responses
-    FOR SELECT USING (
-        form_id IN (SELECT id FROM forms WHERE client_id = auth.uid())
-    );
--- INSERT público (respondente não logado)
-CREATE POLICY "responses_insert_public" ON responses
-    FOR INSERT WITH CHECK (true);
+CREATE POLICY "responses_select_owner" ON responses FOR SELECT USING (
+    form_id IN (SELECT id FROM forms WHERE client_id = auth.uid())
+);
+CREATE POLICY "responses_insert_public" ON responses FOR INSERT WITH CHECK (true);
+
+ALTER TABLE answers ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "answers_select_owner" ON answers FOR SELECT USING (
+    response_id IN (
+        SELECT r.id FROM responses r
+        JOIN forms f ON f.id = r.form_id
+        WHERE f.client_id = auth.uid()
+    )
+);
+CREATE POLICY "answers_insert_public" ON answers FOR INSERT WITH CHECK (true);
 ```
 
 ---
 
 ## 3. API Endpoints
 
-### 3.1 Forms (autenticado)
-| Método | Rota | Descrição |
-|---|---|---|
-| `POST` | `/v1/forms/generate` | Gera questionário por IA (prompt → JSON) |
-| `GET` | `/v1/forms` | Lista questionários do usuário |
-| `POST` | `/v1/forms` | Cria questionário manualmente |
-| `GET` | `/v1/forms/{id}` | Detalhes do questionário + perguntas |
-| `PUT` | `/v1/forms/{id}` | Atualiza título, descrição, settings |
-| `DELETE` | `/v1/forms/{id}` | Remove questionário |
-| `POST` | `/v1/forms/{id}/publish` | Publica (muda status → published) |
+### 3.1 Forms
+| Método | Rota | Auth | Descrição |
+|---|---|---|---|
+| `POST` | `/v1/forms/generate` | Sim | Prompt → questionário (DeepSeek) |
+| `GET` | `/v1/forms` | Sim | Lista questionários do usuário |
+| `POST` | `/v1/forms` | Sim | Cria manualmente |
+| `GET` | `/v1/forms/{id}` | Sim | Detalhes + perguntas |
+| `PUT` | `/v1/forms/{id}` | Sim | Atualiza |
+| `DELETE` | `/v1/forms/{id}` | Sim | Remove |
+| `POST` | `/v1/forms/{id}/publish` | Sim | Publica |
 
-### 3.2 Questions (autenticado)
-| Método | Rota | Descrição |
+### 3.2 Questions
+| Método | Rota | Auth |
 |---|---|---|
-| `GET` | `/v1/forms/{id}/questions` | Lista perguntas do form |
-| `POST` | `/v1/forms/{id}/questions` | Adiciona pergunta |
-| `PUT` | `/v1/forms/{id}/questions/{qid}` | Atualiza pergunta |
-| `DELETE` | `/v1/forms/{id}/questions/{qid}` | Remove pergunta |
-| `PUT` | `/v1/forms/{id}/questions/reorder` | Reordena perguntas |
+| `GET` | `/v1/forms/{id}/questions` | Sim |
+| `POST` | `/v1/forms/{id}/questions` | Sim |
+| `PUT` | `/v1/forms/{id}/questions/{qid}` | Sim |
+| `DELETE` | `/v1/forms/{id}/questions/{qid}` | Sim |
+| `PUT` | `/v1/forms/{id}/questions/reorder` | Sim |
 
-### 3.3 Responses (público + autenticado)
-| Método | Rota | Descrição |
+### 3.3 Responses
+| Método | Rota | Auth |
 |---|---|---|
-| `GET` | `/r/{form_id}` | Página pública do questionário (HTML) |
-| `GET` | `/v1/public/forms/{id}` | Dados públicos do questionário (JSON) |
-| `POST` | `/v1/public/forms/{id}/responses` | Submete resposta (anônimo) |
-| `GET` | `/v1/forms/{id}/responses` | Lista respostas (dono) |
-| `GET` | `/v1/forms/{id}/responses/stats` | Agregações por pergunta (dono) |
+| `GET` | `/r/{form_id}` | Não (HTML) |
+| `GET` | `/v1/public/forms/{id}` | Não (JSON) |
+| `POST` | `/v1/public/forms/{id}/responses` | Não |
+| `GET` | `/v1/forms/{id}/responses` | Sim (dono) |
+| `GET` | `/v1/forms/{id}/responses/stats` | Sim (dono) |
 
-### 3.4 Send (autenticado)
-| Método | Rota | Descrição |
+### 3.4 Send
+| Método | Rota | Auth |
 |---|---|---|
-| `GET` | `/v1/contacts` | Lista contatos do usuário |
-| `POST` | `/v1/contacts` | Adiciona contato |
-| `POST` | `/v1/contacts/upload-csv` | Upload CSV de contatos |
-| `POST` | `/v1/forms/{id}/send` | Dispara envio para contatos |
+| `GET` | `/v1/contacts` | Sim |
+| `POST` | `/v1/contacts` | Sim |
+| `POST` | `/v1/contacts/upload-csv` | Sim |
+| `POST` | `/v1/forms/{id}/send` | Sim |
 
 ### 3.5 Áudio
-| Método | Rota | Descrição |
+| Método | Rota | Auth |
 |---|---|---|
-| `POST` | `/v1/audio/transcribe` | Recebe áudio, retorna transcrição (Groq) |
+| `POST` | `/v1/audio/transcribe` | Não |
+
 
 ---
 
 ## 4. Frontend — Páginas
 
 ### 4.0 Landing (`/`)
-- Logo "formly" + "Precisa de um questionário?"
-- Input de texto + botão Gravar áudio
-- Enter → `/auth`
+- "Precisa de um questionário?" + input + botão Gravar áudio
+- Enter → `/auth?prompt=...`
 
 ### 4.1 Auth (`/auth`)
-- Google OAuth + magic link e-mail
-- Primeiro uso: cria conta no Supabase
+- Google OAuth + magic link
 - Após login → `/builder?prompt=...`
 
-### 4.2 Builder (`/builder`)
-- Recebe `?prompt=` → chama `POST /v1/forms/generate`
-- Renderiza questionário gerado como lista editável
-- Adicionar/remover/reordenar perguntas
-- Preview em tempo real (toggle Editor/Preview)
-- Botão Publicar → abre sheet de envio
+### 4.2 Home (`/home`)
+- Lista de questionários do usuário (cards)
+- Cada card: título, status (draft/published/closed), data, nº de respostas
+- Ações: Editar, Enviar, Ver resultados, Duplicar, Excluir
+- Botão "+ Novo questionário" → `/`
 
-### 4.3 Send (sheet/modal)
-- Selecionar contatos (Google Contacts + CSV + manual)
+### 4.3 Builder (`/builder`)
+- `?prompt=` → `POST /v1/forms/generate` → renderiza
+- Lista editável: reordenar, adicionar, remover perguntas
+- Toggle Editor/Preview
+- Gravar áudio para ditar perguntas (criador)
+- Publicar → sheet de envio
+
+### 4.4 Send (`/send/{form_id}`)
+- Selecionar contatos (Google + CSV + manual)
 - Mensagem opcional
-- Disparar envio
-- Tela de confirmação com link público
+- Disparar → confirmação com link público
 
-### 4.4 Analytics (`/analytics/{form_id}`)
-- KPIs: respostas, taxa, tempo
+### 4.5 Analytics (`/analytics/{form_id}`)
+- KPIs: respostas, taxa
 - Gráficos por tipo de pergunta
 - Exportar CSV/PDF
 
-### 4.5 Página pública (`/r/{form_id}`)
+### 4.6 Página pública (`/r/{form_id}`)
 - Renderiza questionário com tema
-- Responde (texto + áudio)
-- Tela de obrigado ao final
+- Responde com texto e/ou áudio
+- Respondente anônimo (padrão) ou e-mail opcional
+- Tela de obrigado
 
 ---
 
@@ -228,7 +226,7 @@ CREATE POLICY "responses_insert_public" ON responses
 
 | Requisito | Meta |
 |---|---|
-| Tempo de resposta API | < 500ms p95 |
+| Tempo resposta API | < 500ms p95 |
 | Geração IA (prompt → JSON) | < 5s |
 | Transcrição áudio (1 min) | < 3s (Groq) |
 | Página pública (LCP) | < 1.5s |
@@ -238,4 +236,4 @@ CREATE POLICY "responses_insert_public" ON responses
 ---
 
 > **Autor:** Hermes PM  
-> **Status:** Aguardando início da Fase 0
+> **Status:** Fase 0 em andamento
