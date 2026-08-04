@@ -72,9 +72,11 @@
 
 ### 1.4 — Envio por e-mail
 - [x] Tela Send: seleção de contatos (busca + CSV upload + manual)
-- [ ] Resend para e-mails transacionais (hoje: mock que navega ao dashboard)
+- [x] Endpoint `/distribute` + Resend configurado (envio real validado; free só p/ e-mail verificado)
 - [x] Mensagem personalizada opcional
+- [x] Banner com link público quando modo simulado
 - [ ] Report de entrega (enviados, falhas, bounces)
+- [ ] Verificar domínio próprio no Resend (hoje: `onboarding@resend.dev`)
 
 ### 1.5 — Home logada
 - [ ] `/home` — lista de questionários do usuário
@@ -86,7 +88,13 @@
 - [x] KPIs: total de respostas, taxa de resposta, tempo médio
 - [x] Barras por pergunta (multiple_choice/scale/nps/ranking/matrix com %, texto/dyn_list com "Ver mais")
 - [x] Exportação CSV
+- [x] Fix serialize_survey — stats por pergunta carregando de verdade (2026-08-04)
 - [ ] Filtro de período (dropdown 7/30/90 dias)
+
+### 1.7 — Qualidade pós-teste (2026-08-04)
+- [x] Ranking reordenável em mobile (botões ↑/↓ + drag) — R10
+- [x] Botão "Enviar →" sticky no rodapé do builder — R11
+- [x] Tela de Preview (`/preview/:id`) antes de enviar — R11
 
 **Gate:** MVP completo — criar, editar, enviar, responder, ver resultados.
 

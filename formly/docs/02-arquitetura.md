@@ -90,9 +90,10 @@ Tokens extraídos do protótipo (`site/*.html`) e implementados em `apps/formly_
 ```
 POST   /api/surveys/                    ← Criar
 GET    /api/surveys/                    ← Listar
-GET    /api/surveys/{id}                ← Carregar
+GET    /api/surveys/{id}                ← Carregar (com perguntas — serialize_survey)
 PATCH  /api/surveys/{id}                ← Atualizar (autosave)
 POST   /api/surveys/{id}/publish        ← Publicar (gera slug)
+POST   /api/surveys/{id}/distribute     ← Enviar p/ contatos (Resend real ou simulado)
 GET    /api/surveys/{id}/responses      ← Listar respostas
 GET    /api/surveys/{id}/stats          ← Métricas (total, taxa, tempo médio)
 GET    /api/surveys/{id}/export         ← CSV (com BOM)
@@ -125,8 +126,9 @@ POST   /api/transcribe                  ← Áudio → Groq Whisper → texto (m
 |---|---|---|
 | `/` | Landing — "Precisa de um questionário?" + input/áudio | `index.html` |
 | `/auth` | Auth — "Só mais uma coisa" + Google/e-mail | `auth.html` |
-| `/builder/:id?` | Builder — cards empilhados, 12 tipos | `builder.html` |
-| `/send/:id` | Send — contatos + CSV + mensagem | `send.html` |
+| `/builder/:id?` | Builder — cards empilhados, 12 tipos, botão enviar sticky | `builder.html` |
+| `/preview/:id` | Preview — form como o respondente vê, antes de enviar | `formly-tipos-v2.html` |
+| `/send/:id` | Send — contatos + CSV + mensagem + envio Resend | `send.html` |
 | `/s/:slug` | Survey — página pública de resposta (etapas/scroll) | `formly-tipos-v2.html` |
 | `/dashboard/:id` | Analytics — KPIs + barras + export | `analytics.html` |
 

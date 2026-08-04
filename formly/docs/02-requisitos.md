@@ -98,14 +98,21 @@ Cards empilhados (coluna 560px), header com título editável + "+ Pergunta" / "
 - Autosave 2s → `PATCH /api/surveys/{id}`; "Enviar →" → publica → `/send/{id}`
 - Sem JWT manual; intent da landing em `sessionStorage.formly_intent`
 
-### 4.3 Send (`/send/:id`) — ✅ (mock de envio)
-"Enviar: {título}" — busca contatos, "Todos/Selecionados (N)", lista com checkboxes, divider + CSV (parse client-side), mensagem opcional, botão "Enviar questionário →" (mock → `/dashboard/{id}` após 1.5s). Sem token → `/auth`.
+### 4.3 Send (`/send/:id`) — ✅ (envio real via Resend)
+"Enviar: {título}" — busca contatos, "Todos/Selecionados (N)", lista com checkboxes, divider + CSV (parse client-side), mensagem opcional, botão "Enviar questionário →".
+- Chama `POST /api/surveys/{id}/distribute` com contatos selecionados + e-mails CSV + mensagem
+- Sem seleção → aviso "Selecione ao menos um contato ou importe um CSV"
+- Resend configurado → envio real; sem `RESEND_API_KEY` → modo simulado com banner verde + link público copiável
+- Sucesso → navega `/dashboard/{id}`; erro → reabilita botão
 
 ### 4.4 Analytics (`/dashboard/:id`) — ✅
-`.back`, título + "Exportar CSV", 3 KPIs (Respostas + "de N enviados", Taxa de resposta, Tempo médio), "Respostas por pergunta" com barras animadas, empty state com copiar link público.
+`.back`, título + "Exportar CSV", 3 KPIs (Respostas + "de N enviados", Taxa de resposta, Tempo médio), "Respostas por pergunta" com barras animadas (fix serialize_survey), empty state com copiar link público.
 
 ### 4.5 Survey (`/s/:slug`) — ✅
-Abertura (`.screen-intro`), modo etapas com progress bar ou scroll com botão sticky, 12 tipos com classes wine/pine/paper, conclusão (`.screen-done`), envia `time_spent_secs`.
+Abertura (`.screen-intro`), modo etapas com progress bar ou scroll com botão sticky, 12 tipos com classes wine/pine/paper, conclusão (`.screen-done`), envia `time_spent_secs`. Ranking com botões ↑/↓ (mobile) + drag (desktop).
+
+### 4.6 Preview (`/preview/:id`) — ✅
+Renderiza o questionário como o respondente vê (reusa componentes do Survey), sem envio real. Header: "← Voltar" (builder) + "Confirmar e enviar →" (send).
 
 ---
 
