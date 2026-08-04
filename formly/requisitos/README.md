@@ -1,9 +1,9 @@
 # 📋 Requisitos — Formly
 
 > **Produto:** Formly — Fábrica de Questionários com Áudio + IA
-> **Versão:** v0.2 — 2026-08-01
-> **Base:** Site HTML estático (5 arquivos em `formly/site/` no GitHub)
-> **Última atualização:** 2026-08-01
+> **Versão:** v0.3 — 2026-08-04
+> **Base:** Site HTML estático (5 arquivos em `formly/site/` no GitHub) — **implementado no app React**
+> **Última atualização:** 2026-08-04
 > **Template:** 6 seções (visão geral, elementos UI, fluxos, regras, integrações, testes)
 
 ---
@@ -12,17 +12,17 @@
 
 | Arquivo | O que cobre |
 |---|---|
-| [`requisitos-app.md`](./requisitos-app.md) | 📱 Requisitos de aplicação — Design System, estrutura de 5 páginas, tipos de pergunta (11) |
+| [`requisitos-app.md`](./requisitos-app.md) | 📱 Requisitos de aplicação — Design System, estrutura de 5 páginas, tipos de pergunta (12) |
 | [`pagina-00-landing.md`](./pagina-00-landing.md) | 🏠 Landing — "Precisa de um questionário?" + input + áudio |
 | [`pagina-01-auth.md`](./pagina-01-auth.md) | 🔐 Auth — Google OAuth + magic link e-mail |
-| [`pagina-02-builder.md`](./pagina-02-builder.md) | 📝 Builder — Cards de pergunta editáveis, 11 tipos, amostras |
+| [`pagina-02-builder.md`](./pagina-02-builder.md) | 📝 Builder — Cards de pergunta editáveis, 12 tipos, amostras |
 | [`pagina-03-send.md`](./pagina-03-send.md) | 📤 Send — Seleção de contatos + CSV + mensagem + disparo |
 | [`pagina-04-analytics.md`](./pagina-04-analytics.md) | 📊 Analytics — KPIs, gráfico de barras, exportação CSV |
-| [`pagina-05-resposta.md`](./pagina-05-resposta.md) | 📋 Página pública do respondente — ⚠️ aspirational (não implementada no site) |
+| [`pagina-05-resposta.md`](./pagina-05-resposta.md) | 📋 Página pública do respondente (`/s/{slug}`) — 12 tipos |
 
 ---
 
-## 🎨 Design System (extraído do CSS real do site)
+## 🎨 Design System (extraído do CSS real do site e implementado no app)
 
 O Formly implementa um tema **editorial vinho/papel** — não é Blu DS. Tokens:
 
@@ -38,36 +38,42 @@ O Formly implementa um tema **editorial vinho/papel** — não é Blu DS. Tokens
 
 ---
 
-## 🏗 Estrutura do Site
+## 🏗 Estrutura do App (implementado em React)
 
 ```
-formly.duckdns.org
+formly_app (Vite)
 │
-├── / (index.html)        → Landing
-├── /auth.html            → Autenticação
-├── /builder.html         → Builder (criador)
-├── /send.html            → Envio
-└── /analytics.html       → Dashboard de resultados
+├── /                → Landing
+├── /auth            → Autenticação (dev login; Supabase OAuth pendente)
+├── /builder/:id?    → Builder (criador) — cards empilhados
+├── /send/:id        → Envio (contatos + CSV)
+├── /s/:slug         → Página pública do respondente (12 tipos)
+└── /dashboard/:id   → Analytics (KPIs + barras + export)
 ```
 
 **Fluxo:** Landing → Auth → Builder → Send → Analytics
 
 ---
 
-## ⚠️ Status atual
+## ✅ Status atual (2026-08-04)
 
-- 🟢 **Site HTML:** 5 páginas implementadas como protótipo estático
-- 🟢 **Design System:** Definido e implementado em CSS custom properties
-- 🟡 **Tipos de pergunta:** 7 dos 11 tipos com UI implementada no builder
-- 🔴 **Página do respondente:** Não implementada (`/r/{id}`)
-- 🔴 **Backend/API:** Não implementado
-- 🔴 **Autenticação real:** Apenas UI (Google + e-mail simulados)
-- 🟡 **Stack:** Vite + React 18 + Blu DS — mas o site atual usa HTML/CSS puro
+- 🟢 **Design System:** wine/pine/paper implementado em `global.css` (R1)
+- 🟢 **12 tipos de pergunta:** enum no backend + UI no builder/survey (R2, R4, R5)
+- 🟢 **Landing + Auth:** implementadas (R3, R7) — sem entrada manual de JWT
+- 🟢 **Builder:** cards empilhados estilo protótipo (R4)
+- 🟢 **Send:** contatos + busca + CSV + mensagem (R6)
+- 🟢 **Analytics:** KPIs + barras + export CSV (R6)
+- 🟢 **Página do respondente:** `/s/{slug}` com os 12 tipos (R5)
+- 🟢 **Áudio:** gravação livre com timer + limite 2 min + transcrição editável + e-mail (R9)
+- 🟢 **Textos longos:** quebra de linha sem scroll horizontal (R8)
+- 🟡 **Auth real:** apenas dev login — Supabase OAuth é TODO no código
+- 🟡 **Envio de e-mail:** mock no Send — Resend é Fase 1
 
 ---
 
 ## 📝 Como usar estes arquivos
 
 1. Comece pelo [`requisitos-app.md`](./requisitos-app.md) — visão geral da aplicação
-2. Cada página do site tem seu próprio arquivo de requisitos (pagina-00 a pagina-05)
+2. Cada página tem seu próprio arquivo de requisitos (pagina-00 a pagina-05)
 3. O Google Doc completo está em: https://docs.google.com/document/d/1el2fWACIuMcc8HQ73k7lm5JuZxdam-nWonFYgwgqYRU/edit
+4. A implementação real está em https://github.com/CidLucas/formly (commit do realinhamento: 2026-08-04)

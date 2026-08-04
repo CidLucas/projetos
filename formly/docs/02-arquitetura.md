@@ -1,60 +1,55 @@
 # 02 — Arquitetura — Formly
 
-> **Versão:** v0.1 — 2026-07-30
-> **Decisões baseadas em:** alinhamento com Lucas Cid (2026-07-30)
+> **Versão:** v0.2 — 2026-08-04
+> **Decisões baseadas em:** realinhamento ao protótipo canônico + implementação real
 
 ---
 
-## 🧱 Stack
+## 🧱 Stack (efetiva)
 
 | Camada | Tecnologia | Decisão |
 |---|---|---|
-| Frontend | **Vite + React 18** + Blu DS (CSS tokens) | Padrão Blu V3: Zustand + React Query + Phosphor Icons |
-| Backend | **FastAPI** (Python) | Padrão Deep Blue, async, Pydantic |
-| Banco | **PostgreSQL** (via Supabase) | Relacional, JSONB, RLS |
-| Arquivos | **S3** (AWS) ou R2 | Binários (áudios, uploads) |
-| Transcrição | **Groq Whisper** | STT rápido e barato |
-| LLM | OCI GenAI (Llama) ou Groq | Builder + análise |
-| Auth | **Supabase Auth** | Integrado com PostgreSQL |
-| Pagamento | Stripe | Free/Pro/Business + add-on |
-| E-mail | Resend | Transacional |
-| Infra | Vercel (front) + Railway (back) | Deploy simples |
+| Frontend | **Vite + React 18 + TS** | Zustand + react-router-dom + Phosphor Icons. Design system próprio wine/pine/paper (não Blu DS) |
+| Backend | **FastAPI** (Python) | Async, Pydantic, SQLAlchemy |
+| Banco | **PostgreSQL 16** (Docker `formly-pg` em dev; Supabase em produção) | Relacional, JSONB |
+| Transcrição | **Groq Whisper** (`whisper-large-v3-turbo`) | STT rápido; `POST /api/transcribe`, máx 25MB |
+| LLM | **DeepSeek Flash** (via `blu_llm_service`) | Geração do questionário (skeleton/refine/refinement) |
+| Auth | **JWT dev** (`/api/dev/login`) agora; **Supabase Auth** em produção | dev login retorna 404 se `SUPABASE_URL` configurada |
+| E-mail | **Resend** (planejado — Fase 1) | Hoje o Send usa mock |
+| Storage | S3/R2 (planejado) | Áudios/arquivos futuros |
+| Infra | EC2 + Tailscale (dev) | Front :5173, Back :8000 |
 
----
+## 🎨 Design System (canônico)
 
-## 🗃 Schema do Banco (PostgreSQL)
+Tokens extraídos do protótipo (`site/*.html`) e implementados em `apps/formly_app/src/styles/global.css`:
 
-### Tabelas principais
+| Categoria | Tokens |
+|---|---|
+| Primária | `--wine: #7A2E3F`, `--wine-soft: #F5E8EB`, `--wine-dark: #5C1E2C` |
+| Secundária | `--pine: #3B5B52`, `--pine-soft: #E8F0ED` |
+| Superfície | `--paper: #E7E6E0`, `--paper-2: #F3F2EE`, `--card: #FCFBF8` |
+| Texto | `--muted: #6E6D66`, `--line: #C9C7BE`, `--ink: #1a1a1a` |
+| Fontes | `--display` (Helvetica Neue), `--body` (Georgia), `--mono` (SF Mono) |
+| Raio | `--radius-sm: 6px`, `--radius: 12px` |
+
+## 🗃 Schema do Banco (PostgreSQL — 5 tabelas)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                        PostgreSQL                            │
 │                                                             │
-│  users                    surveys                 contacts  │
-│  ─────                    ───────                ─────────  │
-│  id (UUID)                id (UUID)              id (UUID)  │
-│  email                    user_id (FK)           user_id (FK)
-│  name                     title                  name       │
-│  plan (free/pro/biz)      slug (único, público)  email      │
-│  stripe_customer_id       status (draft|pub|arch) phone      │
-│                           theme                  groups (text[])
-│                           logo_url (S3)                     │
-│                           brand_colors (JSONB)              │
-│                           created_at                        │
-│                           published_at                      │
-│                                                             │
-│  ┌────────────────────┐                                     │
-│  │     questions      │                                     │
-│  │     ─────────      │                                     │
-│  │  id (UUID)         │                                     │
-│  │  survey_id (FK)    │                                     │
-│  │  position (int)    │  ← ordem (1, 2, 3...)              │
-│  │  type (enum)       │  ← text_short, text_long,          │
-│  │  title (text)      │     multiple_choice, audio,        │
-│  │  required (bool)   │     scale, file_upload             │
-│  │  config (JSONB)    │  ← opções, max_chars, labels...    │
-│  │  created_at         │                                     │
-│  └────────────────────┘                                     │
+│  surveys                 questions                contacts  │
+│  ───────                 ─────────                ─────────  │
+│  id (UUID)               id (UUID)                id (UUID)  │
+│  user_id (FK)            survey_id (FK)           user_id (FK)
+│  title                   position (int)           name       │
+│  slug (único, público)   type (enum 12)           email      │
+│  status (draft|pub)      title (text)             phone      │
+│  description             required (bool)          groups (text[])
+│  theme                   config (JSONB)                     │
+│  logo_url                created_at                         │
+│  brand_colors (JSONB)                                        │
+│  created_at / updated_at                                     │
 │                                                             │
 │  ┌────────────────────┐    ┌────────────────────────────┐   │
 │  │     responses      │    │         answers            │   │
@@ -64,129 +59,113 @@
 │  │  respondent_ref    │    │  question_id (FK)          │   │
 │  │  status            │    │  value_text (text)         │   │
 │  │  started_at        │    │  value_choices (JSONB)     │   │
-│  │  completed_at      │    │  audio_url (S3)            │   │
-│  │  time_spent_secs   │    │  transcription (text)      │   │
-│  └────────────────────┘    │  file_url (S3)             │   │
-│                            │  file_name (text)          │   │
-│                            │  scale_value (int)         │   │
+│  │  completed_at      │    │  audio_url / transcription │   │
+│  │  time_spent_secs   │    │  file_url / file_name      │   │
+│  └────────────────────┘    │  scale_value (int)         │   │
 │                            │  created_at                │   │
 │                            └────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Detalhe: `questions.config` (JSONB)
+### `questions.type` — 12 tipos (enum `QuestionType`)
 
-Cada tipo de pergunta armazena seus parâmetros dentro de `config`:
+| # | Tipo | config JSONB |
+|---|---|---|
+| T01 | `text_short` | `{"max_chars": 500, "placeholder": "..."}` |
+| T02 | `text_long` | `{"max_chars": 400, "audio_enabled": true}` |
+| T03 | `multiple_choice` (única) | `{"options": [...], "multiple": false}` |
+| T04 | `multiple_choice` (múltipla) | `{"options": [...], "multiple": true}` |
+| T05 | `scale` | `{"min": 1, "max": 5, "labels": [...], "na_option": true}` |
+| T06 | `nps` | `{"min": 0, "max": 10}` |
+| T07 | `ranking` | `{"options": [...]}` |
+| T08 | `matrix` | `{"rows": [...], "columns": [...]}` |
+| T09 | `file_upload` | `{"allowed_types": [...], "max_size_mb": 10}` |
+| T10 | `datetime` | `{"include_time": true}` |
+| T11 | `number` | `{"min": 1, "max": 500}` |
+| T12 | `dyn_list` | `{"suggestions": [...], "placeholder": "..."}` |
 
-| Tipo | Exemplo de `config` |
-|---|---|
-| `text_short` | `{"max_chars": 500, "placeholder": "Seu nome completo"}` |
-| `text_long` | `{"max_chars": 5000, "placeholder": "Conte sua experiência..."}` |
-| `multiple_choice` | `{"options": ["Ótimo","Bom","Regular","Ruim"], "multiple": false}` |
-| `audio` | `{"max_duration_secs": 60, "follow_up_enabled": true}` |
-| `scale` | `{"min": 1, "max": 5, "label_min": "Péssimo", "label_max": "Excelente"}` |
-| `file_upload` | `{"allowed_types": ["pdf","jpg","png"], "max_size_mb": 10}` |
+## 📡 Rotas de API (efetivas)
 
-### Detalhe: `answers`
-
-Uma linha por pergunta respondida. O campo usado depende do tipo:
-
-| Tipo de pergunta | Campo preenchido |
-|---|---|
-| `text_short` / `text_long` | `value_text` |
-| `multiple_choice` (única) | `value_text` (a opção escolhida) |
-| `multiple_choice` (múltipla) | `value_choices` (array de opções) |
-| `audio` | `audio_url` + `transcription` |
-| `scale` | `scale_value` |
-| `file_upload` | `file_url` + `file_name` |
-
----
-
-## 📡 Fluxos de API
-
-### Criador
-
+### Criador (auth dev)
 ```
-POST   /api/surveys                    ← Criar novo questionário
-GET    /api/surveys                    ← Listar questionários do usuário
-GET    /api/surveys/:id                ← Carregar questionário (editar)
-PATCH  /api/surveys/:id                ← Atualizar questionário/perguntas
-POST   /api/surveys/:id/publish        ← Publicar (gera slug)
-PATCH  /api/surveys/:id/status         ← Pausar/Reabrir/Arquivar
-DELETE /api/surveys/:id                ← Excluir
+POST   /api/surveys/                    ← Criar
+GET    /api/surveys/                    ← Listar
+GET    /api/surveys/{id}                ← Carregar
+PATCH  /api/surveys/{id}                ← Atualizar (autosave)
+POST   /api/surveys/{id}/publish        ← Publicar (gera slug)
+GET    /api/surveys/{id}/responses      ← Listar respostas
+GET    /api/surveys/{id}/stats          ← Métricas (total, taxa, tempo médio)
+GET    /api/surveys/{id}/export         ← CSV (com BOM)
+GET    /api/contacts                    ← Contatos
+POST   /api/dev/login                   ← JWT dev (404 se Supabase ativo)
+```
 
-GET    /api/contacts                   ← Listar contatos
-POST   /api/contacts                   ← Adicionar contato
-PATCH  /api/contacts/:id               ← Editar contato
-DELETE /api/contacts/:id               ← Excluir contato
-POST   /api/contacts/import            ← Importar CSV
-
-POST   /api/surveys/:id/distribute     ← Disparar envio (e-mail/WhatsApp)
+### IA
+```
+POST   /api/ai/skeleton                 ← Prompt → questionário (DeepSeek)
+POST   /api/ai/refinement-questions     ← Perguntas de refinamento
+POST   /api/ai/refine                   ← Refinar com respostas
 ```
 
 ### Respondente (público)
-
 ```
-GET    /api/public/surveys/:slug       ← Carregar questionário público
-POST   /api/public/surveys/:slug/responses  ← Enviar resposta
-POST   /api/public/surveys/:slug/responses/:id/partial  ← Salvar parcial
+GET    /api/public/surveys/{slug}                  ← Questionário público
+POST   /api/public/surveys/{slug}/responses        ← Enviar resposta
+POST   /api/public/surveys/{slug}/responses/partial ← Rascunho parcial
 ```
 
 ### Transcrição
-
 ```
-POST   /api/transcribe                 ← Enviar áudio → Groq Whisper → retorna texto
-```
-
-### Dashboard
-
-```
-GET    /api/surveys/:id/stats          ← Métricas agregadas
-GET    /api/surveys/:id/responses      ← Lista de respostas (paginado, filtrável)
-GET    /api/surveys/:id/export?format=csv  ← Exportar
+POST   /api/transcribe                  ← Áudio → Groq Whisper → texto (máx 25MB)
 ```
 
----
+## 🗺 Frontend — 6 rotas
+
+| Rota | Página | Origem |
+|---|---|---|
+| `/` | Landing — "Precisa de um questionário?" + input/áudio | `index.html` |
+| `/auth` | Auth — "Só mais uma coisa" + Google/e-mail | `auth.html` |
+| `/builder/:id?` | Builder — cards empilhados, 12 tipos | `builder.html` |
+| `/send/:id` | Send — contatos + CSV + mensagem | `send.html` |
+| `/s/:slug` | Survey — página pública de resposta (etapas/scroll) | `formly-tipos-v2.html` |
+| `/dashboard/:id` | Analytics — KPIs + barras + export | `analytics.html` |
 
 ## 🔐 Segurança
 
-- **Row Level Security (RLS):** surveys, contacts, responses — cada user só acessa o seu
-- **Rota pública:** `/api/public/*` não requer auth
-- **Presigned URLs S3:** upload/download direto, sem passar pelo servidor
-- **Rate limit:** 100 respostas/mês (Free), 1000 (Pro), ilimitado (Business)
-- **GDPR/LGPD:** deleção em cascata (excluir survey → responses + answers + arquivos)
+- **Dev login protegido:** `/api/dev/login` retorna 404 quando `SUPABASE_URL` está configurada — nunca ativo em produção
+- **Auth:** JWT HS256 local (dev); Supabase Auth + RLS em produção
+- **Limite de upload:** 25MB por arquivo de áudio
+- **CORS:** restrito a localhost:5173 (dev)
+- **LGPD:** deleção em cascata (excluir survey → responses + answers)
 
----
-
-## 🚀 Deploy
+## 🚀 Deploy (planejado)
 
 ```
-                    Vercel
-                 ┌──────────┐
-  Usuário ──────→│ Next.js  │
-                 │ (Edge)   │
-                 └────┬─────┘
-                      │ API calls
-                 ┌────▼─────┐
-  Railway /      │ FastAPI  │────→ Groq (Whisper + LLM)
-  Render         │ (Python) │────→ S3 (presigned URLs)
-                 └────┬─────┘────→ Resend (e-mail)
-                      │
-                 ┌────▼─────┐
-                 │ Supabase │
-                 │(PostgreSQL│
-                 │ + Auth)  │
-                 └──────────┘
+                    EC2 (dev) — Tailscale 100.69.231.7
+                 ┌──────────────┐
+  Usuário ──────→│ Vite :5173   │
+                 │ (dev server) │
+                 └──────┬───────┘
+                        │ /api proxy
+                 ┌──────▼───────┐
+                 │ FastAPI :8000 │────→ Groq (Whisper)
+                 │ (uvicorn)     │────→ DeepSeek Flash (LLM)
+                 └──────┬───────┘
+                 ┌──────▼───────┐
+                 │ PostgreSQL 16│ (Docker formly-pg)
+                 └──────────────┘
 ```
 
----
+Produção: Supabase (PostgreSQL + Auth + RLS) + Vercel (front) + Railway (back) — quando configurado.
 
 ## 📐 Decisões arquiteturais (ADR)
 
 | # | Decisão | Data | Justificativa |
 |---|---|---|---|
-| 1 | PostgreSQL via Supabase (não Turso) | 2026-07-30 | Dados altamente relacionais (surveys→questions→answers), RLS nativo, Supabase Auth integrado |
-| 2 | JSONB pra `questions.config` | 2026-07-30 | Cada tipo de pergunta tem parâmetros diferentes; evitar tabela por tipo ou colunas nullable |
-| 3 | S3 pra binários (áudio/upload) | 2026-07-30 | PostgreSQL não é eficiente pra blobs; presigned URLs eliminam gargalo de upload |
-| 4 | Vite + React 18 (não Next.js App Router) | 2026-07-30 | Padrão Blu V3; Blu DS tokens nativos; Zustand + React Query já dominados |
-| 5 | Supabase Auth (não Clerk) | 2026-07-30 | Integração nativa com PostgreSQL, RLS, OAuth social incluso |
+| 1 | PostgreSQL (Docker dev / Supabase prod) | 2026-07-30 | Dados relacionais surveys→questions→answers; RLS nativo |
+| 2 | JSONB pra `questions.config` | 2026-07-30 | Cada tipo tem parâmetros diferentes |
+| 3 | Vite + React 18 (não Next.js) | 2026-07-30 | Padrão Blu V3; SPA simples |
+| 4 | **12 tipos de pergunta** (não 6/11) | 2026-08-01 | Alinhado ao protótipo canônico (formly-tipos-v2) |
+| 5 | **Design system próprio** wine/pine/paper (não Blu DS) | 2026-08-01 | Protótipo aprovado pelo cliente define o tema editorial |
+| 6 | **Sem entrada manual de JWT** no fluxo | 2026-08-01 | Protótipo não tem token bar; dev login silencioso |
+| 7 | Gravação de áudio limitada a 2 min | 2026-08-04 | Decisão de produto (evita áudios gigantes) |

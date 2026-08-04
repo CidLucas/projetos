@@ -1,239 +1,127 @@
 # Formly — Requisitos Detalhados
 
-> Fase 0 · Fundação | 2026-07-31
+> Fase 0 · Fundação — implementada | 2026-08-04
 
 ---
 
-## 1. Stack & Infra
+## 1. Stack & Infra (efetiva)
 
-### 1.1 Monorepo
-- **Repo:** `CidLucas/monorepo`
-- **Backend:** `services/formly/` (FastAPI, UV workspace)
-- **Frontend:** `apps/formly_app/` (Vite + React 18 + Blu DS + Zustand + React Query)
-- **Libs:** `blu_auth`, `blu_supabase_client`, `blu_llm_service`, `blu_google_suite_client`, `blu_parsers`, `blu_observability_bootstrap`
+### 1.1 Repositórios
+- **Repo de código:** `CidLucas/formly` (monorepo do produto: `apps/formly_app/` + `services/formly/`)
+- **Backend:** `services/formly/` — FastAPI + SQLAlchemy, venv Python 3.12
+- **Frontend:** `apps/formly_app/` — Vite + React 18 + TS + Zustand + react-router-dom + Phosphor Icons
+- **Hub (docs/requisitos):** `CidLucas/projetos` → `formly/`
 
-### 1.2 Infra
-- **Domínio:** `formly.duckdns.org` → `177.19.44.93`
-- **Banco:** Supabase (PostgreSQL + RLS)
-- **Storage:** S3/R2 (áudios e arquivos)
-- **Email:** Resend (transacionais)
-- **Observabilidade:** OpenTelemetry + Langfuse
+### 1.2 Infra (dev)
+- **Backend:** uvicorn `:8000` (script `scripts/dev-backend.sh`)
+- **Frontend:** Vite `:5173` (proxy `/api` → 8000)
+- **Banco:** PostgreSQL 16 em Docker (container `formly-pg`, porta 5432)
+- **Acesso dev:** Tailscale `100.69.231.7` (front :5173 / back :8000)
 
 ### 1.3 APIs externas
-- **LLM:** DeepSeek Flash (geração de questionários)
-- **STT:** Groq Whisper (transcrição de áudio) — **Fase 0: transcrição REAL**
+- **LLM:** DeepSeek Flash via `blu_llm_service` (geração de questionários)
+- **STT:** Groq Whisper `whisper-large-v3-turbo` (transcrição de áudio, máx 25MB)
 
 ---
 
-## 2. Banco de Dados
+## 2. Banco de Dados (implementado)
 
-### 2.1 Tabelas
+### 2.1 Tabelas (5 — SQLAlchemy `models.py`)
 
-```sql
-CREATE TABLE forms (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    client_id UUID NOT NULL REFERENCES auth.users(id),
-    title TEXT NOT NULL,
-    description TEXT,
-    theme TEXT DEFAULT 'default',
-    settings JSONB DEFAULT '{}',
-    status TEXT DEFAULT 'draft',  -- draft | published | closed
-    created_at TIMESTAMPTZ DEFAULT now(),
-    updated_at TIMESTAMPTZ DEFAULT now()
-);
+| Tabela | Campos principais |
+|---|---|
+| `surveys` | id, user_id, title, slug (único), status, description, theme, logo_url, brand_colors (JSONB), created_at, updated_at |
+| `questions` | id, survey_id (FK), position, type (enum 12), title, required, config (JSONB) |
+| `responses` | id, survey_id (FK), respondent_ref, status (complete/partial), started_at, completed_at, time_spent_secs |
+| `answers` | id, response_id (FK), question_id (FK), value_text, value_choices (JSONB), audio_url, transcription, file_url, file_name, scale_value |
+| `contacts` | id, user_id, name, email, phone, groups (text[]) |
 
-CREATE TABLE questions (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    form_id UUID NOT NULL REFERENCES forms(id) ON DELETE CASCADE,
-    type TEXT NOT NULL,  -- short_text | long_text | multiple_choice | etc.
-    title TEXT NOT NULL,
-    description TEXT,
-    required BOOLEAN DEFAULT true,
-    config JSONB DEFAULT '{}',  -- choices, scale, file_types, etc.
-    sort_order INT NOT NULL DEFAULT 0,
-    page INT DEFAULT 1,
-    created_at TIMESTAMPTZ DEFAULT now()
-);
+### 2.2 Enum `QuestionType` — 12 tipos
 
-CREATE TABLE responses (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    form_id UUID NOT NULL REFERENCES forms(id) ON DELETE CASCADE,
-    respondent_email TEXT,       -- NULL = anônimo, preenchido = identificado
-    completed BOOLEAN DEFAULT false,
-    started_at TIMESTAMPTZ DEFAULT now(),
-    completed_at TIMESTAMPTZ
-);
-
-CREATE TABLE answers (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    response_id UUID NOT NULL REFERENCES responses(id) ON DELETE CASCADE,
-    question_id UUID NOT NULL REFERENCES questions(id) ON DELETE CASCADE,
-    value JSONB NOT NULL,        -- string, number, [strings], {row: value}
-    audio_url TEXT,              -- S3 (se gravou áudio)
-    transcription TEXT,          -- transcrição Groq
-    created_at TIMESTAMPTZ DEFAULT now()
-);
-
-CREATE TABLE contacts (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    client_id UUID NOT NULL REFERENCES auth.users(id),
-    email TEXT NOT NULL,
-    name TEXT,
-    source TEXT DEFAULT 'manual',  -- google | csv | manual
-    created_at TIMESTAMPTZ DEFAULT now(),
-    UNIQUE(client_id, email)
-);
-
-CREATE TABLE sendings (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    form_id UUID NOT NULL REFERENCES forms(id) ON DELETE CASCADE,
-    client_id UUID NOT NULL REFERENCES auth.users(id),
-    status TEXT DEFAULT 'sending',
-    total INT DEFAULT 0, sent INT DEFAULT 0,
-    failed INT DEFAULT 0, bounced INT DEFAULT 0,
-    created_at TIMESTAMPTZ DEFAULT now()
-);
-
-CREATE TABLE sending_logs (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    sending_id UUID NOT NULL REFERENCES sendings(id) ON DELETE CASCADE,
-    email TEXT NOT NULL,
-    status TEXT NOT NULL,  -- sent | failed | bounced | opened
-    error TEXT,
-    sent_at TIMESTAMPTZ DEFAULT now()
-);
-```
-
-### 2.2 RLS
-
-```sql
-ALTER TABLE forms ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "forms_owner" ON forms FOR ALL USING (client_id = auth.uid());
-
-ALTER TABLE questions ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "questions_via_form" ON questions FOR ALL USING (
-    form_id IN (SELECT id FROM forms WHERE client_id = auth.uid())
-);
-
-ALTER TABLE responses ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "responses_select_owner" ON responses FOR SELECT USING (
-    form_id IN (SELECT id FROM forms WHERE client_id = auth.uid())
-);
-CREATE POLICY "responses_insert_public" ON responses FOR INSERT WITH CHECK (true);
-
-ALTER TABLE answers ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "answers_select_owner" ON answers FOR SELECT USING (
-    response_id IN (
-        SELECT r.id FROM responses r
-        JOIN forms f ON f.id = r.form_id
-        WHERE f.client_id = auth.uid()
-    )
-);
-CREATE POLICY "answers_insert_public" ON answers FOR INSERT WITH CHECK (true);
-```
+`text_short, text_long, multiple_choice, audio, scale, file_upload, nps, ranking, matrix, datetime, number, dyn_list`
 
 ---
 
-## 3. API Endpoints
+## 3. API Endpoints (implementados)
 
-### 3.1 Forms
-| Método | Rota | Auth | Descrição |
-|---|---|---|---|
-| `POST` | `/v1/forms/generate` | Sim | Prompt → questionário (DeepSeek) |
-| `GET` | `/v1/forms` | Sim | Lista questionários do usuário |
-| `POST` | `/v1/forms` | Sim | Cria manualmente |
-| `GET` | `/v1/forms/{id}` | Sim | Detalhes + perguntas |
-| `PUT` | `/v1/forms/{id}` | Sim | Atualiza |
-| `DELETE` | `/v1/forms/{id}` | Sim | Remove |
-| `POST` | `/v1/forms/{id}/publish` | Sim | Publica |
-
-### 3.2 Questions
-| Método | Rota | Auth |
+### 3.1 Surveys (auth dev)
+| Método | Rota | Descrição |
 |---|---|---|
-| `GET` | `/v1/forms/{id}/questions` | Sim |
-| `POST` | `/v1/forms/{id}/questions` | Sim |
-| `PUT` | `/v1/forms/{id}/questions/{qid}` | Sim |
-| `DELETE` | `/v1/forms/{id}/questions/{qid}` | Sim |
-| `PUT` | `/v1/forms/{id}/questions/reorder` | Sim |
+| `GET` | `/api/surveys/` | Lista |
+| `POST` | `/api/surveys/` | Cria |
+| `GET` | `/api/surveys/{id}` | Detalhes + perguntas |
+| `PATCH` | `/api/surveys/{id}` | Atualiza (autosave) |
+| `POST` | `/api/surveys/{id}/publish` | Publica (gera slug) |
+| `GET` | `/api/surveys/{id}/responses` | Respostas (com time_spent_secs) |
+| `GET` | `/api/surveys/{id}/stats` | Métricas |
+| `GET` | `/api/surveys/{id}/export` | CSV (com BOM) |
 
-### 3.3 Responses
-| Método | Rota | Auth |
+### 3.2 IA
+| Método | Rota | Descrição |
 |---|---|---|
-| `GET` | `/r/{form_id}` | Não (HTML) |
-| `GET` | `/v1/public/forms/{id}` | Não (JSON) |
-| `POST` | `/v1/public/forms/{id}/responses` | Não |
-| `GET` | `/v1/forms/{id}/responses` | Sim (dono) |
-| `GET` | `/v1/forms/{id}/responses/stats` | Sim (dono) |
+| `POST` | `/api/ai/skeleton` | Prompt → questionário |
+| `POST` | `/api/ai/refinement-questions` | Perguntas de refinamento |
+| `POST` | `/api/ai/refine` | Refina com respostas |
 
-### 3.4 Send
-| Método | Rota | Auth |
+### 3.3 Público
+| Método | Rota | Descrição |
 |---|---|---|
-| `GET` | `/v1/contacts` | Sim |
-| `POST` | `/v1/contacts` | Sim |
-| `POST` | `/v1/contacts/upload-csv` | Sim |
-| `POST` | `/v1/forms/{id}/send` | Sim |
+| `GET` | `/api/public/surveys/{slug}` | Questionário público |
+| `POST` | `/api/public/surveys/{slug}/responses` | Envia resposta |
+| `POST` | `/api/public/surveys/{slug}/responses/partial` | Rascunho parcial |
 
-### 3.5 Áudio
-| Método | Rota | Auth |
+### 3.4 Outros
+| Método | Rota | Descrição |
 |---|---|---|
-| `POST` | `/v1/audio/transcribe` | Não |
-
+| `POST` | `/api/transcribe` | Áudio → texto (Groq) |
+| `POST` | `/api/dev/login` | JWT dev (404 se Supabase ativo) |
+| `GET` | `/api/contacts` | Contatos |
 
 ---
 
-## 4. Frontend — Páginas
+## 4. Frontend — Páginas (implementadas)
 
-### 4.0 Landing (`/`)
-- "Precisa de um questionário?" + input + botão Gravar áudio
-- Enter → `/auth?prompt=...`
+### 4.0 Landing (`/`) — ✅
+"Precisa de um questionário?" + input grande + botão "Gravar áudio" pill com dot pulsante.
+- Enter no input → review (e-mail se não salvo) → `/builder`
+- Gravar: MediaRecorder, **timer visível, limite 2 min**, para no clique
+- Transcrição editável → e-mail → `/builder?description=...`
 
-### 4.1 Auth (`/auth`)
-- Google OAuth + magic link
-- Após login → `/builder?prompt=...`
+### 4.1 Auth (`/auth`) — ✅ (dev)
+"Só mais uma coisa" — botão "Continuar com Google" + divider + form e-mail.
+- Em dev: ambos chamam `/api/dev/login` (JWT local)
+- TODO no código: plugar Supabase OAuth quando configurado
 
-### 4.2 Home (`/home`)
-- Lista de questionários do usuário (cards)
-- Cada card: título, status (draft/published/closed), data, nº de respostas
-- Ações: Editar, Enviar, Ver resultados, Duplicar, Excluir
-- Botão "+ Novo questionário" → `/`
+### 4.2 Builder (`/builder/:id?`) — ✅
+Cards empilhados (coluna 560px), header com título editável + "+ Pergunta" / "Enviar →".
+- Card: título (textarea auto-resize), badge de tipo (13 opções), hint, preview do componente, toolbar (obrigatória, mover, duplicar, excluir), config por tipo
+- Autosave 2s → `PATCH /api/surveys/{id}`; "Enviar →" → publica → `/send/{id}`
+- Sem JWT manual; intent da landing em `sessionStorage.formly_intent`
 
-### 4.3 Builder (`/builder`)
-- `?prompt=` → `POST /v1/forms/generate` → renderiza
-- Lista editável: reordenar, adicionar, remover perguntas
-- Toggle Editor/Preview
-- Gravar áudio para ditar perguntas (criador)
-- Publicar → sheet de envio
+### 4.3 Send (`/send/:id`) — ✅ (mock de envio)
+"Enviar: {título}" — busca contatos, "Todos/Selecionados (N)", lista com checkboxes, divider + CSV (parse client-side), mensagem opcional, botão "Enviar questionário →" (mock → `/dashboard/{id}` após 1.5s). Sem token → `/auth`.
 
-### 4.4 Send (`/send/{form_id}`)
-- Selecionar contatos (Google + CSV + manual)
-- Mensagem opcional
-- Disparar → confirmação com link público
+### 4.4 Analytics (`/dashboard/:id`) — ✅
+`.back`, título + "Exportar CSV", 3 KPIs (Respostas + "de N enviados", Taxa de resposta, Tempo médio), "Respostas por pergunta" com barras animadas, empty state com copiar link público.
 
-### 4.5 Analytics (`/analytics/{form_id}`)
-- KPIs: respostas, taxa
-- Gráficos por tipo de pergunta
-- Exportar CSV/PDF
-
-### 4.6 Página pública (`/r/{form_id}`)
-- Renderiza questionário com tema
-- Responde com texto e/ou áudio
-- Respondente anônimo (padrão) ou e-mail opcional
-- Tela de obrigado
+### 4.5 Survey (`/s/:slug`) — ✅
+Abertura (`.screen-intro`), modo etapas com progress bar ou scroll com botão sticky, 12 tipos com classes wine/pine/paper, conclusão (`.screen-done`), envia `time_spent_secs`.
 
 ---
 
 ## 5. Requisitos Não-Funcionais
 
-| Requisito | Meta |
-|---|---|
-| Tempo resposta API | < 500ms p95 |
-| Geração IA (prompt → JSON) | < 5s |
-| Transcrição áudio (1 min) | < 3s (Groq) |
-| Página pública (LCP) | < 1.5s |
-| Uptime | 99.5% |
-| Observabilidade | OpenTelemetry em todos os serviços |
+| Requisito | Meta | Estado |
+|---|---|---|
+| Tempo resposta API | < 500ms p95 | 🟢 OK em dev |
+| Geração IA (prompt → JSON) | < 5s | 🟡 depende DeepSeek |
+| Transcrição áudio (1 min) | < 3s (Groq) | 🟢 OK |
+| Página pública (LCP) | < 1.5s | 🟢 SPA leve |
+| Sem scroll horizontal em textos longos | — | 🟢 overflow-wrap + auto-resize (R8) |
+| Gravação de áudio | livre até 2 min | 🟢 limite implementado |
+| Observabilidade | OpenTelemetry | 🔴 pendente |
 
 ---
 
-> **Autor:** Hermes PM  
-> **Status:** Fase 0 em andamento
+> **Autor:** Hermes PM
+> **Status:** Fase 0 implementada e commitada (2026-08-04)

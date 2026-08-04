@@ -1,50 +1,54 @@
 # Formly — Roadmap Detalhado
 
-> **Produto Deep Blue** | Última atualização: 2026-07-31
+> **Produto Deep Blue** | Última atualização: 2026-08-04
 
 ---
 
 ## Fase 0 — Fundação (semanas 1-3)
 
-**Objetivo:** Protótipo funcional com transcrição real.
+**Objetivo:** Protótipo funcional com transcrição real e realinhamento ao protótipo canônico.
 
 ### 0.1 — Landing + Auth
 - [x] Landing page: "Precisa de um questionário?" + input + áudio
-- [ ] Auth page: Google OAuth + magic link
-- [ ] Lead capture: salva e-mail no Supabase antes de gerar questionário
+- [x] Auth page: "Só mais uma coisa" — Google/e-mail (dev login; Supabase OAuth pendente)
+- [x] Lead capture: e-mail salvo no localStorage antes de gerar questionário
 
 ### 0.2 — Geração por IA
-- [ ] Endpoint `POST /v1/forms/generate` — recebe prompt, chama DeepSeek Flash, retorna JSON
-- [ ] Prompt engineering: template que gera questionário com título + perguntas + opções
+- [x] Endpoint de IA: `POST /api/ai/skeleton` + `/refinement-questions` + `/refine` (DeepSeek Flash via blu_llm_service)
+- [x] Prompt engineering: BUILDER_SYSTEM_PROMPT com os 12 tipos de pergunta
 - [ ] Fallback: se LLM falhar, retorna template genérico
 
-### 0.3 — Builder mínimo
-- [ ] Renderizar questionário gerado como lista editável
-- [ ] Tipos: texto curto, texto longo (+ áudio companion), múltipla escolha (única)
-- [ ] Editar título e descrição
-- [ ] Adicionar/remover/reordenar perguntas
-- [ ] Salvar no Supabase
+### 0.3 — Builder (realinhado ao protótipo)
+- [x] Cards empilhados em coluna 560px (estilo builder.html)
+- [x] 12 tipos de pergunta com preview por tipo
+- [x] Editar título inline (textarea auto-resize) e hint
+- [x] Adicionar/remover/reordenar/duplicar perguntas
+- [x] Autosave + salvar/publicar → `/send/:id`
+- [x] Intento da landing (texto/áudio) chega ao builder via sessionStorage
 
 ### 0.4 — Áudio (transcrição REAL)
-- [ ] Endpoint `POST /v1/audio/transcribe` → Groq Whisper
-- [ ] Gravador de áudio no builder (criador dita prompt)
-- [ ] Gravador de áudio no respondente (companion do texto longo)
+- [x] Endpoint `POST /api/transcribe` → Groq Whisper (até 25MB, qualquer duração)
+- [x] Gravador na landing: gravação livre, timer visível, limite 2 min
+- [x] Transcrição editável + pede e-mail antes de prosseguir
+- [ ] Gravador de áudio no respondente (companion do texto longo — UI presente, testar E2E)
 - [ ] Player com waveform + transcrição
 
 ### 0.5 — Página de resposta pública
-- [ ] Rota pública: `/r/{form_id}` — renderiza o questionário
-- [ ] Submit de respostas (texto + áudio)
-- [ ] Respondente anônimo (padrão) ou identificado (e-mail opcional)
-- [ ] Confirmação de envio
-- [ ] Link público + QR code
+- [x] Rota pública: `/s/{slug}` — renderiza o questionário com os 12 tipos
+- [x] Submit de respostas (texto + valores por tipo) + partial
+- [x] Modo etapas (progress bar) + modo scroll (botão sticky)
+- [x] Tela de abertura (`.screen-intro`) e conclusão (`.screen-done`)
+- [ ] Respondente identificado (e-mail opcional) — pendente
+- [ ] Link público + QR code — pendente
 
 ### 0.6 — Infra
-- [x] Serviço `formly` scaffolded no monorepo
-- [ ] Supabase: schema completo (forms, questions, responses, answers, contacts, sendings)
-- [x] DuckDNS: `formly.duckdns.org`
+- [x] Backend FastAPI + PostgreSQL 16 (Docker) — 5 tabelas
+- [x] Frontend Vite + React 18 + TS
+- [x] Dev login (`/api/dev/login`) — 404 quando Supabase configurado
+- [ ] Supabase: schema completo em produção
 - [ ] Observabilidade bootstrap ativa
 
-**Gate:** Criar questionário por IA → editar → publicar → responder com texto e áudio.
+**Gate:** Criar questionário por IA/áudio → editar → publicar → responder com texto e áudio. 🟢 Parcialmente atingido (falta QR + respondente identificado).
 
 ---
 
@@ -52,15 +56,10 @@
 
 **Objetivo:** Produto completo com todos os tipos de pergunta e envio.
 
-### 1.1 — Todos os 11 tipos de pergunta
-- [ ] Texto curto, Texto longo (+ áudio), Múltipla escolha (única e múltipla)
-- [ ] Escala Likert (5 e 7 pontos)
-- [ ] NPS (0-10)
-- [ ] Ranking (drag and drop)
-- [ ] Matriz de escala
-- [ ] Upload de arquivo (PDF, imagem)
-- [ ] Data/Hora
-- [ ] Número
+### 1.1 — Tipos de pergunta
+- [x] **12 tipos no backend** (enum: text_short, text_long, multiple_choice, audio, scale, file_upload, nps, ranking, matrix, datetime, number, dyn_list) — R2
+- [x] UI no builder para os 12 tipos — R4/R5
+- [ ] Testes E2E de resposta por tipo via API pública
 
 ### 1.2 — Temas visuais
 - [ ] 3-4 temas pré-construídos
@@ -68,13 +67,13 @@
 - [ ] Preview em tempo real
 
 ### 1.3 — Modos de navegação
-- [ ] Modo etapas (uma pergunta por vez, barra de progresso)
-- [ ] Modo scroll (todas visíveis)
+- [x] Modo etapas (uma pergunta por vez, barra de progresso)
+- [x] Modo scroll (todas visíveis, botão sticky)
 
 ### 1.4 — Envio por e-mail
-- [ ] Tela Send: seleção de contatos (Google + CSV upload + manual)
-- [ ] Resend para e-mails transacionais
-- [ ] Mensagem personalizada opcional
+- [x] Tela Send: seleção de contatos (busca + CSV upload + manual)
+- [ ] Resend para e-mails transacionais (hoje: mock que navega ao dashboard)
+- [x] Mensagem personalizada opcional
 - [ ] Report de entrega (enviados, falhas, bounces)
 
 ### 1.5 — Home logada
@@ -84,9 +83,10 @@
 - [ ] Ações: editar, enviar, ver resultados, duplicar, excluir
 
 ### 1.6 — Dashboard de respostas v1
-- [ ] KPIs: total, taxa de resposta
-- [ ] Visualização por tipo: barras, lista de textos
-- [ ] Exportação CSV
+- [x] KPIs: total de respostas, taxa de resposta, tempo médio
+- [x] Barras por pergunta (multiple_choice/scale/nps/ranking/matrix com %, texto/dyn_list com "Ver mais")
+- [x] Exportação CSV
+- [ ] Filtro de período (dropdown 7/30/90 dias)
 
 **Gate:** MVP completo — criar, editar, enviar, responder, ver resultados.
 
@@ -146,8 +146,8 @@
 
 | Marco | Semana | Status |
 |---|---|---|
-| Fase 0 — Protótipo com áudio real | 1-3 | 🔴 Em andamento |
-| Fase 1 — MVP completo | 4-9 | ⚪ Planejado |
+| Fase 0 — Protótipo com áudio real | 1-3 | 🟡 Quase completo (falta QR, respondente identificado, deploy) |
+| Fase 1 — MVP completo | 4-9 | 🟡 Em andamento (Send mock, Supabase pendente) |
 | Fase 2 — Beta público | 10-12 | ⚪ Planejado |
 | Fase 3 — Agentes IA | 13-18 | ⚪ Planejado |
 | Fase 4 — Produto completo | 19-24 | ⚪ Planejado |

@@ -1,6 +1,6 @@
 # Formly — Escopo e Proposta
 
-> **Produto Deep Blue** | Fase: Descoberta | Última atualização: 2026-07-31
+> **Produto Deep Blue** | Fase: 0 — Protótipo funcional | Última atualização: 2026-08-04
 
 ---
 
@@ -17,79 +17,65 @@ Ferramentas de questionário existentes (Typeform, SurveyMonkey, Google Forms) s
 **Fábrica de questionários** — plataforma web onde o usuário cria, distribui e analisa pesquisas.
 
 ### 2.1. Experiência do criador
-- **Módulos arrastáveis** — monta o questionário por blocos de pergunta
-- **Áudio como input** — dita perguntas, transcreve automaticamente
+- **Cards editáveis** — monta o questionário por blocos de pergunta (realinhado ao protótipo aprovado)
+- **Áudio como input** — dita a pesquisa na landing, transcreve automaticamente, edita antes de seguir
 - **Geração por IA** — "me faz uma pesquisa de clima" → IA gera → humano edita
 - **Agente de validação** — sugere perguntas complementares (Fase 3)
-- **Temas visuais** — design systems pré-construídos + brand kit
-- **11 tipos de pergunta** — do texto curto à matriz de escala
+- **Temas visuais** — design system próprio wine/pine/paper (canônico do protótipo)
+- **12 tipos de pergunta** — do texto curto à matriz de escala, NPS, ranking, lista dinâmica
 
 ### 2.2. Experiência do respondente
-- Link público acessível por qualquer dispositivo
+- Link público acessível por qualquer dispositivo (`/s/{slug}`)
 - Responde com texto e/ou áudio (áudio é companion do texto longo)
 - Áudio transcrito via Groq Whisper
+- Modo etapas (progress bar) ou scroll (botão sticky)
 - Agente de follow-up que aprofunda respostas superficiais (Fase 3)
-- Respondente pode ser anônimo ou identificado (e-mail opcional)
+- Respondente anônimo (padrão) ou identificado (e-mail opcional — pendente)
 
 ### 2.3. Distribuição
-- Link público + QR code (Fase 0)
-- Envio por e-mail com seleção de contatos + CSV upload (Fase 1)
+- Link público (Fase 0)
+- Envio por e-mail com seleção de contatos + CSV upload (Fase 1 — mock hoje)
 - WhatsApp e embed (Fase 3)
 
 ### 2.4. Resultados
-- Dashboard com respostas agregadas
-- Exportação CSV, PDF
+- Dashboard com KPIs e barras por pergunta (analytics.html)
+- Exportação CSV (Fase 0)
 - Relatórios IA (Fase 4)
 
 ---
 
-## 3. Stack
+## 3. Stack (efetiva)
 
 | Camada | Tecnologia |
 |---|---|
-| Frontend | **Vite + React 18 + Blu DS** + Zustand + React Query + Phosphor Icons |
-| Backend | **FastAPI** (Python) no monorepo `CidLucas/monorepo` |
-| Banco | **Supabase** (PostgreSQL + RLS) |
-| Storage | **S3 / R2** (áudios e arquivos) |
+| Frontend | **Vite + React 18 + TS** + Zustand + react-router-dom + Phosphor Icons |
+| Backend | **FastAPI** (Python) + SQLAlchemy |
+| Banco | **PostgreSQL 16** (Docker dev) / Supabase (produção) |
 | Transcrição | **Groq Whisper** (STT) |
-| LLM | **DeepSeek Flash** |
-| Auth | **Supabase Auth** (Google OAuth + magic link) |
-| Email | **Resend** (transacionais) |
-| Google Workspace | **`blu_google_suite_client`** (import Forms, export Docs/Sheets) |
-| File Parsing | **Blue Parsis** (`blu_parsers`) |
-| Observabilidade | **OpenTelemetry** (`blu_observability_bootstrap`) |
-| Infra | Servidor próprio, **DuckDNS** (`formly.duckdns.org`) |
-
-### Libs reutilizadas do monorepo
-| Lib | Uso |
-|---|---|
-| `blu_auth` | JWT / Supabase Auth |
-| `blu_supabase_client` | Conexão Supabase |
-| `blu_llm_service` | LLM routing (DeepSeek) |
-| `blu_google_suite_client` | Google Forms, Docs, Sheets |
-| `blu_parsers` | PDF, CSV parsing |
-| `blu_observability_bootstrap` | OpenTelemetry + Langfuse |
+| LLM | **DeepSeek Flash** via `blu_llm_service` |
+| Auth | JWT dev (agora) → **Supabase Auth** (produção) |
+| Email | **Resend** (Fase 1) |
+| Infra | EC2 + Tailscale (dev); Vercel + Railway (prod futuro) |
 
 ---
 
 ## 4. Fases do Produto (5 fases, 24 semanas)
 
-### Fase 0 — Fundação (semanas 1-3)
-- Landing page + Auth (Google OAuth + magic link)
-- Geração por IA: prompt → questionário
-- Builder mínimo: 3 tipos de pergunta (texto curto, texto longo + áudio companion, múltipla escolha única)
-- Áudio: transcrição REAL via Groq Whisper (não simulada)
-- Página pública de resposta
-- Link público + QR code
-- Schema Supabase + observabilidade
+### Fase 0 — Fundação (semanas 1-3) — 🟡 quase completa
+- ✅ Landing page + Auth (dev login; Supabase OAuth pendente)
+- ✅ Geração por IA: prompt → questionário (skeleton/refine)
+- ✅ Builder: 12 tipos de pergunta, cards editáveis (realinhado ao protótipo)
+- ✅ Áudio: transcrição REAL via Groq Whisper, gravação livre com limite 2 min
+- ✅ Página pública de resposta (`/s/{slug}`) com 12 tipos
+- ⏳ Link público + QR code (pendente)
+- ⏳ Supabase schema + observabilidade (pendente)
 
 ### Fase 1 — MVP (semanas 4-9)
-- Todos os 11 tipos de pergunta
-- Gravador de áudio no builder (criador dita perguntas)
-- Temas visuais (3-4) + brand kit
-- Modos de navegação (etapas / scroll)
-- Envio por e-mail (contatos Google + CSV + Resend)
-- Dashboard de respostas v1
+- ✅ 12 tipos de pergunta (backend + UI)
+- ⏳ Temas visuais (3-4) + brand kit
+- ✅ Modos de navegação (etapas / scroll)
+- ⏳ Envio por e-mail real (contatos + CSV + Resend) — hoje mock
+- ✅ Dashboard de respostas v1 (KPIs + barras + export)
 
 ### Fase 2 — Beta (semanas 10-12)
 - Onboarding guiado
@@ -125,7 +111,7 @@ Ferramentas de questionário existentes (Typeform, SurveyMonkey, Google Forms) s
 | Typeform | ❌ | ❌ | ❌ | ❌ (beta) | ❌ |
 | Google Forms | ❌ | ❌ | ❌ | ❌ | Parcial |
 | SurveyMonkey | ❌ | ❌ | ❌ | ❌ | ❌ |
-| **Formly** | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Formly** | ✅ | ✅ | ✅ (F3) | ✅ (F4) | ✅ |
 
 ---
 
@@ -155,19 +141,19 @@ Ferramentas de questionário existentes (Typeform, SurveyMonkey, Google Forms) s
 
 | # | Decisão |
 |---|---|
-| D001 | Stack: Vite + React 18 + Blu DS |
+| D001 | Stack: Vite + React 18 (SPA) — não Next.js |
 | D002 | Monorepo único: `apps/formly_app/` + `services/formly/` |
 | D003 | LLM: DeepSeek Flash |
-| D004 | Google Workspace: `blu_google_suite_client` |
-| D005 | File Parsing: Blue Parsis |
-| D006 | Observabilidade: `blu_observability_bootstrap` |
-| D007 | Domínio dev: DuckDNS `formly.duckdns.org` |
+| D004 | Design system próprio wine/pine/paper (protótipo canônico) |
+| D005 | 12 tipos de pergunta (realinhamento ao protótipo) |
+| D006 | Sem entrada manual de JWT — dev login silencioso / Supabase Auth em prod |
+| D007 | Gravação de áudio limitada a 2 minutos |
 | D008 | Fase 0: transcrição REAL (Groq) |
-| D009 | Home logada: `/home` |
-| D010 | Respondente: anônimo ou identificado (e-mail opcional) |
+| D009 | Respondente: anônimo ou identificado (e-mail opcional) |
+| D010 | Banco: PostgreSQL (Docker dev / Supabase prod) |
 
 ---
 
-> **Autor:** Hermes PM com input de Lucas Cid  
-> **Status:** Fase 0 — protótipo em andamento  
-> **Próximo passo:** Auth page + endpoint `/v1/forms/generate`
+> **Autor:** Hermes PM com input de Lucas Cid
+> **Status:** Fase 0 — protótipo funcional commitado (2026-08-04)
+> **Próximo passo:** Supabase Auth real + envio de e-mail (Resend)
