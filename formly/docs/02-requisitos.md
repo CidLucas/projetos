@@ -99,10 +99,10 @@ Cards empilhados (coluna 560px), header com título editável + "+ Pergunta" / "
 - Sem JWT manual; intent da landing em `sessionStorage.formly_intent`
 
 ### 4.3 Send (`/send/:id`) — ✅ (envio real via Resend)
-"Enviar: {título}" — busca contatos, "Todos/Selecionados (N)", lista com checkboxes, divider + CSV (parse client-side), mensagem opcional, botão "Enviar questionário →".
-- Chama `POST /api/surveys/{id}/distribute` com contatos selecionados + e-mails CSV + mensagem
-- Sem seleção → aviso "Selecione ao menos um contato ou importe um CSV"
-- Resend configurado → envio real; sem `RESEND_API_KEY` → modo simulado com banner verde + link público copiável
+"Enviar: {título}" — **simplificado**: só "Enviar por e-mail" (digitar + Adicionar / Enter → chips) OU "Subir arquivo CSV" (um e-mail por linha). Sem lista de contatos.
+- Chama `POST /api/surveys/{id}/distribute` com e-mails manuais + CSV
+- Envia `from_email` + `from_name` (nome/e-mail do Google ou da landing)
+- Resend configurado → envio real com template HTML (identidade wine/pine/paper); sem `RESEND_API_KEY` → modo simulado com banner verde + link público copiável
 - Sucesso → navega `/dashboard/{id}`; erro → reabilita botão
 
 ### 4.4 Analytics (`/dashboard/:id`) — ✅
@@ -113,6 +113,12 @@ Abertura (`.screen-intro`), modo etapas com progress bar ou scroll com botão st
 
 ### 4.6 Preview (`/preview/:id`) — ✅
 Renderiza o questionário como o respondente vê (reusa componentes do Survey), sem envio real. Header: "← Voltar" (builder) + "Confirmar e enviar →" (send).
+
+### 4.7 E-mail de distribuição (template HTML)
+- **Identidade visual:** header vinho `#7A2E3F` com logo "formly", card papel `#FCFBF8`, botão CTA "Responder questionário →", rodapé pine — fontes Georgia/Helvetica
+- **Corpo:** "Olá!" → "Você recebeu um questionário {título} de {Nome} ({email})." → "Sua opinião é importante — leva menos de 2 minutos." → link
+- **Remetente:** `from_name`/`from_email` do localStorage (Google OAuth quando ativo; landing em dev); fallback capitalizado do e-mail
+- **Link:** `FORMLY_PUBLIC_URL` + `/s/{slug}` (URL absoluta)
 
 ---
 

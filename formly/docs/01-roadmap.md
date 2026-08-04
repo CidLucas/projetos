@@ -71,9 +71,10 @@
 - [x] Modo scroll (todas visíveis, botão sticky)
 
 ### 1.4 — Envio por e-mail
-- [x] Tela Send: seleção de contatos (busca + CSV upload + manual)
-- [x] Endpoint `/distribute` + Resend configurado (envio real validado; free só p/ e-mail verificado)
-- [x] Mensagem personalizada opcional
+- [x] Tela Send simplificada: e-mail manual (chips) + CSV (sem lista de contatos)
+- [x] Endpoint `/distribute` + Resend configurado (envio real validado)
+- [x] E-mail HTML com identidade visual wine/pine/paper (header, CTA, rodapé)
+- [x] Remetente = nome/e-mail do Google (via formly_name/formly_email)
 - [x] Banner com link público quando modo simulado
 - [ ] Report de entrega (enviados, falhas, bounces)
 - [ ] Verificar domínio próprio no Resend (hoje: `onboarding@resend.dev`)

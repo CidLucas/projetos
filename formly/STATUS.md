@@ -26,7 +26,7 @@
 | Fluxo de áudio completo | 🟢 gravação livre, timer, limite 2min, transcrição editável, e-mail (R9) |
 | Repo de código | 🟢 https://github.com/CidLucas/formly — realinhamento + correções commitados (5 commits, 2026-08-04) |
 | Transcrição real | 🟢 `POST /api/transcribe` — Groq Whisper |
-| Envio de e-mail real (Resend) | 🟢 `/distribute` + RESEND_API_KEY configurada (envio validado); free só envia p/ e-mail verificado da conta |
+| Envio de e-mail real (Resend) | 🟢 `/distribute` + RESEND_API_KEY configurada — template HTML com identidade visual, remetente = nome/e-mail do Google, envio validado |
 | Ranking reordenável (mobile) | 🟢 botões ↑/↓ + drag com setData (R10) |
 | Botão enviar no rodapé do builder | 🟢 `.submit-sticky` fixo no rodapé (R11) |
 | Preview antes de enviar | 🟢 `/preview/:id` — form como o respondente vê (R11) |
@@ -47,6 +47,8 @@
 | 6 | Ranking com botões ↑/↓ (não só drag) — respondentes mobile não têm drag | 2026-08-04 |
 | 7 | Preview obrigatório antes de enviar (builder → preview → send) | 2026-08-04 |
 | 8 | Envio de e-mail via Resend; free só envia p/ e-mail verificado da conta | 2026-08-04 |
+| 9 | E-mail com identidade visual (wine/pine/paper) + remetente = nome/e-mail do Google | 2026-08-04 |
+| 10 | Send simplificado: só e-mail manual + CSV (sem lista de contatos) | 2026-08-04 |
 
 ## 🎯 Próximas ações
 
@@ -64,3 +66,4 @@
 | 2026-08-01 | Realinhamento R1–R7 executados (design system, 12 tipos, 5 telas, sem JWT, text wrap). |
 | 2026-08-04 | R8/R9 concluídos (text wrap + fluxo de áudio com limite 2min). Commit + push do realinhamento. Doc do hub atualizada. |
 | 2026-08-04 | Correções pós-teste: fix serialize_survey (stats por pergunta), ranking mobile (R10), sticky + preview (R11), envio Resend real (R12). Commit + push. |
+| 2026-08-04 | E-mail final: template HTML wine/pine/paper, remetente = nome do Google (Lucas Cid), sem mensagem do usuário no corpo. Send simplificado (manual + CSV). Auth preparado p/ Supabase OAuth. |
