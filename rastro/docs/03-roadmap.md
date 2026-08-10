@@ -8,7 +8,7 @@
 
 **Duração estimada:** ~3 semanas
 **D+0:** a definir
-**Pagamento:** 50% (R$ 12.500) na entrega do relatório
+**Pagamento:** 50% (R$ 10.000) na entrega do relatório
 
 | # | Atividade | Quem | Duração |
 |---|---|---|---|
@@ -28,7 +28,7 @@
 - Recomendações priorizadas
 
 **Gate A→B:** Rastro aprova diagnóstico e autoriza continuar para implementação.
-**💰 Pagamento:** R$ 12.500 na entrega.
+**💰 Pagamento:** R$ 10.000 na entrega.
 
 ---
 
@@ -36,7 +36,7 @@
 
 **Duração estimada:** ~5 semanas
 **Pré-requisito:** Fase A aprovada + MCP Brain Lite com tools MCP validadas
-**Pagamento:** 50% (R$ 12.500) na entrega final
+**Pagamento:** 50% (R$ 10.000) na entrega final
 
 | # | Atividade | Quem | Duração |
 |---|---|---|---|
@@ -57,7 +57,7 @@
 - Sessão de treinamento realizada
 - Documento de boas práticas (manutenção do corpus, curadoria, onboarding)
 
-**💰 Pagamento:** R$ 12.500 na entrega.
+**💰 Pagamento:** R$ 10.000 na entrega.
 
 ---
 

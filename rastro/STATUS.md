@@ -2,7 +2,7 @@
 
 > Última atualização: 2026-07-29
 > **Contrato:** Deep Blue → Rastro (direto)
-> **Investimento:** R$ 25.000 (2 meses, pagamento por entrega: 50% após Fase A + 50% após Fase B)
+> **Investimento:** R$ 20.000 (2 meses, pagamento por entrega: 50% após Fase A + 50% após Fase B)
 > **Produto:** Rastro Brain (MCP Brain Lite)
 > **Lucas:** responsável técnico + consultor
 > **Foco:** Escopo fechado — próximo passo é apresentar proposta à Rastro
@@ -19,7 +19,7 @@
 | **Entregáveis Fase A** | 🟢 Processo de propostas atualizado + Relatório do corpus documental |
 | **Escopo Fase B (implementação)** | 🟢 ~5 semanas |
 | **Critério de pronto Fase B** | 🟢 Time conectado + conteúdo curado e disponível via MCP |
-| **Investimento** | 🟢 R$ 25.000 (50% após Fase A + 50% após Fase B) |
+| **Investimento** | 🟢 R$ 20.000 (50% após Fase A + 50% após Fase B) |
 | **Produto** | 🟢 Rastro Brain (MCP Brain Lite) |
 | **Escopos** | 🟢 Pessoal + Corporativo |
 | **Curadoria** | 🟢 Fábio e Lucas Diárea (Rastro) |
@@ -52,3 +52,4 @@ Nenhuma pergunta crítica. Todas as definições foram fechadas em 2026-07-29.
 | 2026-07-29 | Criação do projeto. Site da Rastro + Rastro Mind analisados. Docs base criados. |
 | 2026-07-29 | v0.2: Cronograma 2 meses. Investimento R$ 25.000. Docs 01/02/04 removidos. |
 | 2026-07-29 | v0.3: Perguntas fechadas. Entregáveis detalhados. Produto nomeado Rastro Brain. Curadoria: Fábio + Lucas Diárea. Deploy: EC2. Case autorizado. |
+| 2026-08-10 | Proposta apresentada à Rastro. Investimento fechado: R$ 20.000 (50% + 50%). ADR-001: oferta centrada no outcome (agentes conectados ao corpus). |

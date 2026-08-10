@@ -3,7 +3,7 @@
 > **Versão:** v0.3 — 2026-07-29
 > **Cliente:** Rastro ([rastro.cc](https://rastro.cc/))
 > **Contrato:** Deep Blue → Rastro (direto)
-> **Investimento:** R$ 25.000 (projeto completo, 2 meses)
+> **Investimento:** R$ 20.000 (projeto completo, 2 meses)
 
 ---
 
@@ -114,12 +114,12 @@ O MCP Brain Lite está em desenvolvimento ativo (repo: `CidLucas/mcp_brain_lite`
 
 ## 8. Investimento
 
-**R$ 25.000** pelo projeto completo (Fase A + Fase B):
+**R$ 20.000** pelo projeto completo (Fase A + Fase B):
 
 | Parcela | Valor | Condição |
 |---|---|---|
-| 1ª parcela (50%) | R$ 12.500 | Na entrega da Fase A (processo atualizado + relatório do corpus) |
-| 2ª parcela (50%) | R$ 12.500 | Na entrega da Fase B (time conectado + conteúdo curado e disponível via MCP) |
+| 1ª parcela (50%) | R$ 10.000 | Na entrega da Fase A (processo atualizado + relatório do corpus) |
+| 2ª parcela (50%) | R$ 10.000 | Na entrega da Fase B (time conectado + conteúdo curado e disponível via MCP) |
 
 ---
 

@@ -4,7 +4,7 @@
 > **Cliente:** Rastro ([rastro.cc](https://rastro.cc/)) — agência-studio de inteligência criativa (Rio de Janeiro)
 > **Tipo:** Consultoria + Implementação (Fase A + Fase B)
 > **Contrato:** Deep Blue → Rastro (direto, sem intermediário)
-> **Investimento:** R$ 25.000 (2 meses)
+> **Investimento:** R$ 20.000 (2 meses)
 > **Fase atual:** Escopo fechado — aguardando apresentação da proposta
 > **Início:** A definir
 > **Responsável:** Lucas Cid
@@ -22,8 +22,8 @@ O problema: o Rastro Mind é uma ilha fora do Claude. O time não consegue consu
 
 | Fase | O quê | Duração | Pagamento |
 |---|---|---|---|
-| **Fase A — Consultoria** | Revisão do fluxo de propostas, inventário documental, diagnóstico | ~3 semanas | R$ 12.500 na entrega |
-| **Fase B — Implementação** | Deploy da Rastro Brain, ingestão do corpus, conexão dos MCPs, treinamento | ~5 semanas | R$ 12.500 na entrega |
+| **Fase A — Consultoria** | Revisão do fluxo de propostas, inventário documental, diagnóstico | ~3 semanas | R$ 10.000 na entrega |
+| **Fase B — Implementação** | Deploy da Rastro Brain, ingestão do corpus, conexão dos MCPs, treinamento | ~5 semanas | R$ 10.000 na entrega |
 
 **Produto:** [MCP Brain Lite](https://github.com/CidLucas/mcp_brain_lite) — gateway FastAPI+FastMCP sobre Mnemosyne, OAuth 2.1 via Supabase, escopos pessoal + corporativo.
 
