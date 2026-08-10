@@ -3,7 +3,7 @@
 > **Versão:** v0.4 — 2026-08-10 (pós-reunião com o cliente)
 > **Cliente:** Rastro ([rastro.cc](https://rastro.cc/))
 > **Contrato:** Deep Blue → Rastro (direto)
-> **Investimento:** R$ 15.000 (8 semanas, 3 entregas de R$ 5.000)
+> **Investimento:** R$ 15.000 (8 semanas, 50% + 50%)
 
 ---
 
@@ -82,9 +82,9 @@ Documentar o novo fluxo de propostas, passo a passo, para o time seguir daqui pa
 
 | Fase | Duração | Descrição | Pagamento |
 |---|---|---|---|
-| 1 · Diagnóstico AS-IS | Semanas 1–3 | Entrevistas, inventário, mapeamento AS-IS, gargalos | R$ 5.000 na entrega |
-| 2 · Otimização | Semanas 4–6 | Recomendações priorizadas + iterações com o time | R$ 5.000 na entrega |
-| 3 · Blueprint | Semanas 7–8 | Fluxo otimizado documentado + handoff | R$ 5.000 na entrega |
+| 1 · Diagnóstico AS-IS | Semanas 1–3 | Entrevistas, inventário, mapeamento AS-IS, gargalos | R$ 7.500 (50%) na entrega |
+| 2 · Otimização | Semanas 4–6 | Recomendações priorizadas + iterações com o time | — |
+| 3 · Blueprint | Semanas 7–8 | Fluxo otimizado documentado + handoff | R$ 7.500 (50%) na entrega |
 | **Total** | **8 semanas** | | **R$ 15.000** |
 
 ---
@@ -114,9 +114,8 @@ Documentar o novo fluxo de propostas, passo a passo, para o time seguir daqui pa
 
 | Parcela | Valor | Condição |
 |---|---|---|
-| 1ª (Entregável 1) | R$ 5.000 | Na entrega do diagnóstico (Semana 3) |
-| 2ª (Entregável 2) | R$ 5.000 | Na entrega da otimização (Semana 6) |
-| 3ª (Entregável 3) | R$ 5.000 | Na entrega final (Semana 8) |
+| 1ª parcela (50%) | R$ 7.500 | Na entrega do diagnóstico (Semana 3) |
+| 2ª parcela (50%) | R$ 7.500 | Na entrega final (Semana 8) |
 
 ---
 

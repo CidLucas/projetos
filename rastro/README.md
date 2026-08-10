@@ -4,7 +4,7 @@
 > **Cliente:** Rastro ([rastro.cc](https://rastro.cc/)) — agência-studio de inteligência criativa (Rio de Janeiro)
 > **Tipo:** Consultoria de fluxo (3 entregáveis) — sem implementação
 > **Contrato:** Deep Blue → Rastro (direto, sem intermediário)
-> **Investimento:** R$ 15.000 (8 semanas, 3 entregas de R$ 5.000)
+> **Investimento:** R$ 15.000 (8 semanas, 50% + 50%)
 > **Fase atual:** Escopo fechado pós-reunião (10/08) — proposta v3 a apresentar
 > **Início:** A definir
 > **Responsável:** Lucas Cid
@@ -20,9 +20,9 @@ A Rastro é uma agência-studio com +10 anos de mercado, 3 divisões (Agency, Fi
 
 | Entregável | O quê | Prazo | Pagamento |
 |---|---|---|---|
-| **1 · Diagnóstico AS-IS** | Mapeamento do fluxo atual, inventário documental, gargalos | Semana 3 | R$ 5.000 |
-| **2 · Otimização** | Recomendações priorizadas + iterações com o time | Semana 6 | R$ 5.000 |
-| **3 · Blueprint** | Novo fluxo otimizado documentado, passo a passo | Semana 8 | R$ 5.000 |
+| **1 · Diagnóstico AS-IS** | Mapeamento do fluxo atual, inventário documental, gargalos | Semana 3 | R$ 7.500 (50%) |
+| **2 · Otimização** | Recomendações priorizadas + iterações com o time | Semana 6 | — |
+| **3 · Blueprint** | Novo fluxo otimizado documentado, passo a passo | Semana 8 | R$ 7.500 (50%) |
 
 ## 📚 Índice
 

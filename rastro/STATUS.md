@@ -2,7 +2,7 @@
 
 > Última atualização: 2026-08-10
 > **Contrato:** Deep Blue → Rastro (direto)
-> **Investimento:** R$ 15.000 (8 semanas, 3 entregas de R$ 5.000)
+> **Investimento:** R$ 15.000 (8 semanas, 50% + 50%)
 > **Tipo:** Consultoria de fluxo de propostas (3 entregáveis) — sem implementação
 > **Lucas:** consultor
 > **Foco:** Escopo fechado pós-reunião (10/08) — proposta v3 a apresentar
@@ -18,7 +18,7 @@
 | **Entregável 1 — Diagnóstico AS-IS** | 🟢 Semanas 1–3 |
 | **Entregável 2 — Otimização** | 🟢 Semanas 4–6 (iterações com o time) |
 | **Entregável 3 — Blueprint do novo fluxo** | 🟢 Semanas 7–8 |
-| **Investimento** | 🟢 R$ 15.000 (3 × R$ 5.000 por entrega) |
+| **Investimento** | 🟢 R$ 15.000 (50% na Semana 3 + 50% na Semana 8) |
 | **Implementação de ferramentas** | 🔴 Fora do escopo (decisão 10/08) |
 | **Proposta comercial** | 🟢 v3 pronta — [lucascid.duckdns.org](http://lucascid.duckdns.org/) |
 | **Contrato** | 🔴 Aguardando aprovação da proposta |

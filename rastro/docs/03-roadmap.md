@@ -6,7 +6,7 @@
 
 ### Fase 1 — Diagnóstico AS-IS (Semanas 1–3)
 
-**Pagamento:** R$ 5.000 na entrega
+**Pagamento:** R$ 7.500 (50%) na entrega
 
 | # | Atividade | Quem | Duração |
 |---|---|---|---|
@@ -22,13 +22,13 @@
 - Diagrama AS-IS do fluxo de propostas
 - Inventário documental comentado
 
-**💰 Pagamento:** R$ 5.000 na entrega (Semana 3).
+**💰 Pagamento:** R$ 7.500 (50%) na entrega (Semana 3).
 
 ---
 
 ### Fase 2 — Otimização (Semanas 4–6)
 
-**Pagamento:** R$ 5.000 na entrega
+**Pagamento:** sem pagamento próprio (coberto pelas parcelas de 50% da Fase 1 e da Fase 3)
 
 | # | Atividade | Quem | Duração |
 |---|---|---|---|
@@ -42,13 +42,13 @@
 - Recomendações priorizadas de otimização do fluxo
 - Padrões de templates e convenções
 
-**💰 Pagamento:** R$ 5.000 na entrega (Semana 6).
+**💰 Pagamento:** sem pagamento próprio (2ª parcela de 50% só na Fase 3).
 
 ---
 
 ### Fase 3 — Blueprint do novo fluxo (Semanas 7–8)
 
-**Pagamento:** R$ 5.000 na entrega
+**Pagamento:** R$ 7.500 (50%) na entrega
 
 | # | Atividade | Quem | Duração |
 |---|---|---|---|
@@ -62,7 +62,7 @@
 - Guia passo a passo de como criar propostas
 - Documento de padrões e templates
 
-**💰 Pagamento:** R$ 5.000 na entrega (Semana 8).
+**💰 Pagamento:** R$ 7.500 (50%) na entrega (Semana 8).
 
 ---
 
@@ -98,9 +98,9 @@ gantt
 
 | Marco | O quê | Data alvo | Status |
 |---|---|---|---|
-| **M1** | Diagnóstico AS-IS entregue e aprovado + pagamento | ~Semana 3 | 🔴 |
-| **M2** | Otimização entregue e validada + pagamento | ~Semana 6 | 🔴 |
-| **M3** | Blueprint do novo fluxo entregue + pagamento | ~Semana 8 | 🔴 |
+| **M1** | Diagnóstico AS-IS entregue e aprovado + pagamento 50% | ~Semana 3 | 🔴 |
+| **M2** | Otimização entregue e validada (sem pagamento próprio) | ~Semana 6 | 🔴 |
+| **M3** | Blueprint do novo fluxo entregue + pagamento final 50% | ~Semana 8 | 🔴 |
 
 ---
 
