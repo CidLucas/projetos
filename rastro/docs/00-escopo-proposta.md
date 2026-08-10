@@ -47,11 +47,11 @@ Implantar a **Rastro Brain** como ponte entre o conhecimento da empresa e os Cla
 - Preparar o corpus documental (limpeza, categorização, curadoria)
 - Deploy do gateway MCP (servidor que serve o conhecimento)
 - Ingestão do corpus com criação automática de grafo de conhecimento (Mnemosyne)
-- Configurar o conector MCP em cada Claude Desktop do time (5–10 pessoas)
-- Treinamento do time: como consultar a memória da empresa direto do Claude
+- Configurar o conector MCP em cada Claude Desktop do time (3–4 pessoas do fluxo de propostas)
+- Treinamento das pessoas do fluxo de propostas: como consultar a memória da empresa direto do Claude
 
 **Critério de pronto:**
-- ✅ Todo o time conectado via MCP
+- ✅ Pessoas do fluxo de propostas conectadas via MCP (3–4)
 - ✅ Todo conteúdo curado e disponibilizado na nuvem ou servidor próprio da Rastro
 - ✅ Conteúdo acessível via MCP por todos os usuários
 
@@ -74,7 +74,7 @@ Implantar a **Rastro Brain** como ponte entre o conhecimento da empresa e os Cla
 - **Escopos:** pessoal (cada pessoa tem seu banco privado) + corporativo (conhecimento curado da empresa)
 - **Curadoria:** Fábio e Lucas Diárea (Rastro) — escrita no corpus corporativo é controlada
 - **Deploy:** servidor próprio da Rastro (provável EC2)
-- **Clientes:** 5–10 Claude Desktops
+- **Clientes:** 3–4 Claude Desktops (fluxo de propostas)
 
 O MCP Brain Lite está em desenvolvimento ativo (repo: `CidLucas/mcp_brain_lite`), com a Fase 0 (fundação, OAuth, CI/CD) concluída. **As ferramentas MCP ainda não foram testadas em produção.** A Fase B inclui a primeira implantação real com um cliente, o que pode revelar necessidade de ajustes.
 

@@ -42,18 +42,18 @@
 |---|---|---|---|
 | B1 | Preparação do corpus: limpeza, deduplicação, categorização | Lucas (+ curador Rastro) | 3–4 dias |
 | B2 | Deploy do MCP Brain Lite: provisionar VPS, configurar gateway, OAuth, escopos | Lucas | 1–2 dias |
-| B3 | Configurar tenant "rastro" com escopos `corp` + `personal/` (5–10 usuários) | Lucas | 0.5 dia |
+| B3 | Configurar tenant "rastro" com escopos `corp` + `personal/` (3–4 usuários) | Lucas | 0.5 dia |
 | B4 | Ingestão do corpus: upload dos documentos no escopo `corp` | Lucas + curador | 3–5 dias |
 | B5 | Validação pós-ingestão: testar queries reais, ajustar chunking/embedding | Lucas | 2 dias |
-| B6 | Configurar MCP nos Claude Desktop do time (5–10 pessoas) | Lucas | 1 dia |
-| B7 | Treinamento do time: como consultar, como contribuir, boas práticas | Lucas → Rastro | 1h |
+| B6 | Configurar MCP nos Claude Desktop do time (3–4 pessoas) | Lucas | 1 dia |
+| B7 | Treinamento das pessoas do fluxo de propostas: como consultar, como contribuir, boas práticas | Lucas → Rastro | 1h |
 | B8 | Período de observação: suporte a dúvidas, ajustes finos | Lucas | 1 semana |
 | B9 | Entrega final: documento de boas práticas + handoff | Lucas → Rastro | — |
 
 **Entregáveis Fase B:**
 - Gateway MCP Brain Lite em produção
 - Corpus documental ingerido (grafo de conhecimento ativo)
-- 5–10 Claude Desktops conectados
+- 3–4 Claude Desktops conectados
 - Sessão de treinamento realizada
 - Documento de boas práticas (manutenção do corpus, curadoria, onboarding)
 
