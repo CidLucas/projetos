@@ -36,7 +36,7 @@ A Rastro é uma agência-studio com +10 anos de mercado, 3 divisões (Agency, Fi
 | # | Decisão | Data | ADR |
 |---|---------|------|-----|
 | 001 | Consultoria de fluxo apenas (3 entregáveis), sem MCP/Rastro Brain | 2026-08-10 | ADR-002 |
-| 002 | Investimento R$ 15.000, 8 semanas, pagamento por entrega (3 × R$ 5.000) | 2026-08-10 | — |
+| 002 | Investimento R$ 15.000, 8 semanas, pagamento 50/50 (R$ 7.500 + R$ 7.500) | 2026-08-10 | — |
 | 003 | Adoção pontual: pessoas do fluxo de propostas (3–4) nas iterações | 2026-08-10 | — |
 
 ## 🔗 Links úteis

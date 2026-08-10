@@ -46,4 +46,4 @@
 | 2026-07-29 | Criação do projeto. Site da Rastro + Rastro Mind analisados. Docs base criados. |
 | 2026-07-29 | v0.2: Cronograma 2 meses. Investimento R$ 25.000. Docs 01/02/04 removidos. |
 | 2026-07-29 | v0.3: Perguntas fechadas. Entregáveis detalhados. Produto nomeado Rastro Brain. Curadoria: Fábio + Lucas Diárea. Deploy: EC2. Case autorizado. |
-| 2026-08-10 | Reunião com a Rastro. **Escopo mudou:** consultoria de fluxo apenas (3 entregáveis), sem MCP/Rastro Brain. Investimento R$ 15.000 (3 × R$ 5.000), 8 semanas para iterações. ADR-002. Proposta v3. |
+| 2026-08-10 | Reunião com a Rastro. **Escopo mudou:** consultoria de fluxo apenas (3 entregáveis), sem MCP/Rastro Brain. Investimento R$ 15.000 (50% + 50%), 8 semanas para iterações. ADR-002. Proposta v3. |
