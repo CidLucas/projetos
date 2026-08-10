@@ -1,11 +1,11 @@
-# Rastro — Consultoria de Fluxo de Propostas + Rastro Brain
+# Rastro — Consultoria de Fluxo de Propostas
 
 > **Slug:** `rastro`
 > **Cliente:** Rastro ([rastro.cc](https://rastro.cc/)) — agência-studio de inteligência criativa (Rio de Janeiro)
-> **Tipo:** Consultoria + Implementação (Fase A + Fase B)
+> **Tipo:** Consultoria de fluxo (3 entregáveis) — sem implementação
 > **Contrato:** Deep Blue → Rastro (direto, sem intermediário)
-> **Investimento:** R$ 20.000 (2 meses)
-> **Fase atual:** Escopo fechado — aguardando apresentação da proposta
+> **Investimento:** R$ 15.000 (8 semanas, 3 entregas de R$ 5.000)
+> **Fase atual:** Escopo fechado pós-reunião (10/08) — proposta v3 a apresentar
 > **Início:** A definir
 > **Responsável:** Lucas Cid
 > **Case autorizado:** ✅
@@ -14,43 +14,34 @@
 
 ## 🎯 Resumo
 
-A Rastro é uma agência-studio com +10 anos de mercado, 3 divisões (Agency, Films, Labs) e clientes como Nubank, HBO Max, Globo, iFood, Itaú, Unilever. Eles já usam Claude intensamente e têm o **[Rastro Mind](https://rastro-mind-25619.netlify.app/)** — uma wiki LLM de 60MB com conhecimento institucional.
+A Rastro é uma agência-studio com +10 anos de mercado, 3 divisões (Agency, Films, Labs) e clientes como Nubank, HBO Max, Globo, iFood, Itaú, Unilever. O fluxo de propostas existe, mas não é otimizado: o esforço para criar cada proposta é maior do que deveria, e o conhecimento de propostas vencedoras, orçamentos e cases não alimenta o processo.
 
-O problema: o Rastro Mind é uma ilha fora do Claude. O time não consegue consultar o conhecimento da empresa de dentro do assistente que já usam o dia todo.
+**Escopo (fechado em 10/08/2026 com o cliente):** consultoria de fluxo de propostas com 3 entregáveis. Sem implementação de ferramentas (MCP/Rastro Brain fora do escopo).
 
-**Solução:** implantar a **Rastro Brain** — instância do MCP Brain Lite que conecta o corpus documental da Rastro aos Claude Desktop do time via MCP, com grafo de conhecimento automático (Mnemosyne) e curadoria humana.
-
-| Fase | O quê | Duração | Pagamento |
+| Entregável | O quê | Prazo | Pagamento |
 |---|---|---|---|
-| **Fase A — Consultoria** | Revisão do fluxo de propostas, inventário documental, diagnóstico | ~3 semanas | R$ 10.000 na entrega |
-| **Fase B — Implementação** | Deploy da Rastro Brain, ingestão do corpus, conexão dos MCPs, treinamento | ~5 semanas | R$ 10.000 na entrega |
-
-**Produto:** [MCP Brain Lite](https://github.com/CidLucas/mcp_brain_lite) — gateway FastAPI+FastMCP sobre Mnemosyne, OAuth 2.1 via Supabase, escopos pessoal + corporativo.
-
-**Curadoria:** Fábio e Lucas Diárea (Rastro)
-**Deploy:** Provável EC2
+| **1 · Diagnóstico AS-IS** | Mapeamento do fluxo atual, inventário documental, gargalos | Semana 3 | R$ 5.000 |
+| **2 · Otimização** | Recomendações priorizadas + iterações com o time | Semana 6 | R$ 5.000 |
+| **3 · Blueprint** | Novo fluxo otimizado documentado, passo a passo | Semana 8 | R$ 5.000 |
 
 ## 📚 Índice
 
 - [STATUS.md](./STATUS.md) — saúde, blockers, próximas ações, perguntas categorizadas
-- [docs/01-visao.md](./docs/01-visao.md) — problema, público, proposta de valor, escopo detalhado
-- [docs/02-arquitetura.md](./docs/02-arquitetura.md) — stack proposta, componentes, fluxos, segurança
+- [docs/00-escopo-proposta.md](./docs/00-escopo-proposta.md) — escopo v0.4 (pós-reunião)
 - [docs/03-roadmap.md](./docs/03-roadmap.md) — fases, milestones, cronograma
-- [docs/04-reunioes.md](./docs/04-reunioes.md) — log cronológico de conversas/decisões
+- [decisions/](./decisions/) — ADRs (ADR-001 outcome-first, ADR-002 escopo pós-reunião)
 
 ## 🔑 Decisões-chave
 
 | # | Decisão | Data | ADR |
 |---|---------|------|-----|
-| 001 | MCP Brain Lite como produto-base (não Brain completo) | 2026-07-29 | — |
-| 002 | Modelo de engajamento: Fase A (consultoria) + Fase B (implementação) | 2026-07-29 | — |
-| 003 | Escopos: pessoal + corporativo (sem restrito na V1) | 2026-07-29 | — |
+| 001 | Consultoria de fluxo apenas (3 entregáveis), sem MCP/Rastro Brain | 2026-08-10 | ADR-002 |
+| 002 | Investimento R$ 15.000, 8 semanas, pagamento por entrega (3 × R$ 5.000) | 2026-08-10 | — |
+| 003 | Adoção pontual: pessoas do fluxo de propostas (3–4) nas iterações | 2026-08-10 | — |
 
 ## 🔗 Links úteis
 
 - **Site da Rastro:** [rastro.cc](https://rastro.cc/)
 - **Portfólio:** [work.rastro.cc](https://work.rastro.cc/)
 - **Instagram:** [@_rastro](https://instagram.com/_rastro)
-- **Repo MCP Brain Lite:** `CidLucas/mcp_brain_lite` (privado)
-- **Repo MCP Brain:** `CidLucas/mcp_brain` (privado)
 - **Hub de documentação:** `CidLucas/projetos`

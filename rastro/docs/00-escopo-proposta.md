@@ -1,130 +1,127 @@
 # Rastro — Escopo da Proposta de Trabalho
 
-> **Versão:** v0.3 — 2026-07-29
+> **Versão:** v0.4 — 2026-08-10 (pós-reunião com o cliente)
 > **Cliente:** Rastro ([rastro.cc](https://rastro.cc/))
 > **Contrato:** Deep Blue → Rastro (direto)
-> **Investimento:** R$ 20.000 (projeto completo, 2 meses)
+> **Investimento:** R$ 15.000 (8 semanas, 3 entregas de R$ 5.000)
 
 ---
 
 ## 1. Situação atual
 
-A Rastro é uma agência-studio com 5–10 pessoas, clientes de peso (Nubank, HBO Max, Globo, iFood, Unilever) e maturidade técnica — já usam Claude intensamente e têm um pipeline de IA próprio.
+A Rastro é uma agência-studio com 5–10 pessoas, clientes de peso (Nubank, HBO Max, Globo, iFood, Unilever) e maturidade técnica.
 
-O conhecimento da empresa já existe e está organizado no **[Rastro Mind](https://rastro-mind-25619.netlify.app/)** — uma wiki LLM com ~60MB de dados institucionais (propostas passadas, briefings, orçamentos, cases, conhecimento técnico).
+O fluxo de propostas existe, mas **não é otimizado**: o esforço para criar cada proposta é maior do que deveria. O conhecimento de propostas vencedoras, orçamentos e cases não alimenta o processo, e cada proposta depende de quem está criando. Não há um processo documentado e padronizado para seguir.
 
-**O problema:** o Rastro Mind é uma ilha. O time precisa abrir um site separado, fazer login, digitar a pergunta — enquanto o Claude Desktop, que eles já usam o dia todo, não tem acesso a nada disso. Cada pessoa usa o Claude no seu próprio contexto isolado, sem memória do que a empresa sabe.
-
-**Consequência:** dificuldade em vender projetos. Toda proposta começa do zero. Conhecimento de propostas vencedoras, orçamentos típicos e cases de sucesso está preso em pessoas ou num site que ninguém consulta durante o fluxo de trabalho real.
+**Decisão do cliente (10/08/2026):** projeto de **consultoria de fluxo apenas**, sem implementação de ferramentas.
 
 ---
 
 ## 2. O que propomos
 
-**Conectar o conhecimento da Rastro ao Claude Desktop do time inteiro**, transformando o que já existe numa memória corporativa viva — a **Rastro Brain** — que responde dentro do assistente que eles já usam.
+Consultoria de fluxo de propostas com **3 entregáveis**, em 8 semanas (período mantido para permitir iterações das otimizações com o time).
 
-O projeto tem duas fases:
+### Entregável 1 — Diagnóstico AS-IS (~3 semanas)
 
-### Fase A — Consultoria de fluxo (~3 semanas)
-
-Revisar como as propostas são criadas hoje, mapear gargalos, e desenhar o processo ideal com a memória corporativa no centro.
+Mapear como as propostas são criadas hoje e identificar onde o trabalho é maior do que deveria.
 
 **Atividades:**
-- Entrevistas com 2–3 pessoas-chave
-- Inventário dos documentos usados no fluxo de proposta
-- Mapeamento do fluxo atual (AS-IS) e desenho do fluxo-alvo (TO-BE)
-- Recomendações de padronização de templates e documentos
+- Entrevistas com 2–3 pessoas-chave do fluxo de propostas
+- Inventário dos documentos usados no processo (templates, propostas passadas, briefings, orçamentos, cases)
+- Mapeamento do fluxo atual (AS-IS)
+- Identificação de gargalos e retrabalho
+- Validação do diagnóstico com a Rastro
 
 **Entregáveis:**
-- **Processo de propostas atualizado** — a partir do pipeline definido durante a consultoria
-- **Relatório sobre o estado do corpus documental** — o que existe, qualidade, gaps, plano de curadoria
+- Relatório de diagnóstico (PDF)
+- Diagrama AS-IS do fluxo de propostas
+- Inventário documental comentado
 
-### Fase B — Implementação Rastro Brain (~5 semanas)
+### Entregável 2 — Otimização (~3 semanas)
 
-Implantar a **Rastro Brain** como ponte entre o conhecimento da empresa e os Claude Desktop do time.
+Definir as otimizações de maior impacto e validá-las com o time.
 
 **Atividades:**
-- Preparar o corpus documental (limpeza, categorização, curadoria)
-- Deploy do gateway MCP (servidor que serve o conhecimento)
-- Ingestão do corpus com criação automática de grafo de conhecimento (Mnemosyne)
-- Configurar o conector MCP em cada Claude Desktop do time (3–4 pessoas do fluxo de propostas)
-- Treinamento das pessoas do fluxo de propostas: como consultar a memória da empresa direto do Claude
+- Análise de oportunidades por impacto e esforço
+- Definição de recomendações: padronização, templates, convenções, estrutura de pastas
+- Iterações com o time para validar as melhorias
 
-**Critério de pronto:**
-- ✅ Pessoas do fluxo de propostas conectadas via MCP (3–4)
-- ✅ Todo conteúdo curado e disponibilizado na nuvem ou servidor próprio da Rastro
-- ✅ Conteúdo acessível via MCP por todos os usuários
+**Entregáveis:**
+- Recomendações priorizadas de otimização do fluxo
+- Padrões de templates e convenções
+
+### Entregável 3 — Blueprint do novo fluxo otimizado (~2 semanas)
+
+Documentar o novo fluxo de propostas, passo a passo, para o time seguir daqui para frente.
+
+**Atividades:**
+- Desenho do fluxo otimizado (TO-BE)
+- Definição de padrões: templates, referências, pontos de decisão
+- Documentação do blueprint completo
+- Apresentação e handoff para a Rastro
+
+**Entregáveis:**
+- Blueprint do novo fluxo otimizado
+- Guia passo a passo de como criar propostas
+- Documento de padrões e templates
 
 ---
 
 ## 3. O que NÃO está incluso
 
-- Criação de conteúdo novo (templates, propostas) — vamos recomendar padrões, não escrever do zero
-- Integração com outros sistemas (CRM, Slack, e-mail)
+- Implementação de ferramentas (MCP, Rastro Brain, integrações com Claude ou outros sistemas)
+- Criação de conteúdo novo (templates, propostas) — definimos padrões, não escrevemos do zero
 - Manutenção contínua pós-entrega (pode ser contratada à parte)
-- Modificações no Rastro Mind existente
+- Modificações em sistemas existentes (Rastro Mind, CRM, etc.)
 
 ---
 
-## 4. Produto utilizado: Rastro Brain
+## 4. Cronograma
 
-**Rastro Brain** é a instância do **MCP Brain Lite** configurada para a Rastro — gateway MCP que expõe documentos corporativos como ferramentas acessíveis por qualquer cliente MCP (Claude Desktop, Cursor, etc.). Usa Mnemosyne como motor de busca vetorial + grafo de conhecimento, com autenticação OAuth 2.1.
+**Duração total: 8 semanas**
 
-**Configuração para a Rastro:**
-- **Escopos:** pessoal (cada pessoa tem seu banco privado) + corporativo (conhecimento curado da empresa)
-- **Curadoria:** Fábio e Lucas Diárea (Rastro) — escrita no corpus corporativo é controlada
-- **Deploy:** servidor próprio da Rastro (provável EC2)
-- **Clientes:** 3–4 Claude Desktops (fluxo de propostas)
-
-O MCP Brain Lite está em desenvolvimento ativo (repo: `CidLucas/mcp_brain_lite`), com a Fase 0 (fundação, OAuth, CI/CD) concluída. **As ferramentas MCP ainda não foram testadas em produção.** A Fase B inclui a primeira implantação real com um cliente, o que pode revelar necessidade de ajustes.
-
----
-
-## 5. Cronograma
-
-**Duração total: 2 meses (8 semanas)**
-
-| Fase | Duração | Descrição |
-|---|---|---|
-| Fase A — Consultoria | ~3 semanas | Entrevistas, inventário documental, mapeamento AS-IS/TO-BE, diagnóstico, recomendações |
-| Fase B — Implementação | ~5 semanas | Preparação do corpus, deploy do gateway, ingestão, configuração dos MCPs, validação, treinamento |
-| **Total** | **8 semanas** | |
+| Fase | Duração | Descrição | Pagamento |
+|---|---|---|---|
+| 1 · Diagnóstico AS-IS | Semanas 1–3 | Entrevistas, inventário, mapeamento AS-IS, gargalos | R$ 5.000 na entrega |
+| 2 · Otimização | Semanas 4–6 | Recomendações priorizadas + iterações com o time | R$ 5.000 na entrega |
+| 3 · Blueprint | Semanas 7–8 | Fluxo otimizado documentado + handoff | R$ 5.000 na entrega |
+| **Total** | **8 semanas** | | **R$ 15.000** |
 
 ---
 
-## 6. Pré-requisitos
+## 5. Pré-requisitos
 
-- Acesso ao corpus documental da Rastro (conteúdo do Rastro Mind + documentos complementares)
-- Time com Claude Desktop instalado (já têm)
-- Fábio e Lucas Diárea como curadores do conhecimento corporativo
-- Servidor para deploy (provável EC2)
+- Acesso a 2–3 pessoas-chave do fluxo de propostas
+- Acesso aos documentos usados no processo
+- Disponibilidade do time para as iterações da Fase 2
 
 ---
 
-## 7. Riscos e mitigação
+## 6. Riscos e mitigação
 
 | Risco | Mitigação |
 |---|---|
-| **Brain Lite não testado em produção** | Fase A roda em paralelo com a finalização e teste das tools MCP. Plano B: conector MCP simples direto no Rastro Mind |
-| **Corpus desorganizado ou desatualizado** | Fase A mapeia o que existe → já entramos na Fase B com o inventário pronto |
-| **Time não adota** | Eles já usam Claude diariamente. A barreira é zero — é só adicionar um endpoint. Treinamento resolve |
-| **Aprovação da Rastro entre fases** | Proposta já prevê as duas fases. Gate claro: diagnóstico aprovado → implementação |
+| Engajamento do time nas iterações | Entregáveis validados em marcos curtos; entrevistas curtas e objetivas |
+| Escopo das otimizações crescer | Recomendações priorizadas por impacto e esforço; gate entre entregáveis |
+| Disponibilidade das pessoas-chave | Kickoff agenda o calendário das entrevistas no D+0 |
+| Cliente esperar implementação | Proposta v3 deixa explícito: consultoria apenas, sem ferramentas |
 
 ---
 
-## 8. Investimento
+## 7. Investimento
 
-**R$ 20.000** pelo projeto completo (Fase A + Fase B):
+**R$ 15.000** pelo projeto completo (3 entregáveis):
 
 | Parcela | Valor | Condição |
 |---|---|---|
-| 1ª parcela (50%) | R$ 10.000 | Na entrega da Fase A (processo atualizado + relatório do corpus) |
-| 2ª parcela (50%) | R$ 10.000 | Na entrega da Fase B (time conectado + conteúdo curado e disponível via MCP) |
+| 1ª (Entregável 1) | R$ 5.000 | Na entrega do diagnóstico (Semana 3) |
+| 2ª (Entregável 2) | R$ 5.000 | Na entrega da otimização (Semana 6) |
+| 3ª (Entregável 3) | R$ 5.000 | Na entrega final (Semana 8) |
 
 ---
 
-## 9. Próximos passos
+## 8. Próximos passos
 
-1. ✅ Lucas validou este escopo (v0.3)
-2. Apresentar proposta à Rastro
+1. ✅ Escopo fechado com o cliente (reunião 10/08)
+2. Apresentar proposta v3 à Rastro
 3. Se aprovado: agendar kickoff (D+0)
