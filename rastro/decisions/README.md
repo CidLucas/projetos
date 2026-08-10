@@ -10,7 +10,7 @@ Formato: [MADR](https://adr.github.io/madr/) (Markdown Architectural Decision Re
 
 | # | Título | Data | Status |
 |---|--------|------|--------|
-| — | Nenhum ADR registrado ainda | — | — |
+| [ADR-001](ADR-001.md) | Oferta centrada no outcome — "agentes conectados ao corpus corporativo" | 2026-08-10 | aceito |
 
 ---
 

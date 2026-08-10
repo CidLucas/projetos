@@ -123,20 +123,20 @@
 
 <!-- ====== 02 · FERRAMENTAS ====== -->
 <div class="section">
-  <p class="kicker">02 · Ferramentas</p>
-  <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(28px,3.5vw,40px); margin: var(--space-2) 0 var(--space-3);">Rastro Brain</h2>
+  <p class="kicker">02 · Como funciona</p>
+  <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(28px,3.5vw,40px); margin: var(--space-2) 0 var(--space-3);">Como o conhecimento chega ao Claude</h2>
   <div class="grid-3" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6);">
     <button class="concept-btn" onClick="openDrawer('c1')" aria-haspopup="dialog">
       <div class="phase-card highlight-card">
         <i data-lucide="cpu" style="color: var(--color-accent-700); width: 26px; height: 26px;"></i>
-        <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 19px; margin: var(--space-4) 0 0;">Gateway MCP</h3>
-        <span class="tag tag-accent" style="margin-top: var(--space-3); display:inline-block;">MCP Brain Lite</span>
+        <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 19px; margin: var(--space-4) 0 0;">Conexão com os agentes do time</h3>
+        <span class="tag tag-accent" style="margin-top: var(--space-3); display:inline-block;">Padrão aberto MCP</span>
       </div>
     </button>
     <button class="concept-btn" onClick="openDrawer('c2')" aria-haspopup="dialog">
       <div class="phase-card">
         <i data-lucide="brain" style="color: var(--color-accent-700); width: 26px; height: 26px;"></i>
-        <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 19px; margin: var(--space-4) 0 0;">Mnemosyne</h3>
+        <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 19px; margin: var(--space-4) 0 0;">Respostas com fonte</h3>
       </div>
     </button>
     <button class="concept-btn" onClick="openDrawer('c3')" aria-haspopup="dialog">
@@ -200,8 +200,8 @@
           <div style="display:flex; align-items:center; gap: var(--space-3); margin-bottom: var(--space-3);">
             <span class="tag tag-neutral">Fase B</span><span style="font-size: 13px; color: var(--color-neutral-500);">Semanas 4–8</span>
           </div>
-          <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 20px; margin: 0 0 var(--space-2);">Rastro Brain no ar</h3>
-          <p style="font-size: 14px; line-height:1.5; color: var(--color-neutral-700); margin: 0;">Deploy do gateway MCP, ingestão do corpus, configuração dos Claude Desktops, treinamento e observação.</p>
+          <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 20px; margin: 0 0 var(--space-2);">Conhecimento no fluxo de trabalho</h3>
+          <p style="font-size: 14px; line-height:1.5; color: var(--color-neutral-700); margin: 0;">Corpus ingerido, agentes do time conectados ao conhecimento, treinamento e observação.</p>
           <i data-lucide="chevron-right" style="color: var(--color-neutral-500); width: 20px; height: 20px; margin-top: var(--space-3);"></i>
         </div>
       </button>
@@ -239,7 +239,7 @@
     <div class="phase-card" style="border-top: 4px solid var(--color-neutral-700);">
       <span class="tag tag-neutral" style="margin-bottom: var(--space-3);">Fase B · Semana 8</span>
       <ul class="plain" style="font-size: 14px; margin-top: var(--space-3);">
-        <li>Gateway MCP Brain Lite em produção</li>
+        <li>Conhecimento corporativo consultável direto nos agentes do time</li>
         <li>Corpus documental ingerido com grafo de conhecimento</li>
         <li>5–10 Claude Desktops conectados via MCP</li>
         <li>Sessão de treinamento com o time</li>
@@ -331,14 +331,14 @@
 <script>
 const data = {
   c1: {
-    tag: 'MCP Brain Lite', tagClass: 'tag-accent',
-    title: 'Gateway MCP',
-    body: 'O MCP Brain Lite é um servidor MCP (Model Context Protocol) que expõe documentos corporativos como ferramentas. Qualquer cliente compatível com MCP — Claude Desktop, Cursor, ou outro — se conecta e ganha acesso ao conhecimento da empresa. A autenticação é OAuth 2.1, o deploy é em servidor próprio da Rastro, e a configuração de cada cliente leva minutos. Não é um novo site — é uma camada que roda em segundo plano e responde quando o time pergunta.'
+    tag: 'Padrão aberto MCP', tagClass: 'tag-accent',
+    title: 'Conexão com os agentes do time',
+    body: 'A integração usa o MCP (Model Context Protocol), padrão aberto que expõe documentos corporativos como ferramentas para os agentes de IA. Qualquer cliente compatível com MCP — Claude Desktop, Cursor, ou outro — se conecta e ganha acesso ao conhecimento da empresa. A autenticação é OAuth 2.1, o deploy é em servidor próprio da Rastro, e a configuração de cada cliente leva minutos. Não é um novo site — é uma camada que roda em segundo plano e responde quando o time pergunta.'
   },
   c2: {
     tag: 'Motor de busca', tagClass: 'tag-neutral',
-    title: 'Mnemosyne',
-    body: 'Mnemosyne é o motor de busca vetorial com grafo de conhecimento que roda dentro do Brain Lite. Cada documento ingerido é processado em duas camadas: busca vetorial (embedding) para similaridade semântica, e grafo de conhecimento que conecta documentos por citações, temas e autorias. O resultado é uma busca que entende contexto — não precisa acertar a palavra-chave exata para encontrar o documento certo.'
+    title: 'Respostas com fonte',
+    body: 'O motor de busca combina similaridade semântica com grafo de conhecimento. Cada documento ingerido é processado em duas camadas: busca vetorial (embedding) para similaridade semântica, e grafo de conhecimento que conecta documentos por citações, temas e autorias. O resultado é uma busca que entende contexto — não precisa acertar a palavra-chave exata para encontrar o documento certo.'
   },
   c3: {
     tag: 'Governança', tagClass: 'tag-neutral',
@@ -353,7 +353,7 @@ const data = {
   c5: {
     tag: 'Ferramenta', tagClass: 'tag-neutral',
     title: 'Busca em linguagem natural',
-    body: 'A busca é em português natural. O Mnemosyne processa a pergunta, busca por similaridade semântica no corpus, cruza com o grafo de conhecimento e devolve a resposta com fonte e contexto. O time não escreve SQL, não usa operadores booleanos, não faz prompt engineering. Perguntou, recebeu.'
+    body: 'A busca é em português natural. O motor de busca processa a pergunta, busca por similaridade semântica no corpus, cruza com o grafo de conhecimento e devolve a resposta com fonte e contexto. O time não escreve SQL, não usa operadores booleanos, não faz prompt engineering. Perguntou, recebeu.'
   },
   c6: {
     tag: 'Handoff', tagClass: 'tag-neutral',
@@ -379,20 +379,20 @@ const data = {
   },
   r1: {
     tag: 'Fase B · Implementação', tagClass: 'tag-neutral',
-    title: 'Rastro Brain no ar · Semanas 4–8',
-    objetivo: 'Implantar o gateway MCP, ingerir o corpus documental e conectar o time inteiro ao conhecimento corporativo dentro do Claude.',
+    title: 'Conhecimento no fluxo de trabalho · Semanas 4–8',
+    objetivo: 'Implantar a ponte de integração, ingerir o corpus documental e conectar o time inteiro ao conhecimento corporativo dentro do Claude.',
     atividades: [
       'Preparação do corpus: limpeza, deduplicação, categorização dos documentos. Curadoria em conjunto com Fábio e Lucas Diárea.',
-      'Deploy do MCP Brain Lite: provisionar servidor, configurar gateway, OAuth 2.1, escopos corporativo e pessoal.',
+      'Deploy da ponte de integração: provisionar servidor, configurar gateway, OAuth 2.1, escopos corporativo e pessoal.',
       'Configurar tenant "rastro" com 5–10 usuários e permissões.',
-      'Ingestão do corpus no escopo corporativo: upload dos documentos, processamento pelo Mnemosyne, criação do grafo de conhecimento.',
+      'Ingestão do corpus no escopo corporativo: upload dos documentos, processamento pelo motor de busca, criação do grafo de conhecimento.',
       'Validação pós-ingestão: testar queries reais do time, ajustar chunking/embedding se necessário.',
       'Configurar conector MCP em cada Claude Desktop do time.',
       'Treinamento: sessão com o time + documento de boas práticas.',
       'Período de observação de 1 semana: suporte a dúvidas, ajustes finos.',
       'Entrega final: handoff com documento de manutenção do corpus.'
     ],
-    entregaveis: 'Gateway MCP Brain Lite em produção, corpus documental ingerido com grafo de conhecimento ativo, 5–10 Claude Desktops conectados, sessão de treinamento realizada, documento de boas práticas e onboarding.'
+    entregaveis: 'Conhecimento corporativo consultável pelos agentes do time, corpus documental ingerido, 5–10 Claude Desktops conectados, sessão de treinamento realizada, documento de boas práticas e onboarding.'
   }
 };
 
