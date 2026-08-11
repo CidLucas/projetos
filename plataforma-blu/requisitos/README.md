@@ -31,7 +31,7 @@
 | 30 | Financeiro | `financeiro` | [financeiro.md](./financeiro.md) | 🟡 Em andamento |
 | 40 | Agenda | `agenda` | [agenda.md](./agenda.md) | 🟡 Em andamento |
 | 50 | Estratégia | `estrategia` | [estrategia.md](./estrategia.md) | 🟡 Em andamento |
-| 60 | Clientes | `clientes` | [clientes.md](./clientes.md) | 🟡 Em andamento |
+| 60 | Clientes | `clientes` | [clientes.md](./clientes.md) | 🟡 Em andamento (tela esmiuçada p/ design) |
 | 70 | Biblioteca | `biblioteca` | [biblioteca.md](./biblioteca.md) | 🟡 Em andamento |
 | 80 | Atividade | `atividade` | [atividade.md](./atividade.md) | 🟡 Em andamento |
 | 90 | Admin | `admin` | [admin.md](./admin.md) | 🟡 Em andamento |
