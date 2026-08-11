@@ -300,9 +300,9 @@ Layout do design inicial: **Topo (abas discretas) + Visão da aba + Painel direi
 
 ---
 
-## 4. Região C — Painel direito (faixa vertical)
+## 4. Região C — Painel direito (faixa vertical, contextual)
 
-> Painel lateral fixo (~380px), abre ao clicar num card. **Conceito:** o dono gerencia a compra do começo ao fim sem sair daqui.
+> Painel lateral fixo (~380px), abre ao clicar num card. **Conceito:** o dono gerencia a compra do começo ao fim sem sair daqui. **Contextual (padrão Clientes 13/08 — D14):** o painel muda de modo conforme a aba ativa e o item selecionado — Kanban → Modo Compra (4.1–4.9) · Decisões → Modo Decisão (pendência em foco + aprovar) · Estoque → Modo ItemEstoque (detalhe 3C.4 no painel) · Fornecedores → Modo Fornecedor (perfil + rating + pedidos) · Histórico → Modo PerfilCompra (3E.4 no painel) · Rotinas → Modo Rotina (configuração) · qualquer aba → Modo Preview (documento/contrato/NF). Trilha/breadcrumb ao navegar para dentro do item.
 
 ### 4.1 Cabeçalho do painel
 - **Elemento:** `CabecalhoPainel`
@@ -448,7 +448,9 @@ Layout do design inicial: **Topo (abas discretas) + Visão da aba + Painel direi
 | `InterlocutoresSala` ⬅️ | D | quem participa dos processos |
 | `OverlayFormulario` ⬅️ | E | criar/editar com validação |
 | `OverlayReposicao` | E | repor estoque → solicitação pré-preenchida |
-| `OverlayArtefato` ⬅️ | E | preview + ações do documento |
+| ~~`OverlayArtefato`~~ ⬅️ | — | substituído por `PainelPreview` (padrão D15) |
+| `PainelContextual` ⬅️ | C | contêiner do detalhe que troca de modo por aba/item (padrão D14) |
+| `PainelPreview` ⬅️ | C | preview de documento/contrato/NF no painel |
 
 > **Construir de verdade (núcleo novo):** `CartaoEstoque` + `ListaEstoque` + `DetalheItemEstoque` (inventário) e `ComparativoCotacoes` (decisão de fornecedor). O resto reusa os conceitos da sala Clientes (kanban, abas, painel, histórico, rotinas).
 
@@ -525,3 +527,4 @@ Layout do design inicial: **Topo (abas discretas) + Visão da aba + Painel direi
 4. **Origem da lista de compras:** rotina de reposição gera automaticamente (e o dono só aprova) ou gera como rascunho para o dono revisar antes? (kanbans.md §6.5)
 5. **Limite de aprovação:** valor padrão (R$ 500?) e configurável onde?
 6. **Estoque com múltiplos locais** (filiais/depósitos) já na Fase 1 ou depois?
+7. **Painel contextual** (padrão Clientes 13/08 — D14/D15): validar os modos por aba (Compra/Decisão/ItemEstoque/Fornecedor/PerfilCompra/Rotina) e o preview de documento dentro do painel (substitui o overlay de artefato).

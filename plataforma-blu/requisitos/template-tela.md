@@ -25,7 +25,7 @@
 |---|---|---|
 | A | Topo | Nome da sala, ações globais (criar, buscar, filtrar) |
 | B | Centro | O quadro principal (kanban, lista, grade, tabela) — abas discretas de navegação |
-| C | Lateral direita | Painel de detalhe do item selecionado (faixa vertical) |
+| C | Lateral direita | Painel de detalhe do item selecionado (faixa vertical) — **contextual (13/08):** o conteúdo muda conforme a aba ativa e o item clicado (modos: Cliente/Item · Pendência · Perfil/Histórico · Rotina · Preview de documento). Cada aba da tela define o seu modo de painel; navegar para dentro do item empilha na trilha (breadcrumb). Ver §4 do [clientes.md](./clientes.md) como exemplo. |
 | D | Base | Quadrinhos de apoio (insights, métricas da sala, interlocutores). **Por padrão, no plano** — só adiar quando o layout mínimo fizer mais sentido. **Nunca usar strip horizontal de métricas no topo.** |
 | E | Overlays | Modais, confirmações, toasts |
 

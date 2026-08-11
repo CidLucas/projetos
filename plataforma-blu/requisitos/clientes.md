@@ -1,6 +1,6 @@
 # 👥 Clientes — Tela de Requisitos de UI (Blue V3)
 
-> Última atualização: 2026-08-11 | Status: 🟡 Em andamento (esmiuçando para design)
+> Última atualização: 2026-08-13 | Status: 🟡 Em andamento (painel direito contextual — ver §4; decisões em aberto no fim)
 > Segue o padrão de [template-tela.md](./template-tela.md). Fluxo do kanban em [kanbans.md](./kanbans.md).
 > **Princípio:** elementos puros — informação + ação. Nenhum elemento é amarrado ao design atual da Blu; tudo nasce como novo conceito.
 
@@ -15,20 +15,20 @@
 │            (sem strip de métricas — métricas vivem em D)                 │
 ├───────────────────────────────────────────────────────┬──────────────────┤
 │ B · VISÃO DA ABA ATIVA                               │ C · PAINEL       │
-│   [Kanban] 5 colunas:                                │   DIREITO        │
-│   💬 Conversa │ 🧾 Orçamento │ 📎 Fechamento │        │   (faixa         │
-│   ✅ Fechado  │ 🔁 Recorrência                        │    vertical,     │
-│                                                       │    FIXA ~380px)  │
-│   [x] Card 1        [x] Card 2     [ ] Card 3         │                  │
-│   ← barra de ações em lote →                          │                  │
-│   [Follow-up] lista de pendências · [Histórico]       │                  │
-│   lista por cliente · [Rotinas] config + feed (3B-3D) │                  │
+│   [Kanban] 5 colunas:                                │   CONTEXTUAL     │
+│   💬 Conversa │ 🧾 Orçamento │ 📎 Fechamento │        │   (fixo ~380px)  │
+│   ✅ Fechado  │ 🔁 Recorrência                        │   muda por ABA:  │
+│                                                       │   Kanban→Cliente │
+│   [x] Card 1        [x] Card 2     [ ] Card 3         │   Follow→Pendênc.│
+│   ← barra de ações em lote →                          │   Histórico→Perf.│
+│   [Follow-up] lista de pendências · [Histórico]       │   Rotinas→Rotina │
+│   lista por cliente · [Rotinas] config + feed (3B-3D) │   Preview (doc)  │
 ├───────────────────────────────────────────────────────┴──────────────────┤
 │ D · QUADRINHOS:  [Insights do agente] [Métricas da sala] [Interlocutores] │
 └──────────────────────────────────────────────────────────────────────────┘
 ```
 
-Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + Painel direito fixo + Quadrinhos (D)**. **Não existe strip de métricas** — nenhuma faixa horizontal de KPIs acima das abas; as métricas da sala ficam no quadrinho D.
+Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + Painel direito fixo + Quadrinhos (D)**. **Não existe strip de métricas** — nenhuma faixa horizontal de KPIs acima das abas; as métricas da sala ficam no quadrinho D. **O painel direito é contextual** (refinamento 13/08): muda de modo conforme a aba ativa e o item selecionado — ver §4.
 
 ---
 
@@ -149,7 +149,7 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 - **Elemento:** `ListaFollowUp`
 - **Propósito:** apresentar as pendências em ordem de atenção — o que está vermelho aparece primeiro
 - **Conteúdo (informações):** cards de pendência (3B.3) ordenados por semáforo 🔴 → 🟡 → 🟢 e depois por recência
-- **Ações:** scroll; clique no card abre o painel direito (C) com o cliente; seleção múltipla (checkbox) → barra de lote (3B.4)
+- **Ações:** scroll; clique no card abre o painel direito em **Modo Pendência** (4.11); seleção múltipla (checkbox) → barra de lote (3B.4)
 - **Estados:** loading (esqueleto) / vazio ("Nada pendente 🎉") / erro (recarregar)
 - **Visibilidade:** sempre na aba Follow-up
 
@@ -203,7 +203,7 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 - **Elemento:** `ListaHistoricoClientes`
 - **Propósito:** o dono navega o histórico pela pessoa — cada cliente é uma linha, com o que interessa dele à vista
 - **Conteúdo (informações):** cards de cliente (3C.3) ordenados por atividade mais recente; contadores no subtítulo (clientes com atividade no período)
-- **Ações:** scroll; clique no card abre o detalhe do cliente (3C.4); "Carregar mais" no fim da lista
+- **Ações:** scroll; clique no card abre o painel em **Modo Perfil** (4.13 — relatório do cliente); "Carregar mais" no fim da lista
 - **Estados:** loading (esqueleto) / vazio ("Sem histórico ainda") / erro (recarregar)
 - **Visibilidade:** sempre na aba Histórico
 
@@ -216,7 +216,7 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
   - Últimas ações (2–3 linhas, ex.: "Orçamento #123 enviado — 12/08", "Contrato assinado", "Resposta enviada")
   - Contadores de artefatos por tipo (📎 contrato · NF · orçamento) com badge
   - Data da última atividade ("há 2d") + valor potencial (R$)
-- **Ações:** clique → abre o detalhe do cliente (3C.4); menu "..." → Abrir no kanban, Exportar relatório do cliente
+- **Ações:** clique → abre o painel em **Modo Perfil** (4.13, relatório do cliente); menu "..." → Abrir no kanban, Exportar relatório do cliente
 - **Estados:** default / hover / selecionado
 - **Visibilidade:** sempre que há clientes com histórico
 
@@ -230,7 +230,7 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
   - Resumo de métricas do cliente (nº de interações, ticket, recorrência)
 - **Ações:** visualizar/baixar artefato; "Abrir no kanban" (leva ao card/painel); "Exportar relatório do cliente" (PDF); ver detalhe de um evento
 - **Estados:** loading / vazio ("Nenhum evento ainda") / erro
-- **Visibilidade:** overlay ou painel interno da aba (proposta: painel interno com voltar para a lista)
+- **Visibilidade:** **Modo Perfil** do painel direito (4.13) — decisão 13/08 (D16): o relatório do cliente vive no painel; fechar (X) ou voltar na trilha retorna à lista
 
 ---
 
@@ -267,6 +267,7 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
   - Responsável (agente IA)
   - Status: ativa (toggle) / pausada
   - Última execução: quando + resultado (ok / erro / parcial — ex.: "2 de 5 mensagens enviadas")
+- **Ações:** clique no card → abre o painel em **Modo Rotina** (4.14 — configuração)
 - **Opções:**
   - **Rodar agora** — dispara manualmente (registra no feed e no Histórico)
   - **Editar** — abre o `BuilderRotina` preenchido
@@ -296,17 +297,60 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 
 ---
 
-## 4. Região C — Painel direito (faixa vertical)
+## 4. Região C — Painel direito (faixa vertical, contextual)
 
-> Painel lateral fixo (~380px), abre ao clicar num card. **Conceito:** o dono gerencia o cliente do começo ao fim sem sair daqui.
+> Painel lateral fixo (~380px). **Conceito (refinado 13/08):** o painel é a **lupa da sala** — mostra o detalhe do item selecionado e muda de **modo** conforme a aba ativa e o que foi clicado. Não é só o cliente do kanban: cada aba tem o seu modo, e o painel mantém uma **trilha** (breadcrumb) quando o dono navega para dentro de um item (ex.: cliente → artefato → preview).
+
+```
+┌──────────────────────────────────────┐
+│ C · PAINEL CONTEXTUAL (fixo ~380px)  │
+│   Trilha: Cliente › Artefato › Prev  │
+├──────────────────────────────────────┤
+│ Modo muda conforme ABA + seleção:    │
+│  · Kanban      → Modo Cliente        │
+│  · Follow-up   → Modo Pendência      │
+│  · Histórico   → Modo Perfil         │
+│  · Rotinas     → Modo Rotina         │
+│  · (qualquer)  → Modo Preview (doc)  │
+└──────────────────────────────────────┘
+```
+
+### 4.0 Contêiner e modos
+
+- **Elemento:** `PainelContextual`
+- **Propósito:** servir de detalhe para o item selecionado em qualquer aba — o dono entende e age sobre o que clicou sem trocar de visão
+- **Modos:** Cliente (4.3–4.10) · Pendência (4.11–4.12) · Perfil (4.13) · Rotina (4.14–4.15) · Preview (4.16)
+- **Regra de troca (U24):** clicar num item de outra aba **substitui o modo**; navegar para dentro do item (ex.: visualizar artefato) **empilha** na trilha
+- **Estados:** aberto (item selecionado) / fechado (X ou Esc limpa a trilha) / loading / erro
+- **Feedback:** transição suave entre modos; toast nas ações
+- **Visibilidade:** sempre à direita; sem item selecionado mostra estado vazio "Selecione um item para ver o detalhe" (proposta — decisão em aberto 3)
 
 ### 4.1 Cabeçalho do painel
-- **Elemento:** `CabecalhoPainel`
-- **Conteúdo (informações):** nome do cliente + semáforo + valor potencial; menu "..." (editar, duplicar, arquivar, excluir)
-- **Ações:** fechar (X); editar abre overlay de formulário
-- **Visibilidade:** sempre que um card está selecionado
 
-### 4.2 Conversa (mensagens com o cliente)
+- **Elemento:** `CabecalhoPainel` (contextual)
+- **Propósito:** identificar o que está aberto e dar as ações do modo
+- **Conteúdo (informações):** ícone do modo + identidade do item (nome + semáforo + valor) + menu "..." com ações do modo
+- **Opções (menu por modo):** Cliente — editar/duplicar/arquivar/excluir · Pendência — concluir/adiar/dispensar · Perfil — exportar relatório · Rotina — rodar agora/pausar/excluir · Preview — baixar/enviar/assinar
+- **Ações:** fechar (X); **"Abrir no kanban"** (disponível em qualquer modo exceto Cliente — U25: troca para a aba Kanban e abre o Modo Cliente do item)
+- **Visibilidade:** sempre que o painel está aberto
+
+### 4.2 Trilha de navegação
+
+- **Elemento:** `TrilhaNavegacao`
+- **Propósito:** o dono sabe onde está dentro do item e volta um nível sem perder o contexto
+- **Conteúdo (informações):** breadcrumb da pilha (ex.: "Maria › Orçamento #123 › Preview")
+- **Ações:** clique em nível anterior desempilha (volta); X fecha o painel
+- **Estados:** nível único (sem breadcrumb) / 2+ níveis (breadcrumb visível)
+- **Visibilidade:** 2+ níveis de pilha
+
+---
+
+### Modo Cliente (aba Kanban — card de cliente)
+
+> Abre ao clicar num `CartaoCliente` (ou "Abrir no kanban" vindo de outro modo). **Conceito:** o dono gerencia o cliente do começo ao fim sem sair daqui.
+
+### 4.3 Conversa (mensagens com o cliente)
+
 - **Elemento:** `ConversaCliente`
 - **Propósito:** ver e responder a troca de mensagens com o cliente, com o ciclo **notificada → respondida pelo agente → aprovada pelo dono → enviada**, em qualquer canal
 - **Conteúdo (informações):** linha do tempo de mensagens — cliente (cinza) e agente (azul); cada mensagem com **canal** (WhatsApp · e-mail · direto — badge no bubble; decisão 12/08: WhatsApp, e-mail ou mensagem direta, extensível a outros canais); cada mensagem do agente com status: `Rascunho` → `Aguardando aprovação` → `Enviada`; notificação visual quando chega mensagem nova
@@ -314,7 +358,8 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 - **Estados:** mensagem pendente (contorno de atenção) / thread vazia ("Nenhuma mensagem ainda") / loading
 - **Visibilidade:** sempre no painel
 
-### 4.3 Campo de resposta
+### 4.4 Campo de resposta
+
 - **Elemento:** `CampoResposta`
 - **Propósito:** o dono escreve direto ou pede rascunho ao agente
 - **Conteúdo (informações):** caixa de texto + botão "Gerar resposta (IA)" + botão enviar
@@ -323,7 +368,8 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 - **Estados:** escrevendo / enviando (disabled) / vazio (placeholder)
 - **Feedback:** toast de envio; aviso "rascunho gerado pela IA — revise antes de aprovar"
 
-### 4.4 Aprovação inline
+### 4.5 Aprovação inline
+
 - **Elemento:** `AprovacaoInline`
 - **Propósito:** aprovar/editar/rejeitar qualquer pendência (resposta ou artefato) sem trocar de tela
 - **Conteúdo (informações):** pendência resumida + botões
@@ -331,21 +377,24 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 - **Estados:** pendente / aprovado / rejeitado
 - **Visibilidade:** só quando existe pendência (resposta ou artefato)
 
-### 4.5 Informações do cliente
+### 4.6 Informações do cliente
+
 - **Elemento:** `InformacoesCliente`
 - **Conteúdo (informações):** contato (WhatsApp, e-mail), segmento, valor potencial, origem do contato, criado em, responsável
 - **Ações:** botão Editar → overlay de formulário
 - **Estados:** campo sem valor (placeholder "—")
 - **Visibilidade:** sempre
 
-### 4.6 Etapa atual + mover
+### 4.7 Etapa atual + mover
+
 - **Elemento:** `ControleEtapa`
 - **Conteúdo (informações):** coluna atual + aprovador da etapa
 - **Opções:** dropdown "Mover para…" com as 5 colunas (pular etapa exige confirmação)
 - **Ações:** mover atualiza o card e registra no Histórico
 - **Feedback:** toast "Movido para Orçamento"
 
-### 4.7 Artefatos (fechamento do cliente)
+### 4.8 Artefatos (fechamento do cliente)
+
 - **Elemento:** `ArtefatosCliente`
 - **Propósito:** gerar e acompanhar os documentos do cliente **a partir do orçamento aprovado** — o dono escolhe o que o cliente precisa
 - **Conteúdo (informações):** lista de artefatos gerados (tipo, status: gerado/enviado/assinado) + botão "Gerar artefato"
@@ -355,23 +404,104 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
   - **Nota fiscal** — sempre que houver venda fechada
   - **Contrato** — quando houver acordo formal (assinatura)
   - **Pedido de envio** — quando o cliente **compra um produto** (envio/entrega)
-- **Ações:** gerar (usa template de documento), visualizar (preview), baixar PDF, enviar ao cliente, assinar
+- **Ações:** gerar (usa template de documento), visualizar (**empilha Modo Preview** — 4.16), baixar PDF, enviar ao cliente, assinar
 - **Estados:** vazio ("Nenhum artefato") / gerando / erro de geração
 - **Feedback:** toast sucesso/erro; artefato entra na lista e no Histórico
 - **Visibilidade:** sempre no painel
 
-### 4.8 Integrações (atalhos)
+### 4.9 Integrações (atalhos)
+
 - **Elemento:** `AtalhosIntegracao`
 - **Conteúdo (informações):** atalhos do cliente por canal: **Abrir WhatsApp · Enviar e-mail · Mensagem direta** · Agendar follow-up (calendário) · (outros canais conforme integração — decisão 12/08: arquitetura de canais extensível)
 - **Ações:** cada atalho abre o canal externo / cria evento; "Mensagem direta" abre a conversa interna sem sair do painel
 - **Estados:** disabled quando o canal não está configurado para o cliente (com explicação)
 - **Visibilidade:** sempre
 
-### 4.9 Interlocutores
+### 4.10 Interlocutores
+
 - **Elemento:** `Interlocutores`
 - **Conteúdo (informações):** quem está envolvido no card: responsável, agente IA, cliente (avatar + nome + papel)
 - **Ações:** clique mostra contato; iniciar conversa interna
 - **Visibilidade:** sempre
+
+---
+
+### Modo Pendência (aba Follow-up — card de follow-up)
+
+> Abre ao clicar num `FollowUpCard`. **Conceito:** o dono resolve a pendência com contexto — vê o porquê, o valor em jogo e a ação sugerida, sem caçar o cliente no kanban.
+
+### 4.11 Contexto da pendência
+
+- **Elemento:** `PainelPendencia`
+- **Propósito:** apresentar a pendência em foco com tudo que ela precisa para ser resolvida
+- **Conteúdo (informações):** cliente (avatar + nome) + coluna atual; motivo legível ("Parado há 5 dias", "Orçamento sem resposta há 3 dias"); nível (semáforo); valor potencial em jogo (R$); outras pendências do mesmo cliente (se houver — navegação entre elas)
+- **Ações:** **Ver conversa** — empilha o Modo Cliente do mesmo cliente (trilha: Pendência › Cliente) · **Ver no kanban** — troca para a aba Kanban e abre o Modo Cliente
+- **Estados:** loading / erro
+- **Visibilidade:** sempre no Modo Pendência
+
+### 4.12 Ação sugerida + resolver
+
+- **Elemento:** `AcaoSugeridaPendencia` (reusa padrão da 3B.3)
+- **Conteúdo (informações):** ação sugerida pelo agente (ex.: "Gerar follow-up de retomada", "Relembrar orçamento", "Aprovar resposta") + botão "Gerar rascunho" (rascunho abre no Modo Cliente para revisão)
+- **Ações:** **Concluir** · **Adiar** (1/3/7 dias ou data escolhida) · **Dispensar** (permanente — U21) · **Aprovar** (só aprovador, quando pendência de aprovação)
+- **Estados:** concluído / adiado / expirado (atrasado além do prazo — destaque)
+- **Feedback:** toast ("Follow-up concluído", "Adiado para sexta-feira"); concluir/adiar registram no Histórico e atualizam contadores (U28)
+- **Visibilidade:** sempre no Modo Pendência
+
+---
+
+### Modo Perfil (aba Histórico — card de cliente)
+
+> Abre ao clicar num `CartaoHistoricoCliente`. **Conceito (D16):** o relatório do cliente (3C.4) vive no painel — artefatos, timeline e exportação sem sair da lista.
+
+### 4.13 Perfil do cliente (relatório)
+
+- **Elemento:** `PainelPerfilCliente` (reusa `DetalheHistoricoCliente` 3C.4)
+- **Propósito:** tudo do cliente num lugar só — o dono responde "qual contrato eu fiz, qual nota eu emiti para ele" sem sair da aba
+- **Conteúdo (informações):** identidade (nome, contato, segmento, valor potencial, coluna atual) · **artefatos gerados** por tipo com status (contrato, NF, orçamento, pedido de envio, plano de trabalho) · **linha do tempo do cliente** (eventos só dele, cronológicos) · resumo de métricas do cliente
+- **Ações:** visualizar artefato (**empilha Modo Preview** — 4.16) · baixar · **"Abrir no kanban"** (Modo Cliente) · **Exportar relatório do cliente** (PDF)
+- **Estados:** loading / vazio ("Nenhum evento ainda") / erro
+- **Visibilidade:** sempre no Modo Perfil
+
+---
+
+### Modo Rotina (aba Rotinas — rotina configurada)
+
+> Abre ao clicar num `RotinaCard`. **Conceito (D17):** a configuração da rotina vive no painel — o dono ajusta gatilho/ação/filtro/canal sem abrir o builder; o chat continua para criar ou edição guiada.
+
+### 4.14 Configuração da rotina
+
+- **Elemento:** `PainelRotina`
+- **Propósito:** ver e ajustar a configuração da rotina no lugar
+- **Conteúdo (informações):** nome + descrição; **gatilho/frequência legível** ("Toda segunda às 8h", "Quando cliente fica 3 dias sem resposta"); **ação** (enviar mensagem, gerar relatório, mover cards, revisar); **filtro** (quais clientes); **canal** (WhatsApp/e-mail/interno); status (ativa/pausada)
+- **Ações:** editar campos direto (frequência, filtro, canal — salva na hora) · **Editar com IA** — abre o `BuilderRotina` preenchido (chat) · **Rodar agora** · **Pausar/Retomar** · **Ver execuções** (filtra o feed 3D.5) · **Excluir** (confirmação)
+- **Estados:** ativa / pausada / executando agora (spinner no botão) / erro na última execução (alerta visual)
+- **Feedback:** toast ("Rotina atualizada", "Rotina executada", "Rotina pausada")
+- **Visibilidade:** sempre no Modo Rotina
+
+### 4.15 Última execução
+
+- **Elemento:** `UltimaExecucaoRotina`
+- **Conteúdo (informações):** quando + resultado (ok / erro / parcial — ex.: "2 de 5 mensagens enviadas") + o que foi feito
+- **Ações:** clique → detalhe da execução / link para o Histórico
+- **Estados:** nunca executou ("Ainda não executou — Rodar agora?") / erro (alerta visual)
+- **Visibilidade:** sempre no Modo Rotina
+
+---
+
+### Modo Preview (documento / contrato)
+
+> Abre ao clicar em "visualizar" num artefato (de qualquer modo). **Conceito (D15):** o preview de documento acontece **dentro do painel**, não em overlay — o dono confere o documento sem perder o contexto do item.
+
+### 4.16 Preview do documento
+
+- **Elemento:** `PainelPreview` (substitui o `OverlayArtefato` 6.3)
+- **Propósito:** conferir o documento/contrato antes de enviar ou assinar
+- **Conteúdo (informações):** renderização do documento (template + dados do cliente) + tipo/nome do artefato + status (gerado/enviado/assinado)
+- **Ações:** **Baixar PDF** · **Enviar ao cliente** · **Assinar** · **Abrir documento completo** (nova aba/overlay grande, quando o preview em 380px não bastar) · **Voltar** (desempilha para o modo anterior)
+- **Estados:** loading (gerando) / erro de geração / sem preview (tipo sem template)
+- **Feedback:** toast de envio/assinatura; artefato atualiza status e entra no Histórico
+- **Visibilidade:** sempre que um artefato é visualizado
 
 ---
 
@@ -416,8 +546,8 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 
 ### 6.2 Overlay "Editar cliente" (mesmo formulário preenchido)
 
-### 6.3 Overlay "Visualizar artefato"
-- **Conteúdo (informações):** preview do documento + ações (Baixar, Enviar, Assinar)
+### 6.3 ~~Overlay "Visualizar artefato"~~ — substituído (D15, 13/08)
+- Preview de documento/contrato agora acontece **dentro do painel direito** (Modo Preview — 4.16). Não existe mais overlay de artefato; "Abrir documento completo" só quando o preview em 380px não bastar.
 
 ### 6.4 Confirmações
 - Excluir card/artefato → confirmação; Rejeitar pendência → motivo opcional; Mover pulando etapas → aviso.
@@ -449,6 +579,14 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 | `ArtefatosCliente` | C | gerar/listar artefatos (orçamento, plano, NF, contrato, envio) |
 | `AtalhosIntegracao` | C | WhatsApp, e-mail, calendário |
 | `Interlocutores` | C | quem está envolvido |
+| `PainelContextual` | C | contêiner do detalhe que troca de modo por aba/item + trilha (U24) |
+| `TrilhaNavegacao` | C | breadcrumb da pilha (voltar um nível) |
+| `PainelPendencia` | C (Follow-up) | pendência em foco + ação sugerida + resolver |
+| `AcaoSugeridaPendencia` | C (Follow-up) | ação do agente + Gerar rascunho |
+| `PainelPerfilCliente` | C (Histórico) | relatório do cliente: artefatos + timeline + exportar (D16) |
+| `PainelRotina` | C (Rotinas) | configuração da rotina + status + ações (D17) |
+| `UltimaExecucaoRotina` | C (Rotinas) | resultado da última execução |
+| `PainelPreview` | C | preview de documento/contrato no painel (substitui OverlayArtefato — D15) |
 | `CabecalhoVisaoFollowUp` | B (Follow-up) | cabeçalho + filtros da fila de pendências |
 | `ListaFollowUp` | B (Follow-up) | pendências ordenadas por urgência |
 | `FollowUpCard` | B (Follow-up) | pendência com motivo, nível e ação sugerida |
@@ -463,7 +601,7 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 | `BuilderRotina` | B/E (Rotinas) | criar/editar rotina por chat (linguagem natural) |
 | `FeedExecucoes` | B (Rotinas) | execuções recentes com resultado |
 | `OverlayFormulario` | E | criar/editar com validação |
-| `OverlayArtefato` | E | preview + ações do documento |
+| ~~`OverlayArtefato`~~ | — | substituído por `PainelPreview` (D15) |
 
 ---
 
@@ -493,6 +631,12 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 | U20 | Histórico tem exportação CSV/PDF respeitando os filtros ativos |
 | U21 | "Dispensar" no Follow-up é permanente; a pendência só volta se nascer de novo |
 | U22 | **Histórico é por cliente** (revisão 12/08): lista de clientes com card sumarizado; não existe timeline global de eventos — a linha do tempo vive dentro do detalhe de cada cliente |
+| U23 | **Painel direito é contextual** (13/08): o conteúdo muda conforme a aba ativa e o item selecionado — Modo Cliente (Kanban) · Modo Pendência (Follow-up) · Modo Perfil (Histórico) · Modo Rotina (Rotinas) · Modo Preview (documento/contrato) |
+| U24 | Clicar item de outra aba **substitui** o modo do painel; navegar para dentro do item (ex.: visualizar artefato) **empilha** na trilha; X/Esc fecha e limpa a trilha |
+| U25 | **"Abrir no kanban"** existe em qualquer modo (exceto Cliente) e leva ao Modo Cliente do item |
+| U26 | Preview de documento acontece **dentro do painel** (Modo Preview) — não existe mais overlay de artefato (D15); "Abrir documento completo" só quando o preview em 380px não bastar |
+| U27 | Configuração de rotina vive no **Modo Rotina** do painel (edição direta de campos); `BuilderRotina` (chat) fica para criação e edição guiada |
+| U28 | Concluir/adiar pendência no Modo Pendência registra no Histórico e atualiza os contadores (aba + Home) — mesmo efeito da 3B.3 |
 
 ---
 
@@ -528,6 +672,13 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 - [ ] Canais: cliente sem canal configurado → atalho disabled com explicação
 - [ ] Histórico: Exportar CSV/PDF respeita filtros ativos → download + toast
 - [ ] Follow-up: Dispensar é permanente — pendência não volta sozinha; só nasce de novo
+- [ ] Painel contextual: clicar card no Kanban → Modo Cliente; trocar para Follow-up e clicar pendência → Modo Pendência **substitui**; X fecha e limpa a trilha
+- [ ] Painel contextual: trilha Cliente › Artefato › Preview — "voltar" desempilha um nível; breadcrumb só aparece com 2+ níveis
+- [ ] Painel: "Abrir no kanban" em qualquer modo (exceto Cliente) → aba Kanban + Modo Cliente do item
+- [ ] Modo Pendência: Concluir → toast + some da lista + registra no Histórico + contadores atualizam; Aprovar só para aprovador; "Ver conversa" empilha Modo Cliente do mesmo cliente
+- [ ] Modo Perfil: clique no cartão do histórico → relatório do cliente no painel (artefatos + timeline dele); visualizar artefato → Modo Preview; Exportar relatório do cliente (PDF)
+- [ ] Modo Rotina: clique na rotina → configuração no painel; editar campo direto salva na hora; "Editar com IA" abre o builder preenchido; Rodar agora → feed + Histórico + toast
+- [ ] Modo Preview: visualizar documento/contrato → preview no painel com Baixar/Enviar/Assinar; voltar → modo anterior; sem template → estado "sem preview"
 
 ---
 
@@ -554,5 +705,17 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 | D12 | **Seleção múltipla: checkbox só no hover** (não fixo no card); "selecionar tudo" no cabeçalho da coluna |
 | D13 | **Histórico por cliente** (revisão 12/08): lista de clientes com card sumarizado + detalhe por cliente (artefatos acessíveis + timeline só dele); sem timeline global (U22). **Aba Rotinas aprovada como está.** |
 
-### Em aberto
-_nenhuma — tela de Clientes fechada._
+### Tomadas (13/08) — painel direito contextual
+| # | Decisão |
+|---|---|
+| D14 | **Painel direito é contextual** — muda de modo conforme a aba ativa e o item selecionado: Modo Cliente (Kanban) · Modo Pendência (Follow-up) · Modo Perfil (Histórico) · Modo Rotina (Rotinas) · Modo Preview (documento/contrato). Cada aba tem o seu modo (direção do fundador 13/08: "cada aba vai mostrar uma coisa diferente no painel"). Trilha/breadcrumb quando o dono navega para dentro do item (U23/U24) |
+| D15 | **Preview de documento/contrato acontece dentro do painel** (Modo Preview — 4.16), não em overlay. `OverlayArtefato` (6.3) deixa de existir; "Abrir documento completo" só quando o preview em 380px não bastar (U26) |
+| D16 | **Detalhe do histórico vira Modo Perfil do painel** — o relatório do cliente (3C.4) abre no painel ao clicar no cartão da aba Histórico, com artefatos (visualizar → Modo Preview), timeline do cliente e exportação (4.13) |
+| D17 | **Configuração de rotina vive no Modo Rotina do painel** — edição direta de gatilho/ação/filtro/canal; o `BuilderRotina` (chat) fica para criação e edição guiada (4.14–4.15, U27) |
+
+### Em aberto (novas — 13/08)
+
+1. **Modo Pendência:** painel dedicado de pendência (proposta) vs reutilizar o Modo Cliente com a pendência em destaque? A proposta (painel dedicado) resolve mais rápido sem trocar de contexto, mas cria um modo extra.
+2. **Edição de rotina no painel:** campos diretos + "Editar com IA" (proposta) vs só o builder chat? Campos diretos são mais rápidos para ajustes pequenos (frequência/canal), mas duplicam a lógica do builder.
+3. **Painel sem seleção:** estado vazio "Selecione um item" (proposta) vs painel recolhido em faixa fina? Vazio comunica que o painel existe; recolhido ganha espaço no centro.
+4. **Trocar de aba com painel aberto:** manter o item (proposta — o mesmo cliente aparece em várias visões, o painel não pisca) vs fechar ao trocar de aba?
