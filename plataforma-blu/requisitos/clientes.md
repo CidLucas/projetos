@@ -121,7 +121,7 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 ### 3.5 Seleção de cards
 - **Elemento:** `SelecaoMultipla` (comportamento do quadro)
 - **Ações:**
-  - Checkbox no card (hover ou fixo) → marca individual
+  - Checkbox no card **só no hover** (decisão D12 — não fixo no card)
   - Clique com **Shift** → seleciona intervalo (na mesma coluna)
   - Clique com **Ctrl/Cmd** → alterna card sem perder seleção
   - **Selecionar tudo na coluna** (checkbox no cabeçalho da coluna)
@@ -533,6 +533,7 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 | D9 | **"Dispensar" no Follow-up é permanente** (U21) |
 | D10 | **Histórico com exportação** CSV/PDF respeitando filtros (U20) |
 | D11 | **Catálogo de rotinas built-in** na aba Rotinas, embasado nas funções existentes da Rotina API (reengajamento, churn/NPS, orçamentos, saudação, inadimplentes) + **BuilderRotina** para criar rotina custom |
+| D12 | **Seleção múltipla: checkbox só no hover** (não fixo no card); "selecionar tudo" no cabeçalho da coluna |
 
 ### Em aberto
-1. **Seleção múltipla:** checkbox visível no hover vs. fixo no card? (proposta: hover + "selecionar tudo" no cabeçalho da coluna)
+_nenhuma — tela de Clientes fechada._
