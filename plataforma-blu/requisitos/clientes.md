@@ -2,254 +2,269 @@
 
 > Última atualização: 2026-08-11 | Status: 🟡 Em andamento (esmiuçando para design)
 > Segue o padrão de [template-tela.md](./template-tela.md). Fluxo do kanban em [kanbans.md](./kanbans.md).
-> Legenda: ✅ Reusar (existe no Blu DS/monorepo) · 🔶 Adaptar · 🟥 Construir (novo)
+> **Princípio:** elementos puros — informação + ação. Nenhum elemento é amarrado ao design atual da Blu; tudo nasce como novo conceito.
 
 ---
 
 ## 1. Layout macro da tela
 
 ```
-┌──────────────────────────────────────────────────────────────────────┐
-│ A · TOPO: título "Clientes" | busca | filtros | [+ Novo cliente]     │
-├──────────────────────────────────────────────────────────────────────┤
-│ B · ABAS:  [Kanban] [Follow-up] [Histórico] [Rotinas]                │
-│ ┌────────────────────────────────────────────┐  ┌──────────────────┐ │
-│ │ KANBAN — 5 colunas                         │  │ C · PAINEL DIREITO│ │
-│ │ 💬Conversa │ 🧾Orçamento │ 📎Artefatos │    │  │ (card selecionado)│ │
-│ │ ✅Fechado │ 🔁Recorrência                 │  │ │                  │ │
-│ └────────────────────────────────────────────┘  └──────────────────┘ │
-├──────────────────────────────────────────────────────────────────────┤
-│ D · QUADRINHOS:  [Insights do agente] [Métricas] [Interlocutores]    │
-└──────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────┐
+│ A · Topo:  [Kanban] [Follow-up] [Histórico] [Rotinas]   …   [+ Novo]     │
+│            (abas discretas — sem faixa horizontal)                       │
+├───────────────────────────────────────────────────────┬──────────────────┤
+│ B · QUADRO PRINCIPAL (kanban)                         │ C · PAINEL       │
+│   💬 Conversa │ 🧾 Orçamento │ 📎 Fechamento │        │   DIREITO        │
+│   ✅ Fechado  │ 🔁 Recorrência                        │   (faixa         │
+│                                                       │    vertical —    │
+│   [x] Card 1        [x] Card 2     [ ] Card 3         │    card          │
+│   ...                                                 │    selecionado)  │
+│                                                       │                  │
+│   ← seleção múltipla + barra de ações em lote →       │                  │
+├───────────────────────────────────────────────────────┴──────────────────┤
+│ D · (opcional — adiado por padrão)  [Insights] [Métricas] [Interlocutores]│
+└──────────────────────────────────────────────────────────────────────────┘
 ```
 
-Aba padrão: **Kanban**. O painel direito (C) abre quando um card é clicado.
+Layout mínimo do design inicial: **Topo (abas) + Quadro + Painel direito**. A região D fica de fora por enquanto — só entra se provar valor depois.
 
 ---
 
-## 2. Região A — Topo da sala
+## 2. Região A — Topo
 
-### 2.1 Título + contador
-- **Componente:** `PageHeader` 🔶 Adaptar
-- **Conteúdo/Dados:** "Clientes" + subtítulo com total de clientes ativos (ex.: "128 clientes")
-- **Interações:** clique no subtítulo abre a aba Ativos/lista
-- **Estados:** — | **Visibilidade:** sempre
+### 2.1 Navegação por abas (discretas, sem strip)
+- **Elemento:** `NavegacaoAbas` (novo conceito)
+- **Propósito:** trocar entre as 4 visões da sala **sem faixa horizontal** — abas como texto discreto com indicador de estado (cor + peso + contador), sem fundo, sem borda, sem barra sublinhada
+- **Abas (ordem):** Kanban (padrão) · Follow-up · Histórico · Rotinas
+- **Conteúdo (informações):** nome da aba + contador de pendência (ex.: Follow-up "5")
+- **Opções:** nenhuma além da própria troca de aba (abas fixas da dimensão)
+- **Ações:** clique troca a visão; persiste a última aba por sessão
+- **Estados:** ativa (destaque de cor) / inativa / com pendência (contador)
+- **Visibilidade:** sempre
+- **Feedback:** transição suave da visão
 
-### 2.2 Busca de cliente
-- **Componente:** `SearchInput` ✅ Reusar
-- **Propósito:** achar cliente rápido (nome, contato, segmento)
-- **Opções:** busca simples; tecla Enter abre lista de resultados com atalho
-- **Estados:** vazio (placeholder "Buscar cliente..."), loading, sem resultados ("Nenhum cliente encontrado")
-- **Feedback:** resultados em dropdown
+### 2.2 Busca
+- **Elemento:** `CampoBusca`
+- **Propósito:** achar cliente por nome, contato ou segmento
+- **Conteúdo (informações):** placeholder "Buscar cliente..."; resultados em painel suspenso (nome, contato, coluna atual)
+- **Ações:** digitar filtra; Enter confirma e abre o primeiro resultado
+- **Estados:** vazio / digitando (sugestões) / sem resultados ("Nenhum cliente encontrado") / loading
+- **Visibilidade:** sempre no topo
 
-### 2.3 Filtros
-- **Componente:** `Select` + `DropdownMenu` ✅ Reusar
-- **Opções:** Segmento (todos / lista de segmentos), Responsável (todos / dono / membro X), Risco (todos / oportunidade / alerta / risco)
-- **Interações:** múltiplos filtros ativos ao mesmo tempo; badge de limpar ("Limpar filtros")
-- **Estados:** selecionado, disabled quando não há opções
+### 2.3 Filtros do quadro
+- **Elemento:** `Filtros`
+- **Propósito:** restringir o quadro por atributos do cliente
+- **Opções:** Segmento (todos/…), Responsável (todos/dono/membro…), Risco (todos/oportunidade/alerta/risco), Valor (faixa mín–máx)
+- **Ações:** múltiplos filtros combináveis; "Limpar filtros" aparece quando há filtro ativo
+- **Estados:** ativo (badge com contagem de filtros) / inativo
+- **Visibilidade:** sempre
 
 ### 2.4 Botão "Novo cliente"
-- **Componente:** `Button` (variant primary, ícone +) ✅ Reusar
-- **Ações:** abre modal de criação (Região E)
-- **Estados:** default / hover / disabled (sem permissão de criar)
+- **Elemento:** `BotaoPrimario` (ícone +)
+- **Propósito:** criar cliente do zero
+- **Ações:** abre overlay de criação (Região E)
+- **Estados:** default / hover / disabled (sem permissão de criar — papéis fixos)
+- **Visibilidade:** sempre
 
 ---
 
-## 3. Região B — Abas do quadro principal
+## 3. Região B — Quadro principal (kanban)
 
-### 3.1 Tabs
-- **Componente:** `Tabs` ✅ Reusar
-- **Abas (ordem):** Kanban (padrão) → Follow-up → Histórico → Rotinas
-- **Opções:** clique troca de aba; badge de contagem na aba Follow-up (ex.: "5")
-- **Interações:** persistência da aba ativa por sessão (Zustand)
-- **Estados:** ativa/inativa; badge de pendência
+### 3.1 Quadro
+- **Elemento:** `QuadroKanban`
+- **Propósito:** mostrar o estágio de cada cliente no fluxo do começo ao fim e permitir mover/agir em lote
+- **Conteúdo (informações):** 5 colunas (kanbans.md §3.2): 💬 Conversa → 🧾 Orçamento → 📎 Fechamento → ✅ Fechado → 🔁 Recorrência; cada coluna com contador
+- **Ações:** scroll horizontal; arrastar cards; clicar card abre o painel direito; **seleção múltipla** (ver 3.5)
+- **Estados:** loading (esqueleto) / vazio (mensagem + CTA "Adicionar primeiro cliente") / erro (recarregar)
+- **Feedback:** animação ao mover; toast em falha
 
-### 3.2 Aba Kanban — barra de ferramentas do quadro
-- **Componente:** `Toolbar` 🔶 Adaptar
-- **Conteúdo/Dados:** filtros rápidos do quadro (buscar no quadro, por coluna, ordenar)
-- **Opções de ordenação:** valor potencial (maior→menor), prazo (mais urgente), recência de contato (mais antigo), manual (arrastar)
-- **Interações:** alternar visualização Kanban ↔ Lista (opcional); recolher/expandir colunas; limpar filtros
-- **Estados:** — | **Visibilidade:** sempre na aba Kanban
+### 3.2 Coluna
+- **Elemento:** `ColunaKanban`
+- **Conteúdo (informações):** nome da etapa, contador ("Conversa · 12"), cor da coluna (identidade da etapa)
+- **Opções (menu da coluna):** recolher/expandir coluna, ordenar coluna (valor/prazo/recência)
+- **Ações:** área de soltar cards; recolher (mostra só o cabeçalho)
+- **Estados:** recolhida / vazia (dropzone visível) / cheia
+- **Visibilidade:** sempre
 
-### 3.3 KanbanBoard
-- **Componente:** `KanbanBoard` 🟥 Construir (peça central)
-- **Conteúdo/Dados:** 5 colunas do fluxo de relacionamento (kanbans.md §3.2): Conversa, Orçamento, Artefatos, Fechado, Recorrência
-- **Interações:** scroll horizontal no quadro; drag & drop de cards entre colunas; clique em card abre painel C; drop fora da coluna válida → card volta ao lugar
-- **Estados:** loading (skeleton), vazio (empty state com CTA "Adicionar primeiro cliente"), erro (reload)
-- **Feedback:** animação de mover; toast em erro de movimentação
+### 3.3 Card de cliente
+- **Elemento:** `CartaoCliente`
+- **Propósito:** resumo do cliente em uma linha — o dono entende onde ele está e o que precisa sem abrir nada
+- **Conteúdo (informações):**
+  - Nome do cliente
+  - Badge de etapa interna (ex.: "Aguardando aprovação", "Rascunho", "Enviado")
+  - Semáforo 🟢 no prazo / 🟡 parado há X dias / 🔴 urgente (borda esquerda)
+  - Valor potencial (R$)
+  - Prazo ou recência ("há 2d")
+  - Responsável (avatar)
+- **Opções (menu "..." do card):** Mover para…, Gerar artefato…, Aprovar pendência, Duplicar, Arquivar, Excluir (com confirmação)
+- **Ações:** clique → abre painel direito; arrastar → mover de coluna; **checkbox de seleção** (ver 3.5); ações rápidas no hover (aprovar, mover, comentar)
+- **Estados:** default / hover / arrastando (elevado) / selecionado (checkbox marcado + destaque) / semáforo por cor / disabled
+- **Visibilidade:** sempre que há clientes
 
-### 3.4 KanbanColumn
-- **Componente:** `KanbanColumn` 🟥 Construir
-- **Conteúdo/Dados:** header com nome, contador de cards (ex.: "Conversa · 12"), cor da coluna; corpo com cards empilhados (scroll interno)
-- **Opções (menu da coluna):** recolher coluna, mover todos?, configurar limite (WIP opcional), (não permite renomear/remover — etapas fixas da dimensão)
-- **Interações:** dropzone de cards; recolher/expandir
-- **Estados:** recolhida (mostra só header), vazia (dropzone visível), limite atingido (aviso)
+### 3.4 Barra de ações em lote (seleção múltipla)
+- **Elemento:** `BarraAcoesLote`
+- **Propósito:** agir em vários cards de uma vez — aparece quando 2 ou mais cards estão selecionados
+- **Conteúdo (informações):** contador ("5 selecionados") + ações
+- **Opções/ações:**
+  - **Mover para…** (escolher coluna de destino — aplica em todos)
+  - **Gerar artefato…** (escolher tipo — gera para todos)
+  - **Aprovar pendências** (aprova respostas/artefatos pendentes dos selecionados)
+  - **Marcar lido** (mensagens novas)
+  - **Arquivar** / **Excluir** (com confirmação dupla)
+  - **Limpar seleção** (X ou Esc)
+- **Estados:** visível só com seleção ativa; ações desabilitadas se nenhum card atende o critério
+- **Feedback:** toast de sucesso contando quantos foram afetados ("3 movidos para Orçamento"); confirmação antes de excluir
+- **Visibilidade:** substitui a barra de filtros do quadro enquanto há seleção
 
-### 3.5 KanbanCard
-- **Componente:** `KanbanCard` 🟥 Construir
-- **Conteúdo/Dados:** nome do cliente (título), badge de etapa interna (ex.: "Aguardando aprovação"), semáforo (borda esquerda 🟢/🟡/🔴), valor potencial (R$), prazo/recência ("há 2d"), responsável (avatar)
-- **Ações rápidas (hover):** Aprovar (se há pendência), Gerar artefato, Mover → (menu de coluna destino), Comentar (nota interna)
-- **Interações:** clique → abre painel C; arrastar → mover coluna; menu "..." (mais ações: duplicar, arquivar, excluir com confirmação)
-- **Estados:** default / hover / dragging (elevado) / selecionado / semáforo por cor / disabled
-- **Feedback:** confirmação antes de excluir
-
-### 3.6 Estado vazio do quadro
-- **Componente:** `EmptyState` ✅ Reusar
-- **Conteúdo/Dados:** ilustração + "Nenhum cliente aqui ainda" + botão "Novo cliente"
-- **Visibilidade:** zero cards em todas as colunas
-
-### 3.7 Aba Follow-up
-- **Componente:** lista de `DecisionCard`/`FollowUpCard` 🔶 Adaptar
-- **Conteúdo/Dados:** clientes que precisam de ação (sugeridos pelo agente): nome, motivo ("parado há 5 dias", "orçamento sem resposta"), tempo relativo, nível
-- **Opções por card:** Concluir, Adiar (snooze 1/3/7 dias), Ver no kanban (abre card)
-- **Estados:** vazio ("Nada pendente 🎉"), loading
-
-### 3.8 Aba Histórico
-- **Componente:** `Timeline` ✅ Reusar
-- **Conteúdo/Dados:** ações em clientes (mensagem enviada, orçamento aceito, artefato gerado, follow-up concluído), cronológicas, com filtro por cliente
-- **Interações:** clique em item abre contexto (card/painel)
-- **Estados:** vazio ("Sem histórico ainda")
-
-### 3.9 Aba Rotinas
-- **Componente:** `RoutineConfigSection` + `RoutineExecutionFeed` ✅ Reusar
-- **Conteúdo/Dados:** rotinas da dimensão Clientes (follow-up de parados, revisão de propostas vencidas, análise de churn mensal) + feed de execuções
-- **Opções:** criar rotina via builder chat, "Rodar agora", editar pausar/excluir
-- **Estados:** sem rotinas (empty + CTA), feed vazio
+### 3.5 Seleção de cards
+- **Elemento:** `SelecaoMultipla` (comportamento do quadro)
+- **Ações:**
+  - Checkbox no card (hover ou fixo) → marca individual
+  - Clique com **Shift** → seleciona intervalo (na mesma coluna)
+  - Clique com **Ctrl/Cmd** → alterna card sem perder seleção
+  - **Selecionar tudo na coluna** (checkbox no cabeçalho da coluna)
+  - Clique em card já selecionado sem teclado → abre o painel (sem desmarcar)
+  - Esc → limpa seleção
+- **Estados:** card selecionado (contorno/destaque), coluna toda selecionada (checkbox cheio)
+- **Visibilidade:** comportamento do quadro; a barra de lote aparece com 2+
 
 ---
 
-## 4. Região C — Painel direito (detalhe do card)
+## 4. Região C — Painel direito (faixa vertical)
 
-> Drawer lateral fixo (~380px), abre ao clicar num card. Componente: `Drawer` 🔶 Adaptar (painel existente ou novo).
+> Painel lateral fixo (~380px), abre ao clicar num card. **Conceito:** o dono gerencia o cliente do começo ao fim sem sair daqui.
 
-### 4.1 Header do painel
-- **Conteúdo/Dados:** nome do cliente + semáforo + valor potencial; botão fechar (X)
-- **Ações:** fechar painel; editar dados (abre modal E)
-- **Estados:** — | **Visibilidade:** sempre que um card está selecionado
+### 4.1 Cabeçalho do painel
+- **Elemento:** `CabecalhoPainel`
+- **Conteúdo (informações):** nome do cliente + semáforo + valor potencial; menu "..." (editar, duplicar, arquivar, excluir)
+- **Ações:** fechar (X); editar abre overlay de formulário
+- **Visibilidade:** sempre que um card está selecionado
 
-### 4.2 Conversa (thread de mensagens)
-- **Componente:** `MessageThread` 🟥 Construir + `MessageBubble` 🟥 Construir
-- **Conteúdo/Dados:** histórico da troca com o cliente — bubbles do cliente (cinza) e do agente (azul); status em cada mensagem do agente: Rascunho → Aguardando aprovação → Enviada → (Lida/Respondida quando houver canal)
-- **Opções:** ver mensagem inteira (expandir), copiar, "Reenviar" (se falhou)
-- **Estados:** bubble com status visual (pendente = contorno amarelo), thread vazia ("Nenhuma mensagem ainda"), loading
-- **Feedback:** toast ao aprovar/enviar
+### 4.2 Conversa (mensagens com o cliente)
+- **Elemento:** `ConversaCliente`
+- **Propósito:** ver e responder a troca de mensagens com o cliente, com o ciclo **notificada → respondida pelo agente → aprovada pelo dono → enviada**
+- **Conteúdo (informações):** linha do tempo de mensagens — cliente (cinza) e agente (azul); cada mensagem do agente com status: `Rascunho` → `Aguardando aprovação` → `Enviada`; notificação visual quando chega mensagem nova
+- **Ações:** expandir mensagem; copiar; reenviar (se falhou); ver detalhe do status
+- **Estados:** mensagem pendente (contorno de atenção) / thread vazia ("Nenhuma mensagem ainda") / loading
+- **Visibilidade:** sempre no painel
 
 ### 4.3 Campo de resposta
-- **Componente:** `TextArea` + `Button` ✅ Reusar + botão IA 🟥 Construir
-- **Conteúdo/Dados:** caixa para o dono escrever resposta; botão "Gerar resposta (IA)" aciona o agente
-- **Opções:** enviar direto (se permissão), ou gerar rascunho do agente → fica "Aguardando aprovação" (Aprovar / Editar / Rejeitar)
-- **Ações:** Enter envia; Esc limpa; atalho de IA
-- **Estados:** disabled enquanto envia, placeholder "Responder ao cliente..."
-- **Feedback:** confirmação de envio; aviso "resposta gerada pela IA, revise antes de aprovar"
+- **Elemento:** `CampoResposta`
+- **Propósito:** o dono escreve direto ou pede rascunho ao agente
+- **Conteúdo (informações):** caixa de texto + botão "Gerar resposta (IA)" + botão enviar
+- **Opções:** Enviar direto (se tiver permissão) ou Gerar com IA → rascunho fica "Aguardando aprovação"
+- **Ações:** Enter envia; Esc limpa; atalho para IA
+- **Estados:** escrevendo / enviando (disabled) / vazio (placeholder)
+- **Feedback:** toast de envio; aviso "rascunho gerado pela IA — revise antes de aprovar"
 
 ### 4.4 Aprovação inline
-- **Componente:** `ApprovalInline` 🟥 Construir (padrão reaproveitado nas outras salas)
-- **Conteúdo/Dados:** quando há resposta/artefato pendente: texto + botões Aprovar / Editar / Rejeitar (+ motivo opcional ao rejeitar)
-- **Estados:** pendente / aprovado / rejeitado (feedback com motivo)
-- **Visibilidade:** só quando existe pendência
+- **Elemento:** `AprovacaoInline`
+- **Propósito:** aprovar/editar/rejeitar qualquer pendência (resposta ou artefato) sem trocar de tela
+- **Conteúdo (informações):** pendência resumida + botões
+- **Opções:** Aprovar · Editar · Rejeitar (pede motivo opcional)
+- **Estados:** pendente / aprovado / rejeitado
+- **Visibilidade:** só quando existe pendência (resposta ou artefato)
 
 ### 4.5 Informações do cliente
-- **Componente:** `InfoList` 🔶 Adaptar
-- **Conteúdo/Dados:** contato (WhatsApp, e-mail), segmento, valor potencial, origem (canal), criado em
-- **Ações:** botão Editar → modal de formulário (E)
-- **Estados:** campos vazios (placeholder "—")
+- **Elemento:** `InformacoesCliente`
+- **Conteúdo (informações):** contato (WhatsApp, e-mail), segmento, valor potencial, origem do contato, criado em, responsável
+- **Ações:** botão Editar → overlay de formulário
+- **Estados:** campo sem valor (placeholder "—")
+- **Visibilidade:** sempre
 
 ### 4.6 Etapa atual + mover
-- **Componente:** `SegmentedControl`/`Select` 🔶 Adaptar
-- **Conteúdo/Dados:** coluna atual (Conversa/Orçamento/Artefatos/Fechado/Recorrência) + aprovador da etapa
-- **Opções:** dropdown "Mover para..." com as 5 colunas (não permite pular etapas sem aviso: confirmar se pular)
-- **Interações:** mover = atualiza card e registra no Histórico
+- **Elemento:** `ControleEtapa`
+- **Conteúdo (informações):** coluna atual + aprovador da etapa
+- **Opções:** dropdown "Mover para…" com as 5 colunas (pular etapa exige confirmação)
+- **Ações:** mover atualiza o card e registra no Histórico
 - **Feedback:** toast "Movido para Orçamento"
 
-### 4.7 Artefatos
-- **Componente:** `ArtifactList` 🟥 Construir + `DropdownMenu` ✅ Reusar
-- **Conteúdo/Dados:** lista de artefatos gerados (NF, contrato, pedido de envio, orçamento) com status (gerado/enviado/assinado)
-- **Opções do botão "Gerar artefato":** Nota fiscal · Contrato · Pedido de envio · Orçamento · Proposta
-- **Ações:** gerar (usa template — api/documents), visualizar (modal/aba), baixar PDF, enviar ao cliente (via canal), assinar
-- **Estados:** vazio ("Nenhum artefato"), gerando (skeleton), erro de geração
-- **Feedback:** toast sucesso/erro; artefato aparece na lista e no Histórico
+### 4.7 Artefatos (fechamento do cliente)
+- **Elemento:** `ArtefatosCliente`
+- **Propósito:** gerar e acompanhar os documentos do cliente **a partir do orçamento aprovado** — o dono escolhe o que o cliente precisa
+- **Conteúdo (informações):** lista de artefatos gerados (tipo, status: gerado/enviado/assinado) + botão "Gerar artefato"
+- **Opções do menu "Gerar artefato":**
+  - **Orçamento** — cotação enviada ao cliente (estágio Orçamento)
+  - **Plano de trabalho** — quando o orçamento aprovado é de **serviço** (escopo, etapas, prazos)
+  - **Nota fiscal** — sempre que houver venda fechada
+  - **Contrato** — quando houver acordo formal (assinatura)
+  - **Pedido de envio** — quando o cliente **compra um produto** (envio/entrega)
+- **Ações:** gerar (usa template de documento), visualizar (preview), baixar PDF, enviar ao cliente, assinar
+- **Estados:** vazio ("Nenhum artefato") / gerando / erro de geração
+- **Feedback:** toast sucesso/erro; artefato entra na lista e no Histórico
+- **Visibilidade:** sempre no painel
 
 ### 4.8 Integrações (atalhos)
-- **Componente:** `IconButton` + `Tooltip` ✅ Reusar
-- **Conteúdo/Dados:** atalhos do cliente: Abrir WhatsApp, Enviar e-mail, Agendar follow-up (Google Calendar), (Notion/Outlook se configurado)
-- **Ações:** cada atalho abre o canal externo em nova aba / cria evento
-- **Estados:** ícone disabled quando integração não configurada (tooltip explica)
-- **Visibilidade:** sempre; tooltips ajudam
+- **Elemento:** `AtalhosIntegracao`
+- **Conteúdo (informações):** atalhos do cliente: Abrir WhatsApp · Enviar e-mail · Agendar follow-up (calendário) · (outras conforme integração)
+- **Ações:** cada atalho abre o canal externo / cria evento
+- **Estados:** disabled quando a integração não está configurada (com explicação)
+- **Visibilidade:** sempre
 
 ### 4.9 Interlocutores
-- **Componente:** `AvatarStack` + `Tag` ✅ Reusar
-- **Conteúdo/Dados:** quem está envolvido no card: responsável (dono/membro), agente IA, cliente
-- **Ações:** clique em avatar mostra nome/papel/contato
-- **Estados:** — | **Visibilidade:** sempre
+- **Elemento:** `Interlocutores`
+- **Conteúdo (informações):** quem está envolvido no card: responsável, agente IA, cliente (avatar + nome + papel)
+- **Ações:** clique mostra contato; iniciar conversa interna
+- **Visibilidade:** sempre
 
 ---
 
-## 5. Região D — Quadrinhos inferiores (2–3)
+## 5. Região D — Elementos abaixo (opcional, adiado)
 
-### 5.1 Q1 — Insights do agente
-- **Componente:** cards de insight 🔶 Adaptar (padrão de insights existe)
-- **Conteúdo/Dados:** sugestões proativas (ex.: "Cliente X parado há 5 dias — gerar follow-up?", "Orçamento de Y sem resposta há 3 dias")
-- **Ações por card:** Ver no kanban (abre card), Aplicar (gera follow-up/rascunho), Dispensar
-- **Estados:** vazio ("Sem insights agora"), loading
-- **Visibilidade:** sempre; limite 3 cards
+> Decisão: **não entra no design inicial.** O layout mínimo é Topo + Quadro + Painel direito. Se depois provar valor, candidatos:
 
-### 5.2 Q2 — Métricas da dimensão
-- **Componente:** `AnalyticsPanel`/`KpiCard` 🔶 Adaptar (indicadores já existem)
-- **Conteúdo/Dados:** Pipeline (R$), Win rate, Ticket médio, NRR, Total de clientes, Segmentos
-- **Opções:** período 30d / 90d / 1y; clique em métrica abre a fonte (Estratégia/lista)
-- **Estados:** loading; sem dados ("Conecte seu CRM/importe clientes")
-- **Visibilidade:** sempre na aba Kanban
-
-### 5.3 Q3 — Interlocutores / envolvidos
-- **Componente:** `AvatarStack` + lista ✅ Reusar
-- **Conteúdo/Dados:** pessoas envolvidas nos processos da sala (dono, membros, agente) — quem o dono procura para falar
-- **Ações:** clique abre contato/chat interno
-- **Estados:** vazio ("Sem membros — convide em Admin")
-- **Visibilidade:** sempre
+- **Insights do agente** — sugestões proativas (ex.: "Cliente X parado há 5 dias")
+- **Métricas da sala** — pipeline, win rate, ticket médio, NRR (período 30/90/1y)
+- **Interlocutores da sala** — quem participa dos processos
 
 ---
 
 ## 6. Overlays (Região E)
 
-### 6.1 Modal "Novo cliente"
-- **Componente:** `Modal` + formulário ✅ Reusar
+### 6.1 Overlay "Novo cliente"
+- **Elemento:** `OverlayFormulario`
 - **Campos:** nome, contato (WhatsApp/e-mail), segmento, valor potencial, responsável, coluna inicial (padrão Conversa)
-- **Ações:** Salvar (cria card + registra Histórico), Cancelar
+- **Ações:** Salvar (cria card + registra Histórico) · Cancelar
 - **Validação:** nome obrigatório; contato válido
 - **Feedback:** toast "Cliente criado"; erro de duplicidade
 
-### 6.2 Modal "Editar cliente" (mesmo formulário preenchido)
+### 6.2 Overlay "Editar cliente" (mesmo formulário preenchido)
 
-### 6.3 Modal "Visualizar artefato"
-- **Componente:** `Modal`/navegador de doc ✅ Reusar (EditorOverlay existe)
-- **Conteúdo/Dados:** preview do artefato + ações (Baixar, Enviar, Assinar)
-- **Visibilidade:** ao clicar em artefato da lista
+### 6.3 Overlay "Visualizar artefato"
+- **Conteúdo (informações):** preview do documento + ações (Baixar, Enviar, Assinar)
 
 ### 6.4 Confirmações
-- Excluir card → confirm; Rejeitar resposta/artefato → pedir motivo (opcional); Mover pulando etapas → avisar.
+- Excluir card/artefato → confirmação; Rejeitar pendência → motivo opcional; Mover pulando etapas → aviso.
 
 ---
 
-## 7. Elementos do design system (biblioteca Blu DS)
+## 7. Biblioteca de elementos (novo conceito — para o design system)
 
-### 🟥 Construir (novos — núcleo)
-| Componente | Uso | Salas que reusam |
+> Elementos puros, sem herança do design atual. Nome + propósito; o desenho vem depois.
+
+| Elemento | Região | Propósito |
 |---|---|---|
-| `KanbanBoard` | quadro de colunas com drag & drop | todas com kanban |
-| `KanbanColumn` | coluna com contador, cor, dropzone | todas com kanban |
-| `KanbanCard` | card com semáforo, badge, ações rápidas | todas com kanban |
-| `SemaphoreDot` | indicador 🟢🟡🔴 | Home, todas as salas |
-| `MessageThread` | conversa com o cliente | Clientes, Compras (cotação) |
-| `MessageBubble` | mensagem com status (rascunho/pendente/enviada) | Clientes, Compras |
-| `ApprovalInline` | aprovar/editar/rejeitar inline | todas as salas |
-| `ArtifactList` | lista de artefatos + gerar | Clientes, Documentos, Financeiro |
-| `StepBadge` | badge de etapa interna do card | todas com kanban |
-
-### 🔶 Adaptar (existe, ajustar)
-`PageHeader`, `Toolbar`, `Drawer`, `InfoList`, `AnalyticsPanel`, `KpiCard`, `DecisionCard` → `FollowUpCard`, `SegmentedControl`, cards de insight, `RoutineConfigSection` (rotinas por sala).
-
-### ✅ Reusar (sem mudança)
-`Button`, `Input`, `SearchInput`, `Select`, `DropdownMenu`, `Tabs`, `Modal`, `Tooltip`, `Toast`, `Skeleton`, `EmptyState`, `Avatar`, `AvatarStack`, `Badge`, `Tag`, `IconButton`, `Timeline`, `RoutineExecutionFeed`, `EditorOverlay`.
+| `NavegacaoAbas` | A | abas discretas sem faixa horizontal, com contador |
+| `CampoBusca` | A | busca rápida com sugestões |
+| `Filtros` | A | restringir quadro por atributos combináveis |
+| `BotaoPrimario` | A | criar cliente |
+| `QuadroKanban` | B | colunas do fluxo, arrastar, seleção múltipla |
+| `ColunaKanban` | B | etapa com contador, cor, dropzone |
+| `CartaoCliente` | B | resumo do cliente: badge, semáforo, valor, prazo, responsável |
+| `SelecaoMultipla` | B | checkbox por card/coluna, Shift/Ctrl, selecionar tudo |
+| `BarraAcoesLote` | B | mover/gerar/aprovar/arquivar em massa |
+| `Semafaro` | B/C | indicador 🟢🟡🔴 de atenção |
+| `CabecalhoPainel` | C | identidade do item + fechar/editar |
+| `ConversaCliente` | C | thread de mensagens com status de envio |
+| `CampoResposta` | C | responder direto ou gerar rascunho IA |
+| `AprovacaoInline` | C | aprovar/editar/rejeitar pendência no lugar |
+| `InformacoesCliente` | C | dados de contato/segmento/valor |
+| `ControleEtapa` | C | mover entre colunas com confirmação |
+| `ArtefatosCliente` | C | gerar/listar artefatos (orçamento, plano, NF, contrato, envio) |
+| `AtalhosIntegracao` | C | WhatsApp, e-mail, calendário |
+| `Interlocutores` | C | quem está envolvido |
+| `OverlayFormulario` | E | criar/editar com validação |
+| `OverlayArtefato` | E | preview + ações do documento |
 
 ---
 
@@ -257,36 +272,39 @@ Aba padrão: **Kanban**. O painel direito (C) abre quando um card é clicado.
 
 | # | Regra |
 |---|---|
-| U1 | Aba padrão = Kanban; persiste a última aba por sessão |
+| U1 | Aba padrão = Kanban; última aba persiste por sessão |
 | U2 | Colunas do kanban são fixas (etapas da dimensão) — não renomear/remover na UI |
-| U3 | Resposta pendente aparece com badge na aba Follow-up e na Home |
-| U4 | Todo movimento de card registra no Histórico |
+| U3 | Pendência aparece com contador na aba Follow-up e na Home |
+| U4 | Todo movimento de card e todo artefato gerado registram no Histórico |
 | U5 | Pular etapas exige confirmação |
-| U6 | Papel "aprovador" vê o botão Aprovar; "criador" vê o botão Gerar; "visualizador" só vê (papéis fixos da Fase 0) |
-| U7 | Sem permissão de criar → botão "Novo cliente" disabled |
+| U6 | Papéis fixos: aprovador vê Aprovar; criador vê Gerar; visualizador só vê |
+| U7 | Sem permissão de criar → "Novo cliente" desabilitado |
+| U8 | Ações em lote só aparecem com 2+ selecionados; excluir em lote exige confirmação dupla |
+| U9 | Artefato só é gerado a partir de orçamento aprovado (exceto o próprio orçamento) |
 
 ---
 
 ## 9. Cenários de teste (UI)
 
-- [ ] Criar cliente → card aparece na Conversa + toast + Histórico
-- [ ] Gerar resposta IA → fica "Aguardando aprovação" → Aprovar → bubble "Enviada"
-- [ ] Rejeitar resposta → motivo pedido → rascunho volta para edição
-- [ ] Arrastar card Conversa → Orçamento → confirmação de pular? (não pula) → Histórico atualizado
-- [ ] Gerar artefato (cada tipo) → aparece na lista, abre preview, baixa PDF
-- [ ] Filtros combinados (segmento + responsável + risco) → quadro filtra
-- [ ] Nenhum cliente → empty state com CTA
-- [ ] Mobile: kanban horizontal + painel C vira tela cheia? (decisão em aberto)
+- [ ] Criar cliente → card na Conversa + toast + Histórico
+- [ ] Gerar resposta IA → "Aguardando aprovação" → Aprovar → "Enviada"
+- [ ] Rejeitar resposta → motivo opcional → rascunho volta para edição
+- [ ] Selecionar 3 cards (Ctrl+clique) → barra de lote → Mover para Orçamento → 3 movidos + Histórico
+- [ ] Selecionar coluna inteira (checkbox do cabeçalho) → gerar artefato em lote
+- [ ] Orçamento aprovado → menu de artefatos mostra Plano de trabalho, NF, Contrato, Pedido de envio
+- [ ] Cliente de produto → gerar "Pedido de envio"; cliente de serviço → "Plano de trabalho"
+- [ ] Filtros combinados → quadro filtra; Limpar filtros volta ao todo
+- [ ] Nenhum cliente → estado vazio com CTA
 - [ ] Permissão visualizador → sem botões de ação
 
 ---
 
 ## 10. Decisões em aberto
 
-1. **4 abas confirmadas?** Kanban / Follow-up / Histórico / Rotinas — ou "Config" entra como 5ª aba?
-2. **Métricas embaixo (Q2)** vs. no topo da sala (Fase 0 dizia topo). Qual fica?
-3. **Painel C:** drawer lateral fixo vs. modal central? (proposta: drawer)
-4. **Visualização Lista** ao lado do Kanban: útil ou desnecessária?
-5. **Limite WIP por coluna:** mostrar aviso ou não?
-6. **WhatsApp como canal de mensagens:** confirma? (muda integração 4.8 e o envio)
-7. **Comentários internos** no card (nota do dono, não vai ao cliente): entra?
+1. **Abas discretas:** texto + indicador de cor, sem fundo/borda (conforme pedido) — confirmar que é essa a leitura de "sem strip"?
+2. **Painel direito:** faixa vertical fixa ~380px vs. sobreposição? (proposta: fixa)
+3. **Região D (quadrinhos abaixo):** confirmar que fica de fora do design inicial?
+4. **Seleção múltipla:** checkbox fixo visível no card vs. só no hover? (proposta: visível no hover + cabeçalho da coluna com "selecionar tudo")
+5. **Ações em lote mínimas:** Mover / Gerar artefato / Aprovar / Marcar lido / Arquivar / Excluir — sobra ou falta alguma?
+6. **WhatsApp como canal de mensagens:** confirma? (define integração e o envio)
+7. **Coluna "Fechamento"** (era Artefatos): nome bom? Ajuda a indicar que ali se formaliza (plano/NF/contrato/envio).
