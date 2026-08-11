@@ -22,7 +22,7 @@
 │   [x] Card 1        [x] Card 2     [ ] Card 3         │                  │
 │   ← barra de ações em lote →                          │                  │
 │   [Follow-up] lista de pendências · [Histórico]       │                  │
-│   timeline · [Rotinas] config + feed (seções 3.6-3.8) │                  │
+│   lista por cliente · [Rotinas] config + feed (3B-3D) │                  │
 ├───────────────────────────────────────────────────────┴──────────────────┤
 │ D · QUADRINHOS:  [Insights do agente] [Métricas da sala] [Interlocutores] │
 └──────────────────────────────────────────────────────────────────────────┘
@@ -185,37 +185,52 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 
 ---
 
-## 3C. Aba Histórico (auditoria da dimensão)
+## 3C. Aba Histórico (memória por cliente)
 
-> Conceito: memória e auditoria — tudo que aconteceu nos clientes, em ordem cronológica. Eventos não são editáveis; o dono usa para saber o que foi feito, quando e por quem.
+> Conceito (revisado 12/08): o histórico é **por cliente**, não por evento. Cada linha da lista é um cliente, com um card sumarizado do que aconteceu com ele (e do que foi gerado para ele: contratos, notas, orçamentos). Clicar abre o histórico completo daquele cliente — incluindo acesso direto aos artefatos. **Não há timeline global** de eventos da sala; a linha do tempo existe dentro de cada cliente.
 
 ### 3C.1 Cabeçalho da visão
 - **Elemento:** `CabecalhoVisaoHistorico`
-- **Propósito:** navegar e restringir o histórico
-- **Conteúdo (informações):** título "Histórico" + subtítulo com janela atual (ex.: "Últimos 30 dias · 214 eventos")
-- **Opções (filtros):** Período (7d/30d/90d/tudo), Tipo de evento (todos/mensagem/movimento/artefato/aprovação/follow-up/rotina/cliente criado), Cliente (específico ou todos), Responsável (todos/dono/membro/agente)
-- **Ações:** busca por texto livre (ex.: "orçamento", nome de cliente); filtros combináveis; "Limpar filtros" quando ativo; **Exportar** (CSV ou PDF — respeita os filtros ativos; decisão 12/08)
+- **Propósito:** navegar e restringir a lista de clientes
+- **Conteúdo (informações):** título "Histórico" + subtítulo (ex.: "128 clientes · 214 eventos nos últimos 30 dias")
+- **Opções (filtros):** Período (7d/30d/90d/tudo), Tipo de atividade (todos/mensagem/movimento/artefato/aprovação/follow-up/rotina), Responsável (todos/dono/membro/agente)
+- **Ações:** busca por texto livre (nome de cliente, artefato, palavra-chave); filtros combináveis; "Limpar filtros" quando ativo; **Exportar** (CSV ou PDF — respeita os filtros ativos; decisão 12/08)
 - **Estados:** filtro ativo (badge) / inativo
 - **Feedback:** toast "Exportação gerada" + download
 - **Visibilidade:** sempre na aba Histórico
 
-### 3C.2 Timeline do histórico
-- **Elemento:** `TimelineHistorico`
-- **Propósito:** mostrar os eventos em ordem cronológica, agrupados por dia
-- **Conteúdo (informações):**
-  - Agrupamento por dia (Hoje / Ontem / "12 de agosto") com separador + contagem
-  - Cada evento: ícone por tipo (💬 mensagem, ↔ movimento, 📎 artefato, ✓ aprovação, 🔔 follow-up, 🔁 rotina, ➕ cliente criado), texto legível ("Resposta enviada para Maria", "Card movido para Orçamento", "Orçamento #123 gerado", "Aprovado por Lucas", "Follow-up concluído", "Rotina 'Follow-up semanal' executada"), hora, cliente (avatar/nome), responsável, artefato linkado quando houver
-- **Ações:** clique no evento → abre o contexto (card no kanban + painel, ou preview do artefato, ou detalhe da execução da rotina); "Carregar mais" no fim da lista
+### 3C.2 Lista de clientes com histórico
+- **Elemento:** `ListaHistoricoClientes`
+- **Propósito:** o dono navega o histórico pela pessoa — cada cliente é uma linha, com o que interessa dele à vista
+- **Conteúdo (informações):** cards de cliente (3C.3) ordenados por atividade mais recente; contadores no subtítulo (clientes com atividade no período)
+- **Ações:** scroll; clique no card abre o detalhe do cliente (3C.4); "Carregar mais" no fim da lista
 - **Estados:** loading (esqueleto) / vazio ("Sem histórico ainda") / erro (recarregar)
 - **Visibilidade:** sempre na aba Histórico
 
-### 3C.3 Item de evento
-- **Elemento:** `ItemEventoHistorico`
-- **Propósito:** uma linha legível de auditoria
-- **Conteúdo (informações):** ícone do tipo + texto do evento + hora + responsável (avatar) + cliente (quando aplicável)
-- **Ações:** clique abre o contexto; hover mostra detalhe estendido (metadados: quem, quando, o quê, onde)
-- **Estados:** default / hover / com contexto indisponível (evento de item excluído — desabilitado com tooltip)
-- **Visibilidade:** sempre que há eventos
+### 3C.3 Card de cliente no histórico
+- **Elemento:** `CartaoHistoricoCliente`
+- **Propósito:** resumo do histórico de UM cliente — o dono vê de longe o que já rolou com ele e o que foi gerado
+- **Conteúdo (informações):**
+  - Nome do cliente (avatar) + coluna atual
+  - Resumo de atividades ("3 mensagens · 2 artefatos · orçamento aceito")
+  - Últimas ações (2–3 linhas, ex.: "Orçamento #123 enviado — 12/08", "Contrato assinado", "Resposta enviada")
+  - Contadores de artefatos por tipo (📎 contrato · NF · orçamento) com badge
+  - Data da última atividade ("há 2d") + valor potencial (R$)
+- **Ações:** clique → abre o detalhe do cliente (3C.4); menu "..." → Abrir no kanban, Exportar relatório do cliente
+- **Estados:** default / hover / selecionado
+- **Visibilidade:** sempre que há clientes com histórico
+
+### 3C.4 Detalhe do histórico do cliente (relatório do cliente)
+- **Elemento:** `DetalheHistoricoCliente`
+- **Propósito:** tudo do cliente num lugar só — o dono responde "qual contrato eu fiz, qual nota eu emiti para ele" sem sair da aba
+- **Conteúdo (informações):**
+  - Identidade do cliente (nome, contato, segmento, valor potencial, coluna atual)
+  - **Artefatos gerados** — lista por tipo com status (contrato, nota fiscal, orçamento, pedido de envio, plano de trabalho): visualizar/baixar direto
+  - **Linha do tempo do cliente** — eventos só dele, cronológicos (mensagens, movimentos, aprovações, follow-ups, execuções de rotina)
+  - Resumo de métricas do cliente (nº de interações, ticket, recorrência)
+- **Ações:** visualizar/baixar artefato; "Abrir no kanban" (leva ao card/painel); "Exportar relatório do cliente" (PDF); ver detalhe de um evento
+- **Estados:** loading / vazio ("Nenhum evento ainda") / erro
+- **Visibilidade:** overlay ou painel interno da aba (proposta: painel interno com voltar para a lista)
 
 ---
 
@@ -438,9 +453,10 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 | `ListaFollowUp` | B (Follow-up) | pendências ordenadas por urgência |
 | `FollowUpCard` | B (Follow-up) | pendência com motivo, nível e ação sugerida |
 | `BarraAcoesLoteFollowUp` | B (Follow-up) | concluir/adiar/aprovar pendências em lote |
-| `CabecalhoVisaoHistorico` | B (Histórico) | filtros + busca do histórico |
-| `TimelineHistorico` | B (Histórico) | eventos cronológicos agrupados por dia |
-| `ItemEventoHistorico` | B (Histórico) | linha de auditoria com ícone por tipo |
+| `CabecalhoVisaoHistorico` | B (Histórico) | filtros + busca da lista de clientes |
+| `ListaHistoricoClientes` | B (Histórico) | clientes com histórico, um card por cliente |
+| `CartaoHistoricoCliente` | B (Histórico) | resumo do histórico do cliente + contadores de artefatos |
+| `DetalheHistoricoCliente` | B (Histórico) | relatório do cliente: artefatos + timeline dele |
 | `CabecalhoVisaoRotinas` | B (Rotinas) | resumo de automações + criar rotina |
 | `CatalogoRotinas` | B (Rotinas) | sugestões prontas da dimensão |
 | `RotinaCard` | B (Rotinas) | rotina configurada com gatilho, status e última execução |
@@ -469,13 +485,14 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 | U12 | Concluir follow-up e adiar (snooze) registram no Histórico; dispensar não registra conclusão |
 | U13 | Pendência de aprovação (resposta/artefato) só mostra "Aprovar" para quem tem papel de aprovador |
 | U14 | Histórico é imutável (auditoria): eventos não são editáveis nem removíveis pela UI |
-| U15 | Todo evento relevante entra no Histórico: criação/edição de cliente, mensagem, movimento, aprovação, artefato, follow-up, execução de rotina |
+| U15 | Todo evento relevante entra no histórico do cliente: criação/edição, mensagem, movimento, aprovação, artefato, follow-up, execução de rotina |
 | U16 | Rotinas reusam a Rotina API existente; gatilhos: manual / schedule / event / numeric / cron |
 | U17 | "Rodar agora" dispara imediatamente e registra no feed de execuções + no Histórico |
 | U18 | Erro/parcial na execução de rotina vira alerta visual no card e entra na Home |
 | U19 | Canais de mensagem: WhatsApp, e-mail ou mensagem direta (decisão 12/08) — arquitetura extensível a outros canais; badge de canal em cada mensagem |
 | U20 | Histórico tem exportação CSV/PDF respeitando os filtros ativos |
 | U21 | "Dispensar" no Follow-up é permanente; a pendência só volta se nascer de novo |
+| U22 | **Histórico é por cliente** (revisão 12/08): lista de clientes com card sumarizado; não existe timeline global de eventos — a linha do tempo vive dentro do detalhe de cada cliente |
 
 ---
 
@@ -496,10 +513,11 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 - [ ] Follow-up: Adiar (1/3/7 dias) → card some e volta na data; aparece de novo no feed no dia
 - [ ] Follow-up: selecionar 3 cards → barra de lote → Concluir selecionados → toast "3 concluídos"
 - [ ] Follow-up: pendência de aprovação mostra "Aprovar" só para aprovador
-- [ ] Histórico: evento de mensagem/movimento/artefato/rotina aparece com ícone, hora e responsável
-- [ ] Histórico: filtro por tipo + cliente + período combinados; busca por texto livre
-- [ ] Histórico: clique em evento de artefato abre o preview; evento de card abre o painel
-- [ ] Histórico: evento de item excluído → desabilitado com tooltip, sem quebrar a lista
+- [ ] Histórico: lista é por cliente — cada card mostra resumo de atividades + contadores de artefatos
+- [ ] Histórico: filtro por tipo + período + responsável combinados; busca por texto livre
+- [ ] Histórico: clique no card abre o detalhe do cliente com artefatos (visualizar/baixar) + timeline só dele
+- [ ] Histórico: cliente sem atividade no período não aparece na lista filtrada
+- [ ] Histórico: exportar relatório do cliente (PDF) e exportar a lista (CSV/PDF com filtros)
 - [ ] Rotinas: adicionar sugestão do catálogo → aparece na lista ativa
 - [ ] Rotinas: "Rodar agora" → feed atualiza + Histórico registra + toast
 - [ ] Rotinas: builder chat ("toda segunda, follow-up para parados há 5 dias") → proposta estruturada → confirmar → rotina criada
@@ -534,6 +552,7 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 | D10 | **Histórico com exportação** CSV/PDF respeitando filtros (U20) |
 | D11 | **Catálogo de rotinas built-in** na aba Rotinas, embasado nas funções existentes da Rotina API (reengajamento, churn/NPS, orçamentos, saudação, inadimplentes) + **BuilderRotina** para criar rotina custom |
 | D12 | **Seleção múltipla: checkbox só no hover** (não fixo no card); "selecionar tudo" no cabeçalho da coluna |
+| D13 | **Histórico por cliente** (revisão 12/08): lista de clientes com card sumarizado + detalhe por cliente (artefatos acessíveis + timeline só dele); sem timeline global (U22). **Aba Rotinas aprovada como está.** |
 
 ### Em aberto
 _nenhuma — tela de Clientes fechada._
