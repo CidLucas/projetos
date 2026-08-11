@@ -12,21 +12,20 @@
 ┌──────────────────────────────────────────────────────────────────────────┐
 │ A · Topo:  [Kanban] [Follow-up] [Histórico] [Rotinas]   …   [+ Novo]     │
 │            (abas discretas — sem faixa horizontal)                       │
+│            (sem strip de métricas — métricas vivem em D)                 │
 ├───────────────────────────────────────────────────────┬──────────────────┤
 │ B · QUADRO PRINCIPAL (kanban)                         │ C · PAINEL       │
 │   💬 Conversa │ 🧾 Orçamento │ 📎 Fechamento │        │   DIREITO        │
 │   ✅ Fechado  │ 🔁 Recorrência                        │   (faixa         │
-│                                                       │    vertical —    │
-│   [x] Card 1        [x] Card 2     [ ] Card 3         │    card          │
-│   ...                                                 │    selecionado)  │
-│                                                       │                  │
-│   ← seleção múltipla + barra de ações em lote →       │                  │
+│                                                       │    vertical,     │
+│   [x] Card 1        [x] Card 2     [ ] Card 3         │    FIXA ~380px)  │
+│   ← barra de ações em lote →                          │                  │
 ├───────────────────────────────────────────────────────┴──────────────────┤
-│ D · (opcional — adiado por padrão)  [Insights] [Métricas] [Interlocutores]│
+│ D · QUADRINHOS:  [Insights do agente] [Métricas da sala] [Interlocutores] │
 └──────────────────────────────────────────────────────────────────────────┘
 ```
 
-Layout mínimo do design inicial: **Topo (abas) + Quadro + Painel direito**. A região D fica de fora por enquanto — só entra se provar valor depois.
+Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + Painel direito fixo + Quadrinhos (D)**. **Não existe strip de métricas** — nenhuma faixa horizontal de KPIs acima das abas; as métricas da sala ficam no quadrinho D.
 
 ---
 
@@ -209,13 +208,33 @@ Layout mínimo do design inicial: **Topo (abas) + Quadro + Painel direito**. A r
 
 ---
 
-## 5. Região D — Elementos abaixo (opcional, adiado)
+## 5. Região D — Quadrinhos (no plano)
 
-> Decisão: **não entra no design inicial.** O layout mínimo é Topo + Quadro + Painel direito. Se depois provar valor, candidatos:
+> Decisão 11/08: os quadrinhos ficam no plano. As métricas da sala **moram aqui** (nunca numa strip horizontal no topo).
 
-- **Insights do agente** — sugestões proativas (ex.: "Cliente X parado há 5 dias")
-- **Métricas da sala** — pipeline, win rate, ticket médio, NRR (período 30/90/1y)
-- **Interlocutores da sala** — quem participa dos processos
+### 5.1 Q1 — Insights do agente
+- **Elemento:** `InsightsSala`
+- **Propósito:** sugestões proativas da IA sobre a dimensão — o dono vê o que merece atenção sem procurar
+- **Conteúdo (informações):** 2–3 cards de sugestão (ex.: "Cliente X parado há 5 dias — gerar follow-up?", "Orçamento de Y sem resposta há 3 dias")
+- **Opções por card:** Ver no kanban (abre o card no quadro) · Aplicar (gera follow-up/rascunho) · Dispensar
+- **Estados:** vazio ("Sem insights agora") / loading
+- **Visibilidade:** sempre
+
+### 5.2 Q2 — Métricas da sala
+- **Elemento:** `MetricasSala`
+- **Propósito:** os indicadores da dimensão em um quadrinho compacto — no lugar da antiga strip do topo
+- **Conteúdo (informações):** Pipeline (R$), Win rate, Ticket médio, NRR, Total de clientes, Segmentos
+- **Opções:** período 30d / 90d / 1y; clique em uma métrica abre a fonte (lista filtrada/Estratégia)
+- **Estados:** loading / sem dados ("Conecte seu CRM ou importe clientes")
+- **Visibilidade:** sempre na aba Kanban
+
+### 5.3 Q3 — Interlocutores
+- **Elemento:** `InterlocutoresSala`
+- **Propósito:** quem participa dos processos da dimensão — o dono sabe com quem falar
+- **Conteúdo (informações):** pessoas envolvidas (dono, membros, agente IA) com avatar, nome e papel
+- **Ações:** clique abre contato/conversa interna
+- **Estados:** vazio ("Sem membros — convide em Admin")
+- **Visibilidade:** sempre
 
 ---
 
@@ -281,6 +300,7 @@ Layout mínimo do design inicial: **Topo (abas) + Quadro + Painel direito**. A r
 | U7 | Sem permissão de criar → "Novo cliente" desabilitado |
 | U8 | Ações em lote só aparecem com 2+ selecionados; excluir em lote exige confirmação dupla |
 | U9 | Artefato só é gerado a partir de orçamento aprovado (exceto o próprio orçamento) |
+| U10 | **Nunca há strip de métricas** no topo — métricas da sala ficam no quadrinho D |
 
 ---
 
@@ -299,12 +319,18 @@ Layout mínimo do design inicial: **Topo (abas) + Quadro + Painel direito**. A r
 
 ---
 
-## 10. Decisões em aberto
+## 10. Decisões
 
-1. **Abas discretas:** texto + indicador de cor, sem fundo/borda (conforme pedido) — confirmar que é essa a leitura de "sem strip"?
-2. **Painel direito:** faixa vertical fixa ~380px vs. sobreposição? (proposta: fixa)
-3. **Região D (quadrinhos abaixo):** confirmar que fica de fora do design inicial?
-4. **Seleção múltipla:** checkbox fixo visível no card vs. só no hover? (proposta: visível no hover + cabeçalho da coluna com "selecionar tudo")
-5. **Ações em lote mínimas:** Mover / Gerar artefato / Aprovar / Marcar lido / Arquivar / Excluir — sobra ou falta alguma?
-6. **WhatsApp como canal de mensagens:** confirma? (define integração e o envio)
-7. **Coluna "Fechamento"** (era Artefatos): nome bom? Ajuda a indicar que ali se formaliza (plano/NF/contrato/envio).
+### Tomadas (11/08)
+| # | Decisão |
+|---|---|
+| D1 | Painel direito **fixo** (~380px), não sobreposição |
+| D2 | Região D (quadrinhos) **no plano** do design inicial |
+| D3 | **Sem strip de métricas** no topo — métricas vivem no quadrinho D (e dentro das abas quando fizer sentido) |
+| D4 | Ações em lote aprovadas: Mover / Gerar artefato / Aprovar pendências / Marcar lido / Arquivar / Excluir |
+
+### Em aberto
+1. **Abas discretas:** texto + indicador de cor, sem fundo/borda — confirmar que é essa a leitura de "sem strip" (nota: a strip que incomoda é a de métricas, já removida — confirmar se as abas discretas também agradam)
+2. **Seleção múltipla:** checkbox visível no hover vs. fixo no card? (proposta: hover + "selecionar tudo" no cabeçalho da coluna)
+3. **WhatsApp como canal de mensagens:** confirma? (define integração e o envio)
+4. **Coluna "Fechamento"** (era Artefatos): nome bom? Ajuda a indicar que ali se formaliza (plano/NF/contrato/envio).

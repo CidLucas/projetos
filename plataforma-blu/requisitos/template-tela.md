@@ -26,7 +26,7 @@
 | A | Topo | Nome da sala, ações globais (criar, buscar, filtrar) |
 | B | Centro | O quadro principal (kanban, lista, grade, tabela) — abas discretas de navegação |
 | C | Lateral direita | Painel de detalhe do item selecionado (faixa vertical) |
-| D | Base | *Opcional* — quadrinhos de apoio (insights, métricas, interlocutores). Adiar por padrão; só incluir se provar valor. |
+| D | Base | Quadrinhos de apoio (insights, métricas da sala, interlocutores). **Por padrão, no plano** — só adiar quando o layout mínimo fizer mais sentido. **Nunca usar strip horizontal de métricas no topo.** |
 | E | Overlays | Modais, confirmações, toasts |
 
 ## 3. Ficha padrão de elemento de UI (elementos puros)
