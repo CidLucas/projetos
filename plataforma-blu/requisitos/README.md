@@ -39,6 +39,14 @@
 
 ---
 
+### Kanbans (spec transversal)
+
+| Documento | Arquivo | Status |
+|---|---|---|
+| Especificação dos Kanbans (Clientes + Compras detalhados, varredura demais salas) | [kanbans.md](./kanbans.md) | 🟡 Proposta para validação |
+
+---
+
 ## 📐 Template de documento de página
 
 Cada arquivo segue esta estrutura (6 seções):
