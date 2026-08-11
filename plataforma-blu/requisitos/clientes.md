@@ -14,12 +14,15 @@
 │            (abas discretas — sem faixa horizontal)                       │
 │            (sem strip de métricas — métricas vivem em D)                 │
 ├───────────────────────────────────────────────────────┬──────────────────┤
-│ B · QUADRO PRINCIPAL (kanban)                         │ C · PAINEL       │
-│   💬 Conversa │ 🧾 Orçamento │ 📎 Fechamento │        │   DIREITO        │
-│   ✅ Fechado  │ 🔁 Recorrência                        │   (faixa         │
-│                                                       │    vertical,     │
-│   [x] Card 1        [x] Card 2     [ ] Card 3         │    FIXA ~380px)  │
+│ B · VISÃO DA ABA ATIVA                               │ C · PAINEL       │
+│   [Kanban] 5 colunas:                                │   DIREITO        │
+│   💬 Conversa │ 🧾 Orçamento │ 📎 Fechamento │        │   (faixa         │
+│   ✅ Fechado  │ 🔁 Recorrência                        │    vertical,     │
+│                                                       │    FIXA ~380px)  │
+│   [x] Card 1        [x] Card 2     [ ] Card 3         │                  │
 │   ← barra de ações em lote →                          │                  │
+│   [Follow-up] lista de pendências · [Histórico]       │                  │
+│   timeline · [Rotinas] config + feed (seções 3.6-3.8) │                  │
 ├───────────────────────────────────────────────────────┴──────────────────┤
 │ D · QUADRINHOS:  [Insights do agente] [Métricas da sala] [Interlocutores] │
 └──────────────────────────────────────────────────────────────────────────┘
@@ -126,6 +129,153 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
   - Esc → limpa seleção
 - **Estados:** card selecionado (contorno/destaque), coluna toda selecionada (checkbox cheio)
 - **Visibilidade:** comportamento do quadro; a barra de lote aparece com 2+
+
+---
+
+## 3B. Aba Follow-up (visão de pendências)
+
+> Conceito: o dono não caça pendência — a aba junta tudo que precisa de atenção nos clientes, criado pelo agente (parados, orçamentos sem resposta, recorrências atrasadas, aprovações). O contador no nome da aba (ex.: "Follow-up 5") = total de pendências ativas.
+
+### 3B.1 Cabeçalho da visão
+- **Elemento:** `CabecalhoVisaoFollowUp`
+- **Propósito:** resumir e filtrar a fila de pendências
+- **Conteúdo (informações):** título "Follow-up" + subtítulo ("5 clientes precisam de atenção") + total em valor potencial (ex.: "R$ 12.400 em jogo")
+- **Opções (filtros):** Nível (todos/oportunidade/alerta/risco), Tipo (todos/parado/orçamento/recorrência/aprovação), Responsável (todos/dono/membro…)
+- **Ações:** múltiplos filtros combináveis; "Limpar filtros" quando ativo; ordenar por (urgência/recência/valor potencial)
+- **Estados:** filtro ativo (badge com contagem) / inativo
+- **Visibilidade:** sempre na aba Follow-up
+
+### 3B.2 Lista de follow-ups
+- **Elemento:** `ListaFollowUp`
+- **Propósito:** apresentar as pendências em ordem de atenção — o que está vermelho aparece primeiro
+- **Conteúdo (informações):** cards de pendência (3B.3) ordenados por semáforo 🔴 → 🟡 → 🟢 e depois por recência
+- **Ações:** scroll; clique no card abre o painel direito (C) com o cliente; seleção múltipla (checkbox) → barra de lote (3B.4)
+- **Estados:** loading (esqueleto) / vazio ("Nada pendente 🎉") / erro (recarregar)
+- **Visibilidade:** sempre na aba Follow-up
+
+### 3B.3 Card de follow-up
+- **Elemento:** `FollowUpCard`
+- **Propósito:** o dono entende o que está pendente, por quê, e resolve sem abrir mais nada
+- **Conteúdo (informações):**
+  - Nome do cliente (avatar) + coluna atual (ex.: "Orçamento")
+  - Motivo legível (ex.: "Parado há 5 dias", "Orçamento sem resposta há 3 dias", "Recorrência atrasada", "Resposta aguardando aprovação")
+  - Nível (semáforo) + tempo relativo ("há 2d")
+  - Valor potencial (R$) — contexto de prioridade
+  - Ação sugerida pelo agente (ex.: "Gerar follow-up de retomada", "Relembrar orçamento", "Aprovar resposta")
+- **Opções por card:**
+  - **Concluir** — pendência resolvida (registra no Histórico)
+  - **Adiar** — snooze de 1/3/7 dias ou data escolhida (volta a aparecer depois)
+  - **Ver no kanban** — troca para a aba Kanban e abre o card no painel direito
+  - **Aprovar** — só quando a pendência é uma aprovação (resposta/artefato)
+  - **Gerar rascunho** — dispara a ação sugerida pelo agente (ex.: gera follow-up como rascunho no painel)
+  - **Dispensar** — não é pendência (some da lista, não registra conclusão)
+- **Ações:** clique → abre painel direito; checkbox (seleção múltipla)
+- **Estados:** default / hover / selecionado / disabled (sem permissão — papéis fixos) / expirado (atrasado além do prazo — destaque)
+- **Feedback:** toast ("Follow-up concluído", "Adiado para sexta-feira")
+- **Visibilidade:** sempre que há pendência
+
+### 3B.4 Barra de ações em lote (Follow-up)
+- **Elemento:** `BarraAcoesLoteFollowUp`
+- **Propósito:** resolver várias pendências de uma vez
+- **Conteúdo (informações):** contador ("3 selecionados") + ações
+- **Ações:** Concluir selecionados · Adiar selecionados (escolher snooze) · Aprovar selecionados · Limpar seleção (Esc)
+- **Estados:** visível com 2+ selecionados; ações desabilitadas se o card não atende o critério
+- **Feedback:** toast contando quantos foram afetados ("2 concluídos")
+- **Visibilidade:** substitui o cabeçalho da lista enquanto há seleção
+
+---
+
+## 3C. Aba Histórico (auditoria da dimensão)
+
+> Conceito: memória e auditoria — tudo que aconteceu nos clientes, em ordem cronológica. Eventos não são editáveis; o dono usa para saber o que foi feito, quando e por quem.
+
+### 3C.1 Cabeçalho da visão
+- **Elemento:** `CabecalhoVisaoHistorico`
+- **Propósito:** navegar e restringir o histórico
+- **Conteúdo (informações):** título "Histórico" + subtítulo com janela atual (ex.: "Últimos 30 dias · 214 eventos")
+- **Opções (filtros):** Período (7d/30d/90d/tudo), Tipo de evento (todos/mensagem/movimento/artefato/aprovação/follow-up/rotina/cliente criado), Cliente (específico ou todos), Responsável (todos/dono/membro/agente)
+- **Ações:** busca por texto livre (ex.: "orçamento", nome de cliente); filtros combináveis; "Limpar filtros" quando ativo
+- **Estados:** filtro ativo (badge) / inativo
+- **Visibilidade:** sempre na aba Histórico
+
+### 3C.2 Timeline do histórico
+- **Elemento:** `TimelineHistorico`
+- **Propósito:** mostrar os eventos em ordem cronológica, agrupados por dia
+- **Conteúdo (informações):**
+  - Agrupamento por dia (Hoje / Ontem / "12 de agosto") com separador + contagem
+  - Cada evento: ícone por tipo (💬 mensagem, ↔ movimento, 📎 artefato, ✓ aprovação, 🔔 follow-up, 🔁 rotina, ➕ cliente criado), texto legível ("Resposta enviada para Maria", "Card movido para Orçamento", "Orçamento #123 gerado", "Aprovado por Lucas", "Follow-up concluído", "Rotina 'Follow-up semanal' executada"), hora, cliente (avatar/nome), responsável, artefato linkado quando houver
+- **Ações:** clique no evento → abre o contexto (card no kanban + painel, ou preview do artefato, ou detalhe da execução da rotina); "Carregar mais" no fim da lista
+- **Estados:** loading (esqueleto) / vazio ("Sem histórico ainda") / erro (recarregar)
+- **Visibilidade:** sempre na aba Histórico
+
+### 3C.3 Item de evento
+- **Elemento:** `ItemEventoHistorico`
+- **Propósito:** uma linha legível de auditoria
+- **Conteúdo (informações):** ícone do tipo + texto do evento + hora + responsável (avatar) + cliente (quando aplicável)
+- **Ações:** clique abre o contexto; hover mostra detalhe estendido (metadados: quem, quando, o quê, onde)
+- **Estados:** default / hover / com contexto indisponível (evento de item excluído — desabilitado com tooltip)
+- **Visibilidade:** sempre que há eventos
+
+---
+
+## 3D. Aba Rotinas (automação da dimensão)
+
+> Conceito: o que o agente faz automaticamente nos clientes. Reusa a Rotina API existente (catálogo built-in + rotina custom via builder chat + gatilhos manual/schedule/event/numeric/cron + "rodar agora" + feed de execução).
+
+### 3D.1 Cabeçalho da visão
+- **Elemento:** `CabecalhoVisaoRotinas`
+- **Propósito:** resumir o estado das automações e criar novas
+- **Conteúdo (informações):** título "Rotinas" + subtítulo ("3 ativas · 1 pausada") + botão "Nova rotina" (abre o builder)
+- **Ações:** "Nova rotina" abre o `BuilderRotina` (3D.4)
+- **Estados:** — | **Visibilidade:** sempre na aba Rotinas
+
+### 3D.2 Catálogo de rotinas sugeridas
+- **Elemento:** `CatalogoRotinas`
+- **Propósito:** o dono adiciona automações prontas da dimensão sem configurar nada
+- **Conteúdo (informações):** cards de sugestão com nome, o que faz, frequência sugerida e gatilho:
+  - "Follow-up de clientes parados" — mensagem de retomada para quem não interage há X dias (schedule, ex.: toda segunda 8h)
+  - "Revisão de orçamentos vencidos" — lembrete/renegociação de orçamento sem resposta (schedule diário)
+  - "Análise de churn" — resumo mensal de clientes em risco (schedule mensal)
+  - "Saudação de novos contatos" — primeiro contato automático (event: cliente criado)
+- **Opções por card:** Adicionar (cria a rotina com padrão) · Ver exemplo (mostra o que ela fará)
+- **Estados:** já adicionada (marcada como ativa, sem botão Adicionar) / vazio (sem sugestões — raro)
+- **Visibilidade:** sempre que houver sugestões não adicionadas; some quando todas ativas (fica só a lista)
+
+### 3D.3 Lista de rotinas configuradas
+- **Elemento:** `RotinaCard`
+- **Propósito:** o dono acompanha e controla cada automação da dimensão
+- **Conteúdo (informações):**
+  - Nome da rotina + descrição curta
+  - Gatilho/frequência legível ("Toda segunda às 8h", "Quando cliente fica 3 dias sem resposta", "Mensal, dia 1")
+  - Responsável (agente IA)
+  - Status: ativa (toggle) / pausada
+  - Última execução: quando + resultado (ok / erro / parcial — ex.: "2 de 5 mensagens enviadas")
+- **Opções:**
+  - **Rodar agora** — dispara manualmente (registra no feed e no Histórico)
+  - **Editar** — abre o `BuilderRotina` preenchido
+  - **Pausar / Retomar** — interrompe/retoma a agenda (mantém configuração)
+  - **Ver execuções** — filtra o feed para esta rotina
+  - **Excluir** — com confirmação
+- **Estados:** ativa / pausada / executando agora (spinner no botão) / erro na última execução (alerta visual)
+- **Feedback:** toast ("Rotina executada", "Rotina pausada")
+- **Visibilidade:** sempre que há rotinas configuradas
+
+### 3D.4 Builder de rotina (chat)
+- **Elemento:** `BuilderRotina`
+- **Propósito:** criar/editar rotina em linguagem natural — o dono descreve, o agente devolve estruturado para confirmar
+- **Conteúdo (informações):** chat com o agente (entrada "Descreva a rotina…") + proposta estruturada: gatilho (schedule/event/numeric/cron/manual) · ação (enviar mensagem, gerar relatório, mover cards, revisar) · filtro (quais clientes) · canal (WhatsApp/e-mail/interno)
+- **Ações:** enviar descrição → agente propõe → o dono confirma ("Criar rotina") ou refina no chat; editar rotina existente reabre o builder preenchido
+- **Estados:** digitando / gerando proposta (loading) / proposta pronta (resumo para confirmar) / erro (não entendeu — pede refinamento)
+- **Feedback:** toast "Rotina criada" ao confirmar
+- **Visibilidade:** overlay (Região E) aberto pelo "Nova rotina" ou "Editar"
+
+### 3D.5 Feed de execuções
+- **Elemento:** `FeedExecucoes` (reusa padrão existente)
+- **Propósito:** o dono vê o que o agente já fez pelas rotinas
+- **Conteúdo (informações):** execuções recentes (mais nova primeiro): rotina, quando, o que fez ("3 mensagens de follow-up enviadas", "2 cards movidos para Recorrência"), resultado (ok/erro/parcial)
+- **Ações:** clique na execução → detalhe (lista do que foi feito) ou link para o Histórico; filtro "só desta rotina" (via 3D.3)
+- **Estados:** vazio ("Nenhuma execução ainda") / loading
+- **Visibilidade:** sempre na aba Rotinas (abaixo da lista)
 
 ---
 
@@ -282,6 +432,18 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 | `ArtefatosCliente` | C | gerar/listar artefatos (orçamento, plano, NF, contrato, envio) |
 | `AtalhosIntegracao` | C | WhatsApp, e-mail, calendário |
 | `Interlocutores` | C | quem está envolvido |
+| `CabecalhoVisaoFollowUp` | B (Follow-up) | cabeçalho + filtros da fila de pendências |
+| `ListaFollowUp` | B (Follow-up) | pendências ordenadas por urgência |
+| `FollowUpCard` | B (Follow-up) | pendência com motivo, nível e ação sugerida |
+| `BarraAcoesLoteFollowUp` | B (Follow-up) | concluir/adiar/aprovar pendências em lote |
+| `CabecalhoVisaoHistorico` | B (Histórico) | filtros + busca do histórico |
+| `TimelineHistorico` | B (Histórico) | eventos cronológicos agrupados por dia |
+| `ItemEventoHistorico` | B (Histórico) | linha de auditoria com ícone por tipo |
+| `CabecalhoVisaoRotinas` | B (Rotinas) | resumo de automações + criar rotina |
+| `CatalogoRotinas` | B (Rotinas) | sugestões prontas da dimensão |
+| `RotinaCard` | B (Rotinas) | rotina configurada com gatilho, status e última execução |
+| `BuilderRotina` | B/E (Rotinas) | criar/editar rotina por chat (linguagem natural) |
+| `FeedExecucoes` | B (Rotinas) | execuções recentes com resultado |
 | `OverlayFormulario` | E | criar/editar com validação |
 | `OverlayArtefato` | E | preview + ações do documento |
 
@@ -301,6 +463,14 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 | U8 | Ações em lote só aparecem com 2+ selecionados; excluir em lote exige confirmação dupla |
 | U9 | Artefato só é gerado a partir de orçamento aprovado (exceto o próprio orçamento) |
 | U10 | **Nunca há strip de métricas** no topo — métricas da sala ficam no quadrinho D |
+| U11 | Contador da aba Follow-up = total de pendências ativas; concluir/adiar/dispensar atualiza o contador (e a Home) |
+| U12 | Concluir follow-up e adiar (snooze) registram no Histórico; dispensar não registra conclusão |
+| U13 | Pendência de aprovação (resposta/artefato) só mostra "Aprovar" para quem tem papel de aprovador |
+| U14 | Histórico é imutável (auditoria): eventos não são editáveis nem removíveis pela UI |
+| U15 | Todo evento relevante entra no Histórico: criação/edição de cliente, mensagem, movimento, aprovação, artefato, follow-up, execução de rotina |
+| U16 | Rotinas reusam a Rotina API existente; gatilhos: manual / schedule / event / numeric / cron |
+| U17 | "Rodar agora" dispara imediatamente e registra no feed de execuções + no Histórico |
+| U18 | Erro/parcial na execução de rotina vira alerta visual no card e entra na Home |
 
 ---
 
@@ -316,6 +486,21 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 - [ ] Filtros combinados → quadro filtra; Limpar filtros volta ao todo
 - [ ] Nenhum cliente → estado vazio com CTA
 - [ ] Permissão visualizador → sem botões de ação
+- [ ] Follow-up: pendências ordenadas 🔴 primeiro; badge da aba bate com o contador
+- [ ] Follow-up: Concluir card → some da lista + registra no Histórico + contador da aba e da Home atualizam
+- [ ] Follow-up: Adiar (1/3/7 dias) → card some e volta na data; aparece de novo no feed no dia
+- [ ] Follow-up: selecionar 3 cards → barra de lote → Concluir selecionados → toast "3 concluídos"
+- [ ] Follow-up: pendência de aprovação mostra "Aprovar" só para aprovador
+- [ ] Histórico: evento de mensagem/movimento/artefato/rotina aparece com ícone, hora e responsável
+- [ ] Histórico: filtro por tipo + cliente + período combinados; busca por texto livre
+- [ ] Histórico: clique em evento de artefato abre o preview; evento de card abre o painel
+- [ ] Histórico: evento de item excluído → desabilitado com tooltip, sem quebrar a lista
+- [ ] Rotinas: adicionar sugestão do catálogo → aparece na lista ativa
+- [ ] Rotinas: "Rodar agora" → feed atualiza + Histórico registra + toast
+- [ ] Rotinas: builder chat ("toda segunda, follow-up para parados há 5 dias") → proposta estruturada → confirmar → rotina criada
+- [ ] Rotinas: pausar interrompe a agenda e mantém a configuração; retomar volta
+- [ ] Rotinas: execução com erro/parcial → alerta no card + entra na Home
+- [ ] Rotinas: sem rotinas configuradas → catálogo + CTA visíveis
 
 ---
 
@@ -334,3 +519,8 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 2. **Seleção múltipla:** checkbox visível no hover vs. fixo no card? (proposta: hover + "selecionar tudo" no cabeçalho da coluna)
 3. **WhatsApp como canal de mensagens:** confirma? (define integração e o envio)
 4. **Coluna "Fechamento"** (era Artefatos): nome bom? Ajuda a indicar que ali se formaliza (plano/NF/contrato/envio).
+5. **Follow-up:** quais pendências nascem automáticas vs. só por sugestão do agente? (proposta: nascem automáticas — parado, orçamento sem resposta, recorrência atrasada; aprovação só quando há pendência real)
+6. **Follow-up:** "Dispensar" deve permitir "não mostrar de novo para este cliente por X dias" (tipo snooze longo) ou é permanente?
+7. **Histórico:** agrupar por dia é suficiente ou quer filtro por mês/exportação (CSV/PDF)?
+8. **Rotinas:** catálogo inicial (4 sugestões) faz sentido para a dimensão Clientes? Sobra/falta alguma?
+9. **Rotinas:** erros de execução viram alerta na Home automaticamente (U18) — ok?
