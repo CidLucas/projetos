@@ -99,10 +99,9 @@ Orçamento aceito
 | R4 | Artefatos gerados a partir de templates (api/documents) — contrato, NF, pedido de envio | Reutilizar o que existe |
 | R5 | Cliente sem interação há X dias (configurável) → semáforo amarelo e follow-up na Home | Não deixar cliente esfriar |
 
-### 3.5 Mensagens — pontos em aberto
+### 3.5 Mensagens — decisão (12/08)
 
-- **Por onde entra a mensagem do cliente?** WhatsApp (API), e-mail, formulário do site, chat interno? Isso define integração.
-- **O agente usa qual canal para enviar?** Se o cliente está fora da plataforma, o envio é via canal externo (WhatsApp/e-mail) — a aprovação do dono acontece na plataforma, o envio acontece no canal.
+- **Canais:** WhatsApp, e-mail ou mensagem direta — arquitetura extensível a outros canais (decisão D6 em clientes.md). A aprovação do dono acontece na plataforma; o envio acontece no canal do cliente.
 
 ---
 

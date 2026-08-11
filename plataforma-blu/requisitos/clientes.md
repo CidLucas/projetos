@@ -134,7 +134,7 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 
 ## 3B. Aba Follow-up (visão de pendências)
 
-> Conceito: o dono não caça pendência — a aba junta tudo que precisa de atenção nos clientes, criado pelo agente (parados, orçamentos sem resposta, recorrências atrasadas, aprovações). O contador no nome da aba (ex.: "Follow-up 5") = total de pendências ativas.
+> Conceito: o dono não caça pendência — a aba junta tudo que precisa de atenção nos clientes. **Pendências nascem automáticas** (decisão 12/08): parados, orçamentos sem resposta, recorrências atrasadas, aprovações quando há pendência real — o agente cria e o dono resolve. O contador no nome da aba (ex.: "Follow-up 5") = total de pendências ativas.
 
 ### 3B.1 Cabeçalho da visão
 - **Elemento:** `CabecalhoVisaoFollowUp`
@@ -168,7 +168,7 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
   - **Ver no kanban** — troca para a aba Kanban e abre o card no painel direito
   - **Aprovar** — só quando a pendência é uma aprovação (resposta/artefato)
   - **Gerar rascunho** — dispara a ação sugerida pelo agente (ex.: gera follow-up como rascunho no painel)
-  - **Dispensar** — não é pendência (some da lista, não registra conclusão)
+  - **Dispensar** — não é pendência; some da lista **permanentemente** (decisão 12/08 — não volta sozinha; se voltar a ser pendência de novo, nasce de novo)
 - **Ações:** clique → abre painel direito; checkbox (seleção múltipla)
 - **Estados:** default / hover / selecionado / disabled (sem permissão — papéis fixos) / expirado (atrasado além do prazo — destaque)
 - **Feedback:** toast ("Follow-up concluído", "Adiado para sexta-feira")
@@ -194,8 +194,9 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 - **Propósito:** navegar e restringir o histórico
 - **Conteúdo (informações):** título "Histórico" + subtítulo com janela atual (ex.: "Últimos 30 dias · 214 eventos")
 - **Opções (filtros):** Período (7d/30d/90d/tudo), Tipo de evento (todos/mensagem/movimento/artefato/aprovação/follow-up/rotina/cliente criado), Cliente (específico ou todos), Responsável (todos/dono/membro/agente)
-- **Ações:** busca por texto livre (ex.: "orçamento", nome de cliente); filtros combináveis; "Limpar filtros" quando ativo
+- **Ações:** busca por texto livre (ex.: "orçamento", nome de cliente); filtros combináveis; "Limpar filtros" quando ativo; **Exportar** (CSV ou PDF — respeita os filtros ativos; decisão 12/08)
 - **Estados:** filtro ativo (badge) / inativo
+- **Feedback:** toast "Exportação gerada" + download
 - **Visibilidade:** sempre na aba Histórico
 
 ### 3C.2 Timeline do histórico
@@ -229,15 +230,16 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 - **Ações:** "Nova rotina" abre o `BuilderRotina` (3D.4)
 - **Estados:** — | **Visibilidade:** sempre na aba Rotinas
 
-### 3D.2 Catálogo de rotinas sugeridas
+### 3D.2 Catálogo de rotinas built-in
 - **Elemento:** `CatalogoRotinas`
-- **Propósito:** o dono adiciona automações prontas da dimensão sem configurar nada
+- **Propósito:** o dono adiciona automações prontas da dimensão sem configurar nada — **built-in** (decisão 12/08): as rotinas que todo negócio de clientes precisa já vêm no catálogo, embasadas nas funções existentes da Rotina API (reorganizar, não reconstruir)
 - **Conteúdo (informações):** cards de sugestão com nome, o que faz, frequência sugerida e gatilho:
-  - "Follow-up de clientes parados" — mensagem de retomada para quem não interage há X dias (schedule, ex.: toda segunda 8h)
-  - "Revisão de orçamentos vencidos" — lembrete/renegociação de orçamento sem resposta (schedule diário)
-  - "Análise de churn" — resumo mensal de clientes em risco (schedule mensal)
-  - "Saudação de novos contatos" — primeiro contato automático (event: cliente criado)
-- **Opções por card:** Adicionar (cria a rotina com padrão) · Ver exemplo (mostra o que ela fará)
+  - **"Reengajamento de clientes parados"** — lista clientes ativos sem compra/contato há X dias e envia mensagem de retomada (schedule, ex.: toda segunda 8h) · função existente: clientes sem compra por M dias
+  - **"Análise de churn"** — segmenta clientes em ativos, em risco, inativos e novos (com NPS quando houver) e entrega resumo mensal (schedule mensal) · função existente: segmentação ativo/em risco/inativo + NPS
+  - **"Revisão de orçamentos vencidos"** — lembrete/renegociação de orçamento sem resposta (schedule diário)
+  - **"Saudação de novos contatos"** — primeiro contato automático quando cliente é criado (event: cliente criado)
+  - **"Cobrança de inadimplentes"** — lista inadimplentes com compras passadas sem retorno e prepara follow-up (schedule) · função existente: clientes inadimplentes
+- **Opções por card:** Adicionar (cria a rotina com padrão, ajustável depois) · Ver exemplo (mostra o que ela fará)
 - **Estados:** já adicionada (marcada como ativa, sem botão Adicionar) / vazio (sem sugestões — raro)
 - **Visibilidade:** sempre que houver sugestões não adicionadas; some quando todas ativas (fica só a lista)
 
@@ -291,8 +293,8 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 
 ### 4.2 Conversa (mensagens com o cliente)
 - **Elemento:** `ConversaCliente`
-- **Propósito:** ver e responder a troca de mensagens com o cliente, com o ciclo **notificada → respondida pelo agente → aprovada pelo dono → enviada**
-- **Conteúdo (informações):** linha do tempo de mensagens — cliente (cinza) e agente (azul); cada mensagem do agente com status: `Rascunho` → `Aguardando aprovação` → `Enviada`; notificação visual quando chega mensagem nova
+- **Propósito:** ver e responder a troca de mensagens com o cliente, com o ciclo **notificada → respondida pelo agente → aprovada pelo dono → enviada**, em qualquer canal
+- **Conteúdo (informações):** linha do tempo de mensagens — cliente (cinza) e agente (azul); cada mensagem com **canal** (WhatsApp · e-mail · direto — badge no bubble; decisão 12/08: WhatsApp, e-mail ou mensagem direta, extensível a outros canais); cada mensagem do agente com status: `Rascunho` → `Aguardando aprovação` → `Enviada`; notificação visual quando chega mensagem nova
 - **Ações:** expandir mensagem; copiar; reenviar (se falhou); ver detalhe do status
 - **Estados:** mensagem pendente (contorno de atenção) / thread vazia ("Nenhuma mensagem ainda") / loading
 - **Visibilidade:** sempre no painel
@@ -345,9 +347,9 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 
 ### 4.8 Integrações (atalhos)
 - **Elemento:** `AtalhosIntegracao`
-- **Conteúdo (informações):** atalhos do cliente: Abrir WhatsApp · Enviar e-mail · Agendar follow-up (calendário) · (outras conforme integração)
-- **Ações:** cada atalho abre o canal externo / cria evento
-- **Estados:** disabled quando a integração não está configurada (com explicação)
+- **Conteúdo (informações):** atalhos do cliente por canal: **Abrir WhatsApp · Enviar e-mail · Mensagem direta** · Agendar follow-up (calendário) · (outros canais conforme integração — decisão 12/08: arquitetura de canais extensível)
+- **Ações:** cada atalho abre o canal externo / cria evento; "Mensagem direta" abre a conversa interna sem sair do painel
+- **Estados:** disabled quando o canal não está configurado para o cliente (com explicação)
 - **Visibilidade:** sempre
 
 ### 4.9 Interlocutores
@@ -392,7 +394,7 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 
 ### 6.1 Overlay "Novo cliente"
 - **Elemento:** `OverlayFormulario`
-- **Campos:** nome, contato (WhatsApp/e-mail), segmento, valor potencial, responsável, coluna inicial (padrão Conversa)
+- **Campos:** nome, contato (WhatsApp / e-mail / mensagem direta — ao menos um canal), segmento, valor potencial, responsável, coluna inicial (padrão Conversa)
 - **Ações:** Salvar (cria card + registra Histórico) · Cancelar
 - **Validação:** nome obrigatório; contato válido
 - **Feedback:** toast "Cliente criado"; erro de duplicidade
@@ -471,6 +473,9 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 | U16 | Rotinas reusam a Rotina API existente; gatilhos: manual / schedule / event / numeric / cron |
 | U17 | "Rodar agora" dispara imediatamente e registra no feed de execuções + no Histórico |
 | U18 | Erro/parcial na execução de rotina vira alerta visual no card e entra na Home |
+| U19 | Canais de mensagem: WhatsApp, e-mail ou mensagem direta (decisão 12/08) — arquitetura extensível a outros canais; badge de canal em cada mensagem |
+| U20 | Histórico tem exportação CSV/PDF respeitando os filtros ativos |
+| U21 | "Dispensar" no Follow-up é permanente; a pendência só volta se nascer de novo |
 
 ---
 
@@ -501,6 +506,10 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 - [ ] Rotinas: pausar interrompe a agenda e mantém a configuração; retomar volta
 - [ ] Rotinas: execução com erro/parcial → alerta no card + entra na Home
 - [ ] Rotinas: sem rotinas configuradas → catálogo + CTA visíveis
+- [ ] Canais: mensagem exibe badge do canal (WhatsApp/e-mail/direto); enviar direto não sai do painel
+- [ ] Canais: cliente sem canal configurado → atalho disabled com explicação
+- [ ] Histórico: Exportar CSV/PDF respeita filtros ativos → download + toast
+- [ ] Follow-up: Dispensar é permanente — pendência não volta sozinha; só nasce de novo
 
 ---
 
@@ -514,13 +523,16 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 | D3 | **Sem strip de métricas** no topo — métricas vivem no quadrinho D (e dentro das abas quando fizer sentido) |
 | D4 | Ações em lote aprovadas: Mover / Gerar artefato / Aprovar pendências / Marcar lido / Arquivar / Excluir |
 
+### Tomadas (12/08)
+| # | Decisão |
+|---|---|
+| D5 | **Abas discretas mantidas como especificadas.** O comentário "sem faixa" era sobre a **faixa de analytics** (KPIs no topo) — já resolvido em D3/U10. Descrição visual das abas: mantém o que está (o desenho já está definido). |
+| D6 | **Canais de mensagem:** WhatsApp, e-mail ou mensagem direta; arquitetura **extensível a outros canais** (U19) |
+| D7 | Coluna **"Fechamento"** aprovada (era Artefatos) |
+| D8 | **Pendências do Follow-up nascem automáticas** (parado, orçamento sem resposta, recorrência atrasada; aprovação quando há pendência real) |
+| D9 | **"Dispensar" no Follow-up é permanente** (U21) |
+| D10 | **Histórico com exportação** CSV/PDF respeitando filtros (U20) |
+| D11 | **Catálogo de rotinas built-in** na aba Rotinas, embasado nas funções existentes da Rotina API (reengajamento, churn/NPS, orçamentos, saudação, inadimplentes) + **BuilderRotina** para criar rotina custom |
+
 ### Em aberto
-1. **Abas discretas:** texto + indicador de cor, sem fundo/borda — confirmar que é essa a leitura de "sem strip" (nota: a strip que incomoda é a de métricas, já removida — confirmar se as abas discretas também agradam)
-2. **Seleção múltipla:** checkbox visível no hover vs. fixo no card? (proposta: hover + "selecionar tudo" no cabeçalho da coluna)
-3. **WhatsApp como canal de mensagens:** confirma? (define integração e o envio)
-4. **Coluna "Fechamento"** (era Artefatos): nome bom? Ajuda a indicar que ali se formaliza (plano/NF/contrato/envio).
-5. **Follow-up:** quais pendências nascem automáticas vs. só por sugestão do agente? (proposta: nascem automáticas — parado, orçamento sem resposta, recorrência atrasada; aprovação só quando há pendência real)
-6. **Follow-up:** "Dispensar" deve permitir "não mostrar de novo para este cliente por X dias" (tipo snooze longo) ou é permanente?
-7. **Histórico:** agrupar por dia é suficiente ou quer filtro por mês/exportação (CSV/PDF)?
-8. **Rotinas:** catálogo inicial (4 sugestões) faz sentido para a dimensão Clientes? Sobra/falta alguma?
-9. **Rotinas:** erros de execução viram alerta na Home automaticamente (U18) — ok?
+1. **Seleção múltipla:** checkbox visível no hover vs. fixo no card? (proposta: hover + "selecionar tudo" no cabeçalho da coluna)
