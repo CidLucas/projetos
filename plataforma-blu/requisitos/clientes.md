@@ -21,7 +21,7 @@
 │                                                       │   Kanban→Cliente │
 │   [x] Card 1        [x] Card 2     [ ] Card 3         │   Follow→Pendênc.│
 │   ← barra de ações em lote →                          │   Histórico→Perf.│
-│   [Follow-up] lista de pendências · [Histórico]       │   Rotinas→Rotina │
+│   [Follow-up] threads → casos · [Histórico]           │   Rotinas→Rotina │
 │   lista por cliente · [Rotinas] config + feed (3B-3D) │   Preview (doc)  │
 ├───────────────────────────────────────────────────────┴──────────────────┤
 │ D · QUADRINHOS:  [Insights do agente] [Métricas da sala] [Interlocutores] │
@@ -132,33 +132,65 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 
 ---
 
-## 3B. Aba Follow-up (visão de pendências)
+## 3B. Aba Follow-up (visão de pendências — duas dimensões)
 
-> Conceito: o dono não caça pendência — a aba junta tudo que precisa de atenção nos clientes. **Pendências nascem automáticas** (decisão 12/08): parados, orçamentos sem resposta, recorrências atrasadas, aprovações quando há pendência real — o agente cria e o dono resolve. O contador no nome da aba (ex.: "Follow-up 5") = total de pendências ativas.
+> Conceito: o dono não caça pendência — a aba junta tudo que precisa de atenção nos clientes. **Pendências nascem automáticas** (decisão 12/08): parados, orçamentos sem resposta, recorrências atrasadas, aprovações quando há pendência real — o agente cria e o dono resolve. O contador no nome da aba (ex.: "Follow-up 5") = total de **casos** ativos (somando as threads).
+
+> **Estrutura em duas dimensões (13/08):** a 1ª dimensão é a lista de **threads** — grupos por tipo de situação (ex.: 5 threads independentes, 3 em revisão, 2 em acompanhamento). A 2ª dimensão é o **detalhe da thread** — os casos específicos daquela situação, agrupados em cards de síntese (o que é, por quê, o que fazer) para **não poluir a visão com itens granulares**. Fluxo: `threads → thread → casos → painel (Modo Pendência)`.
 
 ### 3B.1 Cabeçalho da visão
+
 - **Elemento:** `CabecalhoVisaoFollowUp`
-- **Propósito:** resumir e filtrar a fila de pendências
-- **Conteúdo (informações):** título "Follow-up" + subtítulo ("5 clientes precisam de atenção") + total em valor potencial (ex.: "R$ 12.400 em jogo")
-- **Opções (filtros):** Nível (todos/oportunidade/alerta/risco), Tipo (todos/parado/orçamento/recorrência/aprovação), Responsável (todos/dono/membro…)
-- **Ações:** múltiplos filtros combináveis; "Limpar filtros" quando ativo; ordenar por (urgência/recência/valor potencial)
+- **Propósito:** resumir e filtrar as threads de pendências
+- **Conteúdo (informações):** título "Follow-up" + subtítulo ("5 threads · 12 casos precisam de atenção") + total em valor potencial (ex.: "R$ 12.400 em jogo")
+- **Opções (filtros):** Nível (todos/oportunidade/alerta/risco), Tipo de thread (todos/parado/orçamento/recorrência/aprovação/mensagens), Responsável (todos/dono/membro…)
+- **Ações:** múltiplos filtros combináveis; "Limpar filtros" quando ativo; ordenar threads por (urgência/recência/valor potencial)
 - **Estados:** filtro ativo (badge com contagem) / inativo
 - **Visibilidade:** sempre na aba Follow-up
 
-### 3B.2 Lista de follow-ups
-- **Elemento:** `ListaFollowUp`
-- **Propósito:** apresentar as pendências em ordem de atenção — o que está vermelho aparece primeiro
-- **Conteúdo (informações):** cards de pendência (3B.3) ordenados por semáforo 🔴 → 🟡 → 🟢 e depois por recência
-- **Ações:** scroll; clique no card abre o painel direito em **Modo Pendência** (4.11); seleção múltipla (checkbox) → barra de lote (3B.4)
-- **Estados:** loading (esqueleto) / vazio ("Nada pendente 🎉") / erro (recarregar)
-- **Visibilidade:** sempre na aba Follow-up
+### 3B.2 Primeira dimensão — threads
 
-### 3B.3 Card de follow-up
-- **Elemento:** `FollowUpCard`
-- **Propósito:** o dono entende o que está pendente, por quê, e resolve sem abrir mais nada
+- **Elemento:** `ListaThreadsFollowUp`
+- **Propósito:** apresentar as pendências **agrupadas por tipo de situação** — o dono entende o panorama sem ver cada caso granular; clica na thread para ver os casos
+- **Conteúdo (informações):** cards de thread (3B.3) ordenados por atenção (thread com casos 🔴 primeiro, depois por recência)
+- **Ações:** scroll; clique na thread → abre a 2ª dimensão (3B.4); seleção múltipla (checkbox) → barra de lote (3B.5)
+- **Estados:** loading (esqueleto) / vazio ("Nada pendente 🎉") / erro (recarregar)
+- **Visibilidade:** sempre na aba Follow-up (dimensão padrão ao entrar)
+
+### 3B.3 Thread de follow-up
+
+- **Elemento:** `ThreadFollowUpCard`
+- **Propósito:** resumir um tipo de situação pendente — quantos casos, qual o estado e quanto está em jogo
+- **Conteúdo (informações):**
+  - Nome da thread (ex.: "Parados há 5+ dias", "Orçamentos sem resposta", "Recorrências atrasadas", "Aprovações", "Mensagens em revisão")
+  - Contador de casos ("5 casos") + **status da thread** (ex.: "3 em revisão" — aguardando decisão/aprovação · "2 em acompanhamento" — fluxo seguindo) + semáforo 🟢/🟡/🔴
+  - Valor potencial somado dos casos (R$) — contexto de prioridade
+  - Ação sugerida do thread (ex.: "Relembrar 3 orçamentos", "Aprovar 2 mensagens") — o agente propõe por thread
+- **Opções por card:**
+  - **Ver casos** — abre a 2ª dimensão (3B.4)
+  - **Aplicar ação sugerida** — dispara para os casos da thread (ex.: gera rascunhos de follow-up para todos)
+  - **Dispensar thread** — permanente (U21); os casos voltam se nascerem de novo
+- **Ações:** clique → 2ª dimensão; checkbox (seleção de threads)
+- **Estados:** default / hover / com casos 🔴 (destaque) / sem casos (a thread some da lista)
+- **Feedback:** toast ("Rascunhos de follow-up gerados para 3 casos")
+- **Visibilidade:** sempre que há threads com pendência
+
+### 3B.4 Segunda dimensão — detalhe da thread
+
+- **Elemento:** `DetalheThreadFollowUp`
+- **Propósito:** mostrar os **casos específicos** de uma thread em cards de síntese — o dono resolve os detalhes sem a visão poluída por itens granulares
+- **Conteúdo (informações):** cabeçalho da thread (nome + contador + status + valor em jogo) + lista de casos (3B.4a) + botão "Voltar às threads"
+- **Ações:** "Voltar" retorna à 1ª dimensão (3B.2); filtros do cabeçalho (3B.1) seguem aplicados; clique no caso → painel em **Modo Pendência** (4.11)
+- **Estados:** loading / vazio ("Nenhum caso nesta thread") / erro
+- **Visibilidade:** dimensão ativa após clicar numa thread
+
+### 3B.4a Card de caso (dentro da thread)
+
+- **Elemento:** `CartaoCasoFollowUp` (mesma base do antigo `FollowUpCard`)
+- **Propósito:** o dono entende o caso pendente — o quê, por quê — e resolve sem abrir mais nada; é a **síntese dos detalhes do caso específico**
 - **Conteúdo (informações):**
   - Nome do cliente (avatar) + coluna atual (ex.: "Orçamento")
-  - Motivo legível (ex.: "Parado há 5 dias", "Orçamento sem resposta há 3 dias", "Recorrência atrasada", "Resposta aguardando aprovação")
+  - Motivo legível (ex.: "Parado há 5 dias", "Orçamento #123 sem resposta há 3 dias")
   - Nível (semáforo) + tempo relativo ("há 2d")
   - Valor potencial (R$) — contexto de prioridade
   - Ação sugerida pelo agente (ex.: "Gerar follow-up de retomada", "Relembrar orçamento", "Aprovar resposta")
@@ -166,22 +198,23 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
   - **Concluir** — pendência resolvida (registra no Histórico)
   - **Adiar** — snooze de 1/3/7 dias ou data escolhida (volta a aparecer depois)
   - **Ver no kanban** — troca para a aba Kanban e abre o card no painel direito
-  - **Aprovar** — só quando a pendência é uma aprovação (resposta/artefato)
-  - **Gerar rascunho** — dispara a ação sugerida pelo agente (ex.: gera follow-up como rascunho no painel)
-  - **Dispensar** — não é pendência; some da lista **permanentemente** (decisão 12/08 — não volta sozinha; se voltar a ser pendência de novo, nasce de novo)
-- **Ações:** clique → abre painel direito; checkbox (seleção múltipla)
+  - **Aprovar** — só quando o caso é uma aprovação (resposta/artefato)
+  - **Gerar rascunho** — dispara a ação sugerida pelo agente (rascunho abre no painel)
+  - **Dispensar** — não é pendência; some **permanentemente** (U21)
+- **Ações:** clique → painel em Modo Pendência (4.11); checkbox (seleção múltipla)
 - **Estados:** default / hover / selecionado / disabled (sem permissão — papéis fixos) / expirado (atrasado além do prazo — destaque)
 - **Feedback:** toast ("Follow-up concluído", "Adiado para sexta-feira")
-- **Visibilidade:** sempre que há pendência
+- **Visibilidade:** dentro da 2ª dimensão de cada thread
 
-### 3B.4 Barra de ações em lote (Follow-up)
+### 3B.5 Barra de ações em lote (Follow-up)
+
 - **Elemento:** `BarraAcoesLoteFollowUp`
-- **Propósito:** resolver várias pendências de uma vez
+- **Propósito:** resolver vários itens de uma vez — na 2ª dimensão, os **casos da thread ativa**; na 1ª dimensão, as threads selecionadas
 - **Conteúdo (informações):** contador ("3 selecionados") + ações
-- **Ações:** Concluir selecionados · Adiar selecionados (escolher snooze) · Aprovar selecionados · Limpar seleção (Esc)
+- **Ações:** Concluir selecionados · Adiar selecionados (escolher snooze) · Aprovar selecionados · Aplicar ação sugerida da thread nos selecionados · Limpar seleção (Esc)
 - **Estados:** visível com 2+ selecionados; ações desabilitadas se o card não atende o critério
 - **Feedback:** toast contando quantos foram afetados ("2 concluídos")
-- **Visibilidade:** substitui o cabeçalho da lista enquanto há seleção
+- **Visibilidade:** substitui o cabeçalho enquanto há seleção
 
 ---
 
@@ -428,7 +461,7 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 
 ### Modo Pendência (aba Follow-up — card de follow-up)
 
-> Abre ao clicar num `FollowUpCard`. **Conceito:** o dono resolve a pendência com contexto — vê o porquê, o valor em jogo e a ação sugerida, sem caçar o cliente no kanban.
+> Abre ao clicar num `CartaoCasoFollowUp` (2ª dimensão da aba Follow-up). **Conceito:** o dono resolve a pendência com contexto — vê o porquê, o valor em jogo e a ação sugerida, sem caçar o cliente no kanban.
 
 ### 4.11 Contexto da pendência
 
@@ -441,7 +474,7 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 
 ### 4.12 Ação sugerida + resolver
 
-- **Elemento:** `AcaoSugeridaPendencia` (reusa padrão da 3B.3)
+- **Elemento:** `AcaoSugeridaPendencia` (reusa padrão do `CartaoCasoFollowUp` — 3B.4a)
 - **Conteúdo (informações):** ação sugerida pelo agente (ex.: "Gerar follow-up de retomada", "Relembrar orçamento", "Aprovar resposta") + botão "Gerar rascunho" (rascunho abre no Modo Cliente para revisão)
 - **Ações:** **Concluir** · **Adiar** (1/3/7 dias ou data escolhida) · **Dispensar** (permanente — U21) · **Aprovar** (só aprovador, quando pendência de aprovação)
 - **Estados:** concluído / adiado / expirado (atrasado além do prazo — destaque)
@@ -587,10 +620,12 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 | `PainelRotina` | C (Rotinas) | configuração da rotina + status + ações (D17) |
 | `UltimaExecucaoRotina` | C (Rotinas) | resultado da última execução |
 | `PainelPreview` | C | preview de documento/contrato no painel (substitui OverlayArtefato — D15) |
-| `CabecalhoVisaoFollowUp` | B (Follow-up) | cabeçalho + filtros da fila de pendências |
-| `ListaFollowUp` | B (Follow-up) | pendências ordenadas por urgência |
-| `FollowUpCard` | B (Follow-up) | pendência com motivo, nível e ação sugerida |
-| `BarraAcoesLoteFollowUp` | B (Follow-up) | concluir/adiar/aprovar pendências em lote |
+| `CabecalhoVisaoFollowUp` | B (Follow-up) | cabeçalho + filtros das threads |
+| `ListaThreadsFollowUp` | B (Follow-up) | 1ª dimensão: threads por tipo de situação |
+| `ThreadFollowUpCard` | B (Follow-up) | thread com contador, status e ação sugerida |
+| `DetalheThreadFollowUp` | B (Follow-up) | 2ª dimensão: casos da thread |
+| `CartaoCasoFollowUp` | B (Follow-up) | caso específico: motivo, nível, ação sugerida (síntese) |
+| `BarraAcoesLoteFollowUp` | B (Follow-up) | concluir/adiar/aprovar casos em lote (thread ativa) |
 | `CabecalhoVisaoHistorico` | B (Histórico) | filtros + busca da lista de clientes |
 | `ListaHistoricoClientes` | B (Histórico) | clientes com histórico, um card por cliente |
 | `CartaoHistoricoCliente` | B (Histórico) | resumo do histórico do cliente + contadores de artefatos |
@@ -637,6 +672,9 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 | U26 | Preview de documento acontece **dentro do painel** (Modo Preview) — não existe mais overlay de artefato (D15); "Abrir documento completo" só quando o preview em 380px não bastar |
 | U27 | Configuração de rotina vive no **Modo Rotina** do painel (edição direta de campos); `BuilderRotina` (chat) fica para criação e edição guiada |
 | U28 | Concluir/adiar pendência no Modo Pendência registra no Histórico e atualiza os contadores (aba + Home) — mesmo efeito da 3B.3 |
+| U29 | **Follow-up tem duas dimensões** (13/08): 1ª lista de **threads** (grupos por tipo de situação); 2ª **casos da thread** em cards de síntese — evita poluir a visão com itens granulares |
+| U30 | Thread mostra contador de casos + status próprio (ex.: "3 em revisão" / "2 em acompanhamento") + semáforo; o contador da aba Follow-up = soma dos casos das threads |
+| U31 | Resolver caso (concluir/adiar) atualiza o contador da thread e da aba; thread sem casos some da 1ª dimensão |
 
 ---
 
@@ -652,11 +690,14 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 - [ ] Filtros combinados → quadro filtra; Limpar filtros volta ao todo
 - [ ] Nenhum cliente → estado vazio com CTA
 - [ ] Permissão visualizador → sem botões de ação
-- [ ] Follow-up: pendências ordenadas 🔴 primeiro; badge da aba bate com o contador
-- [ ] Follow-up: Concluir card → some da lista + registra no Histórico + contador da aba e da Home atualizam
-- [ ] Follow-up: Adiar (1/3/7 dias) → card some e volta na data; aparece de novo no feed no dia
-- [ ] Follow-up: selecionar 3 cards → barra de lote → Concluir selecionados → toast "3 concluídos"
-- [ ] Follow-up: pendência de aprovação mostra "Aprovar" só para aprovador
+- [ ] Follow-up: 1ª dimensão mostra threads agrupadas por tipo de situação, com contador e status (ex.: 5 threads, 3 em revisão, 2 em acompanhamento); badge da aba bate com a soma dos casos
+- [ ] Follow-up: clicar na thread → 2ª dimensão com os casos daquela situação em cards de síntese; "Voltar às threads" retorna
+- [ ] Follow-up: Concluir caso dentro da thread → some + registra no Histórico + contador da thread, da aba e da Home atualizam (U31)
+- [ ] Follow-up: thread zera os casos → some da 1ª dimensão
+- [ ] Follow-up: Adiar (1/3/7 dias) → caso some e volta na data; aparece de novo no feed no dia
+- [ ] Follow-up: selecionar 3 casos na thread ativa → barra de lote → Concluir selecionados → toast "3 concluídos"
+- [ ] Follow-up: ação sugerida por thread ("Aplicar") → gera rascunhos para os casos da thread
+- [ ] Follow-up: caso de aprovação mostra "Aprovar" só para aprovador
 - [ ] Histórico: lista é por cliente — cada card mostra resumo de atividades + contadores de artefatos
 - [ ] Histórico: filtro por tipo + período + responsável combinados; busca por texto livre
 - [ ] Histórico: clique no card abre o detalhe do cliente com artefatos (visualizar/baixar) + timeline só dele
@@ -712,6 +753,7 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 | D15 | **Preview de documento/contrato acontece dentro do painel** (Modo Preview — 4.16), não em overlay. `OverlayArtefato` (6.3) deixa de existir; "Abrir documento completo" só quando o preview em 380px não bastar (U26) |
 | D16 | **Detalhe do histórico vira Modo Perfil do painel** — o relatório do cliente (3C.4) abre no painel ao clicar no cartão da aba Histórico, com artefatos (visualizar → Modo Preview), timeline do cliente e exportação (4.13) |
 | D17 | **Configuração de rotina vive no Modo Rotina do painel** — edição direta de gatilho/ação/filtro/canal; o `BuilderRotina` (chat) fica para criação e edição guiada (4.14–4.15, U27) |
+| D18 | **Follow-up em duas dimensões** — 1ª dimensão: threads por tipo de situação (ex.: 5 threads independentes, 3 em revisão, 2 em acompanhamento); 2ª dimensão: casos da thread em cards de síntese (`CartaoCasoFollowUp`). Grupo os itens granulares para não poluir a visão (direção do fundador 13/08) |
 
 ### Em aberto (novas — 13/08)
 
@@ -719,3 +761,7 @@ Layout do design inicial (decisões 11/08): **Topo (abas discretas) + Quadro + P
 2. **Edição de rotina no painel:** campos diretos + "Editar com IA" (proposta) vs só o builder chat? Campos diretos são mais rápidos para ajustes pequenos (frequência/canal), mas duplicam a lógica do builder.
 3. **Painel sem seleção:** estado vazio "Selecione um item" (proposta) vs painel recolhido em faixa fina? Vazio comunica que o painel existe; recolhido ganha espaço no centro.
 4. **Trocar de aba com painel aberto:** manter o item (proposta — o mesmo cliente aparece em várias visões, o painel não pisca) vs fechar ao trocar de aba?
+
+5. **Quais threads padrão?** Proposta: 5 threads — Parados há 5+ dias · Orçamentos sem resposta · Recorrências atrasadas · Aprovações (mensagens/artefatos) · Mensagens em revisão. (Você citou "5 threads independentes, 3 em revisão, 2 em acompanhamento" — confirmar os tipos e o 2º status.)
+6. **Status da thread:** quais existem e o que significam? Proposta: "em revisão" (aguardando decisão/aprovação) e "em acompanhamento" (fluxo seguindo, sem ação necessária agora).
+7. **Abrir a 2ª dimensão:** trocar a visão para o detalhe da thread (proposta — menos poluído, com "Voltar às threads") vs expandir/recolher a thread na própria lista (acordeão)?
