@@ -20,7 +20,7 @@
 | **Entregável 3 — Blueprint do novo fluxo** | 🟢 Semanas 7–8 |
 | **Investimento** | 🟢 R$ 15.000 (50% na Semana 3 + 50% na Semana 8) |
 | **Implementação de ferramentas** | 🔴 Fora do escopo (decisão 10/08) |
-| **Proposta comercial** | 🟢 v3 pronta — [lucascid.duckdns.org](http://lucascid.duckdns.org/) |
+| **Proposta comercial** | 🟢 v4 pronta — copy reescrita + seção Escopo explícita |
 | **Contrato** | 🔴 Aguardando aprovação da proposta |
 | **Kickoff** | 🔴 A definir |
 
@@ -31,7 +31,7 @@
 
 ## 🎯 Próximas ações
 
-- [ ] **Lucas** — apresentar proposta v3 (link: http://lucascid.duckdns.org/)
+- [ ] **Lucas** — revisar proposta v4 e apresentar à Rastro (v3 segue em lucascid.duckdns.org)
 - [ ] **Lucas** — confirmar kickoff e agendar entrevistas
 - [ ] **Hermes** — manter docs atualizados
 
@@ -47,3 +47,4 @@
 | 2026-07-29 | v0.2: Cronograma 2 meses. Investimento R$ 25.000. Docs 01/02/04 removidos. |
 | 2026-07-29 | v0.3: Perguntas fechadas. Entregáveis detalhados. Produto nomeado Rastro Brain. Curadoria: Fábio + Lucas Diárea. Deploy: EC2. Case autorizado. |
 | 2026-08-10 | Reunião com a Rastro. **Escopo mudou:** consultoria de fluxo apenas (3 entregáveis), sem MCP/Rastro Brain. Investimento R$ 15.000 (50% + 50%), 8 semanas para iterações. ADR-002. Proposta v3. |
+| 2026-08-12 | v4: copy reescrita na voz Deep Blue (conhecimento preso nas pessoas, proposta = caçada, cada um faz do seu jeito), seção Escopo adicionada, Plus Jakarta Sans nos headings. Roteiro de entrevistas Fase 1: docs/05-entrevistas.md. |
