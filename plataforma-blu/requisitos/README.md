@@ -47,6 +47,14 @@
 
 ---
 
+### Propostas (novo front — redesign de experiência)
+
+| Documento | Arquivo | Status |
+|---|---|---|
+| Proposta da Sala Financeiro (abas · painel contextual · quadrinhos) | [proposta-financeiro.md](./proposta-financeiro.md) | 🟡 Proposta para validar |
+
+---
+
 ## 📐 Template de documento de página
 
 Cada arquivo segue esta estrutura (6 seções):
