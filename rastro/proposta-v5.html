@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DeepBlue — Proposta Rastro</title>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-bg: #fafaf9; --color-surface: #fff; --color-text: #141311;
+    --color-neutral-100: #f0efed; --color-neutral-200: #e2e0dc;
+    --color-neutral-300: #b8b5ae; --color-neutral-500: #8a8680;
+    --color-neutral-700: #4a4640; --color-neutral-900: #1a1816;
+    --color-accent: #2563eb; --color-accent-500: #3b82f6; --color-accent-700: #1d4ed8;
+    --color-divider: #e2e0dc;
+    --font-heading: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    --font-body: 'Inter', -apple-system, sans-serif;
+    --font-heading-weight: 700;
+    --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+    --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+    --space-12: 48px; --space-16: 64px; --space-20: 80px;
+    --radius-sm: 4px; --radius-md: 8px;
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.14);
+  }
+  body { margin: 0; background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+  a { color: var(--color-accent-700); } a:hover { color: var(--color-accent); }
+  .section { max-width: 1120px; margin: 0 auto; padding: var(--space-16) var(--space-8); }
+  .kicker { font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.12em; font-size: 13px; color: var(--color-accent-700); font-variant-numeric: tabular-nums; }
+  .node-btn { all: unset; cursor: pointer; display: block; width: 100%; box-sizing: border-box; }
+  .node-btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  .concept-btn { all: unset; cursor: pointer; display: block; width: 100%; box-sizing: border-box; }
+  .concept-btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  .phase-card { border: 1px solid var(--color-divider); border-radius: var(--radius-md); padding: var(--space-6); transition: box-shadow 0.2s ease, border-color 0.2s ease; background: var(--color-surface); }
+  .phase-card:hover { box-shadow: var(--shadow-md); border-color: var(--color-accent-500); }
+  .highlight-card { border-left: 3px solid var(--color-accent-700); background: #f8fafc; }
+  .drawer-backdrop { position: fixed; inset: 0; background: rgba(20,19,17,0.4); z-index: 40; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+  .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+  .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(520px, 92vw); background: var(--color-bg); z-index: 41; box-shadow: var(--shadow-lg); transform: translateX(100%); transition: transform 0.3s ease; overflow-y: auto; }
+  .drawer.open { transform: translateX(0); }
+  .drawer-inner { padding: var(--space-12) var(--space-8) var(--space-8); }
+  .close-btn { all: unset; cursor: pointer; padding: var(--space-2); border-radius: var(--radius-sm); }
+  .close-btn:hover { background: var(--color-neutral-100); }
+  .close-btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  ul.plain { margin: 0; padding: 0; list-style: none; }
+  ul.plain li { padding-left: 1.4em; position: relative; margin-bottom: var(--space-3); }
+  ul.plain li::before { content: "—"; position: absolute; left: 0; color: var(--color-accent-700); }
+  .divider { border: none; border-top: 1px solid var(--color-divider); margin: var(--space-8) 0; }
+  .tag { display: inline-block; font-family: var(--font-body); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: var(--radius-sm); }
+  .tag-accent { background: #dbeafe; color: var(--color-accent-700); }
+  .tag-neutral { background: var(--color-neutral-100); color: var(--color-neutral-700); }
+  .metric-row { display: flex; gap: var(--space-4); flex-wrap: wrap; }
+  .metric-pill { background: rgba(255,255,255,0.08); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); font-size: 13px; color: var(--color-neutral-300); }
+  .metric-pill strong { color: #fff; font-size: 15px; }
+  .pullquote { font-family: var(--font-heading); font-size: 17px; line-height: 1.5; color: var(--color-neutral-700); border-left: 3px solid var(--color-accent-500); padding-left: var(--space-4); margin: var(--space-6) 0; }
+  .chave-bar { padding: var(--space-2) var(--space-4); border-radius: var(--radius-sm) var(--radius-sm) 0 0; font-family: var(--font-body); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; text-align: center; }
+  .chave-accent { background: var(--color-accent-700); color: #fff; }
+  .chave-neutral { background: var(--color-neutral-700); color: #fff; }
+  @media (max-width: 800px) { .grid-3, .grid-2 { grid-template-columns: 1fr !important; } }
+</style>
+</head>
+<body>
+
+<!-- ====== HERO ====== -->
+<div style="background: var(--color-neutral-900); color: var(--color-bg);">
+  <nav style="max-width:1120px;margin:0 auto;padding: var(--space-5) var(--space-8); display:flex; align-items:center; justify-content:space-between; background:transparent; border:none;">
+    <a href="#" style="display:flex;align-items:center;text-decoration:none">
+      <svg width="220" height="56" viewBox="0 0 360 140" style="height:56px;width:auto">
+        <circle cx="62" cy="44" r="44" fill="none" stroke="#1D4ED8" stroke-width="1.5" opacity="0.2"/>
+        <circle cx="62" cy="44" r="34" fill="none" stroke="#2563EB" stroke-width="2" opacity="0.4"/>
+        <circle cx="62" cy="44" r="24" fill="none" stroke="#3B82F6" stroke-width="2.5" opacity="0.7"/>
+        <circle cx="62" cy="44" r="14" fill="none" stroke="#60A5FA" stroke-width="3"/>
+        <circle cx="62" cy="44" r="5" fill="#3B82F6"/>
+        <text x="130" y="64" font-family="'Plus Jakarta Sans',sans-serif" font-weight="700" font-size="46" fill="#3B82F6" letter-spacing="-0.03em">Deep</text>
+        <text x="254" y="64" font-family="'Plus Jakarta Sans',sans-serif" font-weight="700" font-size="46" fill="#F1F5F9" letter-spacing="-0.03em">Blue</text>
+        <line x1="240" y1="22" x2="240" y2="68" stroke="#1E293B" stroke-width="1"/>
+      </svg>
+    </a>
+    <div style="font-family: var(--font-body); font-size: 14px; color: var(--color-neutral-300);">Proposta · Rastro</div>
+  </nav>
+  <div class="section" style="padding-top: var(--space-16); padding-bottom: var(--space-20);">
+    <p class="kicker" style="color: var(--color-accent-500);">DeepBlue × Rastro · Consultoria de fluxo</p>
+    <h1 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(40px, 5.8vw, 68px); line-height: 1.1; margin: var(--space-4) 0 0; max-width: 18ch;">Menos esforço por proposta.<br>Mais contexto no processo.</h1>
+    <div class="metric-row" style="margin-top: var(--space-8);">
+      <div class="metric-pill"><strong>8</strong> semanas de projeto</div>
+      <div class="metric-pill"><strong>R$ 15.000</strong> · 2 parcelas</div>
+      <div class="metric-pill"><strong>1</strong> guia de hand-off</div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 01 · O PONTO CEGO ====== -->
+<div class="section">
+  <p class="kicker">01 · O ponto cego</p>
+  <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(28px,3.5vw,40px); margin: var(--space-2) 0 var(--space-6); max-width: 22ch;">Vocês usam IA o dia todo. A estrutura do uso é que não acompanha.</h2>
+  <div class="grid-3" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-8);">
+    <div>
+      <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 19px; margin: 0 0 var(--space-2);">Cada pessoa usa do seu jeito</h3>
+      <p style="font-family: var(--font-body); font-size: 14px; line-height: 1.6; color: var(--color-neutral-700); margin: 0;">Não existe padrão de uso. O que um aprendeu fica com ele, e o próximo recomeça do zero.</p>
+    </div>
+    <div>
+      <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 19px; margin: 0 0 var(--space-2);">Cada momento recomeça do zero</h3>
+      <p style="font-family: var(--font-body); font-size: 14px; line-height: 1.6; color: var(--color-neutral-700); margin: 0;">O contexto que funcionou numa proposta não volta na próxima. Proposta, orçamento, reunião: tudo refeito na mão.</p>
+    </div>
+    <div>
+      <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 19px; margin: 0 0 var(--space-2);">Ninguém tem tempo pra isso</h3>
+      <p style="font-family: var(--font-body); font-size: 14px; line-height: 1.6; color: var(--color-neutral-700); margin: 0;">O dia a dia da agência consome. Estruturar o uso das ferramentas é o tipo de coisa que fica sempre pra depois.</p>
+    </div>
+  </div>
+  <div class="pullquote">
+    Vocês já têm as ferramentas e o talento. O que falta é um olhar dedicado pra estruturar o uso — e deixar pronto pra vocês manterem.
+  </div>
+</div>
+
+<hr class="divider" style="max-width:1120px; margin: 0 auto;">
+
+<!-- ====== 02 · O TRABALHO ====== -->
+<div class="section">
+  <p class="kicker">02 · O trabalho</p>
+  <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(28px,3.5vw,40px); margin: var(--space-2) 0 var(--space-3);">Um trabalho contínuo, em três momentos</h2>
+  <div class="grid-3" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6);">
+    <button class="concept-btn" onClick="openDrawer('m1')" aria-haspopup="dialog">
+      <div class="phase-card highlight-card">
+        <i data-lucide="search" style="color: var(--color-accent-700); width: 26px; height: 26px;"></i>
+        <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 19px; margin: var(--space-4) 0 0;">Mapear</h3>
+        <span class="tag tag-accent" style="margin-top: var(--space-3); display:inline-block;">Semanas 1–2</span>
+      </div>
+    </button>
+    <button class="concept-btn" onClick="openDrawer('m2')" aria-haspopup="dialog">
+      <div class="phase-card">
+        <i data-lucide="layout-template" style="color: var(--color-accent-700); width: 26px; height: 26px;"></i>
+        <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 19px; margin: var(--space-4) 0 0;">Estruturar</h3>
+        <span class="tag tag-neutral" style="margin-top: var(--space-3); display:inline-block;">Semanas 3–6</span>
+      </div>
+    </button>
+    <button class="concept-btn" onClick="openDrawer('m3')" aria-haspopup="dialog">
+      <div class="phase-card">
+        <i data-lucide="wrench" style="color: var(--color-accent-700); width: 26px; height: 26px;"></i>
+        <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 19px; margin: var(--space-4) 0 0;">Implementar e entregar</h3>
+        <span class="tag tag-neutral" style="margin-top: var(--space-3); display:inline-block;">Semanas 7–8</span>
+      </div>
+    </button>
+  </div>
+</div>
+
+<hr class="divider" style="max-width:1120px; margin: 0 auto;">
+
+<!-- ====== 03 · CRONOGRAMA ====== -->
+<div class="section">
+  <p class="kicker">03 · Cronograma</p>
+  <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(28px,3.5vw,40px); margin: var(--space-2) 0 var(--space-3);">8 semanas, do uso atual ao uso estruturado</h2>
+
+  <div style="display:grid; grid-template-columns: 1fr 2fr 1fr; gap: 0; margin-bottom: var(--space-3);">
+    <div class="chave-bar chave-accent">Mapear</div>
+    <div class="chave-bar chave-neutral">Estruturar</div>
+    <div class="chave-bar chave-neutral">Implementar</div>
+  </div>
+
+  <div style="display:flex; align-items:center; gap: var(--space-4); padding: var(--space-8) 0 var(--space-2);">
+    <div style="flex:1; height:8px; background: var(--color-accent-700); border-radius:4px; max-width:25%;"></div>
+    <div style="flex:1; height:8px; background: var(--color-neutral-300); border-radius:4px; max-width:50%;"></div>
+    <div style="flex:1; height:8px; background: var(--color-accent-500); border-radius:4px; max-width:25%;"></div>
+  </div>
+  <div style="display:flex; justify-content:space-between; font-size: 13px; color: var(--color-neutral-500);">
+    <span>Semana 1</span><span>Semana 3</span><span>Semana 7</span><span>Semana 8</span>
+  </div>
+</div>
+
+<hr class="divider" style="max-width:1120px; margin: 0 auto;">
+
+<!-- ====== 04 · O QUE FICA COM A RASTRO ====== -->
+<div class="section">
+  <p class="kicker">04 · O que fica com a Rastro</p>
+  <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(28px,3.5vw,40px); margin: var(--space-2) 0 var(--space-6);">Ao final de 8 semanas</h2>
+
+  <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6);">
+    <div class="phase-card">
+      <i data-lucide="workflow" style="color: var(--color-accent-700); width: 22px; height: 22px; margin-bottom: var(--space-3);"></i>
+      <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 17px; margin: 0 0 var(--space-2);">Fluxos de uso padronizados</h3>
+      <p style="font-size: 14px; line-height: 1.6; color: var(--color-neutral-700); margin: 0;">O jeito certo de usar cada ferramenta em cada etapa — rodando no dia a dia, não num slide.</p>
+    </div>
+    <div class="phase-card">
+      <i data-lucide="book-open" style="color: var(--color-accent-700); width: 22px; height: 22px; margin-bottom: var(--space-3);"></i>
+      <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 17px; margin: 0 0 var(--space-2);">Contextos prontos por momento</h3>
+      <p style="font-size: 14px; line-height: 1.6; color: var(--color-neutral-700); margin: 0;">Proposta, orçamento, reunião, pitch: o contexto certo disponível na hora certa.</p>
+    </div>
+    <div class="phase-card">
+      <i data-lucide="graduation-cap" style="color: var(--color-accent-700); width: 22px; height: 22px; margin-bottom: var(--space-3);"></i>
+      <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 17px; margin: 0 0 var(--space-2);">Práticas implementadas com o time</h3>
+      <p style="font-size: 14px; line-height: 1.6; color: var(--color-neutral-700); margin: 0;">Treinamento curto, uso real e acompanhamento. O time sabe usar porque usou junto.</p>
+    </div>
+    <div class="phase-card">
+      <i data-lucide="file-text" style="color: var(--color-accent-700); width: 22px; height: 22px; margin-bottom: var(--space-3);"></i>
+      <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 17px; margin: 0 0 var(--space-2);">Guia de referência (hand-off)</h3>
+      <p style="font-size: 14px; line-height: 1.6; color: var(--color-neutral-700); margin: 0;">Como manter, atualizar e adaptar os fluxos sozinhos. A Rastro continua dona do processo.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" style="max-width:1120px; margin: 0 auto;">
+
+<!-- ====== 05 · INVESTIMENTO ====== -->
+<div class="section">
+  <p class="kicker">05 · Investimento</p>
+  <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(28px,3.5vw,40px); margin: var(--space-2) 0 var(--space-8);">Condições e cronograma financeiro</h2>
+
+  <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6);">
+    <div class="phase-card highlight-card" style="text-align:center;">
+      <span class="tag tag-accent">1ª parcela · 50%</span>
+      <p style="font-family: var(--font-heading); font-size: 32px; font-weight: 700; color: var(--color-text); margin: var(--space-4) 0 var(--space-1);">R$ 7.500</p>
+      <p style="font-size: 14px; color: var(--color-neutral-500); margin:0;">na assinatura · kickoff</p>
+    </div>
+    <div class="phase-card" style="text-align:center;">
+      <span class="tag tag-neutral">2ª parcela · 50%</span>
+      <p style="font-family: var(--font-heading); font-size: 32px; font-weight: 700; color: var(--color-text); margin: var(--space-4) 0 var(--space-1);">R$ 7.500</p>
+      <p style="font-size: 14px; color: var(--color-neutral-500); margin:0;">na entrega final · Semana 8</p>
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); margin-top: var(--space-6);">
+    <div class="phase-card">
+      <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-neutral-500); margin: 0 0 var(--space-3);">Cronograma de pagamento</p>
+      <div style="display:flex; justify-content:space-between; font-size: 14px; padding: var(--space-2) 0; border-bottom: 1px solid var(--color-neutral-100);"><span>1ª parcela · 50% (kickoff)</span><strong>R$ 7.500</strong></div>
+      <div style="display:flex; justify-content:space-between; font-size: 14px; padding: var(--space-2) 0;"><span>2ª parcela · 50% (entrega final, Semana 8)</span><strong>R$ 7.500</strong></div>
+    </div>
+    <div class="phase-card" style="display:flex; align-items:center; justify-content:center;">
+      <p style="font-family: var(--font-heading); font-size: 20px; font-weight: 700; margin: 0;">Total: R$ 15.000</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" style="max-width:1120px; margin: 0 auto;">
+
+<!-- ====== 06 · ESCOPO ====== -->
+<div class="section">
+  <p class="kicker">06 · Escopo</p>
+  <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(28px,3.5vw,40px); margin: var(--space-2) 0 var(--space-6);">O que não está incluso</h2>
+
+  <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6);">
+    <div class="phase-card">
+      <i data-lucide="cpu" style="color: var(--color-accent-700); width: 22px; height: 22px; margin-bottom: var(--space-3);"></i>
+      <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 17px; margin: 0 0 var(--space-2);">Construção de ferramentas e integrações</h3>
+      <p style="font-size: 14px; line-height: 1.6; color: var(--color-neutral-700); margin: 0;">Sistemas, MCPs, automações e integrações ficam fora. Este projeto estrutura o uso do que já existe.</p>
+    </div>
+    <div class="phase-card">
+      <i data-lucide="pen-line" style="color: var(--color-accent-700); width: 22px; height: 22px; margin-bottom: var(--space-3);"></i>
+      <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 17px; margin: 0 0 var(--space-2);">Criação de conteúdo das propostas</h3>
+      <p style="font-size: 14px; line-height: 1.6; color: var(--color-neutral-700); margin: 0;">Os fluxos e contextos são nossos; a escrita de cada proposta continua sendo da Rastro.</p>
+    </div>
+    <div class="phase-card">
+      <i data-lucide="refresh-cw" style="color: var(--color-accent-700); width: 22px; height: 22px; margin-bottom: var(--space-3);"></i>
+      <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 17px; margin: 0 0 var(--space-2);">Manutenção contínua</h3>
+      <p style="font-size: 14px; line-height: 1.6; color: var(--color-neutral-700); margin: 0;">Depois da entrega, o acompanhamento dos fluxos pode ser contratado à parte.</p>
+    </div>
+    <div class="phase-card">
+      <i data-lucide="folder" style="color: var(--color-accent-700); width: 22px; height: 22px; margin-bottom: var(--space-3);"></i>
+      <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 17px; margin: 0 0 var(--space-2);">Mudanças em sistemas existentes</h3>
+      <p style="font-size: 14px; line-height: 1.6; color: var(--color-neutral-700); margin: 0;">Rastro Mind, CRM e outras ferramentas não são alterados por este projeto.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" style="max-width:1120px; margin: 0 auto;">
+
+<!-- ====== 07 · PRÓXIMOS PASSOS ====== -->
+<div class="section">
+  <p class="kicker">07 · Próximos passos</p>
+  <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(28px,3.5vw,40px); margin: var(--space-2) 0 var(--space-8);">Como seguimos</h2>
+  <ul class="plain" style="font-size: 17px; max-width: 60ch;">
+    <li>Apresentar e validar esta proposta com a Rastro.</li>
+    <li>Aprovado: agendar kickoff e alinhar o calendário das pessoas-chave.</li>
+    <li>Semanas 1–2: mapeamento do uso atual.</li>
+    <li>Semana 8: fluxos rodando + guia de hand-off entregue.</li>
+  </ul>
+</div>
+
+<!-- ====== FOOTER ====== -->
+<div style="background: var(--color-neutral-900); color: var(--color-neutral-300); margin-top: var(--space-16);">
+  <div class="section" style="display:flex; flex-wrap:wrap; justify-content:space-between; gap: var(--space-6); padding-top: var(--space-10); padding-bottom: var(--space-10);">
+    <div>
+      <svg width="160" height="36" viewBox="0 0 360 140" style="height:36px;width:auto;margin-bottom:var(--space-2)">
+        <circle cx="62" cy="44" r="44" fill="none" stroke="#1D4ED8" stroke-width="1.2" opacity="0.2"/>
+        <circle cx="62" cy="44" r="34" fill="none" stroke="#2563EB" stroke-width="2" opacity="0.4"/>
+        <circle cx="62" cy="44" r="24" fill="none" stroke="#3B82F6" stroke-width="2.5" opacity="0.7"/>
+        <circle cx="62" cy="44" r="14" fill="none" stroke="#60A5FA" stroke-width="3"/>
+        <circle cx="62" cy="44" r="5" fill="#3B82F6"/>
+        <text x="130" y="64" font-family="'Plus Jakarta Sans',sans-serif" font-weight="700" font-size="46" fill="#3B82F6" letter-spacing="-0.03em">Deep</text>
+        <text x="254" y="64" font-family="'Plus Jakarta Sans',sans-serif" font-weight="700" font-size="46" fill="#F1F5F9" letter-spacing="-0.03em">Blue</text>
+        <line x1="240" y1="22" x2="240" y2="68" stroke="#1E293B" stroke-width="1"/>
+      </svg>
+      <div style="font-size: 13px; color: var(--color-neutral-500); max-width: 320px;">Consultoria e tecnologia. Todo projeto começa com pessoas.</div>
+    </div>
+    <div style="font-size: 14px; display:flex; gap: var(--space-6); flex-wrap:wrap;">
+      <span>lucas@deepblue.ai</span><span>+55 11 959482709</span><span>deepblue.ai</span>
+    </div>
+  </div>
+</div>
+
+<!-- ====== DRAWERS ====== -->
+<div class="drawer-backdrop" id="backdrop" onClick="closeDrawer()"></div>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Detalhe">
+  <div class="drawer-inner">
+    <div style="display:flex; justify-content:flex-end;">
+      <button class="close-btn" onClick="closeDrawer()" aria-label="Fechar"><i data-lucide="x" style="width:22px;height:22px;"></i></button>
+    </div>
+    <div id="drawer-content"></div>
+  </div>
+</div>
+
+<script>
+const data = {
+  m1: {
+    tag: 'Semanas 1–2', tagClass: 'tag-accent',
+    title: 'Mapear',
+    body: 'Conversas com as pessoas-chave e observação de como a IA é usada hoje: ferramentas, fluxos e momentos do dia. Inventário do que já existe e do que cada pessoa faz do próprio jeito. O objetivo é entender a realidade antes de propor qualquer mudança.'
+  },
+  m2: {
+    tag: 'Semanas 3–6', tagClass: 'tag-neutral',
+    title: 'Estruturar',
+    body: 'Desenho dos fluxos padronizados e dos contextos por momento: o que usar, quando e como em cada etapa — proposta, orçamento, reunião, pitch. Definição das melhores práticas e ajuste fino em iterações rápidas com o time.'
+  },
+  m3: {
+    tag: 'Semanas 7–8', tagClass: 'tag-neutral',
+    title: 'Implementar e entregar',
+    body: 'As práticas entram no dia a dia com acompanhamento: treinamento curto, uso real e ajustes. Entrega do guia de referência para a Rastro manter, atualizar e adaptar os fluxos sozinhos.',
+    nota: 'Implementar aqui significa implementar as práticas de uso com o time. Nenhuma ferramenta ou sistema é construído neste projeto.'
+  }
+};
+
+function openDrawer(id) {
+  const item = data[id];
+  if (!item) return;
+  const content = document.getElementById('drawer-content');
+  let html = `<span class="${item.tagClass || 'tag-neutral'} tag">${item.tag}</span>
+    <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 30px; margin: var(--space-4) 0 var(--space-5);">${item.title}</h2>`;
+  if (item.body) html += `<p style="font-size: 16px; line-height:1.6; margin: 0 0 var(--space-6); white-space: pre-line;">${item.body}</p>`;
+  if (item.nota) html += `<p style="font-size: 14px; line-height:1.6; color: var(--color-neutral-700); border-left: 3px solid var(--color-accent-500); padding-left: var(--space-4); margin: 0;">${item.nota}</p>`;
+  content.innerHTML = html;
+  document.getElementById('backdrop').classList.add('open');
+  document.getElementById('drawer').classList.add('open');
+  if (window.lucide) window.lucide.createIcons();
+}
+function closeDrawer() {
+  document.getElementById('backdrop').classList.remove('open');
+  document.getElementById('drawer').classList.remove('open');
+}
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
+window.addEventListener('load', () => { if (window.lucide) window.lucide.createIcons(); });
+</script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 # Rastro — Roteiro de Entrevistas e Perguntas em Aberto
 
-> **Versão:** v0.2 — 2026-08-12 (alinhado ao escopo pós-reunião 10/08: consultoria, 3 entregáveis)
-> **Uso:** Fase 1 (Diagnóstico AS-IS) + alinhamento comercial antes do kickoff
+> **Versão:** v0.3 — 2026-08-12 (alinhado à proposta v5: trabalho contínuo Mapear→Estruturar→Implementar)
+> **Uso:** Momento 1 (Mapeamento, semanas 1–2) + alinhamento comercial antes do kickoff
 > **Autor:** Hermes (Design Writer) / Lucas Cid
 
 ---
@@ -17,7 +17,7 @@ Perguntas para apresentar junto com a proposta v4:
 5. **Data de kickoff (D+0):** existe janela preferida? Alguma correria de propostas que atrapalhe as entrevistas?
 6. **Confidencialidade:** as entrevistas e o inventário tocam dados de clientes (Nubank, HBO Max…). Confirmar que a análise fica interna e que relatórios não citam valores sensíveis sem necessidade.
 
-## 2. Roteiro de entrevistas — Fase 1 (2–3 pessoas-chave)
+## 2. Roteiro de entrevistas — Mapeamento (2–3 pessoas-chave)
 
 Objetivo: entender o fluxo real de criação de propostas, onde o conhecimento é consultado e onde trava.
 
