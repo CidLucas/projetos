@@ -47,4 +47,4 @@
 | 2026-07-29 | v0.2: Cronograma 2 meses. Investimento R$ 25.000. Docs 01/02/04 removidos. |
 | 2026-07-29 | v0.3: Perguntas fechadas. Entregáveis detalhados. Produto nomeado Rastro Brain. Curadoria: Fábio + Lucas Diárea. Deploy: EC2. Case autorizado. |
 | 2026-08-10 | Reunião com a Rastro. **Escopo mudou:** consultoria de fluxo apenas (3 entregáveis), sem MCP/Rastro Brain. Investimento R$ 15.000 (50% + 50%), 8 semanas para iterações. ADR-002. Proposta v3. |
-| 2026-08-12 | v5: estrutura simplificada — trabalho contínuo de 8 semanas (Mapear → Estruturar → Implementar + hand-off), sem 3 entregáveis formais. Final = fluxos rodando + guia de referência. Ponto cego direto/empático. Hero mantido. Pagamento: 50% kickoff + 50% entrega final. |
+| 2026-08-12 | v5: estrutura simplificada — trabalho contínuo de 8 semanas (Mapear → Estruturar → Implementar + hand-off), sem 3 entregáveis formais. Final = fluxos rodando + guia de referência. Ponto cego: 2 itens diretos ("IA precisa de processo, olhar dedicado e estrutura"). Hero mantido. Pagamento: 50% Semana 3 + 50% Semana 8. |
