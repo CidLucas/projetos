@@ -1,6 +1,6 @@
 # 💰 Proposta — Sala Financeiro (Novo Front Blu)
 
-> Última atualização: 2026-08-12 | Status: 🟡 Proposta para validar (v2 — inclui aba de Processos/Missões)
+> Última atualização: 2026-08-12 | Status: 🟡 Proposta para validar (v3 — Processos + comparações + permissões por sala no Admin)
 > Base: wireframe do novo front (`/blu-site/` — sala Clientes) + Financeiro atual (`apps/blu_web/src/pages/app/FinanceiroRoom.tsx`, 934 linhas)
 > Padrão: elementos puros · abas discretas · painel contextual · quadrinhos — mesmo conceito de [clientes.md](./clientes.md)
 
@@ -26,7 +26,7 @@ O agente financeiro continua no centro — analisa transações, categoriza, con
 | P4 | **Elementos puros** — novos nomes de biblioteca, informação + ação, sem referência ao design atual |
 | P5 | **Semáforo 🟢🟡🔴** em tudo que tem prazo: vencimento, limite de crédito, saldo baixo, processo parado, aprovação pendente |
 | P6 | **Números em mono**, contraste AA, 4 temas (dark / azul / mono / warm) |
-| P7 | **Papéis fixos por dimensão** — no Financeiro o dono é **aprovador**: só aprovador vê Agendar/Aprovar e atravessa as portas dos processos |
+| P7 | **Papéis e permissões por sala, configuráveis no Admin** — no Financeiro o dono é aprovador por padrão; o owner configura quem tem permissão em cada sala (quem aprova, quem move card, quem conecta conta). Só quem tem permissão age |
 | P8 | **Dois mundos no Financeiro:** dinheiro (fila/fluxo, sem kanban) **e processos** (missões em etapas, com kanban de aprovação) |
 
 ---
@@ -70,7 +70,7 @@ O agente financeiro continua no centro — analisa transações, categoriza, con
 
 ### 4.2 Processos (Missões) — fluxo de processos financeiros
 
-**Conceito (nova direção do fundador):** todo **processo financeiro do negócio vira uma missão com etapas** — ex.: emissão de Nota Fiscal, Balanço anual, Fechamento mensal (DRE), Declaração de impostos, relatório de fluxo de caixa. A aba mostra **em que etapa cada processo está e o que falta fazer** — o fluxo do processo, não só o resultado. O agente coleta e prepara; o dono (aprovador) **destrava as portas de aprovação**; no fim sai o **relatório final**.
+**Conceito (nova direção do fundador):** todo **processo financeiro do negócio vira uma missão com etapas** — **não é só fiscal**: emissão de Nota Fiscal, Balanço anual, Fechamento mensal (DRE), Declaração de impostos, relatório de fluxo de caixa, relatórios gerenciais (custo-benefício, desempenho). A aba mostra **em que etapa cada processo está e o que falta fazer** — o fluxo do processo, não só o resultado. O agente coleta e prepara; quem tem permissão **destrava as portas de aprovação**; no fim sai o **relatório final**.
 
 - **Elemento:** `QuadroProcessos` (kanban — reusa o `QuadroKanban` do novo conceito)
 - **Etapas padrão (4 colunas — proposta):**
@@ -79,12 +79,12 @@ O agente financeiro continua no centro — analisa transações, categoriza, con
   3. **Aprovação do relatório** — aprovador valida o relatório gerado pelo agente
   4. **Relatório final** — fechado/entregue; documento final disponível
 - **CartaoProcesso (informações):** nome da missão (ex.: "Nota Fiscal — Junho", "Balanço anual 2026"), etapa atual (coluna), badge de sub-estado ("Aguardando aprovação" · "Dados incompletos" · "Em atraso" · "Aprovado"), semáforo de prazo, responsável (avatar), período/valor quando aplicável
-- **Ações:** clique → painel Modo Processo · **mover entre etapas** (só aprovador atravessa porta de aprovação; pular porta exige confirmação — U5) · **Aprovar etapa** (aprovar dados / aprovar relatório) · **Rejeitar** (motivo opcional, volta uma etapa) · menu "..." (gerar relatório, ver histórico, arquivar)
+- **Ações:** clique → painel Modo Processo · **mover entre etapas — quem tem permissão de mover (configurada no Admin por sala); pular porta exige confirmação (U5)** · **Aprovar etapa** (aprovar dados / aprovar relatório — só quem tem permissão de aprovar) · **Rejeitar** (motivo opcional, volta uma etapa) · menu "..." (gerar relatório, ver histórico, arquivar)
 - **Seleção múltipla** (checkbox no hover) → barra de lote (Aprovar etapa dos selecionados · Mover para… · Arquivar)
 - **Origem das missões:** botão "+ Nova missão" (chat com o agente) cria o processo e ele já nasce na etapa Coleta; o agente também propõe processos (ex.: "Fechamento do mês está na hora — criar?")
 - **Contador da aba = processos com porta de aprovação pendente ou parados (semáforo 🟡/🔴)**
 - **Estados:** vazio ("Nenhum processo — crie uma missão") · loading · erro
-- **Etapas por tipo de processo podem variar** (ex.: Nota Fiscal pode ter etapa de "Validação fiscal" antes do relatório) — ver decisão 10
+- **Etapas:** as **4 etapas são a base** — cada tipo de processo pode ajustar depois (ex.: Nota Fiscal pode ganhar "Validação fiscal" antes do relatório) — ver decisão 2
 
 ### 4.3 Fluxo
 
@@ -119,7 +119,7 @@ O agente financeiro continua no centro — analisa transações, categoriza, con
 | Aba | Modo | O que o painel mostra |
 |---|---|---|
 | Decisões | **Modo Decisão** | decisão em foco: tipo, valor (destaque mono), vencimento, origem, o que o agente propôs e por quê · ações: **Agendar/Aprovar** (só aprovador) · Adiar (1d/3d/7d/data) · Rejeitar (motivo opcional) · "Ver no fluxo" (leva à transação/fatura correspondente) |
-| Processos | **Modo Processo** | processo em foco: missão, etapa atual, **passo a passo das etapas** (Coleta → Dados → Relatório → Final, com check nas concluídas e a porta de aprovação em destaque) · quem aprova cada porta · artefatos por etapa (dados brutos, relatório, versão final) com preview · ações: **Aprovar etapa** (só aprovador) · Rejeitar (motivo, volta) · Adiar · Gerar relatório · ver histórico do processo |
+| Processos | **Modo Processo** | processo em foco: missão, etapa atual, **passo a passo das etapas** (Coleta → Dados → Relatório → Final, com check nas concluídas e a porta de aprovação em destaque) · quem aprova cada porta · artefatos por etapa (dados brutos, relatório, versão final) com preview · **relatório final com comparações (vs mês passado, vs mesmo mês do ano anterior, vs média do ano, vs 6 meses)** · ações: **Aprovar etapa** (só quem tem permissão) · Rejeitar (motivo, volta) · Adiar · Gerar relatório · ver histórico do processo |
 | Fluxo | **Modo Fatura** | fatura em foco: vencimento, valor + mínimo, pagamentos parciais, parcelável, ciclos anteriores, conciliação (quais transações casam) · ações: Pagar agora (cria decisão) · ver transações da fatura |
 | Fluxo | **Modo Transação** | transação em foco: nome/logo, data, valor, conta, categoria (trocar direto) · conciliação com fatura se houver · "Ver no fluxo" |
 | Contas | **Modo Conta** | conta em foco: saldo, limite/uso, status de sync, extrato resumido (últimas transações) · ações: atualizar · desconectar (confirmação) · apelido |
@@ -136,6 +136,8 @@ O agente financeiro continua no centro — analisa transações, categoriza, con
 |---|---|
 | Q1 **Insights do agente** | 2–3 cards de sugestão proativa (ex.: "Fatura Nubank vence em 2 dias — pagar agora?", "Gastos com restaurantes +30% vs mês passado", "Fechamento do mês pendente — criar missão?", "3 boletos sem conciliação") · ações: Abrir decisão · Criar processo · Dispensar |
 | Q2 **Métricas da sala** | período 30d/90d/1y: Faturamento · Despesas · Margem · Fluxo 30d · Caixa consolidado · Burn rate · Runway · DSO/DPO/CCC (as que existem no `getFinanceIndicators`/context metrics) · clique numa métrica → Estratégia ou lista filtrada |
+| Q2b **Comparações (padrão em toda métrica)** | além do valor, toda métrica traz a comparação em pills — **vs mês passado (MoM) · vs mesmo mês do ano anterior (YoY) · vs média do ano anterior · vs média dos últimos 6 meses** (ex.: "Faturamento · R$ 48K · ↑ 12% vs mês passado · ↑ 8% vs jul/25 · ↑ 5% vs média do ano"). As mesmas comparações entram no **relatório final dos processos** (Modo Processo/Preview) |
+| Q2c **Mapa de contexto do negócio** | as comparações alimentam o contexto do agente (`contextMetrics`, dimensão finance) — as métricas não vivem isoladas na sala: o mesmo mapa vira pauta em Estratégia e base das sugestões do Q1 |
 | Q3 **Contas rápido** | contas conectadas com saldo, atalho para aba Contas; sem contas → CTA "Conectar banco" |
 
 ---
@@ -154,23 +156,33 @@ O agente financeiro continua no centro — analisa transações, categoriza, con
 
 ---
 
-## 8. Papéis (multi-usuário)
+## 8. Papéis e permissões (multi-usuário — configuração no Admin)
 
-- **Criador** — abre missões/processos, conecta contas, propõe
-- **Aprovador** (dono, padrão no Financeiro) — Agendar/Aprovar/Rejeitar decisões, **aprovar etapas dos processos**, autorizar pagamentos
-- **Visualizador** — só vê salas/abas; sem botões de ação (U6)
+- **Perfil base por sala:** criador (abre missões, conecta contas, propõe) · aprovador (aprova/agenda/rejeita) · visualizador (só vê)
+- **Admin (owner) configura por sala** quem tem cada permissão: quem aprova · quem move card entre etapas · quem conecta conta · quem cria missão. **Quem move o card = quem tem autorização de mover** (não é regra fixa por cargo)
 - Papel varia por dimensão (usuário aprovador no Financeiro, visualizador em Clientes — direção 07/08)
 
 ---
 
 ## 9. Decisões em aberto (validar antes de especificar)
 
+### Resolvidas nesta rodada (12/08)
+
+| # | Decisão |
+|---|---|
+| D1 | **Processos não são só fiscais** — a aba Processos cobre Nota Fiscal, Balanço anual, Fechamento mensal (DRE), Declaração, fluxo de caixa **e relatórios gerenciais** (custo-benefício, desempenho) |
+| D2 | **Etapas: as 4 são a base** — Coleta → Aprovação dos dados → Aprovação do relatório → Relatório final; cada tipo de processo ajusta depois (fundador: "serão uma boa parte, teremos que ajustar") |
+| D3 | **Quem move o card = quem tem autorização de mover** — permissões por sala configuradas no Admin (owner), não regra fixa por cargo |
+| D4 | **Comparações em toda métrica** — vs mês passado (MoM) · vs mesmo mês do ano anterior (YoY) · vs média do ano anterior · vs média dos últimos 6 meses; alimentam o **mapa de contexto do negócio** (context metrics) e entram no relatório final dos processos |
+
+### Em aberto
+
 1. **Abas:** Decisões · Processos · Fluxo · Contas · Rotinas (proposta v2) vs outra combinação? (Config some — proposta)
-2. **Etapas padrão dos processos:** Coleta de dados → Aprovação dos dados → Aprovação do relatório → Relatório final (proposta) — ou cada tipo de processo tem etapas próprias? (ex.: Nota Fiscal com "Validação fiscal" antes do relatório)
-3. **Quais processos padrão entram de cara?** Proposta: Nota Fiscal · Balanço anual · Fechamento mensal (DRE) · Declaração de impostos · Relatório de fluxo de caixa — confirma? ("Nauta Fiscal" = Nota Fiscal?)
-4. **Quem pode mover o card entre etapas:** só aprovador atravessa as portas (proposta) vs criador move e aprovador só aprova?
-5. **Conciliação automática** como rotina built-in (cruza fatura × transações, marca 💚) — entra no catálogo? (função existe no backend?)
-6. **Quadrinho Q2 — quais métricas** entram de cara? (proposta: Faturamento · Despesas · Margem · Fluxo 30d · Caixa consolidado · Burn rate · Runway · DSO · DPO · CCC — as disponíveis no indicadores/context)
+2. **Processos padrão de cara:** Nota Fiscal · Balanço anual · Fechamento mensal (DRE) · Declaração de impostos · Relatório de fluxo de caixa · Relatório custo-benefício — **quais os 3–4 principais** para a primeira versão?
+3. **Etapas custom por processo:** quando surgir a primeira exceção (ex.: "Validação fiscal" na Nota Fiscal), quem define a etapa extra — agente propõe e dono aprova, ou dono configura?
+4. **Conciliação automática** como rotina built-in (cruza fatura × transações, marca 💚) — entra no catálogo? (função existe no backend?)
+5. **Quadrinho Q2 — quais métricas** entram de cara? (proposta: Faturamento · Despesas · Margem · Fluxo 30d · Caixa consolidado · Burn rate · Runway · DSO · DPO · CCC — as disponíveis no indicadores/context)
+6. **Comparações — granularidade:** toda métrica carrega as 4 pills (proposta) vs só as relevantes por métrica (ex.: DSO não tem "média do ano")?
 7. **"Nova Missão":** manter no topo como entrada do chat (proposta) vs esconder atrás das ações diretas?
 8. **Painel sem seleção:** estado vazio "Selecione um item" (mesmo padrão Clientes — manter consistência)?
 9. **Próximas salas:** depois de Financeiro, seguimos para **Compras** (já tem spec parcial) — confirmar a ordem das prioridades ("Saúde" citada é sala nova ou outro projeto?)
