@@ -145,6 +145,7 @@
 <div class="section">
   <p class="kicker">03 · Cronograma</p>
   <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(28px,3.5vw,40px); margin: var(--space-2) 0 var(--space-3);">8 semanas, do uso atual ao uso estruturado</h2>
+  <p style="font-family: var(--font-body); font-size: 14px; color: var(--color-neutral-500); margin: 0 0 var(--space-10);">Clique em cada momento para ver objetivo, atividades e entregáveis.</p>
 
   <div style="display:grid; grid-template-columns: 1fr 2fr 1fr; gap: 0; margin-bottom: var(--space-3);">
     <div class="chave-bar chave-accent">Mapear</div>
@@ -152,13 +153,54 @@
     <div class="chave-bar chave-neutral">Implementar</div>
   </div>
 
-  <div style="display:flex; align-items:center; gap: var(--space-4); padding: var(--space-8) 0 var(--space-2);">
-    <div style="flex:1; height:8px; background: var(--color-accent-700); border-radius:4px; max-width:25%;"></div>
-    <div style="flex:1; height:8px; background: var(--color-neutral-300); border-radius:4px; max-width:50%;"></div>
-    <div style="flex:1; height:8px; background: var(--color-accent-500); border-radius:4px; max-width:25%;"></div>
-  </div>
-  <div style="display:flex; justify-content:space-between; font-size: 13px; color: var(--color-neutral-500);">
-    <span>Semana 1</span><span>Semana 3</span><span>Semana 7</span><span>Semana 8</span>
+  <div style="position:relative; padding: var(--space-4) 0;">
+    <div style="position:absolute; left:0; right:0; top:68px; height:3px; background: var(--color-neutral-200);"></div>
+
+    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-8); position:relative; margin-bottom: var(--space-12);">
+
+      <button class="node-btn" onClick="openDrawer('m1')" aria-haspopup="dialog" style="position:relative; z-index:1;">
+        <div class="phase-card" style="border-top: 4px solid var(--color-accent-700); text-align:left;">
+          <div style="display:flex; align-items:center; gap: var(--space-3); margin-bottom: var(--space-3);">
+            <span class="tag tag-accent">Momento 1</span><span style="font-size: 13px; color: var(--color-neutral-500);">Semanas 1–2</span>
+          </div>
+          <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 20px; margin: 0 0 var(--space-2);">Mapear</h3>
+          <p style="font-size: 14px; line-height:1.5; color: var(--color-neutral-700); margin: 0;">Entrevistas com as pessoas-chave e observação do uso atual de IA.</p>
+          <i data-lucide="chevron-right" style="color: var(--color-neutral-500); width: 20px; height: 20px; margin-top: var(--space-3);"></i>
+        </div>
+      </button>
+
+      <button class="node-btn" onClick="openDrawer('m2')" aria-haspopup="dialog" style="position:relative; z-index:1;">
+        <div class="phase-card" style="border-top: 4px solid var(--color-neutral-700); text-align:left;">
+          <div style="display:flex; align-items:center; gap: var(--space-3); margin-bottom: var(--space-3);">
+            <span class="tag tag-neutral">Momento 2</span><span style="font-size: 13px; color: var(--color-neutral-500);">Semanas 3–6</span>
+          </div>
+          <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 20px; margin: 0 0 var(--space-2);">Estruturar</h3>
+          <p style="font-size: 14px; line-height:1.5; color: var(--color-neutral-700); margin: 0;">Fluxos padronizados e contextos por momento, validados com o time.</p>
+          <i data-lucide="chevron-right" style="color: var(--color-neutral-500); width: 20px; height: 20px; margin-top: var(--space-3);"></i>
+        </div>
+      </button>
+
+      <button class="node-btn" onClick="openDrawer('m3')" aria-haspopup="dialog" style="position:relative; z-index:1;">
+        <div class="phase-card" style="border-top: 4px solid var(--color-neutral-700); text-align:left;">
+          <div style="display:flex; align-items:center; gap: var(--space-3); margin-bottom: var(--space-3);">
+            <span class="tag tag-neutral">Momento 3</span><span style="font-size: 13px; color: var(--color-neutral-500);">Semanas 7–8</span>
+          </div>
+          <h3 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 20px; margin: 0 0 var(--space-2);">Implementar e entregar</h3>
+          <p style="font-size: 14px; line-height:1.5; color: var(--color-neutral-700); margin: 0;">Práticas no dia a dia com acompanhamento + guia de hand-off.</p>
+          <i data-lucide="chevron-right" style="color: var(--color-neutral-500); width: 20px; height: 20px; margin-top: var(--space-3);"></i>
+        </div>
+      </button>
+
+    </div>
+
+    <div style="display:flex; align-items:center; gap: var(--space-4); padding: var(--space-4) 0;">
+      <div style="flex:1; height:8px; background: var(--color-accent-700); border-radius:4px; max-width:25%;"></div>
+      <div style="flex:1; height:8px; background: var(--color-neutral-300); border-radius:4px; max-width:50%;"></div>
+      <div style="flex:1; height:8px; background: var(--color-accent-500); border-radius:4px; max-width:25%;"></div>
+    </div>
+    <div style="display:flex; justify-content:space-between; font-size: 13px; color: var(--color-neutral-500); margin-bottom: var(--space-6);">
+      <span>Semana 1</span><span>Semana 3</span><span>Semana 7</span><span>Semana 8</span>
+    </div>
   </div>
 </div>
 
@@ -166,8 +208,8 @@
 
 <!-- ====== 04 · O QUE FICA COM A RASTRO ====== -->
 <div class="section">
-  <p class="kicker">04 · O que fica com a Rastro</p>
-  <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(28px,3.5vw,40px); margin: var(--space-2) 0 var(--space-6);">Ao final de 8 semanas</h2>
+  <p class="kicker">04 · Entregáveis</p>
+  <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(28px,3.5vw,40px); margin: var(--space-2) 0 var(--space-6);">O que entregamos ao final</h2>
 
   <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6);">
     <div class="phase-card">
@@ -306,19 +348,41 @@
 <script>
 const data = {
   m1: {
-    tag: 'Semanas 1–2', tagClass: 'tag-accent',
-    title: 'Mapear',
-    body: 'Conversas com as pessoas-chave e observação de como a IA é usada hoje: ferramentas, fluxos e momentos do dia. Inventário do que já existe e do que cada pessoa faz do próprio jeito. O objetivo é entender a realidade antes de propor qualquer mudança.'
+    tag: 'Momento 1 · Mapear', tagClass: 'tag-accent',
+    title: 'Mapear · Semanas 1–2',
+    objetivo: 'Entender como a IA é usada hoje na Rastro: ferramentas, fluxos e momentos do dia.',
+    atividades: [
+      'Kickoff com a Rastro e agenda das conversas.',
+      'Entrevistas com 2–3 pessoas-chave do fluxo de propostas.',
+      'Inventário das ferramentas e dos documentos usados no processo.',
+      'Observação do uso real: o que cada pessoa faz do próprio jeito.',
+      'Consolidação do mapa do uso atual.'
+    ],
+    entregaveis: 'Mapa do uso atual de IA (ferramentas, fluxos, momentos) + inventário comentado.'
   },
   m2: {
-    tag: 'Semanas 3–6', tagClass: 'tag-neutral',
-    title: 'Estruturar',
-    body: 'Desenho dos fluxos padronizados e dos contextos por momento: o que usar, quando e como em cada etapa — proposta, orçamento, reunião, pitch. Definição das melhores práticas e ajuste fino em iterações rápidas com o time.'
+    tag: 'Momento 2 · Estruturar', tagClass: 'tag-neutral',
+    title: 'Estruturar · Semanas 3–6',
+    objetivo: 'Desenhar os fluxos padronizados e os contextos prontos para cada momento.',
+    atividades: [
+      'Desenho dos fluxos padronizados de uso.',
+      'Definição dos contextos por momento: proposta, orçamento, reunião, pitch.',
+      'Definição das melhores práticas.',
+      'Iterações rápidas com o time para validar e ajustar.'
+    ],
+    entregaveis: 'Fluxos padronizados + contextos por momento + melhores práticas, validados com o time.'
   },
   m3: {
-    tag: 'Semanas 7–8', tagClass: 'tag-neutral',
-    title: 'Implementar e entregar',
-    body: 'As práticas entram no dia a dia com acompanhamento: treinamento curto, uso real e ajustes. Entrega do guia de referência para a Rastro manter, atualizar e adaptar os fluxos sozinhos.',
+    tag: 'Momento 3 · Implementar e entregar', tagClass: 'tag-neutral',
+    title: 'Implementar e entregar · Semanas 7–8',
+    objetivo: 'Colocar as práticas no dia a dia e entregar o guia para a Rastro manter sozinha.',
+    atividades: [
+      'Treinamento curto com o time.',
+      'Uso real acompanhado: práticas aplicadas no dia a dia.',
+      'Ajustes finos com base no uso.',
+      'Entrega do guia de referência (hand-off).'
+    ],
+    entregaveis: 'Práticas implementadas no dia a dia + guia de referência para manter, atualizar e adaptar os fluxos.',
     nota: 'Implementar aqui significa implementar as práticas de uso com o time. Nenhuma ferramenta ou sistema é construído neste projeto.'
   }
 };
@@ -329,6 +393,15 @@ function openDrawer(id) {
   const content = document.getElementById('drawer-content');
   let html = `<span class="${item.tagClass || 'tag-neutral'} tag">${item.tag}</span>
     <h2 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 30px; margin: var(--space-4) 0 var(--space-5);">${item.title}</h2>`;
+  if (item.objetivo) html += `<p style="font-size: 13px; text-transform:uppercase; letter-spacing:0.08em; color: var(--color-accent-700); margin: 0 0 var(--space-2);">Objetivo</p>
+    <p style="font-size: 16px; line-height:1.6; margin: 0 0 var(--space-6);">${item.objetivo}</p>`;
+  if (item.atividades) {
+    html += `<p style="font-size: 13px; text-transform:uppercase; letter-spacing:0.08em; color: var(--color-accent-700); margin: 0 0 var(--space-2);">Atividades</p><ul class="plain" style="font-size: 15px; margin: 0 0 var(--space-6);">`;
+    item.atividades.forEach(a => { html += `<li>${a}</li>`; });
+    html += `</ul>`;
+  }
+  if (item.entregaveis) html += `<p style="font-size: 13px; text-transform:uppercase; letter-spacing:0.08em; color: var(--color-accent-700); margin: 0 0 var(--space-2);">Entregáveis</p>
+    <p style="font-size: 15px; line-height:1.6; margin: 0 0 var(--space-6);">${item.entregaveis}</p>`;
   if (item.body) html += `<p style="font-size: 16px; line-height:1.6; margin: 0 0 var(--space-6); white-space: pre-line;">${item.body}</p>`;
   if (item.nota) html += `<p style="font-size: 14px; line-height:1.6; color: var(--color-neutral-700); border-left: 3px solid var(--color-accent-500); padding-left: var(--space-4); margin: 0;">${item.nota}</p>`;
   content.innerHTML = html;
