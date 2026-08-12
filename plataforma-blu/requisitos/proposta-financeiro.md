@@ -1,6 +1,6 @@
 # 💰 Proposta — Sala Financeiro (Novo Front Blu)
 
-> Última atualização: 2026-08-12 | Status: 🟡 Proposta para validar (v3 — Processos + comparações + permissões por sala no Admin)
+> Última atualização: 2026-08-12 | Status: 🟡 Proposta validada nas decisões-chave (v4 — D5 processos v1 + D6 comparações por métrica); spec completa em [financeiro.md](./financeiro.md)
 > Base: wireframe do novo front (`/blu-site/` — sala Clientes) + Financeiro atual (`apps/blu_web/src/pages/app/FinanceiroRoom.tsx`, 934 linhas)
 > Padrão: elementos puros · abas discretas · painel contextual · quadrinhos — mesmo conceito de [clientes.md](./clientes.md)
 
@@ -136,7 +136,7 @@ O agente financeiro continua no centro — analisa transações, categoriza, con
 |---|---|
 | Q1 **Insights do agente** | 2–3 cards de sugestão proativa (ex.: "Fatura Nubank vence em 2 dias — pagar agora?", "Gastos com restaurantes +30% vs mês passado", "Fechamento do mês pendente — criar missão?", "3 boletos sem conciliação") · ações: Abrir decisão · Criar processo · Dispensar |
 | Q2 **Métricas da sala** | período 30d/90d/1y: Faturamento · Despesas · Margem · Fluxo 30d · Caixa consolidado · Burn rate · Runway · DSO/DPO/CCC (as que existem no `getFinanceIndicators`/context metrics) · clique numa métrica → Estratégia ou lista filtrada |
-| Q2b **Comparações (padrão em toda métrica)** | além do valor, toda métrica traz a comparação em pills — **vs mês passado (MoM) · vs mesmo mês do ano anterior (YoY) · vs média do ano anterior · vs média dos últimos 6 meses** (ex.: "Faturamento · R$ 48K · ↑ 12% vs mês passado · ↑ 8% vs jul/25 · ↑ 5% vs média do ano"). As mesmas comparações entram no **relatório final dos processos** (Modo Processo/Preview) |
+| Q2b **Comparações (por métrica, só as relevantes)** | além do valor, a métrica mostra as comparações aplicáveis em pills — **vs mês passado (MoM) · vs mesmo mês do ano anterior (YoY) · vs média do ano anterior · vs média dos últimos 6 meses** (decisão D6: cada métrica declara quais se aplicam; ex.: DSO/DPO/CCC não têm "média do ano"). Ex.: "Faturamento · R$ 48K · ↑ 12% vs mês passado · ↑ 8% vs jul/25 · ↑ 5% vs média do ano". As mesmas comparações entram no **relatório final dos processos** (Modo Processo/Preview) |
 | Q2c **Mapa de contexto do negócio** | as comparações alimentam o contexto do agente (`contextMetrics`, dimensão finance) — as métricas não vivem isoladas na sala: o mesmo mapa vira pauta em Estratégia e base das sugestões do Q1 |
 | Q3 **Contas rápido** | contas conectadas com saldo, atalho para aba Contas; sem contas → CTA "Conectar banco" |
 
@@ -174,18 +174,18 @@ O agente financeiro continua no centro — analisa transações, categoriza, con
 | D2 | **Etapas: as 4 são a base** — Coleta → Aprovação dos dados → Aprovação do relatório → Relatório final; cada tipo de processo ajusta depois (fundador: "serão uma boa parte, teremos que ajustar") |
 | D3 | **Quem move o card = quem tem autorização de mover** — permissões por sala configuradas no Admin (owner), não regra fixa por cargo |
 | D4 | **Comparações em toda métrica** — vs mês passado (MoM) · vs mesmo mês do ano anterior (YoY) · vs média do ano anterior · vs média dos últimos 6 meses; alimentam o **mapa de contexto do negócio** (context metrics) e entram no relatório final dos processos |
+| D5 | **Primeiros processos (v1):** Fechamento mensal (DRE) · Balanço anual · Nota Fiscal · Relatório de fluxo de caixa — aprovado |
+| D6 | **Comparações só quando fazem sentido por métrica** — a métrica declara quais comparações são aplicáveis (ex.: DSO/DPO/CCC não têm "média do ano"; receita tem as 4) |
 
 ### Em aberto
 
 1. **Abas:** Decisões · Processos · Fluxo · Contas · Rotinas (proposta v2) vs outra combinação? (Config some — proposta)
-2. **Processos padrão de cara:** Nota Fiscal · Balanço anual · Fechamento mensal (DRE) · Declaração de impostos · Relatório de fluxo de caixa · Relatório custo-benefício — **quais os 3–4 principais** para a primeira versão?
-3. **Etapas custom por processo:** quando surgir a primeira exceção (ex.: "Validação fiscal" na Nota Fiscal), quem define a etapa extra — agente propõe e dono aprova, ou dono configura?
-4. **Conciliação automática** como rotina built-in (cruza fatura × transações, marca 💚) — entra no catálogo? (função existe no backend?)
-5. **Quadrinho Q2 — quais métricas** entram de cara? (proposta: Faturamento · Despesas · Margem · Fluxo 30d · Caixa consolidado · Burn rate · Runway · DSO · DPO · CCC — as disponíveis no indicadores/context)
-6. **Comparações — granularidade:** toda métrica carrega as 4 pills (proposta) vs só as relevantes por métrica (ex.: DSO não tem "média do ano")?
-7. **"Nova Missão":** manter no topo como entrada do chat (proposta) vs esconder atrás das ações diretas?
-8. **Painel sem seleção:** estado vazio "Selecione um item" (mesmo padrão Clientes — manter consistência)?
-9. **Próximas salas:** depois de Financeiro, seguimos para **Compras** (já tem spec parcial) — confirmar a ordem das prioridades ("Saúde" citada é sala nova ou outro projeto?)
+2. **Etapas custom por processo:** quando surgir a primeira exceção (ex.: "Validação fiscal" na Nota Fiscal), quem define a etapa extra — agente propõe e dono aprova, ou dono configura?
+3. **Conciliação automática** como rotina built-in (cruza fatura × transações, marca 💚) — entra no catálogo? (função existe no backend?)
+4. **Quadrinho Q2 — quais métricas** entram de cara? (proposta: Faturamento · Despesas · Margem · Fluxo 30d · Caixa consolidado · Burn rate · Runway · DSO · DPO · CCC — as disponíveis no indicadores/context)
+5. **"Nova Missão":** manter no topo como entrada do chat (proposta) vs esconder atrás das ações diretas?
+6. **Painel sem seleção:** estado vazio "Selecione um item" (mesmo padrão Clientes — manter consistência)?
+7. **Próximas salas:** depois de Financeiro, seguimos para **Compras** (já tem spec parcial) — confirmar a ordem das prioridades ("Saúde" citada é sala nova ou outro projeto?)
 
 ---
 

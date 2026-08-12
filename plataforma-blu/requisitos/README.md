@@ -28,7 +28,7 @@
 |---|---|---|---|---|
 | 10 | Início (Home) | `home` | [home.md](./home.md) | 🟡 Em andamento |
 | 20 | Compras | `compras` | [compras.md](./compras.md) | 🟡 Em andamento |
-| 30 | Financeiro | `financeiro` | [financeiro.md](./financeiro.md) | 🟡 Em andamento |
+| 30 | Financeiro | `financeiro` | [financeiro.md](./financeiro.md) | 🟡 Em andamento (spec v1 p/ design — 12/08) |
 | 40 | Agenda | `agenda` | [agenda.md](./agenda.md) | 🟡 Em andamento |
 | 50 | Estratégia | `estrategia` | [estrategia.md](./estrategia.md) | 🟡 Em andamento |
 | 60 | Clientes | `clientes` | [clientes.md](./clientes.md) | 🟡 Em andamento (tela esmiuçada p/ design) |
