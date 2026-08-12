@@ -23,3 +23,7 @@ _Nenhum bloqueio ativo._
 
 - [ ] Estruturar documentação técnica neste repo
 - [ ] Definir milestones da fase atual
+
+## Documentos
+
+- [docs/00-conceito-produto.md](./docs/00-conceito-produto.md) — conceito do produto (Blu + MCP Brain) e comunicação de valor. Referência futura.

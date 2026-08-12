@@ -38,6 +38,11 @@
 5. Modelo de cobrança — por usuário, por GB indexado, por chamada MCP?
 6. O que é o "brain" tecnicamente — só RAG sobre docs, ou algo mais estruturado (ontologias, entidades, regras)?
 
+## Conceito do produto
+
+- O conceito unificado (Blu + MCP Brain) e a comunicação de valor vivem em
+  `plataforma-blu/docs/00-conceito-produto.md` (2026-08-12).
+
 ## 📅 Histórico de atualizações
 
 | Data | Atualização |
