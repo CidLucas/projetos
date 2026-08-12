@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blu Mobile — novo front (protótipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   BLU MOBILE — novo front (blu_web v2) · conceito mobile
+   Casca: bottom nav 5 destinos · salas em grid · abas pill
+   Detalhe master-detail vira slide-in · decisão em bottom sheet
+   Base: spec tela Financeiro (12/08) + DESIGN.md multi-tema
+   ═══════════════════════════════════════════════════════════ */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Inter',sans-serif;background:#12131a;color:#DFE3EE;font-size:13px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:24px;min-height:100vh}
+.page{max-width:1200px;margin:0 auto}
+
+.pg-head{display:flex;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap}
+.pg-head h1{font-size:16px;font-weight:800;letter-spacing:-.3px}
+.pg-head .sub{font-size:11.5px;color:var(--mu2)}
+.pg-head .spacer{flex:1}
+.theme-switch{display:flex;gap:6px;background:rgba(255,255,255,.065);border:1px solid rgba(255,255,255,.10);border-radius:12px;padding:6px}
+.ts{display:flex;align-items:center;gap:7px;padding:6px 12px;border-radius:8px;cursor:pointer;border:1px solid transparent;font-size:11.5px;font-weight:600;color:#b9bdc9;transition:all .12s;min-height:32px;background:none;font-family:inherit}
+.ts:hover{background:rgba(255,255,255,.09);color:#fff}
+.ts.on{background:rgba(140,95,219,.16);border-color:#8C5FDB;color:#A78BEA}
+.ts .sw{width:14px;height:14px;border-radius:50%;flex-shrink:0}
+.ts-azul .sw{background:linear-gradient(135deg,#EAF2FC 50%,#1D4ED8 50%)}
+.ts-mono .sw{background:linear-gradient(135deg,#FFFFFF 50%,#111111 50%)}
+.ts-warm .sw{background:linear-gradient(135deg,#FBF1E7 50%,#9A3412 50%)}
+.ts-dark .sw{background:linear-gradient(135deg,#03071C 50%,#8C5FDB 50%)}
+.note{font-size:11px;color:#8a8e9c;max-width:760px;margin-bottom:18px;line-height:1.55}
+.note b{color:#c9ccd6}
+
+/* ── THEMES (tokens idênticos ao wireframe desktop) ── */
+.theme{--bg:#03071C;--bg2:#0A0E1B;--glass:rgba(255,255,255,.065);--gl2:rgba(255,255,255,.09);--gb:rgba(255,255,255,.10);--gb2:rgba(255,255,255,.22);--fg:#E8ECF5;--mu:rgba(232,236,245,.56);--mu2:rgba(232,236,245,.72);--ac:#8C5FDB;--ac-hi:#A78BEA;--pill-on:#A78BEA;--adim:rgba(140,95,219,.16);--urg:#F87171;--udim:rgba(248,113,113,.14);--att:#FBBF24;--adm2:rgba(251,191,36,.14);--ok:#34D399;--odim:rgba(52,211,153,.14);--card:rgba(255,255,255,.045);--shadow-1:0 2px 14px rgba(0,0,0,.28);
+--grad2:#3A80D4;--ag-compras:#818cf8;--ag-financeiro:#34d399;--ag-agenda:#fb923c;--ag-estrategia:#a78bfa;--ag-clientes:#f472b6;--ag-biblioteca:#818cf8;--ag-atividade:#fbbf24;--ag-admin:#94a3b8;--ag-bluops:#2dd4bf}
+.theme.theme-azul{--bg:#F5F9FE;--bg2:#EAF2FC;--glass:rgba(255,255,255,.75);--gl2:#FFFFFF;--gb:rgba(15,90,150,.14);--gb2:rgba(15,90,150,.26);--fg:#0B1F33;--mu:rgba(11,31,51,.60);--mu2:rgba(11,31,51,.76);--ac:#1D4ED8;--ac-hi:#2563EB;--pill-on:#1D4ED8;--adim:rgba(29,78,216,.10);--urg:#B91C1C;--udim:rgba(185,28,28,.10);--att:#92400E;--adm2:rgba(146,64,14,.12);--ok:#047857;--odim:rgba(4,120,87,.10);--card:#FFFFFF;--shadow-1:0 2px 8px rgba(20,60,120,.08);
+--grad2:#1D4ED8;--ag-compras:#3730A3;--ag-financeiro:#047857;--ag-agenda:#B45309;--ag-estrategia:#6D28D9;--ag-clientes:#BE185D;--ag-biblioteca:#4338CA;--ag-atividade:#A16207;--ag-admin:#475569;--ag-bluops:#0F766E}
+.theme.theme-mono{--bg:#FFFFFF;--bg2:#F4F4F5;--glass:#FFFFFF;--gl2:#FFFFFF;--gb:rgba(0,0,0,.14);--gb2:rgba(0,0,0,.28);--fg:#0A0A0A;--mu:rgba(10,10,10,.58);--mu2:rgba(10,10,10,.74);--ac:#111111;--ac-hi:#333333;--pill-on:#111111;--adim:rgba(0,0,0,.08);--urg:#991B1B;--udim:rgba(153,27,27,.10);--att:#78350F;--adm2:rgba(120,53,15,.12);--ok:#14532D;--odim:rgba(20,83,45,.10);--card:#FFFFFF;--shadow-1:0 1px 4px rgba(0,0,0,.06);
+--grad2:#111111;--ag-compras:#3F3F46;--ag-financeiro:#52525B;--ag-agenda:#3F3F46;--ag-estrategia:#52525B;--ag-clientes:#3F3F46;--ag-biblioteca:#52525B;--ag-atividade:#71717A;--ag-admin:#3F3F46;--ag-bluops:#52525B}
+.theme.theme-warm{--bg:#FBF1E7;--bg2:#F5E3CE;--glass:rgba(255,255,255,.72);--gl2:#FFFFFF;--gb:rgba(120,60,20,.16);--gb2:rgba(120,60,20,.30);--fg:#2B1A0C;--mu:rgba(43,26,12,.58);--mu2:rgba(43,26,12,.75);--ac:#9A3412;--ac-hi:#C2410C;--pill-on:#9A3412;--adim:rgba(194,65,12,.12);--urg:#991B1B;--udim:rgba(153,27,27,.12);--att:#78350F;--adm2:rgba(120,53,15,.14);--ok:#3F6212;--odim:rgba(63,98,18,.12);--card:#FFFFFF;--shadow-1:0 2px 8px rgba(80,40,10,.10);
+--grad2:#9A3412;--ag-compras:#92400E;--ag-financeiro:#3F6212;--ag-agenda:#B45309;--ag-estrategia:#713F12;--ag-clientes:#9F1239;--ag-biblioteca:#854D0E;--ag-atividade:#92400E;--ag-admin:#7C2D12;--ag-bluops:#365314}
+
+/* ── PHONE FRAME ── */
+.stage{display:flex;justify-content:center;padding:10px 0 40px}
+.phone{
+  width:390px;height:844px;border-radius:46px;position:relative;overflow:hidden;
+  background:var(--bg,#03071C);border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 10px #1b1d26,0 0 0 11px rgba(255,255,255,.06);
+}
+.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:150px;height:30px;background:#0b0c12;border-radius:0 0 18px 18px;z-index:300;pointer-events:none}
+/* Se o viewport for realmente mobile, o frame ocupa a tela toda */
+@media(max-width:520px){
+  body{padding:0}
+  .pg-head,.note{display:none}
+  .phone{width:100vw;height:100dvh;border-radius:0;border:none;box-shadow:none}
+}
+
+.app{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);color:var(--fg);font-size:13px;transition:background .2s,color .2s}
+.app::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(at 12% 8%,rgba(59,130,246,.10) 0px,transparent 50%),radial-gradient(at 88% 92%,rgba(140,95,219,.10) 0px,transparent 50%)}
+.theme-azul.app::before{background:radial-gradient(at 12% 8%,rgba(59,130,246,.12) 0px,transparent 55%),radial-gradient(at 88% 92%,rgba(37,99,235,.08) 0px,transparent 55%)}
+.theme-mono.app::before{background:none}
+.theme-warm.app::before{background:radial-gradient(at 12% 8%,rgba(194,65,12,.10) 0px,transparent 55%),radial-gradient(at 88% 92%,rgba(154,52,18,.08) 0px,transparent 55%)}
+
+/* ── MOBILE TOPBAR ── */
+.mtop{position:relative;z-index:20;display:flex;align-items:center;gap:8px;padding:44px 14px 8px;border-bottom:1px solid var(--gb);background:var(--bg2)}
+.m-logo{font-family:'Nunito','Inter',sans-serif;font-weight:900;font-size:19px;letter-spacing:-.5px;color:var(--fg);display:flex;align-items:center;gap:6px}
+.m-logo i{font-size:17px;color:var(--ac)}
+.m-title{font-size:14.5px;font-weight:700;letter-spacing:-.3px;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-left:6px}
+.mtop-right{margin-left:auto;display:flex;align-items:center;gap:2px}
+.mibtn{width:40px;height:40px;border-radius:10px;background:none;border:none;color:var(--mu2);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;position:relative;transition:background .1s}
+.mibtn:active{background:var(--gl2);color:var(--fg)}
+.rdot{position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:50%;background:var(--urg);border:1.5px solid var(--bg2)}
+.mav{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--ac),var(--grad2));display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;margin-left:4px;flex-shrink:0}
+
+/* ── SCREENS ── */
+.mscreens{position:relative;z-index:5;flex:1;min-height:0;overflow:hidden}
+.mscreen{position:absolute;inset:0;overflow-y:auto;padding:14px 14px 88px;display:none;-webkit-overflow-scrolling:touch}
+.mscreen.on{display:block;animation:fi .15s ease-out}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.mscreen.detail{z-index:40;background:var(--bg);padding-top:52px;animation:slideIn .22s cubic-bezier(.32,.72,0,1)}
+@keyframes slideIn{from{transform:translateX(100%)}to{transform:none}}
+.detail-back{position:absolute;top:52px;left:8px;z-index:5;width:40px;height:40px;border-radius:10px;background:none;border:none;color:var(--mu2);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.detail-back:active{background:var(--gl2)}
+
+/* ── HOME ── */
+.greet{margin:2px 2px 14px}
+.greet .hi{font-size:20px;font-weight:800;letter-spacing:-.6px;color:var(--fg)}
+.greet .hi b{color:var(--ac)}
+.greet .sub{font-size:11.5px;color:var(--mu2);margin-top:2px}
+.kpi-scroll{display:flex;gap:8px;overflow-x:auto;margin:0 -14px;padding:0 14px 4px;scroll-snap-type:x mandatory}
+.kpi-scroll::-webkit-scrollbar{display:none}
+.kpi{flex:0 0 132px;scroll-snap-align:start;background:var(--glass);border:1px solid var(--gb);border-radius:12px;padding:11px 12px;box-shadow:var(--shadow-1)}
+.kpi .k{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu)}
+.kpi .v{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--fg);margin-top:3px;font-variant-numeric:tabular-nums}
+.kpi .d{font-size:9.5px;font-weight:600;margin-top:2px}
+.kpi .d.up{color:var(--ok)}.kpi .d.down{color:var(--urg)}.kpi .d.flat{color:var(--mu)}
+
+.sec{margin:16px 2px 6px;display:flex;align-items:center;gap:7px}
+.sec .t{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.sec .c{margin-left:auto;font-size:10.5px;color:var(--mu2);cursor:pointer;font-weight:600}
+
+/* ── DECISION CARD (mobile) ── */
+.dec{display:flex;gap:10px;padding:12px 12px;border-radius:12px;background:var(--glass);border:1px solid var(--gb);margin-bottom:8px;box-shadow:var(--shadow-1);cursor:pointer;position:relative;overflow:hidden;transition:border-color .1s,background .1s}
+.dec:active{background:var(--gl2)}
+.dec::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--sem,var(--ac))}
+.dec-ic{width:34px;height:34px;border-radius:9px;background:var(--card);border:1px solid var(--gb);display:flex;align-items:center;justify-content:center;color:var(--fg);flex-shrink:0;font-size:16px}
+.dec-main{flex:1;min-width:0}
+.dec-tit{font-size:12.5px;font-weight:600;color:var(--fg);line-height:1.35}
+.dec-sub{font-size:10.5px;color:var(--mu);margin-top:2px}
+.dec-tags{display:flex;align-items:center;gap:6px;margin-top:7px;flex-wrap:wrap}
+.dec-val{text-align:right;flex-shrink:0;margin-left:auto}
+.dec-val .v{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--fg);font-variant-numeric:tabular-nums}
+.dec-val .r{font-size:9.5px;color:var(--mu);margin-top:1px}
+.dec-acao{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:600;color:var(--mu2)}
+.dec-acao i{font-size:10px}
+
+.bdg{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:999px;font-size:9.5px;font-weight:700;white-space:nowrap}
+.bu{background:var(--udim);color:var(--urg)}
+.bw{background:var(--adm2);color:var(--att)}
+.bo{background:var(--odim);color:var(--ok)}
+.bi{background:var(--adim);color:var(--pill-on)}
+.bt{background:var(--glass);color:var(--mu2);border:1px solid var(--gb)}
+
+/* ── SALA: header + abas ── */
+.room-head{display:flex;align-items:center;gap:10px;padding:2px 2px 10px}
+.room-ic{width:38px;height:38px;border-radius:10px;background:var(--glass);border:1px solid var(--gb);display:flex;align-items:center;justify-content:center;color:var(--fg);font-size:18px;flex-shrink:0}
+.room-ttl{font-size:16px;font-weight:800;letter-spacing:-.4px;color:var(--fg);line-height:1.2}
+.room-desc{font-size:10.5px;color:var(--mu);margin-top:1px}
+.room-act{margin-left:auto;flex-shrink:0}
+.fab-mini{width:44px;height:44px;border-radius:12px;background:var(--ac);border:none;color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 14px var(--adim);transition:transform .1s}
+.fab-mini:active{transform:scale(.94)}
+
+.tabsc{display:flex;gap:6px;overflow-x:auto;margin:0 -14px;padding:2px 14px 10px;scrollbar-width:none}
+.tabsc::-webkit-scrollbar{display:none}
+.tabm{flex-shrink:0;display:inline-flex;align-items:center;gap:5px;padding:8px 13px;border-radius:9px;background:var(--glass);border:1px solid var(--gb);color:var(--mu2);font-size:12px;font-weight:600;cursor:pointer;transition:background .1s,color .1s,border-color .1s}
+.tabm:active{background:var(--gl2)}
+.tabm.on{background:var(--adim);border-color:var(--ac);color:var(--pill-on);font-weight:700}
+.tbdg{background:var(--adim);color:var(--pill-on);font-size:9.5px;font-weight:700;border-radius:999px;padding:0 5px;line-height:15px;min-width:15px;text-align:center}
+
+/* ── ABA CONTENT ── */
+.sec-label{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin:14px 2px 8px}
+.panel-m{background:var(--glass);border:1px solid var(--gb);border-radius:12px;padding:12px;box-shadow:var(--shadow-1)}
+.panel-m .ph{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--fg);margin-bottom:10px}
+.panel-m .ph .cnt{font-size:10px;color:var(--mu2);font-weight:500}
+
+/* Processos — lista vertical por etapa */
+.etapa-h{display:flex;align-items:center;gap:7px;padding:9px 10px;border-radius:9px;background:var(--glass);border:1px solid var(--gb);margin:10px 0 7px}
+.etapa-h .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.etapa-h .nm{font-size:12px;font-weight:700;color:var(--fg)}
+.etapa-h .n{margin-left:auto;font-size:10.5px;color:var(--mu2);font-weight:500}
+.proc{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:11px;background:var(--glass);border:1px solid var(--gb);margin-bottom:7px;cursor:pointer;box-shadow:var(--shadow-1)}
+.proc:active{background:var(--gl2)}
+.proc-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--ac),var(--grad2));display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;flex-shrink:0}
+.proc-main{flex:1;min-width:0}
+.proc-nome{font-size:12px;font-weight:600;color:var(--fg);line-height:1.3}
+.proc-sub{font-size:10px;color:var(--mu);margin-top:1px}
+.proc-right{text-align:right;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.proc-val{font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:700;color:var(--fg)}
+
+/* Faturas + transações */
+.fat{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:11px;background:var(--glass);border:1px solid var(--gb);margin-bottom:7px;cursor:pointer;box-shadow:var(--shadow-1)}
+.fat:active{background:var(--gl2)}
+.fat-ic{width:34px;height:34px;border-radius:9px;background:var(--card);border:1px solid var(--gb);display:flex;align-items:center;justify-content:center;color:var(--fg);flex-shrink:0;font-size:15px}
+.fat-main{flex:1;min-width:0}
+.fat-nome{font-size:12px;font-weight:600;color:var(--fg)}
+.fat-venc{font-size:10px;font-weight:600;margin-top:1px}
+.fat-val{text-align:right;flex-shrink:0}
+.fat-val .v{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--fg)}
+.fat-val .m{font-size:9px;color:var(--mu);margin-top:1px}
+.tx{display:flex;align-items:center;gap:9px;padding:9px 4px;border-bottom:1px solid var(--gb);cursor:pointer}
+.tx:last-child{border-bottom:none}
+.tx:active{background:var(--gl2)}
+.tx-ic{width:28px;height:28px;border-radius:8px;background:var(--card);border:1px solid var(--gb);display:flex;align-items:center;justify-content:center;color:var(--mu2);flex-shrink:0;font-size:13px}
+.tx-main{flex:1;min-width:0}
+.tx-nome{font-size:11.5px;font-weight:500;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx-cat{font-size:9.5px;color:var(--mu);display:inline-flex;align-items:center;gap:3px}
+.tx-cat.sug{color:var(--ac)}
+.tx-date{font-size:9.5px;color:var(--mu);flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.tx-val{font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:700;flex-shrink:0}
+.tx-val.cred{color:var(--ok)}.tx-val.deb{color:var(--fg)}.tx-val.pend{color:var(--att)}
+
+/* Contas */
+.saldo-cons{display:flex;gap:8px;margin-bottom:12px}
+.saldo-box{flex:1;background:var(--glass);border:1px solid var(--gb);border-radius:12px;padding:11px 12px;box-shadow:var(--shadow-1)}
+.saldo-box .lb{font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--mu)}
+.saldo-box .vv{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--fg);margin-top:3px;font-variant-numeric:tabular-nums}
+.saldo-box .vv.neg{color:var(--urg)}
+.saldo-box .sb{font-size:9px;color:var(--mu);margin-top:2px;line-height:1.4}
+.conta{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:11px;background:var(--glass);border:1px solid var(--gb);margin-bottom:7px;cursor:pointer;box-shadow:var(--shadow-1)}
+.conta:active{background:var(--gl2)}
+.conta-ic{width:34px;height:34px;border-radius:9px;background:var(--card);border:1px solid var(--gb);display:flex;align-items:center;justify-content:center;color:var(--fg);flex-shrink:0;font-size:15px}
+.conta-main{flex:1;min-width:0}
+.conta-nome{font-size:12px;font-weight:600;color:var(--fg)}
+.conta-ap{font-size:9.5px;color:var(--mu);margin-top:1px}
+.conta-saldo{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--fg);flex-shrink:0}
+.conta-st{display:flex;align-items:center;gap:5px;font-size:9px;color:var(--mu);margin-top:5px}
+.conta-st .d{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.lbar{height:5px;border-radius:3px;background:var(--card);margin-top:7px;overflow:hidden}
+.lbar .fill{height:100%;border-radius:3px}
+
+/* Rotinas */
+.pills{display:flex;flex-wrap:wrap;gap:5px}
+.binput{width:100%;padding:13px 14px;border-radius:11px;border:1px solid var(--gb);background:var(--card);color:var(--fg);font-size:13px;font-family:inherit;outline:none;margin-bottom:4px}
+.binput:focus{border-color:var(--ac)}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:600;padding:4px 10px;border-radius:8px;background:var(--card);border:1px solid var(--gb);color:var(--mu2);cursor:pointer;transition:all .1s;white-space:nowrap;min-height:24px;font-family:inherit}
+.pill:active{background:var(--gl2)}
+.pill.on{background:var(--adim);border-color:var(--ac);color:var(--pill-on);font-weight:700}
+.pill[disabled]{opacity:.45;cursor:not-allowed}
+.rot{display:flex;align-items:flex-start;gap:10px;padding:11px 12px;border-radius:11px;background:var(--glass);border:1px solid var(--gb);margin-bottom:7px;box-shadow:var(--shadow-1)}
+.rot-main{flex:1;min-width:0}
+.rot-name{font-size:12px;font-weight:600;color:var(--fg);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.rot-sub{font-size:10px;color:var(--mu);margin-top:2px}
+.rot-ultima{font-size:9.5px;color:var(--mu);margin-top:4px;line-height:1.4}
+.tgl{width:44px;height:26px;border-radius:13px;background:var(--card);border:1px solid var(--gb2);position:relative;cursor:pointer;flex-shrink:0;transition:background .15s}
+.tgl::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:var(--mu2);transition:transform .15s,background .15s}
+.tgl.on{background:var(--ac);border-color:var(--ac)}
+.tgl.on::after{transform:translateX(18px);background:#fff}
+.exec{display:flex;align-items:center;gap:9px;padding:9px 4px;border-bottom:1px solid var(--gb)}
+.exec:last-child{border-bottom:none}
+.exec-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.exec-quando{font-size:9.5px;color:var(--mu);flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.exec-main{flex:1;min-width:0}
+.exec-rotina{font-size:11.5px;font-weight:600;color:var(--fg)}
+.exec-oq{font-size:9.5px;color:var(--mu);margin-top:1px}
+
+/* Insights */
+.insight{display:flex;gap:9px;padding:10px 12px;border-radius:11px;background:var(--glass);border:1px solid var(--gb);margin-bottom:7px;box-shadow:var(--shadow-1)}
+.insight i{font-size:14px;color:var(--ac);margin-top:1px;flex-shrink:0}
+.insight-main{flex:1;min-width:0}
+.insight-tag{font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ac)}
+.insight-txt{font-size:11.5px;color:var(--fg);margin-top:3px;line-height:1.45}
+.insight-act{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:600;color:var(--ac);margin-top:6px;cursor:pointer}
+
+/* ── SALAS GRID ── */
+.salas-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.sala{display:flex;flex-direction:column;gap:8px;padding:13px 12px;border-radius:12px;background:var(--glass);border:1px solid var(--gb);box-shadow:var(--shadow-1);cursor:pointer;position:relative;transition:border-color .1s}
+.sala:active{background:var(--gl2)}
+.sala-ic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;flex-shrink:0}
+.sala-nome{font-size:12.5px;font-weight:700;color:var(--fg);line-height:1.2}
+.sala-sub{font-size:9.5px;color:var(--mu);line-height:1.35}
+.sala .nb{position:absolute;top:10px;right:10px;background:var(--att);color:#fff;font-size:9px;font-weight:700;border-radius:999px;padding:0 5px;line-height:15px;min-width:15px;text-align:center}
+
+/* ── ATIVIDADE ── */
+.feed-item{display:flex;gap:10px;padding:11px 12px;border-radius:11px;background:var(--glass);border:1px solid var(--gb);margin-bottom:7px;box-shadow:var(--shadow-1)}
+.feed-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.feed-main{flex:1;min-width:0}
+.feed-ttl{font-size:11.5px;font-weight:600;color:var(--fg)}
+.feed-sub{font-size:10px;color:var(--mu);margin-top:2px;line-height:1.4}
+.feed-when{font-size:9.5px;color:var(--mu);font-family:'JetBrains Mono',monospace;flex-shrink:0}
+
+/* ── CONTA ── */
+.profile{display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;background:var(--glass);border:1px solid var(--gb);margin-bottom:12px;box-shadow:var(--shadow-1)}
+.profile .av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--ac),var(--grad2));display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:700}
+.profile .nm{font-size:14px;font-weight:700;color:var(--fg)}
+.profile .em{font-size:10.5px;color:var(--mu);margin-top:1px}
+.mrow{display:flex;align-items:center;gap:11px;padding:12px 13px;border-radius:11px;background:var(--glass);border:1px solid var(--gb);margin-bottom:7px;cursor:pointer;box-shadow:var(--shadow-1)}
+.mrow:active{background:var(--gl2)}
+.mrow i{font-size:16px;color:var(--mu2);width:20px;text-align:center}
+.mrow .tt{font-size:12px;font-weight:600;color:var(--fg);flex:1}
+.mrow .ch{font-size:10.5px;color:var(--mu);font-family:'JetBrains Mono',monospace}
+.mrow .ar{color:var(--mu);font-size:12px}
+
+/* ── BOTTOM NAV ── */
+.mnav{position:relative;z-index:30;display:flex;border-top:1px solid var(--gb);background:var(--bg2);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
+.mni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:10px;background:none;border:none;color:var(--mu);font-size:9.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:color .1s;position:relative;min-height:44px}
+.mni i{font-size:21px;line-height:1}
+.mni.on{color:var(--pill-on)}
+.mni .nb{position:absolute;top:1px;right:calc(50% - 20px);background:var(--att);color:#fff;font-size:8.5px;font-weight:700;border-radius:999px;padding:0 4.5px;line-height:13px;min-width:13px;text-align:center;font-family:'JetBrains Mono',monospace}
+
+/* ── BOTTOM SHEET ── */
+.sheet-overlay{position:absolute;inset:0;z-index:60;background:rgba(3,7,28,.62);backdrop-filter:blur(10px);display:none;align-items:flex-end;animation:fi .18s ease-out}
+.sheet-overlay.open{display:flex}
+.sheet{width:100%;background:var(--bg2);border:1px solid var(--gb2);border-radius:20px 20px 0 0;padding:8px 16px calc(20px + env(safe-area-inset-bottom,0px));animation:slideUp .24s cubic-bezier(.32,.72,0,1);max-height:86%;overflow-y:auto}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:none}}
+.sheet-handle{width:36px;height:4px;background:var(--gb2);border-radius:2px;margin:0 auto 14px}
+.sheet .sh{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+.sheet .sh i{font-size:17px;color:var(--ac)}
+.sheet .sh .t{font-size:14px;font-weight:800;letter-spacing:-.3px;color:var(--fg);line-height:1.3}
+.sheet .sh .x{margin-left:auto;width:36px;height:36px;border-radius:9px;background:none;border:none;color:var(--mu2);font-size:16px;cursor:pointer}
+.sheet .sh .x:active{background:var(--gl2)}
+.sheet .big{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--fg);font-variant-numeric:tabular-nums;margin:2px 0 2px}
+.sheet .meta{font-size:10.5px;color:var(--mu);margin-bottom:12px}
+.sheet .motivo{padding:11px 12px;background:var(--card);border:1px solid var(--gb);border-radius:10px;font-size:11.5px;color:var(--mu2);line-height:1.55;margin-bottom:12px}
+.sheet .acts{display:flex;flex-direction:column;gap:8px}
+.btn-m{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:14px;border-radius:11px;font-size:13px;font-weight:700;cursor:pointer;border:1px solid transparent;font-family:inherit;transition:transform .1s}
+.btn-m:active{transform:scale(.98)}
+.btn-p{background:var(--ac);color:#fff}
+.btn-p:hover{background:var(--ac-hi)}
+.btn-s{background:var(--glass);border-color:var(--gb);color:var(--fg)}
+.btn-g{background:transparent;color:var(--mu2)}
+.btn-g:hover{color:var(--fg);background:var(--glass)}
+.btn-sm{padding:11px;font-size:11.5px;font-weight:600}
+.btn-inline{display:inline-flex;align-items:center;gap:6px;padding:10px 13px;border-radius:10px;font-size:11.5px;font-weight:600;cursor:pointer;border:1px solid transparent;font-family:inherit;flex-shrink:0;white-space:nowrap;transition:transform .1s,background .1s}
+.btn-inline:active{transform:scale(.97)}
+.btn-inline.btn-s{background:var(--glass);border-color:var(--gb);color:var(--fg)}
+
+/* ── DETAIL ── */
+.detail .dt-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.detail .dt-title{font-size:17px;font-weight:800;letter-spacing:-.4px;color:var(--fg);line-height:1.3;margin-bottom:4px}
+.detail .dt-big{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;color:var(--fg);font-variant-numeric:tabular-nums}
+.detail .dt-meta{font-size:11px;color:var(--mu);margin-top:3px}
+.det-sec{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin:14px 2px 7px}
+.det-box{padding:11px 12px;background:var(--glass);border:1px solid var(--gb);border-radius:11px;font-size:11.5px;color:var(--mu2);line-height:1.55}
+.step{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:10px;background:var(--glass);border:1px solid var(--gb);margin-bottom:6px;font-size:11.5px;color:var(--mu2)}
+.step.done{color:var(--mu)}
+.step.current{border-color:var(--ac);color:var(--fg);background:var(--adim)}
+.st-ic{width:22px;height:22px;border-radius:50%;background:var(--card);border:1px solid var(--gb);display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0}
+.step.done .st-ic{background:var(--odim);border-color:transparent;color:var(--ok)}
+.step.current .st-ic{background:var(--adim);border-color:var(--ac);color:var(--pill-on)}
+.artifact{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 11px;background:var(--glass);border:1px solid var(--gb);border-radius:9px;font-size:11px;color:var(--fg);margin-bottom:5px}
+.artifact .st{font-size:9.5px;font-weight:600;color:var(--mu)}
+.artifact .lnk{background:none;border:none;color:var(--ac);font-size:10.5px;font-weight:600;cursor:pointer;font-family:inherit}
+
+/* ── TOAST ── */
+.mtoast{position:absolute;left:50%;bottom:88px;transform:translateX(-50%) translateY(20px);z-index:80;background:var(--bg2);border:1px solid var(--gb2);border-radius:12px;padding:10px 16px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--fg);box-shadow:var(--shadow-1);opacity:0;pointer-events:none;transition:opacity .16s,transform .16s;white-space:nowrap}
+.mtoast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.mtoast i{color:var(--ok);font-size:14px}
+
+.empty{display:flex;flex-direction:column;align-items:center;gap:8px;padding:34px 20px;color:var(--mu);font-size:11.5px;text-align:center}
+.empty i{font-size:26px;color:var(--mu);opacity:.6}
+
+.foot{max-width:760px;margin:0 auto 40px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:10px;color:#6d7180}
+.foot .mono{font-family:'JetBrains Mono',monospace}
+</style>
+</head>
+<body>
+<div class="proto-nav" style="max-width:1200px;margin:14px auto 0;display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:11px;font-weight:600">
+  <span style="color:#6d7180;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:9.5px;margin-right:4px">Novo front</span>
+  <a href="wireframe.html" style="padding:5px 12px;border-radius:7px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#c9ccd6;text-decoration:none">Wireframe v3</a>
+  <a href="financeiro.html" style="padding:5px 12px;border-radius:7px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#c9ccd6;text-decoration:none">Sala Financeiro</a>
+  <a href="blu-clientes-opcoes.html" style="padding:5px 12px;border-radius:7px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#c9ccd6;text-decoration:none">Clientes</a>
+  <span style="padding:5px 12px;border-radius:7px;background:rgba(140,95,219,.18);border:1px solid #8C5FDB;color:#A78BEA">Mobile</span>
+</div>
+<div class="page">
+  <div class="pg-head">
+    <h1>Blu Mobile — novo front</h1>
+    <div class="sub" style="color:#8a8e9c">conceito de casca mobile · bottom nav · decisão em sheet · salas em grid</div>
+    <div class="spacer"></div>
+    <div class="theme-switch" id="themeSwitch">
+      <button class="ts ts-dark on" data-theme=""><span class="sw"></span>Dark</button>
+      <button class="ts ts-azul" data-theme="theme-azul"><span class="sw"></span>Azul</button>
+      <button class="ts ts-mono" data-theme="theme-mono"><span class="sw"></span>Mono</button>
+      <button class="ts ts-warm" data-theme="theme-warm"><span class="sw"></span>Warm</button>
+    </div>
+  </div>
+  <p class="note">Conceito mobile do novo front (blu_web v2) sobre a <b>spec da sala Financeiro (12/08)</b>. Mesma função, casca nova: a <b>sidebar vira bottom nav</b> (Início · Decisões · Salas · Atividade · Conta), as <b>10 salas viram grid</b> (1 toque, sem menu escondido), o <b>painel contextual 380px vira tela de detalhe</b> (slide-in com voltar), e a <b>decisão abre em bottom sheet</b> (raio 20px, spec: <span class="mono">rounded.lg</span>). Sem strip de métricas no topo (U9). Dados são os mesmos do wireframe Financeiro.</p>
+
+  <div class="stage">
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="app theme" id="app">
+        <!-- TOPBAR MOBILE -->
+        <header class="mtop">
+          <span class="m-logo"><i class="ph ph-chat-circle-dots"></i>blu</span>
+          <span class="m-title" id="mTitle">Início</span>
+          <div class="mtop-right">
+            <button class="mibtn" title="Buscar"><i class="ph ph-magnifying-glass"></i></button>
+            <button class="mibtn" title="Atividade" onclick="goNav('atividade')"><i class="ph ph-bell"></i><span class="rdot"></span></button>
+            <div class="mav">LC</div>
+          </div>
+        </header>
+
+        <!-- SCREENS -->
+        <main class="mscreens" id="mscreens">
+          <!-- HOME -->
+          <section class="mscreen on" id="scr-home"></section>
+          <!-- DECISÕES (tab dedicada da bottom nav) -->
+          <section class="mscreen" id="scr-decisoes"></section>
+          <!-- SALA (financeiro) -->
+          <section class="mscreen" id="scr-sala"></section>
+          <!-- SALAS GRID -->
+          <section class="mscreen" id="scr-salas"></section>
+          <!-- ATIVIDADE -->
+          <section class="mscreen" id="scr-atividade"></section>
+          <!-- CONTA -->
+          <section class="mscreen" id="scr-conta"></section>
+          <!-- DETALHE (slide-in) -->
+          <section class="mscreen detail" id="scr-detail">
+            <button class="detail-back" onclick="closeDetail()"><i class="ph ph-arrow-left"></i></button>
+            <div id="detailBody"></div>
+          </section>
+        </main>
+
+        <!-- BOTTOM NAV -->
+        <nav class="mnav">
+          <button class="mni on" data-nav="home" onclick="goNav('home')"><i class="ph ph-house"></i>Início</button>
+          <button class="mni" data-nav="decisoes" onclick="goNav('decisoes')"><i class="ph ph-check-circle"></i>Decisões<span class="nb" id="navDec" style="display:none">0</span></button>
+          <button class="mni" data-nav="salas" onclick="goNav('salas')"><i class="ph ph-squares-four"></i>Salas</button>
+          <button class="mni" data-nav="atividade" onclick="goNav('atividade')"><i class="ph ph-bell"></i>Atividade</button>
+          <button class="mni" data-nav="conta" onclick="goNav('conta')"><i class="ph ph-user-circle"></i>Conta</button>
+        </nav>
+
+        <!-- BOTTOM SHEET DECISÃO -->
+        <div class="sheet-overlay" id="sheetOverlay" onclick="if(event.target===this)closeSheet()">
+          <div class="sheet" id="sheetBody"></div>
+        </div>
+
+        <!-- TOAST -->
+        <div class="mtoast" id="mtoast"><i class="ph ph-check-circle"></i><span id="mtoastTxt"></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="foot">
+  <span>Base: spec tela Financeiro (docs.google.com · 12/08) + DESIGN.md (multi-tema) + <span class="mono">apps/blu_web</span></span>
+  <span>bottom nav 5 · sheet r20 · detalhe slide-in · touch ≥44px · safe-area · sem emoji</span>
+</div>
+
+<script>
+/* ═══════ DATA (mesmos seeds do wireframe Financeiro) ═══════ */
+const SEM = { verde:'ok', amarelo:'att', vermelho:'urg' };
+const SEM_COLOR = { verde:'var(--ok)', amarelo:'var(--att)', vermelho:'var(--urg)' };
+const SEM_BADGE = { verde:'bo', amarelo:'bw', vermelho:'bu' };
+const DEC_TIPO = {
+  boleto:{label:'Pagar boleto',icon:'ph-barcode'}, fatura:{label:'Pagar fatura',icon:'ph-credit-card'},
+  categorizar:{label:'Categorizar',icon:'ph-tag'}, conciliacao:{label:'Conciliação',icon:'ph-link-simple'},
+  alerta:{label:'Alerta',icon:'ph-warning'},
+};
+const DECISOES = [
+  { id:'d1', tipo:'boleto', sem:'vermelho', titulo:'Boleto energia — vence amanhã', valor:3850, venc:'vence amanhã', rec:'há 2h', origem:'Inter · conta PJ', acao:'Pagar agora', badge:'Urgente', motivo:'Boleto de energia de R$ 3.850 vence amanhã. O agente identificou saldo suficiente na conta PJ.' },
+  { id:'d2', tipo:'fatura', sem:'amarelo', titulo:'Fatura Nubank vence em 2 dias', valor:1240, venc:'vence 14/08', rec:'há 5h', origem:'Nubank · cartão', acao:'Pagar agora', badge:'Alerta', motivo:'O agente conciliou R$ 890 desta fatura com transações do mês. Pagar agora evita juros de 12,9% ao mês.' },
+  { id:'d3', tipo:'alerta', sem:'amarelo', titulo:'Gastos com restaurantes +30% vs mês passado', valor:1870, venc:'no mês', rec:'há 1d', origem:'Análise do agente', acao:'Revisar gastos', badge:'Alerta', motivo:'R$ 1.870 em restaurantes no mês — 30% acima do mês passado. O agente sugere revisar a categoria.' },
+  { id:'d4', tipo:'categorizar', sem:'verde', titulo:'Transação sem categoria · R$ 89,90', valor:89.9, venc:'—', rec:'há 3d', origem:'iFood · cartão', acao:'Categorizar', badge:'Parado há 3d', motivo:'Uma transação do iFood ainda está sem categoria. Categorizar ajuda no fechamento mensal.' },
+  { id:'d5', tipo:'conciliacao', sem:'verde', titulo:'3 boletos sem conciliação detectada', valor:2340, venc:'—', rec:'há 5d', origem:'Boletos', acao:'Revisar conciliação', badge:'Parado há 5d', motivo:'3 boletos pagos não casam com nenhuma fatura. Pode ser pagamento fora do ciclo ou conciliação pendente.' },
+  { id:'d6', tipo:'fatura', sem:'vermelho', titulo:'Fatura Inter atrasada 3d', valor:3850, venc:'3d atrasada', rec:'há 3d', origem:'Inter · cartão', acao:'Pagar agora', badge:'Atrasada', motivo:'Fatura do Inter está 3 dias atrasada. Pague hoje para evitar multa e juros.' },
+];
+const ETAPAS = [
+  { id:'coleta', label:'Coleta de dados', icon:'ph-database', dot:'#60a5fa' },
+  { id:'dados', label:'Aprovação dos dados', icon:'ph-seal-check', dot:'#fbbf24' },
+  { id:'relatorio', label:'Aprovação do relatório', icon:'ph-file-text', dot:'#8c5fdb' },
+  { id:'final', label:'Relatório final', icon:'ph-flag-checkered', dot:'#34d399' },
+];
+const ETAPA_IDX = { coleta:0, dados:1, relatorio:2, final:3 };
+const PROCESSOS = [
+  { id:'p1', nome:'Declaração de impostos — Trim 3', etapa:'coleta', badge:'Dados incompletos', sem:'amarelo', resp:'L', respName:'Lucas', periodo:'ago–set 2026', valor:null, hist:[{quando:'11/08',label:'Missão criada · agente começou a coleta'}] },
+  { id:'p2', nome:'Relatório custo-benefício — Campanha R&M', etapa:'coleta', badge:'Em coleta', sem:'verde', resp:'B', respName:'Bia', periodo:'Julho', valor:null, hist:[{quando:'10/08',label:'Missão criada pelo agente'}] },
+  { id:'p3', nome:'Fechamento mensal — Julho (DRE)', etapa:'dados', badge:'Aguardando aprovação', sem:'amarelo', resp:'L', respName:'Lucas', periodo:'Julho', valor:48200, hist:[{quando:'12/08',label:'Coleta concluída — dados prontos para aprovação'},{quando:'01/08',label:'Missão criada'}] },
+  { id:'p4', nome:'Relatório de fluxo de caixa — Julho', etapa:'relatorio', badge:'Aguardando aprovação', sem:'amarelo', resp:'L', respName:'Lucas', periodo:'Julho', valor:16300, hist:[{quando:'12/08',label:'Dados aprovados — relatório gerado'},{quando:'05/08',label:'Coleta concluída'}] },
+  { id:'p5', nome:'Nota Fiscal — Junho', etapa:'final', badge:'Entregue', sem:'verde', resp:'L', respName:'Lucas', periodo:'Junho', valor:12900, hist:[{quando:'30/07',label:'Relatório aprovado — processo finalizado'},{quando:'28/07',label:'NF emitida'}] },
+  { id:'p6', nome:'Balanço anual 2025', etapa:'final', badge:'Entregue', sem:'verde', resp:'L', respName:'Lucas', periodo:'2025', valor:null, hist:[{quando:'15/07',label:'Balanço entregue'}] },
+];
+const FATURAS = [
+  { id:'f1', nome:'Nubank', venc:'14/08', sem:'amarelo', vencLabel:'vence 14/08 · em 2d', total:1240, minimo:620, pago:350, restante:890, parcelavel:false, ciclosAnt:2, ciclosVal:310, conciliada:890, conciliadaEm:'12/08' },
+  { id:'f2', nome:'Inter', venc:'10/08', sem:'vermelho', vencLabel:'3d atrasada', total:3850, minimo:1925, pago:0, restante:3850, parcelavel:true, ciclosAnt:0, ciclosVal:0, conciliada:null },
+  { id:'f3', nome:'C6 Bank', venc:'18/08', sem:'verde', vencLabel:'vence 18/08 · em 6d', total:2100, minimo:1050, pago:0, restante:2100, parcelavel:true, ciclosAnt:0, ciclosVal:0, conciliada:null },
+];
+const CATEGORIAS = ['Alimentação','Combustível','Faturas','Saúde','Serviços','Assinaturas','Transporte','Lazer','Mercado'];
+const TX_CAT_ICON = { 'Serviços':'ph-briefcase','Alimentação':'ph-bowl-food','Combustível':'ph-gas-pump','Faturas':'ph-credit-card','Saúde':'ph-heart','Assinaturas':'ph-monitor-play','Transporte':'ph-car','Lazer':'ph-film-clapper','Mercado':'ph-shopping-cart' };
+const TRANSACOES = [
+  { id:'t1', nome:'Grupo Alvora · NF #1024', cat:'Serviços', tipo:'cred', valor:8400, data:'12/08', conta:'Nubank · PJ' },
+  { id:'t2', nome:'iFood', cat:null, tipo:'deb', valor:89.9, data:'12/08', conta:'Nubank · cartão', sugCat:'Alimentação' },
+  { id:'t3', nome:'Uber', cat:'Transporte', tipo:'deb', valor:180, data:'12/08', conta:'Inter · cartão', status:'pendente' },
+  { id:'t4', nome:'Nubank · Fatura', cat:'Faturas', tipo:'deb', valor:1240, data:'10/08', conta:'Nubank · cartão' },
+  { id:'t5', nome:'Studio Vetta · Recorrência', cat:'Serviços', tipo:'cred', valor:3200, data:'09/08', conta:'Inter · PJ' },
+  { id:'t6', nome:'Posto Shell', cat:'Combustível', tipo:'deb', valor:320, data:'08/08', conta:'Inter · cartão' },
+  { id:'t7', nome:'Coco Bambu', cat:'Alimentação', tipo:'deb', valor:214, data:'07/08', conta:'Nubank · cartão' },
+  { id:'t8', nome:'Casa Verde Ltda · NF #1019', cat:'Serviços', tipo:'cred', valor:1850, data:'05/08', conta:'Nubank · PJ' },
+  { id:'t9', nome:'Drogasil', cat:'Saúde', tipo:'deb', valor:489, data:'04/08', conta:'Inter · cartão' },
+  { id:'t10', nome:'Amazon Prime', cat:'Assinaturas', tipo:'deb', valor:29.9, data:'03/08', conta:'Nubank · cartão' },
+];
+const CONTAS = [
+  { id:'c1', tipo:'conta', nome:'Nubank', apelido:'Conta PJ · •• 8231', saldo:12450, status:'ok', statusLabel:'sincronizado', limite:null, uso:null },
+  { id:'c2', tipo:'conta', nome:'Inter', apelido:'Conta PJ · •• 4402', saldo:3210, status:'ok', statusLabel:'sincronizado', limite:null, uso:null },
+  { id:'c3', tipo:'cartao', nome:'Nubank', apelido:'Cartão · •• 5411', saldo:0, status:'ok', statusLabel:'sincronizado', limite:5000, uso:1900 },
+  { id:'c4', tipo:'cartao', nome:'Inter', apelido:'Cartão · •• 8890', saldo:0, status:'ok', statusLabel:'sincronizado', limite:8000, uso:4440 },
+  { id:'c5', tipo:'cartao', nome:'C6 Bank', apelido:'Cartão · •• 2104', saldo:0, status:'erro', statusLabel:'erro de sync', limite:10000, uso:8600 },
+];
+const ROTINAS = [
+  { id:'r1', nome:'Conciliação automática', gatilho:'Diário, 6h', freq:'Diário', hora:'06:00', dias:[], ultima:'hoje, 06:02', resultado:'2 faturas conciliadas', ativa:true },
+  { id:'r2', nome:'Revisão de gastos', gatilho:'Mensal, dia 1', freq:'Mensal', hora:'08:00', dias:[], ultima:'01/08', resultado:'6 categorias com variação >10%', ativa:true },
+  { id:'r3', nome:'Alerta de saldo baixo / limite próximo', gatilho:'Diário, 9h', freq:'Diário', hora:'09:00', dias:[], ultima:'hoje, 09:00', resultado:'Inter PJ abaixo de R$ 5.000', ativa:true },
+  { id:'r4', nome:'Cobrança de inadimplentes', gatilho:'Semanal, sexta 10h', freq:'Semanal', hora:'10:00', dias:['Sex'], ultima:'sex, 10:05', resultado:'2 de 5 cobranças enviadas', ativa:false },
+];
+const CATALOGO = [
+  { id:'cat1', nome:'Cobrança de inadimplentes', descricao:'Lista inadimplentes e prepara follow-up de cobrança.', gatilho:'Semanal', added:true },
+  { id:'cat2', nome:'Revisão de gastos', descricao:'Análise mensal por categoria com comparações.', gatilho:'Mensal', added:true },
+  { id:'cat3', nome:'Conciliação automática', descricao:'Cruza faturas × transações e marca conciliadas.', gatilho:'Diário', added:true },
+  { id:'cat4', nome:'Resumo financeiro mensal', descricao:'Relatório com comparações vs mês passado e ano anterior.', gatilho:'Mensal', added:true },
+  { id:'cat5', nome:'Alerta de saldo baixo / limite próximo', descricao:'Notifica quando caixa ou crédito cruza a faixa.', gatilho:'Diário', added:true },
+  { id:'cat6', nome:'Disparo de processos', descricao:'Cria missão de fechamento mensal no dia 28.', gatilho:'Mensal', added:false },
+];
+const EXECUCOES = [
+  { id:'e1', rotina:'Conciliação automática', quando:'hoje', oq:'2 faturas conciliadas · 6 transações casadas', dot:'var(--ok)' },
+  { id:'e2', rotina:'Alerta de saldo baixo', quando:'hoje', oq:'Inter PJ abaixo de R$ 5.000', dot:'var(--att)' },
+  { id:'e3', rotina:'Revisão de gastos', quando:'01/08', oq:'Relatório mensal gerado · 6 categorias em variação', dot:'var(--ok)' },
+  { id:'e4', rotina:'Cobrança de inadimplentes', quando:'sex', oq:'2 de 5 cobranças enviadas', dot:'var(--ok)' },
+];
+const INSIGHTS = [
+  { id:'i1', tag:'Decisões', txt:'Fatura Nubank vence em 2 dias — pagar agora?' },
+  { id:'i2', tag:'Processos', txt:'Fechamento do mês está na hora — criar missão?' },
+  { id:'i3', tag:'Gastos', txt:'Gastos com restaurantes +30% vs mês passado' },
+];
+
+/* Salas com cores de agente — tokens por tema (--ag-*) para adaptar a cada paleta */
+const SALAS = [
+  { s:'home', nome:'Início', icon:'ph-house', c:'var(--ac)', desc:'Visão geral' },
+  { s:'compras', nome:'Compras', icon:'ph-shopping-cart', c:'var(--ag-compras)', desc:'Cotações e fornecedores' },
+  { s:'financeiro', nome:'Financeiro', icon:'ph-wallet', c:'var(--ag-financeiro)', desc:'Decisões e dinheiro' },
+  { s:'agenda', nome:'Agenda', icon:'ph-calendar-dots', c:'var(--ag-agenda)', desc:'Compromissos e prazos' },
+  { s:'estrategia', nome:'Estratégia', icon:'ph-target', c:'var(--ag-estrategia)', desc:'Planejamento e metas' },
+  { s:'clientes', nome:'Clientes', icon:'ph-users-three', c:'var(--ag-clientes)', desc:'Relacionamento' },
+  { s:'biblioteca', nome:'Biblioteca', icon:'ph-books', c:'var(--ag-biblioteca)', desc:'Documentos e memória' },
+  { s:'atividade', nome:'Atividade', icon:'ph-bell', c:'var(--ag-atividade)', desc:'O que aconteceu' },
+  { s:'admin', nome:'Admin', icon:'ph-gear', c:'var(--ag-admin)', desc:'Salas e permissões' },
+  { s:'blu_ops', nome:'AgentOps', icon:'ph-monitor', c:'var(--ag-bluops)', desc:'Operação dos agentes' },
+];
+
+/* ═══════ STATE ═══════ */
+const state = { nav:'home', tab:'decisoes', decisoes:DECISOES.map(d=>({...d})), rotinas:ROTINAS.map(r=>({...r})), catalogo:CATALOGO.map(c=>({...c})) };
+const fmtBRL = n => 'R$ ' + n.toLocaleString('pt-BR', {minimumFractionDigits: n % 1 ? 2 : 0});
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $ = sel => document.querySelector(sel);
+const semColor = sem => SEM_COLOR[sem];
+
+/* ═══════ TOAST ═══════ */
+let toastTimer;
+function toast(msg){
+  $('#mtoastTxt').textContent = msg;
+  $('#mtoast').classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>$('#mtoast').classList.remove('show'), 2200);
+}
+
+/* ═══════ NAV ═══════ */
+const NAV_TITLE = { home:'Início', decisoes:'Decisões', salas:'Salas', atividade:'Atividade', conta:'Conta' };
+function goNav(nav){
+  state.nav = nav;
+  document.querySelectorAll('.mscreen').forEach(el=>el.classList.remove('on'));
+  document.querySelectorAll('.mni').forEach(b=>b.classList.toggle('on', b.dataset.nav===nav));
+  $('#mTitle').textContent = NAV_TITLE[nav];
+  if (nav==='home') $('#scr-home').classList.add('on');
+  else if (nav==='decisoes') $('#scr-decisoes').classList.add('on');
+  else if (nav==='salas') $('#scr-salas').classList.add('on');
+  else if (nav==='atividade') $('#scr-atividade').classList.add('on');
+  else if (nav==='conta') $('#scr-conta').classList.add('on');
+  render();
+  const el = document.querySelector('.mscreen.on'); if (el) el.scrollTop = 0;
+}
+function goSala(){
+  state.nav = 'sala';
+  document.querySelectorAll('.mscreen').forEach(el=>el.classList.remove('on'));
+  document.querySelectorAll('.mni').forEach(b=>b.classList.remove('on'));
+  $('#mTitle').textContent = 'Financeiro';
+  $('#scr-sala').classList.add('on');
+  render();
+  $('#scr-sala').scrollTop = 0;
+}
+
+/* ═══════ SHEET (decisão) ═══════ */
+let sheetDecId = null;
+function openSheet(id){
+  sheetDecId = id;
+  const d = state.decisoes.find(x=>x.id===id); if (!d) return;
+  $('#sheetBody').innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sh">
+      <i class="ph ${DEC_TIPO[d.tipo].icon}"></i>
+      <div class="t">${esc(d.titulo)}</div>
+      <button class="x" onclick="closeSheet()"><i class="ph ph-x"></i></button>
+    </div>
+    <div class="big">${fmtBRL(d.valor)}</div>
+    <div class="meta">${esc(d.origem)} · ${esc(d.venc)} · ${esc(d.rec)} · <span class="bdg ${SEM_BADGE[d.sem]}" style="margin-left:3px">${d.badge}</span></div>
+    <div class="motivo">${esc(d.motivo)}</div>
+    <div class="sec-label">Decidir</div>
+    <div class="acts">
+      <button class="btn-m btn-p" onclick="aprovarDecisao()"><i class="ph ph-check-circle"></i> Aprovar / Agendar</button>
+      <button class="btn-m btn-s" onclick="adiarDecisao()"><i class="ph ph-clock-clockwise"></i> Adiar 3 dias</button>
+      <button class="btn-m btn-g" onclick="verDetalheDecisao()"><i class="ph ph-arrow-right"></i> Ver detalhes</button>
+    </div>`;
+  $('#sheetOverlay').classList.add('open');
+}
+function closeSheet(){ $('#sheetOverlay').classList.remove('open'); }
+function aprovarDecisao(){
+  const id = sheetDecId;
+  state.decisoes = state.decisoes.filter(d=>d.id!==id);
+  closeSheet(); render(); updateBadges();
+  toast('Aprovado — agente executou');
+}
+function adiarDecisao(){ closeSheet(); toast('Adiado 3 dias'); }
+function verDetalheDecisao(){
+  const id = sheetDecId;
+  closeSheet(); openDetail({ mode:'decisao', id });
+}
+
+/* ═══════ DETAIL (slide-in master-detail mobile) ═══════ */
+let detailState = null;
+function openDetail(item){
+  detailState = item;
+  $('#scr-detail').classList.add('on');
+  const body = detailBody(item);
+  $('#detailBody').innerHTML = body;
+  $('#scr-detail').scrollTop = 0;
+}
+function closeDetail(){ $('#scr-detail').classList.remove('on'); detailState = null; }
+function detailBody(item){
+  if (item.mode==='decisao'){
+    const d = state.decisoes.find(x=>x.id===item.id); if (!d) return '';
+    return `
+      <div class="dt-head"><span class="bdg ${SEM_BADGE[d.sem]}">${d.badge}</span><span style="font-size:10px;color:var(--mu2);display:inline-flex;align-items:center;gap:4px"><i class="ph ${DEC_TIPO[d.tipo].icon}"></i> ${DEC_TIPO[d.tipo].label}</span></div>
+      <div class="dt-title">${esc(d.titulo)}</div>
+      <div class="dt-big">${fmtBRL(d.valor)}</div>
+      <div class="dt-meta">${esc(d.origem)} · ${esc(d.venc)} · ${esc(d.rec)}</div>
+      <div class="det-sec">O que o agente propôs</div>
+      <div class="det-box">${esc(d.motivo)}</div>
+      <div class="det-sec">Decidir</div>
+      <div class="acts">
+        <button class="btn-m btn-p" onclick="aprovarDetalhe()"><i class="ph ph-check-circle"></i> Aprovar / Agendar</button>
+        <button class="btn-m btn-s" onclick="toast('Adiado 3 dias')"><i class="ph ph-clock-clockwise"></i> Adiar 3 dias</button>
+        <button class="btn-m btn-g" onclick="toast('Sugestão enviada ao agente')"><i class="ph ph-chat-circle"></i> Falar com o agente</button>
+      </div>`;
+  }
+  if (item.mode==='processo'){
+    const p = PROCESSOS.find(x=>x.id===item.id); if (!p) return '';
+    const idx = ETAPA_IDX[p.etapa];
+    const steps = ETAPAS.map((et,i)=>`
+      <div class="step ${i<idx?'done':i===idx?'current':''}">
+        <span class="st-ic"><i class="ph ${i<idx?'ph-check':et.icon}"></i></span>
+        <span style="flex:1">${et.label}</span>
+        ${i===idx?`<span class="bdg ${SEM_BADGE[p.sem]}">${p.badge}</span>`:''}
+      </div>`).join('');
+    return `
+      <div class="dt-head"><span class="bdg ${SEM_BADGE[p.sem]}">${p.badge}</span><span class="mono" style="font-size:10px;color:var(--mu2);font-family:'JetBrains Mono',monospace">${esc(p.periodo)}</span></div>
+      <div class="dt-title">${esc(p.nome)}</div>
+      <div class="dt-meta">${esc(p.respName)} · agente Blu · criado ${p.hist[0].quando}</div>
+      <div class="det-sec">Etapas</div>
+      ${steps}
+      <div class="det-sec">Artefatos</div>
+      <div class="artifact"><span>Dados brutos</span><span><span class="st">${p.etapa==='coleta'?'incompleto':'coletado'}</span> <button class="lnk">Visualizar</button></span></div>
+      <div class="det-sec">Histórico</div>
+      ${p.hist.map(h=>`<div class="det-box" style="margin-bottom:5px;font-size:11px">${esc(h.quando)} · ${esc(h.label)}</div>`).join('')}`;
+  }
+  if (item.mode==='fatura'){
+    const f = FATURAS.find(x=>x.id===item.id); if (!f) return '';
+    return `
+      <div class="dt-title">Fatura ${esc(f.nome)}</div>
+      <div class="dt-big">${fmtBRL(f.total)}</div>
+      <div class="dt-meta" style="color:${semColor(f.sem)}">${esc(f.vencLabel)} · mín. ${fmtBRL(f.minimo)}</div>
+      <div class="det-sec">Situação</div>
+      <div class="det-box">
+        ${f.pago>0?`Pago: <b>${fmtBRL(f.pago)}</b> · restante ${fmtBRL(f.restante)}<br>`:''}
+        ${f.ciclosAnt>0?`+${f.ciclosAnt} ciclos anteriores · ${fmtBRL(f.ciclosVal)}<br>`:''}
+        ${f.conciliada!==null?`Conciliada: ${fmtBRL(f.conciliada)} em ${f.conciliadaEm}<br>`:''}
+        ${f.parcelavel?'Parcelável em até 12x':''}
+      </div>
+      <div class="det-sec">Decidir</div>
+      <div class="acts">
+        <button class="btn-m btn-p" onclick="toast('Pagamento enviado — caiu nas Decisões')"><i class="ph ph-check-circle"></i> Pagar agora</button>
+        <button class="btn-m btn-s" onclick="toast('Fatura adiada')"><i class="ph ph-clock-clockwise"></i> Adiar</button>
+      </div>`;
+  }
+  if (item.mode==='rotina'){
+    const r = state.rotinas.find(x=>x.id===item.id); if (!r) return '';
+    // Estado de edição pré-preenchido com a config atual da rotina
+    if (!editState || editState.id !== r.id){
+      editState = {
+        id: r.id,
+        gatilho: r.gatilhoTipo || 'agenda',
+        freq: r.freq==='Semanal' ? 'semanal' : r.freq==='Mensal' ? 'mensal' : 'diario',
+        dias: r.dias || [],
+        hora: r.hora || '08:00',
+        canal: r.canal || 'app',
+      };
+    }
+    const e = editState;
+    return `
+      <div class="dt-head"><span class="bdg ${r.ativa?'bo':'bw'}">${r.ativa?'ativa':'pausada'}</span><span style="font-size:10px;color:var(--mu2)">agente Blu</span></div>
+      <div class="dt-title">${esc(r.nome)}</div>
+      <div class="dt-meta">Última execução: ${esc(r.ultima)} · ${esc(r.resultado)}</div>
+      <div class="det-sec">Gatilho</div>
+      <div class="pills">${B_GATILHOS.map(g=>`<span class="pill ${e.gatilho===g[0]?'on':''}" onclick="eSet('gatilho','${g[0]}')"><i class="ph ${g[2]}"></i> ${g[1]}</span>`).join('')}</div>
+      <div class="det-sec">Frequência</div>
+      <div class="pills">${B_FREQS.map(f=>`<span class="pill ${e.freq===f[0]?'on':''}" onclick="eSet('freq','${f[0]}')">${f[1]}</span>`).join('')}</div>
+      ${e.freq==='semanal'?`
+      <div class="det-sec">Dias da semana</div>
+      <div class="pills">${B_DIAS.map(d=>`<span class="pill ${e.dias.includes(d)?'on':''}" onclick="eToggleDia('${d}')">${d}</span>`).join('')}</div>`:''}
+      <div class="det-sec">Horário</div>
+      <div class="pills">${B_HORAS.map(h=>`<span class="pill ${e.hora===h?'on':''}" onclick="eSet('hora','${h}')">${h}</span>`).join('')}</div>
+      <div class="det-sec">Canal de entrega</div>
+      <div class="pills">${B_CANAIS.map(c=>`<span class="pill ${e.canal===c[0]?'on':''}" onclick="eSet('canal','${c[0]}')"><i class="ph ${c[0]==='app'?'ph-bell':c[0]==='email'?'ph-envelope-simple':'ph-robot'}"></i> ${c[1]}</span>`).join('')}</div>
+      <div class="det-sec">Decidir</div>
+      <div class="acts">
+        <button class="btn-m btn-p" onclick="salvarRotina()"><i class="ph ph-check-circle"></i> Salvar alterações</button>
+        <button class="btn-m btn-s" onclick="toast('Rotina rodou agora')"><i class="ph ph-play"></i> Rodar agora</button>
+        <button class="btn-m btn-g" onclick="toggleRotina('${r.id}')">${r.ativa?'Pausar':'Retomar'}</button>
+      </div>`;
+  }
+  if (item.mode==='conta'){
+    const c = CONTAS.find(x=>x.id===item.id); if (!c) return '';
+    const uso = c.uso && c.limite ? Math.round(c.uso/c.limite*100) : 0;
+    return `
+      <div class="dt-title">${esc(c.nome)}</div>
+      <div class="dt-meta">${esc(c.apelido)}</div>
+      <div class="dt-big">${c.tipo==='conta'?fmtBRL(c.saldo):'—'}</div>
+      <div class="dt-meta" style="color:${c.status==='ok'?'var(--ok)':'var(--att)'}">${c.status==='ok'?'sincronizado':'erro de sync'}</div>
+      ${c.tipo==='cartao'?`
+        <div class="det-sec">Limite usado</div>
+        <div class="det-box"><b>${fmtBRL(c.uso)}</b> de ${fmtBRL(c.limite)} · ${uso}%</div>
+        <div class="lbar"><div class="fill" style="width:${uso}%;background:${uso>=80?'var(--urg)':uso>=60?'var(--att)':'var(--ok)'}"></div></div>`:''}
+      <div class="det-sec">Ações</div>
+      <div class="acts">
+        <button class="btn-m btn-s" onclick="toast('Reconectando conta…')"><i class="ph ph-arrow-counter-clockwise"></i> Reconectar</button>
+      </div>`;
+  }
+  if (item.mode==='execucao'){
+    const e = EXECUCOES.find(x=>x.id===item.id); if (!e) return '';
+    return `
+      <div class="dt-title">${esc(e.rotina)}</div>
+      <div class="dt-meta">${esc(e.quando)}</div>
+      <div class="det-sec">Resultado</div>
+      <div class="det-box">${esc(e.oq)}</div>
+      <div class="det-sec">Artefatos</div>
+      <div class="artifact"><span>Relatório gerado</span><button class="lnk">Visualizar</button></div>`;
+  }
+  return '';
+}
+function aprovarDetalhe(){
+  if (!detailState) return;
+  state.decisoes = state.decisoes.filter(d=>d.id!==detailState.id);
+  closeDetail(); render(); updateBadges();
+  toast('Aprovado — agente executou');
+}
+
+/* ═══════ RENDER ═══════ */
+function render(){
+  if (state.nav==='home') renderHome();
+  else if (state.nav==='decisoes') renderDecisoesScreen();
+  else if (state.nav==='salas') renderSalas();
+  else if (state.nav==='atividade') renderAtividade();
+  else if (state.nav==='conta') renderConta();
+  else if (state.nav==='sala') renderSala();
+  updateBadges();
+}
+
+/* ── HOME ── */
+function renderHome(){
+  const pend = state.decisoes.length;
+  const total = state.decisoes.reduce((s,d)=>s+d.valor,0);
+  const decCards = state.decisoes
+    .slice().sort((a,b)=>({vermelho:0,amarelo:1,verde:2})[a.sem]-({vermelho:0,amarelo:1,verde:2})[b.sem])
+    .slice(0,3)
+    .map(d=>decCard(d)).join('');
+  const hoje = new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+  $('#scr-home').innerHTML = `
+    <div class="greet">
+      <div class="hi">Bom dia, <b>Lucas</b></div>
+      <div class="sub">${hoje} · 2 execuções hoje · tudo sob controle</div>
+    </div>
+    <div class="kpi-scroll">
+      <div class="kpi"><div class="k">Decisões</div><div class="v">${pend}</div><div class="d ${pend?'up':'flat'}">${pend?fmtBRL(total)+' em jogo':'tudo resolvido'}</div></div>
+      <div class="kpi"><div class="k">Caixa</div><div class="v">R$ 15,7K</div><div class="d down">↓ 18% vs mês</div></div>
+      <div class="kpi"><div class="k">Margem</div><div class="v">34%</div><div class="d up">↑ 2pp</div></div>
+      <div class="kpi"><div class="k">Runway</div><div class="v">4,2m</div><div class="d flat">burn 1.060/d</div></div>
+    </div>
+    <div class="sec"><span class="t">Decidir agora</span><span class="c" onclick="goNav('decisoes')">Ver todas</span></div>
+    ${pend ? decCards : '<div class="empty" style="padding:22px"><i class="ph ph-check-circle"></i>Nenhuma decisão pendente — tudo aprovado e executado.</div>'}
+    <div class="sec"><span class="t">Insights do agente</span></div>
+    ${INSIGHTS.slice(0,2).map(ins=>`
+      <div class="insight">
+        <i class="ph ph-lightbulb"></i>
+        <div class="insight-main">
+          <div class="insight-tag">${ins.tag}</div>
+          <div class="insight-txt">${ins.txt}</div>
+          <div class="insight-act" onclick="goNav('salas')">Abrir sala <i class="ph ph-arrow-right"></i></div>
+        </div>
+      </div>`).join('')}
+    <div class="sec"><span class="t">Salas mais usadas</span></div>
+    <div class="salas-grid">
+      ${SALAS.slice(1,5).map(s=>salaCard(s)).join('')}
+    </div>`;
+}
+
+/* ── DECISÕES (tab dedicada) ── */
+function renderDecisoesScreen(){
+  const pend = state.decisoes;
+  const total = pend.reduce((s,d)=>s+d.valor,0);
+  $('#scr-decisoes').innerHTML = `
+    <div class="room-head">
+      <div class="room-ic"><i class="ph ph-check-circle"></i></div>
+      <div><div class="room-ttl">Decisões</div><div class="room-desc">${pend.length} pendentes · ${fmtBRL(total)} em jogo</div></div>
+      <div class="room-act"><button class="fab-mini" onclick="toast('Nova missão criada')"><i class="ph ph-plus"></i></button></div>
+    </div>
+    ${pend.length ? pend.slice().sort((a,b)=>({vermelho:0,amarelo:1,verde:2})[a.sem]-({vermelho:0,amarelo:1,verde:2})[b.sem]).map(decCard).join('') : '<div class="empty" style="padding:40px 20px"><i class="ph ph-check-circle"></i>Nenhuma decisão pendente</div>'}`;
+}
+
+/* ── SALA (Financeiro) ── */
+function renderSala(){
+  const tab = state.tab;
+  $('#scr-sala').innerHTML = `
+    <div class="room-head">
+      <div class="room-ic"><i class="ph ph-wallet"></i></div>
+      <div><div class="room-ttl">Financeiro</div><div class="room-desc">Decisões, processos e dinheiro</div></div>
+      <div class="room-act"><button class="fab-mini" onclick="${tab==='rotinas'?'openBuilder()':`toast('Nova missão criada')`}" title="${tab==='rotinas'?'Nova rotina':'Nova missão'}"><i class="ph ph-plus"></i></button></div>
+    </div>
+    <div class="tabsc" id="tabsc">
+      <button class="tabm ${tab==='decisoes'?'on':''}" onclick="setTab('decisoes')">Decisões ${state.decisoes.length?`<span class="tbdg">${state.decisoes.length}</span>`:''}</button>
+      <button class="tabm ${tab==='processos'?'on':''}" onclick="setTab('processos')">Processos <span class="tbdg">${PROCESSOS.filter(p=>p.sem!=='verde').length}</span></button>
+      <button class="tabm ${tab==='fluxo'?'on':''}" onclick="setTab('fluxo')">Fluxo</button>
+      <button class="tabm ${tab==='contas'?'on':''}" onclick="setTab('contas')">Contas</button>
+      <button class="tabm ${tab==='rotinas'?'on':''}" onclick="setTab('rotinas')">Rotinas</button>
+    </div>
+    <div id="tabBody"></div>`;
+  renderTab();
+}
+function setTab(t){ state.tab = t; renderSala(); const el = $('#scr-sala'); el.scrollTop = 0; }
+function renderTab(){
+  const t = state.tab;
+  const body = $('#tabBody');
+  if (t==='decisoes') body.innerHTML = salaDecisoes();
+  else if (t==='processos') body.innerHTML = salaProcessos();
+  else if (t==='fluxo') body.innerHTML = salaFluxo();
+  else if (t==='contas') body.innerHTML = salaContas();
+  else if (t==='rotinas') body.innerHTML = salaRotinas();
+}
+
+function decCard(d){
+  return `
+    <div class="dec" style="--sem:${semColor(d.sem)}" onclick="openSheet('${d.id}')">
+      <div class="dec-ic"><i class="ph ${DEC_TIPO[d.tipo].icon}"></i></div>
+      <div class="dec-main">
+        <div class="dec-tit">${esc(d.titulo)}</div>
+        <div class="dec-sub">${esc(d.origem)} · ${esc(d.rec)}</div>
+        <div class="dec-tags">
+          <span class="bdg ${SEM_BADGE[d.sem]}">${d.badge}</span>
+          <span class="dec-acao"><i class="ph ph-bolt"></i> ${esc(d.acao)}</span>
+        </div>
+      </div>
+      <div class="dec-val"><div class="v">${fmtBRL(d.valor)}</div><div class="r">${esc(d.venc)}</div></div>
+    </div>`;
+}
+
+function salaDecisoes(){
+  const pend = state.decisoes;
+  const total = pend.reduce((s,d)=>s+d.valor,0);
+  return `
+    <div class="panel-m">
+      <div class="ph"><i class="ph ph-bolt" style="color:var(--ac)"></i> Decidir agora <span class="cnt">· ${pend.length} pendentes · ${fmtBRL(total)} em jogo</span></div>
+      ${pend.length ? pend.slice().sort((a,b)=>({vermelho:0,amarelo:1,verde:2})[a.sem]-({vermelho:0,amarelo:1,verde:2})[b.sem]).map(decCard).join('') : '<div class="empty" style="padding:26px"><i class="ph ph-check-circle"></i>Nenhuma decisão pendente</div>'}
+    </div>`;
+}
+
+function salaProcessos(){
+  const grupos = ETAPAS.map(et=>({ et, items:PROCESSOS.filter(p=>p.etapa===et.id) })).filter(g=>g.items.length);
+  return `
+    ${grupos.map(g=>`
+      <div class="etapa-h"><span class="dot" style="background:${g.et.dot}"></span><span class="nm">${g.et.label}</span><span class="n">${g.items.length}</span></div>
+      ${g.items.map(p=>`
+        <div class="proc" onclick="openDetail({mode:'processo',id:'${p.id}'})">
+          <div class="proc-av">${p.resp}</div>
+          <div class="proc-main">
+            <div class="proc-nome">${esc(p.nome)}</div>
+            <div class="proc-sub">${esc(p.periodo)} · ${esc(p.respName)}</div>
+          </div>
+          <div class="proc-right"><span class="bdg ${SEM_BADGE[p.sem]}">${p.badge}</span>${p.valor?`<span class="proc-val">${fmtBRL(p.valor)}</span>`:''}</div>
+        </div>`).join('')}
+    `).join('')}`;
+}
+
+function salaFluxo(){
+  const faturas = FATURAS.map(f=>`
+    <div class="fat" onclick="openDetail({mode:'fatura',id:'${f.id}'})">
+      <div class="fat-ic"><i class="ph ph-credit-card"></i></div>
+      <div class="fat-main">
+        <div class="fat-nome">Fatura ${esc(f.nome)}</div>
+        <div class="fat-venc" style="color:${semColor(f.sem)}">${esc(f.vencLabel)}</div>
+      </div>
+      <div class="fat-val"><div class="v">${fmtBRL(f.total)}</div><div class="m">mín. ${fmtBRL(f.minimo)}</div></div>
+    </div>`).join('');
+  const txs = TRANSACOES.map(t=>{
+    const icon = t.cat ? (TX_CAT_ICON[t.cat]||'ph-circle') : 'ph-circle-dashed';
+    return `
+    <div class="tx" onclick="toast('Transação ${esc(t.nome)}')">
+      <span class="tx-ic"><i class="ph ${icon}"></i></span>
+      <div class="tx-main">
+        <div class="tx-nome">${esc(t.nome)}</div>
+        <div class="tx-cat ${t.cat?'':'sug'}">${t.cat?esc(t.cat):(t.sugCat?'<i class="ph ph-sparkle"></i> '+esc(t.sugCat)+'?':'<i class="ph ph-plus"></i> categoria')}</div>
+      </div>
+      <span class="tx-date">${t.data}</span>
+      <span class="tx-val ${t.tipo==='cred'?'cred':t.status==='pendente'?'pend':'deb'}">${t.tipo==='cred'?'+':'−'} ${fmtBRL(Math.abs(t.valor))}${t.status==='pendente'?' · pend.':''}</span>
+    </div>`;
+  }).join('');
+  return `
+    <div class="sec-label" style="margin-top:2px">Contas a pagar</div>
+    ${faturas}
+    <div class="sec-label">Histórico</div>
+    <div class="panel-m" style="padding:6px 12px">${txs}</div>`;
+}
+
+function salaContas(){
+  const caixa = CONTAS.filter(c=>c.tipo==='conta').reduce((s,c)=>s+c.saldo,0);
+  const uso = CONTAS.filter(c=>c.tipo==='cartao').reduce((s,c)=>s+c.uso,0);
+  const lim = CONTAS.filter(c=>c.tipo==='cartao').reduce((s,c)=>s+c.limite,0);
+  const pct = Math.round(uso/lim*100);
+  const cards = CONTAS.map(c=>{
+    const barColor = c.uso ? (c.uso/c.limite>=.8?'var(--urg)':c.uso/c.limite>=.6?'var(--att)':'var(--ok)') : '';
+    return `
+    <div class="conta" onclick="openDetail({mode:'conta',id:'${c.id}'})">
+      <div class="conta-ic"><i class="ph ${c.tipo==='conta'?'ph-bank':'ph-credit-card'}"></i></div>
+      <div class="conta-main">
+        <div class="conta-nome">${esc(c.nome)}</div>
+        <div class="conta-ap">${esc(c.apelido)}</div>
+        <div class="conta-st"><span class="d" style="background:${c.status==='ok'?'var(--ok)':'var(--att)'}"></span><span>${c.status==='ok'?'sincronizado':esc(c.statusLabel)}</span><span style="margin-left:auto;font-size:9px">${c.tipo==='cartao'?'limite '+(c.limite/1000).toFixed(0)+'K':'atualizado há 2h'}</span></div>
+        ${c.tipo==='cartao'?`<div class="lbar"><div class="fill" style="width:${Math.round(c.uso/c.limite*100)}%;background:${barColor}"></div></div>`:''}
+      </div>
+      <div class="conta-saldo">${c.tipo==='conta'?fmtBRL(c.saldo):'—'}</div>
+    </div>`;
+  }).join('');
+  return `
+    <div class="saldo-cons">
+      <div class="saldo-box"><div class="lb">Caixa consolidado</div><div class="vv">${fmtBRL(caixa)}</div><div class="sb">soma das contas PJ · ↓18% vs mês passado</div></div>
+      <div class="saldo-box"><div class="lb">Crédito em uso</div><div class="vv ${pct>80?'neg':''}">${fmtBRL(uso)}</div><div class="sb">de ${fmtBRL(lim)} de limite · ${pct}% usado</div></div>
+    </div>
+    ${cards}
+    <button class="btn-m btn-s" onclick="toast('Open Finance — conexão iniciada')"><i class="ph ph-plus"></i> Conectar banco (Open Finance)</button>`;
+}
+
+function salaRotinas(){
+  const sugs = state.catalogo.filter(c=>!c.added);
+  const rows = state.rotinas.map(r=>`
+    <div class="rot" onclick="openDetail({mode:'rotina',id:'${r.id}'})">
+      <div class="rot-main">
+        <div class="rot-name">${esc(r.nome)} <span class="bdg ${r.ativa?'bo':'bw'}">${r.ativa?'ativa':'pausada'}</span></div>
+        <div class="pills" style="margin-top:6px">
+          <span class="pill"><i class="ph ph-clock"></i> ${r.freq}</span>
+          ${r.dias.length?`<span class="pill">${r.dias.join(' · ')}</span>`:''}
+          <span class="pill"><i class="ph ph-alarm"></i> ${r.hora}</span>
+          <span class="pill"><i class="ph ${r.canal==='email'?'ph-envelope-simple':r.canal==='interno'?'ph-robot':'ph-bell'}"></i> ${r.canal==='email'?'E-mail':r.canal==='interno'?'Interno':'App'}</span>
+          <span class="pill bt"><i class="ph ph-sparkle"></i> agente Blu</span>
+        </div>
+        <div class="rot-ultima">Última execução: ${esc(r.ultima)} · ${esc(r.resultado)}</div>
+      </div>
+      <div class="tgl ${r.ativa?'on':''}" onclick="event.stopPropagation();toggleRotina('${r.id}')"></div>
+    </div>`).join('');
+  const execs = EXECUCOES.map(e=>`
+    <div class="exec" onclick="openDetail({mode:'execucao',id:'${e.id}'})" style="cursor:pointer">
+      <span class="exec-dot" style="background:${e.dot}"></span>
+      <span class="exec-quando">${e.quando}</span>
+      <div class="exec-main"><div class="exec-rotina">${esc(e.rotina)}</div><div class="exec-oq">${esc(e.oq)}</div></div>
+    </div>`).join('');
+  return `
+    <div class="sec-label" style="margin-top:2px">Sugestões prontas</div>
+    ${sugs.length ? sugs.map(c=>`
+      <div class="rot" style="align-items:center">
+        <div class="rot-main">
+          <div class="rot-name">${esc(c.nome)}</div>
+          <div class="rot-sub" style="margin-top:3px">${esc(c.descricao)}</div>
+          <div class="pills" style="margin-top:6px"><span class="pill"><i class="ph ph-clock"></i> ${c.gatilho}</span></div>
+        </div>
+        <button class="btn-inline btn-s" onclick="addCatalog('${c.id}')"><i class="ph ph-plus"></i> Adicionar</button>
+      </div>`).join('') : '<div class="empty" style="padding:18px"><i class="ph ph-check-circle"></i>Todas as sugestões adicionadas</div>'}
+    <div class="sec-label">Configuradas</div>
+    ${rows}
+    <div class="sec-label">Feed de execuções</div>
+    <div class="panel-m" style="padding:6px 12px">${execs}</div>`;
+}
+function addCatalog(id){
+  const c = state.catalogo.find(x=>x.id===id); if (!c) return;
+  c.added = true;
+  state.rotinas.push({ id:'r'+Date.now(), nome:c.nome, gatilho:c.gatilho, freq:c.gatilho, hora:'08:00', dias:[], ultima:'—', resultado:'aguardando primeira execução', ativa:true });
+  render(); toast('Rotina adicionada e ativada');
+}
+
+/* ── Builder de rotina (bottom sheet com pills de config) ── */
+const bState = { gatilho:'agenda', freq:'diario', dias:['Seg'], hora:'08:00', canal:'app', nome:'' };
+const B_GATILHOS = [['manual','Manual','ph-hand'],['agenda','Agenda','ph-calendar-dots'],['evento','Evento','ph-lightning'],['metrica','Métrica','ph-chart-line']];
+const B_FREQS = [['diario','Diário'],['semanal','Semanal'],['mensal','Mensal']];
+const B_DIAS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const B_HORAS = ['06:00','08:00','09:00','12:00','18:00','22:00'];
+const B_CANAIS = [['app','App'],['email','E-mail'],['interno','Interno']];
+function openBuilder(){
+  $('#sheetBody').innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sh"><i class="ph ph-plus-circle"></i><div class="t">Nova rotina</div><button class="x" onclick="closeSheet()"><i class="ph ph-x"></i></button></div>
+    <div class="sec-label">O que a rotina faz</div>
+    <input class="binput" id="bNome" placeholder="Ex.: Conciliação automática" value="${esc(bState.nome)}" oninput="bState.nome=this.value">
+    <div class="sec-label">Gatilho</div>
+    <div class="pills">${B_GATILHOS.map(g=>`<span class="pill ${bState.gatilho===g[0]?'on':''}" onclick="bSet('gatilho','${g[0]}')"><i class="ph ${g[2]}"></i> ${g[1]}</span>`).join('')}</div>
+    <div class="sec-label">Frequência</div>
+    <div class="pills">${B_FREQS.map(f=>`<span class="pill ${bState.freq===f[0]?'on':''}" onclick="bSet('freq','${f[0]}')">${f[1]}</span>`).join('')}</div>
+    ${bState.freq==='semanal'?`
+    <div class="sec-label">Dias da semana</div>
+    <div class="pills">${B_DIAS.map(d=>`<span class="pill ${bState.dias.includes(d)?'on':''}" onclick="bToggleDia('${d}')">${d}</span>`).join('')}</div>`:''}
+    <div class="sec-label">Horário</div>
+    <div class="pills">${B_HORAS.map(h=>`<span class="pill ${bState.hora===h?'on':''}" onclick="bSet('hora','${h}')">${h}</span>`).join('')}</div>
+    <div class="sec-label">Canal de entrega</div>
+    <div class="pills">${B_CANAIS.map(c=>`<span class="pill ${bState.canal===c[0]?'on':''}" onclick="bSet('canal','${c[0]}')"><i class="ph ${c[0]==='app'?'ph-bell':c[0]==='email'?'ph-envelope-simple':'ph-robot'}"></i> ${c[1]}</span>`).join('')}</div>
+    <div style="height:10px"></div>
+    <button class="btn-m btn-p" onclick="criarRotina()"><i class="ph ph-check-circle"></i> Criar rotina</button>`;
+  $('#sheetOverlay').classList.add('open');
+}
+function bSet(k,v){ bState[k]=v; openBuilder(); }
+function bToggleDia(d){
+  bState.dias = bState.dias.includes(d) ? bState.dias.filter(x=>x!==d) : [...bState.dias, d];
+  openBuilder();
+}
+function criarRotina(){
+  const nome = bState.nome.trim() || 'Nova rotina';
+  const freqLabel = {diario:'Diário',semanal:'Semanal',mensal:'Mensal'}[bState.freq];
+  state.rotinas.push({ id:'r'+Date.now(), nome, gatilho:`${freqLabel}, ${bState.hora}`, freq:freqLabel, hora:bState.hora, dias:bState.freq==='semanal'?bState.dias:[], ultima:'—', resultado:'aguardando primeira execução', ativa:true });
+  closeSheet();
+  bState.nome = '';
+  render(); toast('Rotina criada e ativada');
+}
+
+/* ── Edição de rotina no detalhe ── */
+let editState = null;
+function renderDetail(){
+  if (!detailState) return;
+  $('#detailBody').innerHTML = detailBody(detailState);
+}
+function eSet(k, v){
+  if (!editState) return;
+  editState[k] = v;
+  renderDetail();
+}
+function eToggleDia(d){
+  if (!editState) return;
+  editState.dias = editState.dias.includes(d) ? editState.dias.filter(x=>x!==d) : [...editState.dias, d];
+  renderDetail();
+}
+function salvarRotina(){
+  if (!detailState || detailState.mode !== 'rotina') return;
+  const r = state.rotinas.find(x=>x.id === detailState.id); if (!r) return;
+  const e = editState;
+  const freqLabel = { diario:'Diário', semanal:'Semanal', mensal:'Mensal' }[e.freq];
+  r.freq = freqLabel;
+  r.hora = e.hora;
+  r.dias = e.freq === 'semanal' ? e.dias.slice() : [];
+  r.gatilho = `${freqLabel}, ${e.hora}`;
+  r.gatilhoTipo = e.gatilho;
+  r.canal = e.canal;
+  closeDetail();
+  render();
+  toast('Configuração salva');
+}
+
+function toggleRotina(id){
+  const r = state.rotinas.find(x=>x.id===id); if (!r) return;
+  r.ativa = !r.ativa;
+  render(); 
+  toast(r.ativa ? 'Rotina retomada' : 'Rotina pausada');
+}
+
+/* ── SALAS GRID ── */
+function salaCard(s){
+  return `
+    <div class="sala" onclick="${s.s==='financeiro'?'goSala()':s.s==='home'?"goNav('home')":`toast('Sala ${s.nome} — em construção')`}">
+      <div class="sala-ic" style="background:${s.c}"><i class="ph ${s.icon}"></i></div>
+      <div><div class="sala-nome">${s.nome}</div><div class="sala-sub">${s.desc}</div></div>
+      ${s.s==='financeiro' && state.decisoes.length ? `<span class="nb">${state.decisoes.length}</span>`:''}
+    </div>`;
+}
+function renderSalas(){
+  $('#scr-salas').innerHTML = `
+    <div class="sec" style="margin:2px 2px 12px"><span class="t">Escritório</span><span class="c" style="font-weight:400">10 salas · agentes dedicados</span></div>
+    <div class="salas-grid">${SALAS.map(salaCard).join('')}</div>`;
+}
+
+/* ── ATIVIDADE ── */
+function renderAtividade(){
+  const feed = [
+    { dot:'var(--ok)', ttl:'Conciliação automática executou', sub:'2 faturas conciliadas · 6 transações casadas', when:'hoje 06:02', mode:'execucao', id:'e1' },
+    { dot:'var(--att)', ttl:'Alerta de saldo baixo', sub:'Inter PJ abaixo de R$ 5.000', when:'hoje 09:00', mode:'execucao', id:'e2' },
+    { dot:'var(--ac)', ttl:'Boleto energia detectado', sub:'Agente preparou decisão de pagamento · R$ 3.850', when:'há 2h', mode:'decisao', id:'d1' },
+    { dot:'var(--ok)', ttl:'Revisão de gastos gerou relatório', sub:'6 categorias com variação >10% · Julho', when:'01/08', mode:'execucao', id:'e3' },
+    { dot:'var(--ac)', ttl:'Fechamento mensal aguarda aprovação', sub:'Dados prontos · etapa 2 de 4', when:'12/08', mode:'processo', id:'p3' },
+  ];
+  $('#scr-atividade').innerHTML = `
+    <div class="sec" style="margin:2px 2px 12px"><span class="t">Atividade</span><span class="c" style="font-weight:400">agentes e rotinas</span></div>
+    ${feed.map(f=>`
+      <div class="feed-item" onclick="${f.mode==='decisao'&&!state.decisoes.find(d=>d.id===f.id)?`toast('Decisão já resolvida')`:f.mode==='decisao'?`openSheet('${f.id}')`:`openDetail({mode:'${f.mode}',id:'${f.id}'})`}">
+        <span class="feed-dot" style="background:${f.dot}"></span>
+        <div class="feed-main"><div class="feed-ttl">${f.ttl}</div><div class="feed-sub">${f.sub}</div></div>
+        <span class="feed-when">${f.when}</span>
+      </div>`).join('')}`;
+}
+
+/* ── CONTA ── */
+function renderConta(){
+  $('#scr-conta').innerHTML = `
+    <div class="profile">
+      <div class="av">LC</div>
+      <div><div class="nm">Lucas Cid</div><div class="em">lucas@deepblue.systems · Dono</div></div>
+    </div>
+    <div class="mrow" onclick="toast('Salas e permissões (Admin)')"><i class="ph ph-squares-four"></i><span class="tt">Salas e permissões</span><span class="ar"><i class="ph ph-chevron-right"></i></span></div>
+    <div class="mrow" onclick="toast('Operação dos agentes')"><i class="ph ph-monitor"></i><span class="tt">AgentOps</span><span class="ar"><i class="ph ph-chevron-right"></i></span></div>
+    <div class="mrow" onclick="toast('Tema alternado')"><i class="ph ph-palette"></i><span class="tt">Tema</span><span class="ch" id="contaTema">Dark</span><span class="ar"><i class="ph ph-chevron-right"></i></span></div>
+    <div class="mrow" onclick="toast('Preferências salvas')"><i class="ph ph-sliders"></i><span class="tt">Preferências</span><span class="ar"><i class="ph ph-chevron-right"></i></span></div>
+    <div class="mrow" onclick="toast('Você saiu da conta')" style="margin-top:14px"><i class="ph ph-sign-out" style="color:var(--urg)"></i><span class="tt" style="color:var(--urg)">Sair</span><span class="ar"><i class="ph ph-chevron-right"></i></span></div>`;
+}
+
+/* ═══════ BADGES ═══════ */
+function updateBadges(){
+  const n = state.decisoes.length;
+  const b = $('#navDec');
+  if (n>0){ b.style.display=''; b.textContent = n; } else { b.style.display='none'; }
+}
+
+/* ═══════ THEME ═══════ */
+document.querySelectorAll('#themeSwitch .ts').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#themeSwitch .ts').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    const t = btn.dataset.theme;
+    $('#app').className = 'app theme' + (t ? ' '+t : '');
+    const label = btn.textContent.trim();
+    const ct = $('#contaTema'); if (ct) ct.textContent = label;
+  });
+});
+
+/* ═══════ BOOT ═══════ */
+render();
+
+/* Deep links por hash — facilita screenshots e navegação (#decisoes, #sala, #processos, #contas, #rotinas, #salas, #atividade, #conta, #d1 abre o sheet da decisão) */
+(function(){
+  let h = decodeURIComponent(location.hash || '').replace(/^#/,'');
+  if (!h) return;
+  // Tema no hash: #salas-warm, #rotinas-azul, #builder-mono …
+  const m = h.match(/^(.*)-(dark|azul|mono|warm)$/);
+  if (m){
+    h = m[1];
+    const themeClass = m[2]==='dark' ? '' : 'theme-'+m[2];
+    $('#app').className = 'app theme' + (themeClass ? ' '+themeClass : '');
+    document.querySelectorAll('#themeSwitch .ts').forEach(b=>b.classList.toggle('on', b.dataset.theme===themeClass));
+  }
+  if (h === 'decisoes' || h === 'salas' || h === 'atividade' || h === 'conta') { goNav(h); }
+  else if (h === 'sala') { goSala(); }
+  else if (['processos','fluxo','contas','rotinas'].includes(h)) { goSala(); setTab(h); }
+  else if (h === 'builder') { goSala(); setTab('rotinas'); setTimeout(()=>openBuilder(), 150); }
+  else if (/^rotina-r\d+$/.test(h)) { goSala(); setTab('rotinas'); const rid = h.replace('rotina-',''); setTimeout(()=>openDetail({mode:'rotina',id:rid}), 150); }
+  else if (/^d\d+$/.test(h)) { goNav('decisoes'); setTimeout(()=>openSheet(h), 120); }
+})();
+</script>
+</body>
+</html>
