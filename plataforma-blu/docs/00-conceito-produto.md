@@ -2,8 +2,8 @@
 
 **Profile:** design-writer
 **Projeto:** plataforma-blu (raiz) · mcp-brain (memória)
-**Data:** 2026-08-12
-**Tipo:** conceito de produto — referência futura
+**Data:** 2026-08-12 (v2 — revisão com o app atual, terceira iteração)
+**Tipo:** conceito de produto — product review interno, referência futura
 **Status:** vivo. Atualizar a cada decisão de produto.
 
 ---
@@ -11,11 +11,13 @@
 ## Objetivo
 
 Referência única do conceito dos dois produtos: o que são, por que existem,
-como se relacionam e como comunicar o valor. Uso: landing pages, propostas,
-pitch, READMEs e decisões de produto.
+como se relacionam e como comunicar o valor. Documento interno de produto
+(product review): uso em decisões de produto, roadmap, propostas e pitches.
 
-Fontes desta versão: conversa do fundador em 2026-08-12, o plano de produto
-do memory_api (`docs/memory_api/plano-produto.md`) e a visão do MCP Brain
+Fontes desta versão: conversa do fundador em 2026-08-12, o app atual
+(`monorepo/apps/blu_web`, terceira iteração do produto — referência de
+versão final), o plano de produto do memory_api
+(`docs/memory_api/plano-produto.md`) e a visão do MCP Brain
 (`mcp-brain/docs/01-visao.md`).
 
 ## O problema
@@ -36,6 +38,38 @@ sem memória do negócio: pergunta sem contexto, resposta genérica.
 A Blu é uma suíte para pequenas empresas fazerem toda a gestão usando IA.
 Um ambiente só para o fluxo inteiro: clientes, propostas, contratos,
 documentos e finanças.
+
+### Centralizar muda o jogo
+
+Centralizar não é organização. Com a gestão inteira num lugar, a empresa
+tem **contexto unificado** — todos os dados dela num só contexto. E com
+contexto unificado a IA faz muito mais do que executar fluxo:
+
+- **Estratégia** — leitura do negócio inteiro, não de uma planilha.
+- **Captação e capacidade** — quanto o dono pode investir, quanto pode
+  tomar de crédito, onde buscar capital, com base nos números reais dele.
+- **Crescimento** — ideias de aquisição e expansão que aparecem quando os
+  dados de clientes, financeiro e operação estão no mesmo lugar.
+- **Documentos e apresentações** — proposta, contrato, relatório, deck:
+  o contexto já está lá, a IA monta.
+- **Skills e agentes** — habilidades de IA plugadas na operação: atendente,
+  rotinas, agentes construídos sob medida.
+
+O fluxo (lead → contrato) é a porta de entrada. O contexto unificado é o
+produto.
+
+### O produto hoje (referência: terceira iteração)
+
+A versão de referência é o app atual — a terceira iteração do produto, no
+caminho de versão final. Mapa de superfícies:
+
+| Área | Superfícies |
+| --- | --- |
+| Gestão | Clientes, Agenda, Documentos, Financeiro, Compras |
+| Conhecimento | Biblioteca com grafo de documentos, Memória de negócio (MCP Brain) |
+| Estratégia | Estratégia, Insights, Analytics, Relatório de contexto |
+| Agentes / skills | Agentes (construtor), Rotinas, Atendente, Chat |
+| Governança | Aprovações (com regras), LGPD, Admin |
 
 ### Por que começar pelas empresas de serviço
 
@@ -59,20 +93,24 @@ que é repetitivo e o dono decide o que é dele.
 ### Como comunicar
 
 **Uma frase:**
-"Blu é a suíte de gestão para pequenas empresas de serviço — do lead ao
-contrato, com IA cuidando do que é repetitivo."
+"Blu é a suíte de gestão para pequenas empresas de serviço. Centraliza o
+fluxo inteiro — do lead ao contrato — e usa o contexto unificado para fazer
+muito mais com IA: estratégia, captação, documentos, apresentações."
 
 **Elevator pitch:**
 "Empresa de serviço vive de repetir o mesmo fluxo: conversa com o lead,
 fecha o serviço, monta a proposta, escreve o contrato. A Blu centraliza
 esse fluxo e usa IA no trabalho repetitivo. A pessoa decide; a IA executa.
-Começamos por serviços porque o processo é uniforme; o financeiro é o
-próximo."
+Com os dados centralizados, o contexto unificado destrava o resto: quanto
+o dono pode investir, quanto pode captar, onde a operação ganha e perde,
+documentos e apresentações prontos. Começamos por serviços porque o
+processo é uniforme; o financeiro é o próximo."
 
 **Mensagens-chave:**
 - "Um fluxo só, do lead ao contrato."
 - "Decisão é do dono. O repetitivo é da IA."
-- "O processo que sua empresa já tem, padronizado e automatizado."
+- "Os dados centralizados viram contexto — e o contexto vira estratégia."
+- "Quanto pode investir, quanto pode captar: a resposta está nos dados dele."
 - "Gestão inteira num lugar: clientes, propostas, contratos, documentos, financeiro."
 
 **CTA:** "Começar com sua operação" · "Agendar um diagnóstico gratuito"
@@ -145,12 +183,12 @@ conhecimento sai do documento e vira resposta com fonte."
 
 | | Blu | MCP Brain |
 |---|---|---|
-| Uma frase | Suíte de gestão para pequenas empresas de serviço — do lead ao contrato, com IA no repetitivo | A memória da empresa, organizada em conhecimento, disponível para qualquer agente de IA |
-| Elevator | Fluxo repetido a cada cliente: lead → serviço → proposta → contrato. A Blu centraliza e automatiza o repetitivo; a pessoa decide | Documentos espalhados + cabeça das pessoas viram corpus curado, memória viva e bancos do dono e do time; qualquer agente consulta via MCP |
-| Mensagens | Um fluxo só, do lead ao contrato · Decisão é do dono · IA no repetitivo | O que a empresa sabe fica na empresa · Grafo, não busca solta · Banco do dono e de cada pessoa · URL MCP |
+| Uma frase | Suíte de gestão para pequenas empresas de serviço; centraliza o fluxo do lead ao contrato e usa o contexto unificado para estratégia, captação, documentos e apresentações | A memória da empresa, organizada em conhecimento, disponível para qualquer agente de IA |
+| Elevator | Fluxo repetido a cada cliente: lead → serviço → proposta → contrato. A Blu centraliza e automatiza o repetitivo; o contexto unificado destrava estratégia e capacidade | Documentos espalhados + cabeça das pessoas viram corpus curado, memória viva e bancos do dono e do time; qualquer agente consulta via MCP |
+| Mensagens | Um fluxo só · Decisão é do dono · Dados viram contexto, contexto vira estratégia · Capacidade de investir e captar nos dados dele | O que a empresa sabe fica na empresa · Grafo, não busca solta · Banco do dono e de cada pessoa · URL MCP |
 | CTA | Começar com sua operação | Conectar minha empresa |
 | Cliente herói | O dono da empresa de serviço | O dono e o time que usam IA |
-| Papel da IA | Ferramenta que executa o repetitivo | Camada de memória que dá contexto |
+| Papel da IA | Ferramenta que executa o repetitivo e destrava o contexto | Camada de memória que dá contexto |
 
 ## O que NÃO dizemos
 
@@ -159,6 +197,8 @@ conhecimento sai do documento e vira resposta com fonte."
 - "Memória infinita" — vago; não diz o que o dono ganha.
 - "Escritório virtual" como abertura — vago demais; a abertura é o fluxo
   do lead ao contrato.
+- Reduzir a Blu a "CRM" ou a "fluxo de proposta" — ela é a gestão inteira
+  e o contexto que ela destrava.
 - Qualquer frase em que a IA é o herói da história.
 
 ## Glossário (termos com significado fixo)
@@ -173,6 +213,8 @@ conhecimento sai do documento e vira resposta com fonte."
   navegáveis.
 - **MCP:** Model Context Protocol — padrão aberto de conexão entre agentes de
   IA e ferramentas.
+- **Contexto unificado:** todos os dados da gestão num só lugar; a base de
+  qualquer resposta, estratégia ou documento gerado pela IA.
 - **Curadoria:** aprovação do dono antes de um documento virar conhecimento
   corporativo vigente.
 - **Vigência:** o que vale agora, com histórico do que valeu antes.
@@ -188,9 +230,11 @@ conhecimento sai do documento e vira resposta com fonte."
 - [ ] Confirmar se o grafo de conhecimento é núcleo do produto ou feature
       opcional da V1.
 - [ ] Fixar a persona primária do MCP Brain (dono da empresa × time de tecnologia).
+- [ ] Consolidar a nomenclatura oficial da terceira iteração ("Blueprint 3").
 
 ## Próximos passos
 
 - [ ] Aprovar este conceito e linkar nos READMEs de plataforma-blu e mcp-brain.
 - [ ] Usar a seção "Como comunicar" como base da landing de cada produto.
+- [ ] Manter o mapa de superfícies sincronizado com o app (a cada iteração).
 - [ ] Atualizar este documento a cada decisão de produto.
