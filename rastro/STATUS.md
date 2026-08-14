@@ -20,7 +20,7 @@
 | **Entregável 3 — Blueprint do novo fluxo** | 🟢 Semanas 7–8 |
 | **Investimento** | 🟢 R$ 15.000 (50% na Semana 3 + 50% na Semana 8) |
 | **Implementação de ferramentas** | 🔴 Fora do escopo (decisão 10/08) |
-| **Proposta comercial** | 🟢 v5 pronta — trabalho contínuo (Mapear→Estruturar→Implementar), sem 3 entregáveis formais |
+| **Proposta comercial** | 🟢 v6 pronta — ponto cego reescrito ("A Rastro já usa muito IA" / "Entender e estruturar"); Estruturar como iteração de otimização; footer cid.lucas@gmail.com |
 | **Contrato** | 🔴 Aguardando aprovação da proposta |
 | **Kickoff** | 🔴 A definir |
 
@@ -48,3 +48,4 @@
 | 2026-07-29 | v0.3: Perguntas fechadas. Entregáveis detalhados. Produto nomeado Rastro Brain. Curadoria: Fábio + Lucas Diárea. Deploy: EC2. Case autorizado. |
 | 2026-08-10 | Reunião com a Rastro. **Escopo mudou:** consultoria de fluxo apenas (3 entregáveis), sem MCP/Rastro Brain. Investimento R$ 15.000 (50% + 50%), 8 semanas para iterações. ADR-002. Proposta v3. |
 | 2026-08-12 | v5: estrutura simplificada — trabalho contínuo de 8 semanas (Mapear → Estruturar → Implementar + hand-off), sem 3 entregáveis formais. Final = fluxos rodando + guia de referência. Ponto cego: 2 itens diretos ("IA precisa de processo, olhar dedicado e estrutura"). Hero mantido. Pagamento: 50% Semana 3 + 50% Semana 8. |
+| 2026-08-14 | v6: texto sincronizado com o Google Doc — ponto cego reescrito ("A Rastro já usa muito IA" / "Entender e estruturar"), Estruturar 3–6 = "iteração de otimização de fluxos padronizados e contexto por etapa", Entregáveis "Proposta, orçamento, reunião" (sem pitch), footer cid.lucas@gmail.com. |
