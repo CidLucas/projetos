@@ -78,26 +78,28 @@ body{font-family:'Inter',sans-serif;background:#12131a;color:#DFE3EE;font-size:1
 .tab.on i{opacity:1}
 .tbdg{background:var(--adim);color:var(--pill-on);font-size:10px;font-weight:700;border-radius:999px;padding:0 6px;line-height:16px;min-width:16px;text-align:center}
 
-.content{flex:1;display:grid;grid-template-columns:1fr 380px;gap:14px;padding:14px;min-height:0;background:transparent}
+.content{flex:1;display:grid;grid-template-columns:1fr 360px;gap:14px;padding:14px;min-height:0;background:transparent}
 .panel{background:var(--glass);border:1px solid var(--gb);border-radius:12px;display:flex;flex-direction:column;min-height:0;overflow:hidden;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 .panel-head{padding:12px 14px;border-bottom:1px solid var(--gb);font-size:12px;font-weight:700;color:var(--fg);display:flex;align-items:center;gap:7px}
 .panel-head .cnt{font-size:10.5px;color:var(--mu2);font-weight:500}
 
 /* Kanban */
-.kanban{flex:1;display:flex;gap:14px;padding:14px 16px;overflow-x:auto}
-.kcol{flex:0 0 204px;display:flex;flex-direction:column;gap:10px}
+.kanban{flex:1;display:flex;gap:10px;padding:12px 14px;overflow-x:auto;position:relative}
+.kanban::after{content:'';position:sticky;left:100%;flex:0 0 22px;background:linear-gradient(90deg,transparent,var(--bg));pointer-events:none;margin-left:-22px}
+.kcol{flex:0 0 168px;display:flex;flex-direction:column;gap:10px}
 .kcol-head{display:flex;align-items:center;gap:7px;padding:2px 2px 8px;font-size:12.5px;font-weight:700;color:var(--fg)}
 .kcol-head .dot{width:8px;height:8px;border-radius:50%;box-shadow:0 0 0 3px var(--gl2)}
 .kcol-head .n{font-size:10px;color:var(--mu2);font-weight:700;background:var(--glass);border:1px solid var(--gb);border-radius:999px;padding:1px 8px;line-height:16px}
-.kcard{background:var(--card);border:1px solid var(--gb);border-left:3px solid var(--ok);border-radius:10px;padding:11px 12px;display:flex;flex-direction:column;gap:8px;box-shadow:0 1px 2px rgba(0,0,0,.04);cursor:pointer;transition:transform .12s ease-out,border-color .15s ease-out,box-shadow .15s ease-out;text-align:left;width:100%;font-family:inherit;color:inherit}
+.kcard{background:var(--card);border:1px solid var(--gb);border-left:3px solid var(--ok);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:7px;box-shadow:0 1px 2px rgba(0,0,0,.04);cursor:pointer;transition:transform .12s ease-out,border-color .15s ease-out,box-shadow .15s ease-out;text-align:left;width:100%;font-family:inherit;color:inherit}
 .kcard:hover{transform:translateY(-1px);border-color:var(--gb2);box-shadow:var(--shadow-1)}
 .kcard.warn{border-left-color:var(--att)}
 .kcard.urg{border-left-color:var(--urg)}
 .kcard .top{display:flex;align-items:center;gap:7px;width:100%}
 .kcard .ck{width:14px;height:14px;accent-color:var(--ac);flex-shrink:0;cursor:pointer}
 .kcard .nm{font-size:12.5px;font-weight:600;flex:1;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kcard .bdg{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .kcard .meta{display:flex;justify-content:space-between;align-items:center;font-size:11px;width:100%}
-.kcard .val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12.5px;color:var(--fg);font-variant-numeric:tabular-nums}
+.kcard .val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13.5px;color:var(--fg);font-variant-numeric:tabular-nums}
 .kcard .pr{color:var(--mu2);font-family:'JetBrains Mono',monospace;font-size:10px;display:inline-flex;align-items:center;gap:3px}
 .av{width:19px;height:19px;border-radius:50%;background:var(--agrad);color:#fff;font-size:9px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:.02em;box-shadow:0 1px 4px rgba(0,0,0,.15)}
 .bdg{font-size:10px;font-weight:700;padding:3px 9px;border-radius:999px;align-self:flex-start;display:inline-flex;align-items:center;gap:6px}
@@ -459,10 +461,8 @@ function renderKanban() {
           <span class="nm">${esc(c.name)}</span>
           ${av(c.resp, 20)}
         </div>
-        <div class="meta">
-          <span class="bdg ${SEM_BADGE[c.sem]}">${c.badge}</span>
-          <span style="display:flex;gap:8px;align-items:baseline"><span class="val">${c.value}</span><span class="pr"><i class="ph ph-clock" style="font-size:9px"></i> ${c.prazo}</span></span>
-        </div>
+        <span class="bdg ${SEM_BADGE[c.sem]}">${c.badge}</span>
+        <div class="meta"><span class="val">${c.value}</span><span class="pr"><i class="ph ph-clock" style="font-size:9px"></i> ${c.prazo}</span></div>
       </button>`).join('');
     const n = CLIENTS.filter(c=>c.col===col.id).length;
     return `<div class="kcol"><div class="kcol-head"><span class="dot" style="background:${col.dot}"></span>${col.label} <span class="n">${n}</span></div>${items}</div>`;
