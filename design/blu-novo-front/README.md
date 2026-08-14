@@ -10,9 +10,9 @@
 | Arquivo | O que é | Como ver |
 |---|---|---|
 | `DESIGN.md` | Tokens e regras do sistema (cores, tipografia, componentes, Do's & Don'ts, riscos de a11y) | — |
-| `wireframe.html` | Wireframe v3 — protótipo interativo completo do novo front (Cliente · Pipeline, orçamentos, follow-up). 4 temas | `/blu-site/` (index) |
+| `wireframe.html` | Wireframe v3 — protótipo interativo completo do novo front (Cliente · Pipeline, orçamentos, follow-up). 4 temas. Revisado 14/08: tabs sem underline (padrão A2.1 do Financeiro), dots de coluna por tema (`--col-*`), métricas do bottom strip mudam por aba, ação sugerida em Phosphor | `/blu-site/` (index via redirect) |
 | `financeiro.html` | Sala Financeiro — referência de sala: 5 abas (Decisões · Processos · Fluxo · Contas · Rotinas), painel contextual 380px master-detail, permissões por sala (Aprovador/Criador/Visualizador). Regras em destaque: sem strip de métricas no topo (U9), permissões (D3/U6) | `/blu-site/financeiro.html` |
-| `blu-clientes-opcoes.html` | Opções de layout para a sala Clientes | `/blu-site/blu-clientes-opcoes.html` |
+| `blu-clientes-opcoes.html` | ⚠️ LEGADO — semente `.dc.html` da ferramenta de prototipagem (runtime `support.js`/`_ds/` não versionado; **não renderiza no preview**). Conteúdo absorvido pelo `wireframe.html` | não serve |
 | `mobile.html` | **Versão mobile do novo front** — conceito de casca mobile navegável em frame de telefone (no celular real, ocupa a tela toda). Bottom nav 5 destinos, decisão em bottom sheet (r20), detalhe master-detail em slide-in, salas em grid, pills de config em rotinas, 4 temas | `/blu-site/mobile.html` |
 
 ## Mobile — decisões de casca (mobile.html)
@@ -35,8 +35,10 @@ tema no hash: `#salas-warm`, `#rotinas-azul`, `#rotina-r4-warm`
 
 ## Preview
 
-Servido em `http://100.69.231.7:8899/blu-site/` (root = `drafts/proposals`).
-Cópia canônica: `drafts/blu-site/`. Screenshots mobile: `previews/blu-mobile/`.
+Servido em `http://100.69.231.7:8899/blu-site/` (root = `drafts/proposals` do
+profile; `blu-site` é symlink para este diretório — editar aqui, commitar,
+o preview reflete na hora). `/blu-site/` abre `wireframe.html` via `index.html`
+(redirect). Screenshots mobile: `previews/blu-mobile/`.
 
 ## Regras da spec (resumo)
 
