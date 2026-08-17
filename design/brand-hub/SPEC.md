@@ -70,7 +70,18 @@ Tokens Soft A (canônicos do site Deep Blue, v3-soft-a):
 - Sub: "A Deep Blue ajuda empresas a usar inteligência artificial como ferramenta de negócio. Entregamos sistemas que agregam valor, com resultado mensurável."
 - CTAs: `Conhecer os produtos` (primário, → `show('blu')`) · `Ver o Brain MCP` (secundário → `show('brain')`).
 
-### 4.2 Duas frentes (seção central — a decisão de produto)
+### 4.2 Blocos alternados (zig-zag esquerda/direita)
+Os blocos da landing alternam o alinhamento (`margin-left/right:auto` no `.in` de
+cada `.blk`), criando um ritmo editorial:
+- **Hero** → esquerda
+- **Duas frentes** (Labs + Consulting) → **direita** (`blk r`)
+- **Casos reais** (logos) → **esquerda** (`blk l`)
+- **Consultoria** (CTA final) → **direita** (`blk r`)
+
+Cada `.blk` tem `.in` com `max-width:640px`; o `.bento2` e a `.clients` esticam
+até 720px dentro do bloco.
+
+### 4.3 Duas frentes (seção central — a decisão de produto)
 - Título: "Duas frentes, um objetivo." (com `em` serif itálico azul em "um objetivo").
 - Sub: "Produtos em assinatura para quem quer começar rápido. Consultoria para quem precisa de diagnóstico e estratégia sob medida. Os produtos que desenvolvemos são a prova do que entregamos."
 - **Card Labs** (claro, expansível):
@@ -84,11 +95,16 @@ Tokens Soft A (canônicos do site Deep Blue, v3-soft-a):
   - Expandir → 3 itens (`.crow`): AI Assessment, Transformation Roadmap, Advisory Retainer (mesma copy do Soft A).
 - Interação: `toggleSvc(el)` — cada card abre/fecha independente (`classList.toggle('open')`), "+" rotaciona 45°.
 
-### 4.3 Casos reais
+### 4.4 Casos reais (strip de logos — padrão antigo)
 - Kicker: `Quem confia` · Título: "Casos reais."
-- Strip de pills: SENAC — educação · CladTEC — óleo & gás · Rastro — publicidade · Bloqüo — cross-border.
+- Sub: "Projetos que entregamos, com resultado mensurável. Cada logo abre a história do projeto."
+- Label acima da strip: `Com quem já trabalhamos` (mono uppercase, como o Soft A).
+- **Strip de logos** (`.client-badge`): SENAC (SVG wikimedia), Cladtek (site oficial), Bloqüo (logo-white.svg), Templo (logo_templo_header.png, abre o site externo), Rastro (webflow logo).
+  - Regra visual: logo `grayscale(1)` + `opacity:.72`; hover → cor + opacidade 1 + borda azul + seta `arrow-up-right`.
+  - Fallback: se a imagem não carrega, `onerror` troca por texto bold (`SENAC`, `CLADTEK`...).
+  - **Clique**: placeholder "Em breve: página do projeto X" até existirem as páginas de projeto; depois, cada badge navega para a página do projeto correspondente.
 
-### 4.4 Consultoria (CTA final)
+### 4.5 Consultoria (CTA final)
 - Kicker: `Consultoria` · Título: "Antes da tecnologia, o diagnóstico."
 - Parágrafo da voz Deep Blue (começa com pessoas, IA como ferramenta do diagnóstico).
 - CTA secundário: "Agendar um diagnóstico" (sem destino real — placeholder).

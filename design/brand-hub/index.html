@@ -92,9 +92,28 @@
   .crow .tx span { font-size:12px; color:var(--db-mut); display:block; margin-top:2px; line-height:1.45; }
   .svc.dark .crow .tx span { color:rgba(242,242,240,.55); }
 
-  /* ===== CLIENTES ===== */
-  .strip { display:flex; flex-wrap:wrap; gap:14px; margin-top:30px; }
-  .strip span { font:600 13px/1 var(--pjs); color:var(--db-mut); background:#fff; border:1px solid var(--db-line); border-radius:999px; padding:10px 18px; }
+  /* ===== CLIENTES (strip de logos, padrão antigo) ===== */
+  .clients { margin-top:34px; padding-top:22px; border-top:1px solid var(--db-line); }
+  .clients .cl-lbl { font:600 10px/1 var(--mono); letter-spacing:.18em; text-transform:uppercase; color:var(--db-mut); margin-bottom:16px; }
+  .client-strip { display:flex; flex-wrap:wrap; gap:12px; }
+  .client-badge { display:inline-flex; align-items:center; gap:8px; padding:12px 18px; background:#fff; border:1px solid var(--db-line); border-radius:14px; cursor:pointer; transition:.15s; text-decoration:none; }
+  .client-badge:hover { border-color:var(--db-ac); }
+  .client-badge img { height:22px; max-width:150px; object-fit:contain; filter:grayscale(1); opacity:.72; transition:.15s; }
+  .client-badge:hover img { filter:grayscale(0); opacity:1; }
+  .client-badge .cl-arrow { font-size:13px; color:var(--db-mut); transition:.15s; }
+  .client-badge:hover .cl-arrow { color:var(--db-ac); }
+  .client-badge .fb { font:700 12px/1 var(--pjs); color:var(--db-ink); }
+
+  /* ===== BLOCOS ALTERNADOS (esquerda/direita) ===== */
+  .blk { max-width:1120px; margin:0 auto; padding:56px 24px; }
+  .blk .in { max-width:640px; }
+  .blk.r .in { margin-left:auto; }
+  .blk.l .in { margin-right:auto; }
+  .blk .k { font:700 11px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--db-ac); margin-bottom:10px; }
+  .blk h2 { font-size:clamp(26px,3vw,36px); font-weight:800; letter-spacing:-.02em; }
+  .blk .sub { color:var(--db-mut); font-size:15px; line-height:1.6; margin-top:10px; max-width:60ch; }
+  .blk .bento2 { margin-top:28px; }
+  .blk .clients { max-width:720px; }
 
   /* ===== LANDING BLU ===== */
   .blu { background:#03071C; color:#eef0f8; font-family:var(--inter); }
@@ -222,52 +241,54 @@
     </div>
   </div>
 
-  <div class="wrap sec">
-    <div class="k">Como trabalhamos</div>
-    <h2>Duas frentes, <em style="font-family:var(--serif);font-style:italic;font-weight:400;color:var(--db-ac);">um objetivo.</em></h2>
-    <p class="sub">Produtos em assinatura para quem quer começar rápido. Consultoria para quem precisa de diagnóstico e estratégia sob medida. Os produtos que desenvolvemos são a prova do que entregamos.</p>
-    <div class="bento2">
-      <div class="svc" onclick="toggleSvc(this)">
-        <div class="tag">Labs · assinatura</div>
-        <div class="tt">Deep Blue Labs <span class="plus">+</span></div>
-        <div class="t-sub">Ferramentas de IA prontas para usar. Desenvolvemos produtos completos — e eles estão aqui para você ver.</div>
-        <div class="expand">
-          <div class="plist">
-            <a class="prow" href="#" onclick="show('blu');return false;">
-              <div class="ic" style="background:linear-gradient(135deg,#7E5CC8,#3A80D4);"><i class="ph ph-buildings"></i></div>
-              <div class="tx"><b>Blu</b><span>Escritório virtual com IA para PMEs: agentes, documentos e conhecimento num ambiente só.</span></div>
-              <div class="go">Abrir produto <i class="ph ph-arrow-up-right"></i></div>
-            </a>
-            <a class="prow" href="#" onclick="show('formly');return false;">
-              <div class="ic" style="background:#7A2E3F;"><i class="ph ph-chats-circle"></i></div>
-              <div class="tx"><b>Formly</b><span>Questionários com resposta por áudio e geração por IA. Do texto curto à matriz de escala.</span></div>
-              <div class="go">Abrir produto <i class="ph ph-arrow-up-right"></i></div>
-            </a>
-            <a class="prow" href="#" onclick="show('brain');return false;">
-              <div class="ic" style="background:#1D4ED8;"><i class="ph ph-brain"></i></div>
-              <div class="tx"><b>Brain MCP</b><span>Memória corporativa para agentes: uma URL MCP conecta corpus curado e memória viva.</span></div>
-              <div class="go">Abrir produto <i class="ph ph-arrow-up-right"></i></div>
-            </a>
+  <div class="blk r">
+    <div class="in">
+      <div class="k">Como trabalhamos</div>
+      <h2>Duas frentes, <em style="font-family:var(--serif);font-style:italic;font-weight:400;color:var(--db-ac);">um objetivo.</em></h2>
+      <p class="sub">Produtos em assinatura para quem quer começar rápido. Consultoria para quem precisa de diagnóstico e estratégia sob medida. Os produtos que desenvolvemos são a prova do que entregamos.</p>
+      <div class="bento2">
+        <div class="svc" onclick="toggleSvc(this)">
+          <div class="tag">Labs · assinatura</div>
+          <div class="tt">Deep Blue Labs <span class="plus">+</span></div>
+          <div class="t-sub">Ferramentas de IA prontas para usar. Desenvolvemos produtos completos — e eles estão aqui para você ver.</div>
+          <div class="expand">
+            <div class="plist">
+              <a class="prow" href="#" onclick="show('blu');return false;">
+                <div class="ic" style="background:linear-gradient(135deg,#7E5CC8,#3A80D4);"><i class="ph ph-buildings"></i></div>
+                <div class="tx"><b>Blu</b><span>Escritório virtual com IA para PMEs: agentes, documentos e conhecimento num ambiente só.</span></div>
+                <div class="go">Abrir produto <i class="ph ph-arrow-up-right"></i></div>
+              </a>
+              <a class="prow" href="#" onclick="show('formly');return false;">
+                <div class="ic" style="background:#7A2E3F;"><i class="ph ph-chats-circle"></i></div>
+                <div class="tx"><b>Formly</b><span>Questionários com resposta por áudio e geração por IA. Do texto curto à matriz de escala.</span></div>
+                <div class="go">Abrir produto <i class="ph ph-arrow-up-right"></i></div>
+              </a>
+              <a class="prow" href="#" onclick="show('brain');return false;">
+                <div class="ic" style="background:#1D4ED8;"><i class="ph ph-brain"></i></div>
+                <div class="tx"><b>Brain MCP</b><span>Memória corporativa para agentes: uma URL MCP conecta corpus curado e memória viva.</span></div>
+                <div class="go">Abrir produto <i class="ph ph-arrow-up-right"></i></div>
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="svc dark" onclick="toggleSvc(this)">
-        <div class="tag">Consulting · escopo fechado</div>
-        <div class="tt">Deep Blue Consulting <span class="plus">+</span></div>
-        <div class="t-sub">Diagnóstico e estratégia. Escopo fechado, resultado mensurável.</div>
-        <div class="expand">
-          <div class="clist">
-            <div class="crow">
-              <div class="ic"><i class="ph ph-clipboard-text"></i></div>
-              <div class="tx"><b>AI Assessment</b><span>Mapa completo de processos, dados e oportunidades de IA em 2 semanas.</span></div>
-            </div>
-            <div class="crow">
-              <div class="ic"><i class="ph ph-map-trifold"></i></div>
-              <div class="tx"><b>Transformation Roadmap</b><span>Plano de 12 a 24 meses: arquitetura, capacitação, governança.</span></div>
-            </div>
-            <div class="crow">
-              <div class="ic"><i class="ph ph-handshake"></i></div>
-              <div class="tx"><b>Advisory Retainer</b><span>Acompanhamento mensal com reuniões e suporte contínuo à decisão.</span></div>
+        <div class="svc dark" onclick="toggleSvc(this)">
+          <div class="tag">Consulting · escopo fechado</div>
+          <div class="tt">Deep Blue Consulting <span class="plus">+</span></div>
+          <div class="t-sub">Diagnóstico e estratégia. Escopo fechado, resultado mensurável.</div>
+          <div class="expand">
+            <div class="clist">
+              <div class="crow">
+                <div class="ic"><i class="ph ph-clipboard-text"></i></div>
+                <div class="tx"><b>AI Assessment</b><span>Mapa completo de processos, dados e oportunidades de IA em 2 semanas.</span></div>
+              </div>
+              <div class="crow">
+                <div class="ic"><i class="ph ph-map-trifold"></i></div>
+                <div class="tx"><b>Transformation Roadmap</b><span>Plano de 12 a 24 meses: arquitetura, capacitação, governança.</span></div>
+              </div>
+              <div class="crow">
+                <div class="ic"><i class="ph ph-handshake"></i></div>
+                <div class="tx"><b>Advisory Retainer</b><span>Acompanhamento mensal com reuniões e suporte contínuo à decisão.</span></div>
+              </div>
             </div>
           </div>
         </div>
@@ -275,23 +296,47 @@
     </div>
   </div>
 
-  <div class="wrap sec">
-    <div class="k">Quem confia</div>
-    <h2>Casos reais.</h2>
-    <div class="strip">
-      <span>SENAC — educação</span>
-      <span>CladTEC — óleo &amp; gás</span>
-      <span>Rastro — publicidade</span>
-      <span>Bloqüo — cross-border</span>
+  <div class="blk l">
+    <div class="in">
+      <div class="k">Quem confia</div>
+      <h2>Casos reais.</h2>
+      <p class="sub">Projetos que entregamos, com resultado mensurável. Cada logo abre a história do projeto.</p>
+      <div class="clients">
+        <div class="cl-lbl">Com quem já trabalhamos</div>
+        <div class="client-strip">
+          <a class="client-badge" href="#" onclick="alert('Em breve: página do projeto SENAC.');return false;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Senac_logo.svg" alt="SENAC" onerror="this.outerHTML='<span class=fb>SENAC</span>'">
+            <i class="ph ph-arrow-up-right cl-arrow"></i>
+          </a>
+          <a class="client-badge" href="#" onclick="alert('Em breve: página do projeto Cladtek.');return false;">
+            <img src="https://cladtek.com/wp-content/uploads/2025/04/Cladtek-Logo-White-No-Tag-1024x519.png" alt="Cladtek" style="height:16px" onerror="this.outerHTML='<span class=fb>CLADTEK</span>'">
+            <i class="ph ph-arrow-up-right cl-arrow"></i>
+          </a>
+          <a class="client-badge" href="#" onclick="alert('Em breve: página do projeto Bloqüo.');return false;">
+            <img src="https://bloquo.com/assets/images/logo-white.svg" alt="Bloqüo" onerror="this.outerHTML='<span class=fb>BLOQÜO</span>'">
+            <i class="ph ph-arrow-up-right cl-arrow"></i>
+          </a>
+          <a class="client-badge" href="#" onclick="window.open('https://templo.pro','_blank');return false;">
+            <img src="https://templo.pro/wp-content/uploads/2026/05/logo_templo_header.png" alt="Templo" onerror="this.outerHTML='<span class=fb>TEMPLO</span>'">
+            <i class="ph ph-arrow-up-right cl-arrow"></i>
+          </a>
+          <a class="client-badge" href="#" onclick="alert('Em breve: página do projeto Rastro.');return false;">
+            <img src="https://cdn.prod.website-files.com/62477f9095de2a5592cc7602/6288e24dc80173727026f5e5_Logo%20Azul%20-%20Teste%201.webp" alt="Rastro" onerror="this.outerHTML='<span class=fb>RASTRO</span>'">
+            <i class="ph ph-arrow-up-right cl-arrow"></i>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="wrap sec">
-    <div class="k">Consultoria</div>
-    <h2>Antes da tecnologia, o diagnóstico.</h2>
-    <p class="sub">Todo projeto começa com pessoas: escutamos as dores do cliente, entendemos o processo e mapeamos oportunidades. A IA é a ferramenta que usamos para impactar o diagnóstico.</p>
-    <div class="ctas" style="margin-top:28px;">
-      <a class="btn g" href="#" onclick="show('empresa');return false;">Agendar um diagnóstico</a>
+  <div class="blk r">
+    <div class="in">
+      <div class="k">Consultoria</div>
+      <h2>Antes da tecnologia, o diagnóstico.</h2>
+      <p class="sub">Todo projeto começa com pessoas: escutamos as dores do cliente, entendemos o processo e mapeamos oportunidades. A IA é a ferramenta que usamos para impactar o diagnóstico.</p>
+      <div class="ctas" style="margin-top:28px;">
+        <a class="btn g" href="#" onclick="show('empresa');return false;">Agendar um diagnóstico</a>
+      </div>
     </div>
   </div>
 </div>
