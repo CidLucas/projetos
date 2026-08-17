@@ -149,7 +149,20 @@ Seções:
 7. `h1` do hero da empresa: `clamp(34px,3.9vw,50px)` + `max-width:26ch` + `<br>` — medir `h1Lines` no QA (máx 3).
 8. Contraste AA nos temas claros (não usar `--mu` <12px nos cards de texto).
 
-## 10. QA (checklist pós-edição)
+## 10. Status de entrega (revisão #200, 17/08/2026)
+
+| Item da spec | Entregue | Status |
+|---|---|---|
+| Login embutido na landing do Brain (card glass: Google + e-mail) | ❌ ausente — só CTA → /login | ⚠️ pendente — entregar card na view Brain |
+| CTA "Entrar no app" → `app.brainmcp.app` | ❌ CTA → /login (domínio ainda não comprado) | ⚠️ aceitável v1 — trocar para o domínio quando comprado |
+| Elementos gráficos Labs e Consulting uniformes | ✅ mesmo componente `.prow`/`.crow` (ícone 40px + título + descrição) | ✅ v1 |
+
+Regra da uniformidade: **Labs e Consulting usam o MESMO componente de linha**
+(ícone em quadrado 40px + título bold + descrição 12px + borda + radius 14px).
+A única diferença: Labs tem CTA "Abrir produto" (navega), Consulting não
+(serviço, sem destino). Nunca desenhar um como card e outro como lista solta.
+
+## 11. QA (checklist pós-edição)
 
 ```js
 (() => { const r = {};
@@ -165,7 +178,7 @@ Seções:
 - [ ] Todos os CTAs de produto têm `href` real (`app.blu.direct`, run.app do Formly, `app.brainmcp.app`) e `target="_blank"`
 - [ ] Preview: `http://100.69.231.7:8899/brand-hub/`
 
-## 11. Fora de escopo (v1)
+## 12. Fora de escopo (v1)
 
 - Páginas de planos/preços reais dos produtos (placeholder "Ver planos")
 - Formulário de diagnóstico funcional (CTA placeholder)
@@ -173,7 +186,7 @@ Seções:
 - Versão EN
 - Separação em arquivos por domínio (v2: um HTML por produto, servido em cada domínio)
 
-## 12. Próximos passos
+## 13. Próximos passos
 
 1. Comprar domínios: `tryformly.app`, `brainmcp.app`, `deepblue.direct` (F0/F1 do plano-marca)
 2. Deploy do Formly no `tryformly.app` (CNAME → Cloud Run)
