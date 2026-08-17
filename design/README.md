@@ -12,6 +12,7 @@ com symlink para `design/blu-novo-front`).
 | `blu-novo-front/` | Novo front (blu_web v2): DESIGN.md (tokens multi-tema), wireframe v3 (Cliente), sala Financeiro (referência de sala), opções de Clientes, **mobile.html** (casca mobile navegável) + README | **esta pasta** (movida de `drafts/blu-site`) |
 | `blu-design-system/` | Design system do app: 10 HTML de referência (charts, tables, cards/kanban, chat, forms, navigation shell, docs financeiros, estratégia, v3) | snapshot de `monorepo/docs/design-system` |
 | `blu-memory-api/` | Design da página do dono (Memory API / F3): `pagina-do-dono.html`, index, blu.css | snapshot de `monorepo/docs/memory_api/referencia` |
+| `brand-hub/` | Hub de marca (Deep Blue → produtos): **SPEC.md** (spec de desenvolvimento) + `index.html` (protótipo navegável — empresa + Blu + Formly + Brain) | **esta pasta** |
 
 ## Novo front — atalhos
 
