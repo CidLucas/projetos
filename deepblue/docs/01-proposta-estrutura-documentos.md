@@ -1,51 +1,48 @@
-# Estrutura de Documentos — Proposta v2 (revisada com o fundador)
+# Estrutura de Documentos — Proposta v3 (FINAL)
 
 **Profile:** design-writer
-**Data:** 2026-08-18 (v2 — após discussão)
+**Data:** 2026-08-18 (v3 — decisões fechadas com o fundador)
 **Tipo:** spec de organização
 
 ---
 
-## 1. Princípio revisado
+## 1. Princípio
 
 - **Monorepo = tudo que é reutilizável em código.** Design systems (todos),
   telas (screens + wireframes), componentes, identidade visual. Importável de
   qualquer app; o usuário/produto escolhe o DS. É a fonte que constrói.
 - **Projetos = tudo que comunica ou referencia.** Textos (copy library),
-  apresentações, referências de design, documentação de negócio. Quem usa mais
-  são os agentes (consultar, escrever proposta, preparar reunião) e podem ser
-  reutilizados por outros agentes que trabalham em projetos/planejamento.
+  apresentações, referências de design, documentação de negócio. Usado pelos
+  agentes ao produzir propostas, decks e posts; reutilizável por outros agentes
+  de planejamento.
 
-## 2. Monorepo — estrutura de design
+## 2. Monorepo — design reutilizável
 
 ```
 monorepo/design/
-├── design-systems/              ← TODOS os DS, importáveis por qualquer app
+├── design-systems/              ← TODOS os DS, importáveis (formato: pasta por DS)
 │   ├── README.md                ← catálogo: qual usar quando
 │   ├── blu-novo/                ← DS do novo front Blu (multi-tema)
 │   │   ├── DESIGN.md            ← tokens formais (lintado)
 │   │   └── themes/              ← dark · azul · mono · warm
 │   ├── formly/                  ← DS do Formly
 │   ├── blu-original/            ← DS legado (glass roxo) — histórico
-│   └── brand-hub/               ← identidade visual da empresa (tokens)
+│   └── brand-hub/               ← identidade da empresa — tokens do site
+│                                  (candidato: tema claro do Blu — ver §6.1)
 ├── telas/                       ← telas + wireframes por produto
 │   ├── blu/                     ← clientes, financeiro, mobile, estratégia…
 │   ├── brain/                   ← memory_api: página do dono
 │   └── formly/
 └── componentes/                 ← tipos de componentes (UI kit por DS)
-    ├── button/ pill/ card/ kanban…  (ex: pill → .pill por tema)
 ```
 
-- Cada DS é um pacote importável (a pasta `libs/` do monorepo é o lugar natural
-  se virar package; senão `design/design-systems/<nome>` com tokens publicados).
-- Apps (`apps/blu_web`, `produtos/formly/frontend`, …) importam o DS — o usuário
-  escolhe o tema (ex: dark/azul/mono/warm do Blu novo).
-- Telas ficam junto do código porque o wireframe vira tela; o par
-  wireframe + tela implementada mora no mesmo repo.
-- Implementação segue a regra existente do monorepo: branch própria para design
-  (ex: `docs/design-f3`), nunca em branch de fase em andamento.
+- Site canônico da empresa: `monorepo/apps/brand-hub` (deploy já existe:
+  `scripts/local/deploy-brand-hub.sh`). O **design system brand-hub** nasce dos
+  tokens desse site.
+- Apps importam os DS da pasta `design/design-systems/<nome>` (pacote
+  `libs/` desnecessário — formato de pasta aprovado).
 
-## 3. Projetos — estrutura de comunicação e referência
+## 3. Projetos — comunicação e referência
 
 ```
 projetos-repo/
@@ -59,22 +56,14 @@ projetos-repo/
 │   └── apresentacao/            ← estrutura padrão do deck (12 slides)
 ├── referencias/                 ← REFERÊNCIAS DE DESIGN p/ criar
 │   ├── README.md                ← índice
-│   ├── design-systems/          ← sistemas reais de referência (ex: opendesign,
-│   │                              popular-web-designs — o que inspirar)
-│   └── marcas/                  ← MESA.do, Zerezes e outras que o Lucas citou
+│   ├── design-systems/          ← opendesign, sistemas reais, o que inspirar
+│   └── marcas/                  ← MESA.do, Zerezes e outras citadas
 ├── apresentacoes/               ← PADRÃO de decks (negócio, reutilizável)
 │   └── deck-empresa/            ← build_deck.py + roteiro + pptx/pdf
-├── deepblue/                    ← materiais operacionais (posts, instagram, assets)
-└── design/                      ← pasta ATUAL — migra (ver §5)
+├── deepblue/materiais/          ← operacional (posts, instagram)
+│   └── assets/                  ← subpastas por tipo: logo/ icons/ fonts/ social/
+└── design/                      ← pasta ATUAL — migra para o monorepo (ver §5)
 ```
-
-- **Textos**: cada produto/capability/serviço com 4 camadas (one-liner →
-  parágrafo curto → parágrafo completo → bullets). Proposta, deck, site e posts
-  puxam daqui; nunca reescrevem do zero. Voz = `deep-blue-voice`.
-- **Referências**: coleção curada do que usar de inspiração (design systems
-  reais, marcas de referência, templates opendesign). É o "acervo" que alimenta
-  o design-writer quando o Lucas pede "me inspira nisso".
-- **Apresentações**: todo deck nasce do gerador padrão (deck-empresa v3 = base).
 
 ## 4. Quem usa o quê
 
@@ -84,35 +73,41 @@ projetos-repo/
 | Telas / wireframes | Dev e design (viram tela) | monorepo `design/telas/` |
 | Componentes | Código — apps importam | monorepo `design/componentes/` |
 | Identidade visual (tokens) | Código + comunicação | monorepo `design/design-systems/brand-hub/` |
+| Site da empresa | Deploy (já existe) | monorepo `apps/brand-hub` |
 | Textos (descrições, capabilities) | Agentes (propostas, decks, posts) | projetos `textos/` |
 | Apresentações | Agentes + Lucas (reuniões) | projetos `apresentacoes/` |
 | Referências de design | Agentes (inspiração) | projetos `referencias/` |
 | Materiais operacionais (posts) | Agentes + Lucas | projetos `deepblue/materiais/` |
 
-## 5. O que acontece com a pasta atual `projetos-repo/design/`
+## 5. Destino da pasta atual `projetos-repo/design/`
 
 | Pasta atual | Destino |
 |---|---|
-| `blu-novo-front/` (wireframes clientes/financeiro/mobile) | → monorepo `design/telas/blu/` |
+| `blu-novo-front/` (wireframes clientes/financeiro/mobile) | → monorepo `design/telas/blu/` ✅ |
 | `blu-design-system/` (DS legado) | → monorepo `design/design-systems/blu-original/` |
 | `blu-memory-api/` (página do dono) | → monorepo `design/telas/brain/` |
-| `brand-hub/` (landing deepblue.company) | tokens/identidade → monorepo `design/design-systems/brand-hub/`; o SITE continua em projetos/Cloud Run (deploy não muda) |
+| `brand-hub/` (protótipo) | site canônico já é `monorepo/apps/brand-hub`; tokens → `design-systems/brand-hub/` |
 
 **Migração em fases** (sem quebrar previews da 8899):
-1. Fase 1 — criar `textos/` + `referencias/` no projetos (seed com o que já foi
-   aprovado) e o README-mapa nos dois repos. Nada move.
+1. Fase 1 (feita) — `textos/` + `referencias/` criados no projetos (seed); mapa nos repos.
 2. Fase 2 — mover `apresentacoes/` (deck) para o lugar definitivo em projetos.
 3. Fase 3 — criar `monorepo/design/` (branch própria) e migrar wireframes
-   (`git mv` preserva histórico); atualizar symlinks do preview.
-4. Fase 4 — formalizar DS `blu-novo` como pacote importável (tokens + temas) e
-   apps passam a importar.
+   (`git mv` preserva histórico); atualizar symlinks do preview. ✅ aprovado
+4. Fase 4 — formalizar DS `blu-novo` + `brand-hub` (tokens lintados) e apps
+   passam a importar.
 
-## 6. Decisões em aberto
+## 6. Decisões fechadas (18/08)
 
-1. O site **brand-hub** (deepblue.company): fica em projetos (deploy atual) com
-   só os tokens no monorepo — ok? Ou ele também migra pro monorepo?
-2. DS como **pacote importável**: formato `design/design-systems/<nome>` já
-   serve, ou quer virar package em `libs/` (ex: `@deepblue/ds-blu-novo`)?
-3. **Wireframes HTML** atuais entram no monorepo como `design/telas/` na Fase 3
-   — confirma? (preview 8899 passa a apontar pro monorepo)
-4. `deepblue/materiais/` (posts, instagram) continua como está — ok?
+1. **Brand-hub:** o site já vive no monorepo (`apps/brand-hub`); os tokens
+   viram um design system também — candidato: **tema claro do Blu**.
+2. **Formato DS:** pasta `design/design-systems/<nome>` — ✅ (sem pacote `libs/`).
+3. **Wireframes HTML:** entram no monorepo como `design/telas/` na Fase 3 — ✅.
+4. **`deepblue/materiais/`:** mantém; `assets/` ganha subpastas por tipo
+   (`logo/`, `icons/`, `fonts/`, `social/`) — ✅.
+
+### 6.1 Em aberto (decisão leve, pode ser na Fase 4)
+
+- Os tokens do site (identidade clara `#F2F2F0`/`#1D4ED8`) viram um DS próprio
+  `brand-hub/` ou o **5º tema** do `blu-novo/` ("claro")? Caminho sugerido:
+  começar como `design-systems/brand-hub/` (identidade da empresa) e, se o app
+  Blu adotar, promover a tema do blu-novo.

@@ -1,0 +1,22 @@
+# Capability: Consultoria — textos
+
+## One-liner
+Antes da ferramenta, o diagnóstico.
+
+## Parágrafo curto
+Consultoria primeiro, tecnologia depois. Diagnosticamos o negócio, mapeamos as
+dores e priorizamos onde a IA agrega valor antes de propor qualquer ferramenta.
+
+## Parágrafo completo
+Todo projeto de IA começa com pessoas: escutamos as dores do cliente,
+entendemos o processo e mapeamos as oportunidades. O diagnóstico vira um mapa
+de impacto — onde a IA agrega valor, priorizado por impacto e viabilidade — e
+só então entram as ferramentas, nos pontos exatos em que mudam o dia a dia.
+A IA é uma poderosa ferramenta que usamos para impactar o diagnóstico que
+fizemos.
+
+## Bullets
+- Diagnóstico primeiro (escutar → entender → mapear)
+- Mapa de impacto priorizado por impacto e viabilidade
+- Ferramentas só nos pontos de impacto
+- Serviços: AI Readiness, Pilot Program, Transformation Roadmap, Advisory
