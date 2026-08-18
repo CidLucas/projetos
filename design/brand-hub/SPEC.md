@@ -174,10 +174,14 @@ Seções:
 | Elementos gráficos Labs e Consulting uniformes | ✅ mesmo componente `.prow`/`.crow` | ✅ |
 | Logo real Deep Blue (círculos + wordmark) na barra e rodapé | ✅ referência Soft A (SVG 28px + serif wordmark) | ✅ |
 | Nav Empresa/Blu/Formly/Brain removida; chips das marcas Blu + Formly no canto superior direito | ✅ chips → `show('blu')`/`show('formly')` | ✅ |
-| Cards Labs e Consulting com mesmo tamanho ao expandir | ✅ `align-items:stretch` + span line-clamp 2 + `min-height` (457=457 desktop e mobile) | ✅ |
+| Chips Blu/Formly removidos da barra (decisão 18/08 pós-preview) | ✅ barra só com o logo | ✅ |
+| Botão "Ver o Brain MCP" no hero removido (decisão 18/08) | ✅ só CTA primário "Conhecer os produtos" | ✅ |
+| Cards Labs e Consulting com mesmo tamanho ao expandir | ✅ estrutura fixa (t-sub min-height + span line-clamp 2) | ✅ |
+| Expansão INDEPENDENTE dos cards (clique num não expande o outro) | ✅ `align-items:start` — QA: clicar Labs → Labs 457, Consulting 154; ambos abertos → 457=457 | ✅ |
 | Cladtek visível no strip | ✅ trocado para wordmark 2025 (o PNG 2022 era 100% transparente) + `brightness(0)` | ✅ |
 | Drawers de caso (sem `alert()`) | ✅ portados do Soft A (pf1/pf2/pf4 + pf-rastro); Templo abre site externo | ✅ |
 | Botão de áudio no diagnóstico (Groq Whisper) | ✅ frontend no hub + serviço `brand-hub-voice` no monorepo (PENDENTE deploy) | ⚠️ aguarda deploy |
+| Quadro de mensagem "Me conta aqui, com as suas palavras" no diagnóstico | ✅ substitui áudio + e-mail: textarea + Enviar → `POST /api/message` (backend testado local: 200 ok, 400 vazio) | ✅ (backend aguarda deploy) |
 | Marcadores de protótipo removidos (.note, título interno, alerts) | ✅ | ✅ |
 | SEO: title/meta/OG/canonical/favicon/theme-color | ✅ | ✅ |
 | CTAs reais: Formly → `formly.ink`, Brain → `app.mcp-brain.com`, email `contato@deepblue.company` | ✅ | ✅ |
@@ -202,19 +206,22 @@ A única diferença: Labs tem CTA "Abrir produto" (navega), Consulting não
 - [x] hOverflow false · h1Lines ≤ 3 · Phosphor carregado · 4 views alternam
 - [x] Labs expande com 3 `.prow` ("Abrir produto") · Consulting expande com 3 `.crow` — **alturas iguais ao expandir** (desktop e mobile; medir via `getBoundingClientRect` com `.open` nos dois)
 - [x] Todos os CTAs de produto têm `href` real (`app.bluapp.ink`, `formly.ink`, `app.mcp-brain.com`) e `target="_blank"` (quando saem do hub)
-- [x] Logo real (SVG círculos + wordmark) na barra e rodapé; chips Blu/Formly no canto superior direito; nav Empresa/Blu/Formly/Brain ausente
+- [x] Logo real (SVG círculos + wordmark) na barra e rodapé; sem chips, sem nav Empresa/Blu/Formly/Brain
 - [x] Drawers de caso abrem sem `alert()`; Cladtek usa wordmark 2025 + `brightness(0)` (o PNG 2022 é transparente)
-- [x] Botão de áudio: grava (MediaRecorder) → POST `VOICE_API` → estados rec/sending/ok/err
+- [x] Expansão independente: clicar num card não expande o outro (`align-items:start`); ambos abertos ficam iguais
+- [x] Quadro de mensagem: textarea → POST `API_BASE/api/message` → estados enviando/ok/err
 - [x] Preview: `http://100.69.231.7:8899/brand-hub/` (servidor local em projetos-repo/design/brand-hub)
 
-## 11b. Serviço brand-hub-voice (áudio → Groq Whisper)
+## 11b. Serviço brand-hub-voice (mensagens/áudio do site)
 
 - Local: `monorepo/produtos/brand-hub-voice/` (FastAPI + Dockerfile + README).
+- Endpoints: `POST /api/message` {text} → e-mail (usado pelo hub); `POST /api/voice`
+  → Groq Whisper (mantido, sem frontend por ora).
 - Deploy: `make brand-hub-voice-deploy` (requer secrets `GROQ_API_KEY`, `SMTP_USER`,
   `SMTP_PASS` no Secret Manager; ver README do serviço).
-- Frontend: constante `VOICE_API` no `index.html` — atualizar se a URL do Cloud Run mudar.
-- Testado localmente: `/health` ok, POST `/api/voice` chega à Groq (falhou só na
-  autenticação porque a chave na EC2 é placeholder — sem chave real nesta máquina).
+- Frontend: constante `API_BASE` no `index.html` — atualizar se a URL do Cloud Run mudar.
+- Testado local: `/health` ok, `/api/message` 200 ok + 400 vazio, `/api/voice` chega
+  à Groq (falhou só na autenticação porque a chave na EC2 é placeholder).
 
 ## 12. Fora de escopo (v1)
 

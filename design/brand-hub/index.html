@@ -33,12 +33,6 @@
   .hubbar .brand em { font-style:italic; color:var(--db-mut); }
   .hubbar .brand svg { flex-shrink:0; }
   .hubbar .sp { flex:1; }
-  .pbrands { display:flex; gap:8px; align-items:center; }
-  .chip { display:inline-flex; align-items:center; gap:7px; padding:8px 14px; border-radius:999px; border:1px solid var(--db-line); background:#fff; color:var(--db-ink); font:700 12.5px/1 var(--pjs); text-decoration:none; cursor:pointer; transition:.15s; }
-  .chip:hover { border-color:var(--db-ac); box-shadow:0 1px 4px rgba(16,24,40,.06); }
-  .chip i { font-size:14px; flex-shrink:0; }
-  .chip.b i { color:#8C5FDB; }
-  .chip.f i { color:#7A2E3F; }
 
   .wrap { max-width:1120px; margin:0 auto; padding:0 24px; }
 
@@ -64,7 +58,7 @@
   .sec .k { font:700 11px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--db-ac); margin-bottom:10px; }
   .sec h2 { font-size:clamp(26px,3vw,36px); font-weight:800; letter-spacing:-.02em; }
   .sec .sub { color:var(--db-mut); font-size:15px; line-height:1.6; margin-top:10px; max-width:60ch; }
-  .bento2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:36px; align-items:stretch; }
+  .bento2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:36px; align-items:start; }
   @media (max-width:900px){ .bento2{grid-template-columns:1fr;} }
   .svc { background:#fff; border:1px solid var(--db-line); border-radius:20px; padding:26px; cursor:pointer; transition:.18s; display:flex; flex-direction:column; }
   .svc:hover { border-color:var(--db-ac); }
@@ -127,13 +121,16 @@
   .blk.r.wide .k, .blk.r.wide h2, .blk.r.wide .sub { text-align:right; }
   .blk.r.wide .sub { margin-left:auto; }
 
-  /* ===== ÁUDIO (diagnóstico) ===== */
-  .vstatus { margin-top:14px; font:500 11px/1.5 var(--mono); color:var(--db-mut); max-width:520px; min-height:17px; }
-  .vstatus.rec { color:#1D4ED8; }
+  /* ===== MENSAGEM (diagnóstico) ===== */
+  .msgbox { margin-top:28px; max-width:520px; background:#fff; border:1px solid var(--db-line); border-radius:16px; padding:16px; }
+  .msgbox textarea { width:100%; border:0; outline:0; resize:vertical; background:transparent; font:500 14.5px/1.6 var(--pjs); color:var(--db-ink); min-height:88px; }
+  .msgbox textarea::placeholder { color:var(--db-mut); }
+  .msgbox .msg-row { display:flex; justify-content:flex-end; align-items:center; gap:10px; margin-top:8px; }
+  .msgbox .msg-hint { font:500 11px/1.4 var(--mono); color:var(--db-mut); }
+  .vstatus { margin-top:12px; font:500 11px/1.5 var(--mono); color:var(--db-mut); max-width:520px; min-height:17px; }
   .vstatus.ok { color:#15803D; }
   .vstatus.err { color:#B91C1C; }
   .vstatus b { font-weight:700; }
-  .vstatus .tx { display:block; margin-top:6px; color:var(--db-mut); font-family:var(--inter); font-size:12.5px; line-height:1.5; }
 
   /* ===== LANDING BLU ===== */
   .blu { background:#03071C; color:#eef0f8; font-family:var(--inter); }
@@ -241,7 +238,6 @@
   @media (max-width:640px){
     .hubbar .in { flex-wrap:wrap; gap:8px 10px; padding:10px 16px; }
     .hubbar .brand { font-size:21px; }
-    .chip { padding:7px 11px; font-size:11.5px; }
     .wrap { padding:0 16px; }
     .blk { padding:44px 16px; }
   }
@@ -261,11 +257,6 @@
       </svg>
       Deep<em>Blue</em>
     </a>
-    <div class="sp"></div>
-    <div class="pbrands">
-      <a class="chip b" href="#" onclick="show('blu');return false;"><i class="ph ph-buildings"></i> Blu</a>
-      <a class="chip f" href="#" onclick="show('formly');return false;"><i class="ph ph-chats-circle"></i> formly</a>
-    </div>
   </div>
 </div>
 
@@ -276,7 +267,6 @@
     <p>A Deep Blue ajuda empresas a usar inteligência artificial como ferramenta de negócio. Entregamos sistemas que agregam valor, com resultado mensurável.</p>
     <div class="ctas">
       <a class="btn p" href="#" onclick="show('blu');return false;">Conhecer os produtos <i class="ph ph-arrow-right"></i></a>
-      <a class="btn g" href="#" onclick="show('brain');return false;">Ver o Brain MCP</a>
     </div>
   </div>
 
@@ -373,11 +363,13 @@
       <div class="k">Consultoria</div>
       <h2>Antes da tecnologia, o diagnóstico.</h2>
       <p class="sub">Todo projeto começa com pessoas: escutamos as dores do cliente, entendemos o processo e mapeamos oportunidades. A IA é a ferramenta que usamos para impactar o diagnóstico.</p>
-      <div class="ctas" style="margin-top:28px;">
-        <button class="btn p" id="voice-btn" onclick="toggleRec()"><i class="ph ph-microphone" id="voice-ic"></i><span id="voice-btn-tx">Enviar um áudio</span></button>
-        <a class="btn g" href="mailto:contato@deepblue.company">contato@deepblue.company</a>
+      <div class="msgbox">
+        <textarea id="msg-text" placeholder="Me conta aqui, com as suas palavras: qual é o desafio da sua operação?"></textarea>
+        <div class="msg-row">
+          <button class="btn p" id="msg-btn" onclick="sendMsg()">Enviar <i class="ph ph-arrow-right"></i></button>
+        </div>
+        <div class="vstatus" id="msg-status"></div>
       </div>
-      <div class="vstatus" id="voice-status"></div>
     </div>
   </div>
 </div>
@@ -554,50 +546,31 @@
   }
   document.addEventListener('keydown', e => { if(e.key === 'Escape') closeDrawer(); });
 
-  // ===== Diagnóstico por voz (Groq Whisper) =====
+  // ===== Mensagem do diagnóstico =====
   // Endpoint do serviço Cloud Run brand-hub-voice — atualizar após o deploy se a URL mudar.
-  const VOICE_API = 'https://brand-hub-voice-960100281317.southamerica-east1.run.app/api/voice';
-  let vRec = null, vChunks = [];
-  const vBtn = document.getElementById('voice-btn');
-  const vTx = document.getElementById('voice-btn-tx');
-  const vIc = document.getElementById('voice-ic');
-  const vSt = document.getElementById('voice-status');
-  function vStatus(cls, html){ vSt.className = 'vstatus' + (cls ? ' ' + cls : ''); vSt.innerHTML = html; }
-  function vBtnLabel(ic, tx){ vIc.className = 'ph ' + ic; vTx.textContent = tx; }
-  function toggleRec(){
-    if(vRec && vRec.state === 'recording'){ vRec.stop(); return; }
-    navigator.mediaDevices.getUserMedia({audio:true}).then(s => {
-      vRec = new MediaRecorder(s, {mimeType:'audio/webm'});
-      vChunks = [];
-      vRec.ondataavailable = e => vChunks.push(e.data);
-      vRec.onstop = async () => {
-        s.getTracks().forEach(t => t.stop());
-        const blob = new Blob(vChunks, {type:'audio/webm'});
-        vBtnLabel('ph-circle', 'Enviando...');
-        vStatus('', 'Transcrevendo seu áudio...');
-        const fd = new FormData();
-        fd.append('audio', blob, 'mensagem.webm');
-        try {
-          const r = await fetch(VOICE_API, {method:'POST', body:fd});
-          const j = await r.json().catch(() => ({}));
-          if(r.ok){
-            vBtnLabel('ph-check-circle', 'Áudio enviado');
-            vStatus('ok', 'Recebemos sua mensagem. <b>Retornamos em até 48h.</b>' + (j.transcript ? `<span class="tx">“${j.transcript}”</span>` : ''));
-          } else {
-            vBtnLabel('ph-microphone', 'Enviar um áudio');
-            vStatus('err', 'Não deu certo. Tente de novo ou escreva para contato@deepblue.company.');
-          }
-        } catch {
-          vBtnLabel('ph-microphone', 'Enviar um áudio');
-          vStatus('err', 'Não deu certo. Tente de novo ou escreva para contato@deepblue.company.');
-        }
-      };
-      vRec.start();
-      vBtnLabel('ph-stop-circle', 'Parar gravação');
-      vStatus('rec', 'Gravando... fale sobre o seu desafio. Ao terminar, clique em parar.');
+  const API_BASE = 'https://brand-hub-voice-960100281317.southamerica-east1.run.app';
+  function sendMsg(){
+    const ta = document.getElementById('msg-text');
+    const st = document.getElementById('msg-status');
+    const btn = document.getElementById('msg-btn');
+    const text = ta.value.trim();
+    if(!text){ st.className = 'vstatus err'; st.textContent = 'Escreva sua mensagem primeiro.'; ta.focus(); return; }
+    btn.disabled = true;
+    st.className = 'vstatus';
+    st.textContent = 'Enviando...';
+    fetch(API_BASE + '/api/message', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({text: text})
+    }).then(r => {
+      if(!r.ok) throw new Error('http ' + r.status);
+      st.className = 'vstatus ok';
+      st.innerHTML = 'Recebemos sua mensagem. <b>Retornamos em até 48h.</b>';
+      ta.value = '';
     }).catch(() => {
-      vStatus('err', 'Microfone indisponível. Escreva para contato@deepblue.company.');
-    });
+      st.className = 'vstatus err';
+      st.textContent = 'Não deu certo. Tente de novo ou escreva para contato@deepblue.company.';
+    }).finally(() => { btn.disabled = false; });
   }
 </script>
 </body>
