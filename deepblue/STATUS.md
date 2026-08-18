@@ -4,19 +4,22 @@
 
 ## Pronto
 
-- [x] Estrutura do slug `deepblue/` criada (apresentacoes / materiais / docs)
+- [x] Estrutura do slug `deepblue/` criada (materiais / docs)
 - [x] **Deck institucional v3** — 12 slides, identidade landing (clara)
       (`apresentacoes/deck-empresa/deck-empresa-v3.pptx` + `.pdf` + roteiro `.md`)
 - [x] **Google Slides (v3)** — `Hermes - Entregáveis/Apresentações`
       https://docs.google.com/presentation/d/1N5afNlNAKRIdfVKG00SgPvM8LpMZ0lWykDaYiwwD-W4/edit
       (conta cid.lucas@gmail.com; link com leitura p/ qualquer um)
+- [x] **Estrutura v3 aprovada** — monorepo = design reutilizável; projetos = textos/referências/apresentações
+- [x] **Fase 1** — `textos/` (copy library 4 camadas) + `referencias/` + assets com subpastas
+- [x] **Fase 2** — `apresentacoes/` no lugar definitivo (deck-empresa = padrão)
 
 ## Em andamento
 
-- [ ] Revisão do Lucas no deck v1 (copy + visual) → v2
-- [ ] Definir formato de distribuição do deck (Google Slides editável? PDF?)
+- [ ] Fase 3 — monorepo `design/`: migrar wireframes (telas), DS (design-systems), componentes
+- [ ] Decisão §6.1: identidade brand-hub → DS próprio ou 5º tema do blu-novo ("claro")
 - [ ] Calendário/grade de posts LinkedIn (3-4 primeiros posts)
-- [ ] Posts Instagram — primeiros 3 gráficos (identidade Blu)
+- [ ] Posts Instagram — primeiros 3 gráficos (identidade landing clara)
 
 ## Bloqueios / pendências
 

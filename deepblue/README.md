@@ -19,15 +19,17 @@ Voz Deep Blue (`deep-blue-voice`); o visual segue a identidade do site
 deepblue/
 ├── README.md                        ← este arquivo
 ├── STATUS.md                        ← o que está pronto / em andamento
-├── apresentacoes/
-│   └── deck-empresa/                ← deck institucional (pptx + pdf + roteiro md)
 ├── materiais/
 │   ├── linkedin/                    ← posts (markdown + imagem quando houver)
 │   ├── instagram/                   ← posts gráficos (svg/png)
-│   └── assets/                      ← logo, paleta, fontes, elementos
+│   └── assets/                      ← logo/, icons/, fonts/, social/
 └── docs/
-    └── 00-estrutura-materiais.md    ← regras e fluxo dos materiais
+    ├── 00-estrutura-materiais.md    ← regras e fluxo dos materiais
+    └── 01-proposta-estrutura-documentos.md  ← estrutura geral (design × textos)
 ```
+
+> Apresentações (padrão) vivem em `../apresentacoes/` — ver
+> `apresentacoes/README.md`. Copy library em `../textos/`.
 
 ## Regras
 
