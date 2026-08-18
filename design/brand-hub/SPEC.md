@@ -88,9 +88,9 @@ até 720px dentro do bloco.
 - **Card Labs** (claro, expansível):
   - Tag: `Labs · assinatura` · Título: Deep Blue Labs · Sub: "Ferramentas de IA prontas para usar. Desenvolvemos produtos para resolver alguns problemas recorrentes no nosso trabalho e os disponibilizamos caso você também precise."
   - Expandir → lista de 3 produtos (`.prow`), cada um com ícone, nome, descrição 1 linha, CTA **"Abrir produto"** com `arrow-up-right`:
-    - Blu (gradiente `#7E5CC8→#3A80D4`) → `show('blu')` — "Escritório virtual de agentes para PMEs: uma plataforma completa que junta agentes, documentos e conhecimento num lugar só."
-    - Formly (`#7A2E3F`) → `show('formly')` — "Questionários e formulários com transcrição de áudio, distribuição e geração por IA. Todo o ciclo de vida de uma pesquisa, ciclo de entrevistas ou mapeamento de processo de forma escalável, rápida e simplificada."
-    - Brain MCP (`#1D4ED8`) → `show('brain')` — "Memória corporativa para agentes: todo o conhecimento da sua empresa mapeado, direto no agente que você já usa. Além de uma memória viva para o seu agente aprender trabalhando com você e sua equipe."
+    - Blu (gradiente `#7E5CC8→#3A80D4`) → `https://app.bluapp.ink` (nova aba) — "Escritório virtual de agentes para PMEs: uma plataforma completa que junta agentes, documentos e conhecimento num lugar só."
+    - Formly (`#7A2E3F`) → `https://formly.ink` (nova aba) — "Questionários e formulários com transcrição de áudio, distribuição e geração por IA. Todo o ciclo de vida de uma pesquisa, ciclo de entrevistas ou mapeamento de processo de forma escalável, rápida e simplificada."
+    - Brain MCP (`#1D4ED8`) → `https://app.mcp-brain.com` (nova aba) — "Memória corporativa para agentes: todo o conhecimento da sua empresa mapeado, direto no agente que você já usa. Além de uma memória viva para o seu agente aprender trabalhando com você e sua equipe."
 - **Card Consulting** (escuro `#101828`, expansível):
   - Tag: `Consulting · escopo fechado` · Título: Deep Blue Consulting
   - Sub: "Diagnóstico e estratégia de adoção. Projetos sob medida para a necessidade do seu negócio."
@@ -192,6 +192,15 @@ Seções:
 | SEO: title/meta/OG/canonical/favicon/theme-color | ✅ | ✅ |
 | CTAs reais: Formly → `formly.ink`, Brain → `app.mcp-brain.com`, email `contato@deepblue.company` | ✅ | ✅ |
 | `app.bluapp.ink` resolvendo | ❌ DNS do Blu pendente (CNAME no Namecheap) | ⚠️ aguarda infra |
+
+**ATUALIZAÇÃO 18/08 (links de Labs):** os CTAs "Abrir produto" dos 3 `.prow`
+agora abrem o **produto real** em nova aba (`target="_blank"` + `rel="noopener"`):
+Blu → `https://app.bluapp.ink`, Formly → `https://formly.ink`, Brain →
+`https://app.mcp-brain.com`. Verificado no DOM (QA) e HTTP: `formly.ink` e
+`app.mcp-brain.com` respondem 200; **`app.bluapp.ink` ainda NÃO serve HTTP**
+(DNS aponta para Cloudflare mas falta o CloudFront/alternate domain do blu_web)
+— link fica apontado para o domínio real, mas o Blu só abre quando a infra do
+Blu estiver no ar (ver `operacoes-dominios.md` seção 4).
 
 Regra da uniformidade: **Labs e Consulting usam o MESMO componente de linha**
 (ícone em quadrado 40px + título bold + descrição 12px + borda + radius 14px).
