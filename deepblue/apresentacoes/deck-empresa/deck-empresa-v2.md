@@ -1,9 +1,15 @@
-# Deck Institucional Deep Blue — v1 (roteiro)
+# Deck Institucional Deep Blue — v2 (roteiro)
 
-**Arquivo:** `deck-empresa-v1.pptx` / `.pdf`
+**Arquivo:** `deck-empresa-v2.pptx` / `.pdf`
 **Data:** 2026-08-18
 **Uso:** apresentar a empresa, vender projeto, reunião de descoberta
 **Público:** PME em reunião comercial / parceiro / investidor
+**Identidade:** landing deepblue.company (clara) — canvas `#F2F2F0`, cards
+brancos, accent `#1D4ED8`, kickers JetBrains Mono, termo-chave em Instrument
+Serif itálico. Card Consulting dark `#101828` (contraste do site).
+
+> Fontes para fidelidade total no PowerPoint: Plus Jakarta Sans, Inter,
+> Instrument Serif e JetBrains Mono (Google Fonts).
 
 ---
 

@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Gera o deck institucional da Deep Blue (v1) — dark #080C1A, identidade Blu.
+"""Gera o deck institucional da Deep Blue (v2 — identidade da landing, clara).
+
+Identidade brand-hub (deepblue.company): canvas #F2F2F0, cards brancos borda
+#E2E4E0, ink #101828, accent #1D4ED8, kickers JetBrains Mono, termo-chave em
+Instrument Serif itálico. Card Consulting dark #101828 (contraste do site).
 
 Uso: python3 build_deck.py [output.pptx]
 """
@@ -11,26 +15,31 @@ from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.util import Inches, Pt
 
-# ---------- Design tokens (identidade Deep Blue / Blu) ----------
-BG        = "080C1A"   # preto azulado
-SURFACE   = "111827"   # cards
-BORDER    = "1E293B"   # hairlines
-TEXT      = "F1F5F9"
-DIM       = "94A3B8"
-ACCENT    = "3B82F6"
-ACCENT_LT = "60A5FA"
-DEEP      = "1D4ED8"
+# ---------- Design tokens (identidade landing — brand-hub) ----------
+CANVAS    = "F2F2F0"
+CARD      = "FFFFFF"
+CARD_DARK = "101828"
+DARK_INK  = "0B1120"
+LINE      = "E2E4E0"
+DARK_LINE = "1E293B"
+INK       = "101828"
+MUT       = "5B6472"
+MUT_DARK  = "B8BEC9"
+AC        = "1D4ED8"
+AC2       = "60A5FA"
+TAG_BG    = "EDF1FC"   # rgba(29,78,216,.08) sobre branco
+PILL_LINE = "D6DEEF"   # azul claro sutil
+
 FONT_T    = "Plus Jakarta Sans"
 FONT_B    = "Inter"
-
-def C(hexstr):
-    return RGBColor.from_string(hexstr)
+FONT_SERIF = "Instrument Serif"
+FONT_MONO = "JetBrains Mono"
 
 def rgb(c):
-    return C(c)
+    return RGBColor.from_string(c)
 
-# ---------- Helpers ----------
-def add_rect(slide, x, y, w, h, fill=None, line=None, line_w=0.75, shape=MSO_SHAPE.RECTANGLE, radius=None):
+def add_rect(slide, x, y, w, h, fill=None, line=None, line_w=0.75,
+             shape=MSO_SHAPE.RECTANGLE):
     sp = slide.shapes.add_shape(shape, Inches(x), Inches(y), Inches(w), Inches(h))
     if fill:
         sp.fill.solid()
@@ -47,7 +56,6 @@ def add_rect(slide, x, y, w, h, fill=None, line=None, line_w=0.75, shape=MSO_SHA
 
 def add_text(slide, x, y, w, h, runs, align=PP_ALIGN.LEFT, anchor=MSO_ANCHOR.TOP,
              space_after=0, line_spacing=None):
-    """runs: list of paragraphs; each paragraph = list of (text, dict) run specs."""
     tb = slide.shapes.add_textbox(Inches(x), Inches(y), Inches(w), Inches(h))
     tf = tb.text_frame
     tf.word_wrap = True
@@ -70,53 +78,74 @@ def add_text(slide, x, y, w, h, runs, align=PP_ALIGN.LEFT, anchor=MSO_ANCHOR.TOP
             f.bold = style.get("bold", False)
             f.italic = style.get("italic", False)
             f.name = style.get("font", FONT_B)
-            f.color.rgb = rgb(style.get("color", TEXT))
+            f.color.rgb = rgb(style.get("color", INK))
     return tb
 
 def kicker(slide, text, x=0.7, y=0.72):
-    return add_text(slide, x, y, 11.9, 0.35, [[(text.upper(), {"size": 11, "bold": True,
-            "color": ACCENT_LT, "font": FONT_B})]])
+    """Kicker da landing: JetBrains Mono, uppercase, accent."""
+    return add_text(slide, x, y, 11.9, 0.35, [[(text.upper(),
+            {"size": 11, "bold": True, "color": AC, "font": FONT_MONO})]])
 
-def title(slide, text, x=0.7, y=1.02, size=30, w=11.9, color=TEXT, line_spacing=1.04):
-    return add_text(slide, x, y, w, 1.6, [[(text, {"size": size, "bold": True,
-            "color": color, "font": FONT_T})]], line_spacing=line_spacing)
+def title(slide, main, soft=None, x=0.7, y=1.02, size=29, w=11.9,
+          line_spacing=1.05):
+    """Título PJS 800 ink + termo-chave em Instrument Serif itálico accent."""
+    runs = [[(main, {"size": size, "bold": True, "color": INK, "font": FONT_T})]]
+    if soft:
+        runs[0].append((" " + soft, {"size": size, "bold": False, "italic": True,
+                                      "color": AC, "font": FONT_SERIF}))
+    return add_text(slide, x, y, w, 1.6, runs, line_spacing=line_spacing)
 
-def sub(slide, text, x=0.7, y=2.5, size=14, w=11.9, color=DIM, line_spacing=1.3):
-    return add_text(slide, x, y, w, 0.8, [[(text, {"size": size, "color": color})]],
+def sub(slide, text, x=0.7, y=2.45, size=14, w=11.9, color=MUT, line_spacing=1.32):
+    return add_text(slide, x, y, w, 0.85, [[(text, {"size": size, "color": color})]],
                     line_spacing=line_spacing)
 
-def card(slide, x, y, w, h, fill=SURFACE, line=BORDER, shape=MSO_SHAPE.ROUNDED_RECTANGLE):
+def card(slide, x, y, w, h, fill=CARD, line=LINE, shape=MSO_SHAPE.ROUNDED_RECTANGLE):
     return add_rect(slide, x, y, w, h, fill=fill, line=line, shape=shape)
 
+def tag(slide, text, x, y, fill=TAG_BG, color=AC, size=10, w=None):
+    """Pill de tag da landing (mono uppercase)."""
+    tw = w if w else 0.32 + 0.088 * len(text)
+    sp = add_rect(slide, x, y, tw, 0.34, fill=fill, shape=MSO_SHAPE.ROUNDED_RECTANGLE)
+    add_text(slide, x + 0.12, y + 0.075, tw - 0.24, 0.22,
+             [[(text.upper(), {"size": size, "bold": True, "color": color,
+                               "font": FONT_MONO})]])
+    return sp
+
 def footer(slide, page, total=12):
-    add_rect(slide, 0.7, 7.08, 11.93, 0.012, fill=BORDER)
-    add_text(slide, 0.7, 7.14, 6, 0.3, [[("Deep Blue · deepblue.company", {"size": 9, "color": DIM})]])
-    add_text(slide, 11.5, 7.14, 1.13, 0.3, [[(f"{page:02d} / {total:02d}", {"size": 9, "color": DIM})]],
-             align=PP_ALIGN.RIGHT)
+    add_rect(slide, 0.7, 7.08, 11.93, 0.012, fill=LINE)
+    add_text(slide, 0.7, 7.15, 6, 0.3, [[("Deep Blue · deepblue.company",
+            {"size": 9.5, "color": MUT})]])
+    add_text(slide, 11.5, 7.15, 1.13, 0.3, [[(f"{page:02d} / {total:02d}",
+            {"size": 9.5, "color": MUT})]], align=PP_ALIGN.RIGHT)
 
-def mini_logo(slide, x=0.7, y=0.5, scale=0.32, with_word=True):
-    """Círculos concêntricos pequenos + wordmark (estilo nav do site)."""
-    rings = [("0E1A3A", 1.00), ("162E63", 0.72), ("1D4ED8", 0.44), ("60A5FA", 0.16)]
-    for color, rel in rings:
-        d = 0.42 * rel * scale * 3
-        add_rect(slide, x + (0.42*scale - d/2), y + (0.42*scale - d/2), d, d,
+def brand(slide, x=0.7, y=0.5, scale=1.0, dark_text=False):
+    """Logo da landing: círculos concêntricos (favicon) + wordmark Serif."""
+    colors = ["D0D2D5", "AFB3BB", "5D7FDF", "1D4ED8"]
+    steps = [1.0, 0.73, 0.45, 0.18]
+    base = 0.34 * scale
+    for color, rel in zip(colors, steps):
+        d = base * 2 * rel
+        add_rect(slide, x + (base - d/2), y + (base - d/2), d, d,
                  fill=color, shape=MSO_SHAPE.OVAL)
-    if with_word:
-        add_text(slide, x + 0.42*scale + 0.12, y + 0.03, 3.2, 0.35,
-                 [[("Deep ", {"size": 15, "bold": True, "color": ACCENT, "font": FONT_T}),
-                   ("Blue", {"size": 15, "bold": True, "color": TEXT, "font": FONT_T})]])
+    add_text(slide, x + base * 2 + 0.14, y + 0.02, 3.4, 0.4,
+             [[("Deep ", {"size": 16.5, "bold": False, "color": INK, "font": FONT_SERIF}),
+               ("Blue", {"size": 16.5, "italic": True, "color": MUT, "font": FONT_SERIF})]])
 
-def big_rings(slide, cx, cy, base=3.0, max_color="60A5FA"):
-    """Círculos concêntricos grandes e quietos (fundo)."""
-    colors = ["0A1226", "0D1A38", "10244C", "14305F"]
-    steps = [1.0, 0.74, 0.48, 0.22]
-    for i, (color, rel) in enumerate(zip(colors, steps)):
-        d = base * rel * 2
+def rings(slide, cx, cy, base=3.0):
+    """Círculos concêntricos grandes e quietos (fundo claro)."""
+    colors = ["E4E6EA", "D0D6E2", "B3C2E4", "8FABE0"]
+    steps = [1.0, 0.73, 0.45, 0.18]
+    for color, rel in zip(colors, steps):
+        d = base * 2 * rel
         add_rect(slide, cx - d/2, cy - d/2, d, d, fill=color, shape=MSO_SHAPE.OVAL)
 
-def dots(slide, x, y, n=3, color=ACCENT, d=0.07, gap=0.12):
+def dots(slide, x, y, n=3, color=AC, d=0.07, gap=0.12):
     for i in range(n):
         add_rect(slide, x + i*gap, y, d, d, fill=color, shape=MSO_SHAPE.OVAL)
+
+def blk_mut(slide, text, x, y, w=5.2, size=13.5, color=MUT, line_spacing=1.3):
+    return add_text(slide, x, y, w, 1.6, [[(text, {"size": size, "color": color})]],
+                    line_spacing=line_spacing)
 
 # ---------- Build ----------
 def build(path):
@@ -126,57 +155,58 @@ def build(path):
 
     # ===== Slide 1 — Capa =====
     s = prs.slides.add_slide(blank)
-    add_rect(s, 0, 0, 13.333, 7.5, fill=BG)
-    big_rings(s, 10.6, 4.1, base=3.1)
-    mini_logo(s, x=0.7, y=0.62, scale=0.34)
-    add_rect(s, 0.7, 2.6, 0.55, 0.045, fill=ACCENT)
-    add_text(s, 0.7, 2.85, 7.6, 0.4, [[("INTELIGÊNCIA ARTIFICIAL COMO FERRAMENTA DE NEGÓCIO",
-            {"size": 12, "bold": True, "color": ACCENT_LT})]])
-    add_text(s, 0.7, 3.35, 8.4, 2.2,
-             [[("Sua operação já funciona.", {"size": 42, "bold": True, "color": TEXT, "font": FONT_T})],
-              [("A IA pode ser o que falta para ela render mais.", {"size": 42, "bold": True, "color": TEXT, "font": FONT_T})]],
+    add_rect(s, 0, 0, 13.333, 7.5, fill=CANVAS)
+    rings(s, 11.2, 3.9, base=3.1)
+    brand(s, 0.7, 0.62, scale=1.15)
+    add_rect(s, 0.7, 2.5, 0.55, 0.045, fill=AC)
+    add_text(s, 0.7, 2.75, 7.6, 0.4, [[("INTELIGÊNCIA ARTIFICIAL COMO FERRAMENTA DE NEGÓCIO",
+            {"size": 12, "bold": True, "color": AC, "font": FONT_MONO})]])
+    add_text(s, 0.7, 3.25, 8.6, 2.2,
+             [[("Sua operação já funciona.", {"size": 40, "bold": True, "color": INK, "font": FONT_T})],
+              [("A IA pode ser o que falta para ela ", {"size": 40, "bold": True, "color": INK, "font": FONT_T}),
+               ("render mais.", {"size": 40, "bold": False, "italic": True, "color": AC, "font": FONT_SERIF})]],
              line_spacing=1.02, space_after=6)
-    add_text(s, 0.7, 5.75, 7.8, 0.9,
-             [[("Entregamos sistemas que agregam valor, com resultado mensurável. ", {"size": 15, "color": DIM}),
-               ("Consultoria primeiro. Tecnologia depois.", {"size": 15, "color": TEXT, "bold": True})]],
+    add_text(s, 0.7, 5.7, 7.8, 0.9,
+             [[("Entregamos sistemas que agregam valor, com resultado mensurável. ", {"size": 15, "color": MUT}),
+               ("Consultoria primeiro. Tecnologia depois.", {"size": 15, "bold": True, "color": INK})]],
              line_spacing=1.35)
-    add_text(s, 0.7, 6.85, 8, 0.35, [[("deepblue.company", {"size": 12, "color": DIM})]])
+    add_text(s, 0.7, 6.85, 8, 0.35, [[("deepblue.company", {"size": 12, "color": MUT})]])
     s.notes_slide.notes_text_frame.text = (
         "Abertura. Uma frase: a Deep Blue existe para PMEs que já rodam bem e querem render mais. "
         "Nosso ponto de partida é sempre o negócio; a IA entra depois, como ferramenta.")
 
     # ===== Slide 2 — Quem somos =====
     s = prs.slides.add_slide(blank)
-    add_rect(s, 0, 0, 13.333, 7.5, fill=BG)
-    mini_logo(s, 0.7, 0.5, scale=0.3)
+    add_rect(s, 0, 0, 13.333, 7.5, fill=CANVAS)
+    brand(s, 0.7, 0.5, scale=1.0)
     kicker(s, "A empresa")
-    title(s, "A Deep Blue ajuda empresas a usar IA como ferramenta de negócio.", size=29)
+    title(s, "A Deep Blue ajuda empresas a usar IA como", soft="ferramenta de negócio.", size=27)
     sub(s, "Fundada para um perfil específico: PMEs que já rodam bem e querem render mais. "
-           "Duas frentes, uma lógica — entender o negócio antes de propor tecnologia.", y=2.62)
-    card(s, 0.7, 3.5, 5.8, 2.6)
-    add_text(s, 1.0, 3.85, 5.2, 0.4, [[("Deep Blue Labs", {"size": 18, "bold": True, "color": ACCENT_LT, "font": FONT_T})]])
-    add_text(s, 1.0, 4.4, 5.2, 1.6,
-             [[("Produtos em assinatura. ", {"size": 13.5, "bold": True, "color": TEXT})],
-              [("Plataforma Blu, agentes de IA e assistentes que centralizam conhecimento e automatizam o dia a dia.", {"size": 13.5, "color": DIM})]],
-             line_spacing=1.3, space_after=4)
-    card(s, 6.83, 3.5, 5.8, 2.6)
-    add_text(s, 7.13, 3.85, 5.2, 0.4, [[("Deep Blue Consulting", {"size": 18, "bold": True, "color": ACCENT_LT, "font": FONT_T})]])
-    add_text(s, 7.13, 4.4, 5.2, 1.6,
-             [[("Projetos de diagnóstico e estratégia. ", {"size": 13.5, "bold": True, "color": TEXT})],
-              [("Mapeamos processos, identificamos onde a IA agrega valor e priorizamos casos de uso.", {"size": 13.5, "color": DIM})]],
-             line_spacing=1.3, space_after=4)
+           "Duas frentes, uma lógica — entender o negócio antes de propor tecnologia.", y=2.45)
+    # Card Labs (branco)
+    card(s, 0.7, 3.45, 5.8, 2.75)
+    tag(s, "Labs · assinatura", 1.0, 3.75)
+    add_text(s, 1.0, 4.25, 5.2, 0.5, [[("Deep Blue Labs", {"size": 19, "bold": True, "color": INK, "font": FONT_T})]])
+    blk_mut(s, "Produtos em assinatura. Plataforma Blu, agentes de IA e assistentes que "
+               "centralizam conhecimento e automatizam o dia a dia.", 1.0, 4.85, size=13.5)
+    # Card Consulting (dark — contraste do site)
+    card(s, 6.83, 3.45, 5.8, 2.75, fill=CARD_DARK, line=DARK_LINE)
+    tag(s, "Consulting · escopo fechado", 7.13, 3.75, color=AC2, fill="1B2543")
+    add_text(s, 7.13, 4.25, 5.2, 0.5, [[("Deep Blue Consulting", {"size": 19, "bold": True, "color": "F2F2F0", "font": FONT_T})]])
+    blk_mut(s, "Projetos de diagnóstico e estratégia. Mapeamos processos, identificamos onde "
+               "a IA agrega valor e priorizamos casos de uso.", 7.13, 4.85, color=MUT_DARK, size=13.5)
     footer(s, 2)
     s.notes_slide.notes_text_frame.text = (
         "Apresentar as duas frentes como complementares: Labs é o produto contínuo, "
         "Consulting é a porta de entrada. Muitos clientes começam no diagnóstico e viram assinante depois.")
 
-    # ===== Slide 3 — O ponto cego =====
+    # ===== Slide 3 — O contexto =====
     s = prs.slides.add_slide(blank)
-    add_rect(s, 0, 0, 13.333, 7.5, fill=BG)
-    mini_logo(s, 0.7, 0.5, scale=0.3)
+    add_rect(s, 0, 0, 13.333, 7.5, fill=CANVAS)
+    brand(s, 0.7, 0.5, scale=1.0)
     kicker(s, "O contexto")
-    title(s, "PMEs rodam o país. E o dono decide sozinho.", size=30)
-    sub(s, "Dados de mercado que explicam por que a IA vira ferramenta — e não brinquedo.", y=2.5)
+    title(s, "PMEs rodam o país. E o dono decide", soft="sozinho.", size=29)
+    sub(s, "Dados de mercado que explicam por que a IA vira ferramenta — e não brinquedo.", y=2.42)
     stats = [
         ("90%", "dos líderes de PMEs tomam decisões sozinhos em 5 áreas diferentes, sem apoio estruturado", "Itaú · Locomotiva"),
         ("30%", "do PIB brasileiro é movido por PMEs, que respondem por metade dos empregos ativos", "Sebrae"),
@@ -184,22 +214,21 @@ def build(path):
     ]
     for i, (num, txt, src) in enumerate(stats):
         x = 0.7 + i * 4.05
-        card(s, x, 3.3, 3.75, 3.0)
-        add_text(s, x + 0.3, 3.6, 3.15, 1.0, [[(num, {"size": 44, "bold": True, "color": ACCENT_LT, "font": FONT_T})]])
-        add_text(s, x + 0.3, 4.55, 3.15, 1.4, [[(txt, {"size": 12.5, "color": DIM})]], line_spacing=1.3)
-        add_text(s, x + 0.3, 5.85, 3.15, 0.3, [[(src, {"size": 10, "color": "64748B", "italic": True})]])
+        card(s, x, 3.3, 3.75, 3.05)
+        add_text(s, x + 0.3, 3.62, 3.15, 1.0, [[(num, {"size": 44, "bold": True, "color": AC, "font": FONT_T})]])
+        add_text(s, x + 0.3, 4.6, 3.15, 1.35, [[(txt, {"size": 12.5, "color": MUT})]], line_spacing=1.3)
+        add_text(s, x + 0.3, 5.9, 3.15, 0.3, [[(src, {"size": 10, "color": "8A93A3", "italic": True})]])
     footer(s, 3)
     s.notes_slide.notes_text_frame.text = (
         "Fonte: Itaú/Locomotiva, Sebrae (2024-2025). O dono de PME decide sozinho em 5 áreas; "
-        "a Deep Blue existe pra tirar peso das costas dele. '90% dos líderes de PMEs tomam decisões "
-        "sozinhos em 5 áreas diferentes enquanto tentam manter o negócio rodando.'")
+        "a Deep Blue existe pra tirar peso das costas dele.")
 
-    # ===== Slide 4 — Como trabalhamos =====
+    # ===== Slide 4 — Método =====
     s = prs.slides.add_slide(blank)
-    add_rect(s, 0, 0, 13.333, 7.5, fill=BG)
-    mini_logo(s, 0.7, 0.5, scale=0.3)
+    add_rect(s, 0, 0, 13.333, 7.5, fill=CANVAS)
+    brand(s, 0.7, 0.5, scale=1.0)
     kicker(s, "Método")
-    title(s, "Não começamos pela tecnologia. Começamos pelo negócio.", size=29)
+    title(s, "Não começamos pela tecnologia. Começamos pelo", soft="negócio.", size=28)
     steps = [
         ("01", "Escutar", "Entrevistas com as pessoas, não só com os dados. As dores aparecem no dia a dia, não no relatório."),
         ("02", "Entender", "Processos, decisões, gargalos. Onde o tempo some e onde o conhecimento fica preso."),
@@ -207,13 +236,13 @@ def build(path):
     ]
     for i, (num, t, txt) in enumerate(steps):
         x = 0.7 + i * 4.05
-        card(s, x, 3.3, 3.75, 3.0)
-        add_text(s, x + 0.3, 3.6, 3.15, 0.6, [[(num, {"size": 15, "bold": True, "color": "64748B", "font": FONT_T})]])
-        add_text(s, x + 0.3, 4.15, 3.15, 0.5, [[(t, {"size": 20, "bold": True, "color": TEXT, "font": FONT_T})]])
-        add_text(s, x + 0.3, 4.75, 3.15, 1.4, [[(txt, {"size": 12.5, "color": DIM})]], line_spacing=1.3)
+        card(s, x, 3.3, 3.75, 3.05)
+        add_text(s, x + 0.3, 3.62, 3.15, 0.6, [[(num, {"size": 14, "bold": True, "color": "9AA3B2", "font": FONT_MONO})]])
+        add_text(s, x + 0.3, 4.2, 3.15, 0.5, [[(t, {"size": 20, "bold": True, "color": INK, "font": FONT_T})]])
+        blk_mut(s, txt, x + 0.3, 4.85, w=3.15, size=12.5)
     add_text(s, 0.7, 6.55, 11.9, 0.4,
              [[("Todo projeto de IA começa com pessoas: escutamos as dores do cliente, entendemos o processo e mapeamos oportunidades.",
-                {"size": 13, "color": TEXT, "italic": True})]])
+                {"size": 13, "italic": True, "color": INK})]])
     footer(s, 4)
     s.notes_slide.notes_text_frame.text = (
         "Frase do fundador (padrão ouro). Consultoria primeiro, tecnologia depois. "
@@ -221,10 +250,11 @@ def build(path):
 
     # ===== Slide 5 — O diagnóstico =====
     s = prs.slides.add_slide(blank)
-    add_rect(s, 0, 0, 13.333, 7.5, fill=BG)
-    mini_logo(s, 0.7, 0.5, scale=0.3)
+    add_rect(s, 0, 0, 13.333, 7.5, fill=CANVAS)
+    brand(s, 0.7, 0.5, scale=1.0)
     kicker(s, "O que encontramos")
-    title(s, "As dores se repetem. Conhecimento preso, decisão solitária, processo manual.", size=27)
+    title(s, "As dores se repetem. Conhecimento preso, decisão", soft="solitária,", size=26)
+    add_text(s, 0.7, 1.78, 11.9, 0.5, [[("processo manual.", {"size": 26, "bold": True, "color": INK, "font": FONT_T})]])
     pains = [
         ("Conhecimento espalhado", "Documentos, planilhas e SOPs em lugares diferentes. O que a equipe sabe não vira ativo da empresa."),
         ("Decisão solitária", "O dono decide sozinho, sem ter os números na mão no momento da decisão. Tudo depende da cabeça dele."),
@@ -232,22 +262,22 @@ def build(path):
     ]
     for i, (t, txt) in enumerate(pains):
         x = 0.7 + i * 4.05
-        card(s, x, 3.3, 3.75, 2.9)
-        dots(s, x + 0.3, 3.62, n=3, d=0.075, gap=0.13)
-        add_text(s, x + 0.3, 3.95, 3.15, 0.5, [[(t, {"size": 17, "bold": True, "color": TEXT, "font": FONT_T})]])
-        add_text(s, x + 0.3, 4.55, 3.15, 1.5, [[(txt, {"size": 12.5, "color": DIM})]], line_spacing=1.3)
+        card(s, x, 2.75, 3.75, 3.6)
+        dots(s, x + 0.3, 3.05, n=3, d=0.075, gap=0.13)
+        add_text(s, x + 0.3, 3.4, 3.15, 0.5, [[(t, {"size": 17, "bold": True, "color": INK, "font": FONT_T})]])
+        blk_mut(s, txt, x + 0.3, 4.05, w=3.15, size=12.5)
     footer(s, 5)
     s.notes_slide.notes_text_frame.text = (
         "Essas três dores aparecem em quase todo diagnóstico. Use exemplos do cliente real "
         "que você está apresentando: troque os genéricos pelas dores específicas dele.")
 
-    # ===== Slide 6 — O que entregamos =====
+    # ===== Slide 6 — Capabilities =====
     s = prs.slides.add_slide(blank)
-    add_rect(s, 0, 0, 13.333, 7.5, fill=BG)
-    mini_logo(s, 0.7, 0.5, scale=0.3)
+    add_rect(s, 0, 0, 13.333, 7.5, fill=CANVAS)
+    brand(s, 0.7, 0.5, scale=1.0)
     kicker(s, "Capabilities")
-    title(s, "Ferramentas de IA a serviço do seu negócio.", size=30)
-    sub(s, "Três frentes. Todas inseridas nos pontos de impacto que o diagnóstico revelou.", y=2.5)
+    title(s, "Ferramentas de IA a serviço do seu", soft="negócio.", size=29)
+    sub(s, "Três frentes. Todas inseridas nos pontos de impacto que o diagnóstico revelou.", y=2.42)
     caps = [
         ("Plataforma", "Sistemas completos: documentos, conhecimento e agentes de IA num ambiente só. A operação centralizada."),
         ("Fluxos de agentes", "Processos automatizados com agentes integrados aos sistemas que o cliente já usa. Cada um na sua função."),
@@ -255,10 +285,10 @@ def build(path):
     ]
     for i, (t, txt) in enumerate(caps):
         x = 0.7 + i * 4.05
-        card(s, x, 3.3, 3.75, 3.0)
-        add_text(s, x + 0.3, 3.6, 3.15, 0.5, [[(t, {"size": 19, "bold": True, "color": ACCENT_LT, "font": FONT_T})]])
-        add_text(s, x + 0.3, 4.25, 3.15, 1.7, [[(txt, {"size": 12.5, "color": DIM})]], line_spacing=1.3)
-        add_rect(s, x + 0.3, 5.95, 0.5, 0.045, fill=ACCENT)
+        card(s, x, 3.3, 3.75, 3.05)
+        tag(s, t, x + 0.3, 3.62, w=1.85)
+        blk_mut(s, txt, x + 0.3, 4.3, w=3.15, size=12.5)
+        add_rect(s, x + 0.3, 5.95, 0.5, 0.045, fill=AC)
     footer(s, 6)
     s.notes_slide.notes_text_frame.text = (
         "Visão geral antes de aprofundar. As três frentes respondem a três perguntas do cliente: "
@@ -266,11 +296,11 @@ def build(path):
 
     # ===== Slide 7 — Plataforma Blu =====
     s = prs.slides.add_slide(blank)
-    add_rect(s, 0, 0, 13.333, 7.5, fill=BG)
-    mini_logo(s, 0.7, 0.5, scale=0.3)
+    add_rect(s, 0, 0, 13.333, 7.5, fill=CANVAS)
+    brand(s, 0.7, 0.5, scale=1.0)
     kicker(s, "Capability · Plataforma")
-    title(s, "Plataforma Blu. O escritório virtual da sua empresa.", size=29)
-    sub(s, "Um ambiente só para o que hoje está espalhado: documentos, conhecimento e agentes.", y=2.5)
+    title(s, "Plataforma Blu. O escritório virtual da sua", soft="empresa.", size=28)
+    sub(s, "Um ambiente só para o que hoje está espalhado: documentos, conhecimento e agentes.", y=2.42)
     feats = [
         ("Agentes de IA", "Trabalham nos seus processos: atendimento, documentos, relatórios, rotinas."),
         ("Pipeline de documentos", "Do lead ao contrato, tudo num fluxo único e rastreável."),
@@ -280,22 +310,22 @@ def build(path):
     for i, (t, txt) in enumerate(feats):
         col, row = i % 2, i // 2
         x = 0.7 + col * 6.03
-        y = 3.3 + row * 1.85
-        card(s, x, y, 5.8, 1.62)
-        add_text(s, x + 0.3, y + 0.22, 5.2, 0.4, [[(t, {"size": 16, "bold": True, "color": TEXT, "font": FONT_T})]])
-        add_text(s, x + 0.3, y + 0.68, 5.2, 0.85, [[(txt, {"size": 12.5, "color": DIM})]], line_spacing=1.25)
+        y = 3.3 + row * 1.8
+        card(s, x, y, 5.8, 1.58)
+        add_text(s, x + 0.3, y + 0.2, 5.2, 0.4, [[(t, {"size": 16, "bold": True, "color": INK, "font": FONT_T})]])
+        blk_mut(s, txt, x + 0.3, y + 0.66, size=12.5)
     footer(s, 7)
     s.notes_slide.notes_text_frame.text = (
         "Blu é o carro-chefe do Labs. Se o cliente tem a operação espalhada em planilha, e-mail e Drive, "
         "o Blu centraliza. Demo ao vivo se possível: mostrar busca semântica na sala de estratégia.")
 
-    # ===== Slide 8 — Fluxos de agentes =====
+    # ===== Slide 8 — Agentes =====
     s = prs.slides.add_slide(blank)
-    add_rect(s, 0, 0, 13.333, 7.5, fill=BG)
-    mini_logo(s, 0.7, 0.5, scale=0.3)
+    add_rect(s, 0, 0, 13.333, 7.5, fill=CANVAS)
+    brand(s, 0.7, 0.5, scale=1.0)
     kicker(s, "Capability · Agentes")
-    title(s, "Agentes que trabalham dentro do seu processo.", size=29)
-    sub(s, "Implantados nos sistemas que o cliente já usa. Cada um com uma função clara.", y=2.5)
+    title(s, "Agentes que trabalham dentro do seu", soft="processo.", size=28)
+    sub(s, "Implantados nos sistemas que o cliente já usa. Cada um com uma função clara.", y=2.42)
     agents = [
         ("TalentFlow", "RH — triagem de currículos, agendamento, onboarding, análise de turnover."),
         ("KnowledgeBase", "Conhecimento — respostas com o contexto da empresa, não texto genérico."),
@@ -305,13 +335,13 @@ def build(path):
     for i, (t, txt) in enumerate(agents):
         col, row = i % 2, i // 2
         x = 0.7 + col * 6.03
-        y = 3.3 + row * 1.85
-        card(s, x, y, 5.8, 1.62)
-        add_text(s, x + 0.3, y + 0.22, 5.2, 0.4, [[(t, {"size": 16, "bold": True, "color": ACCENT_LT, "font": FONT_T})]])
-        add_text(s, x + 0.3, y + 0.68, 5.2, 0.85, [[(txt, {"size": 12.5, "color": DIM})]], line_spacing=1.25)
+        y = 3.3 + row * 1.8
+        card(s, x, y, 5.8, 1.58)
+        add_text(s, x + 0.3, y + 0.2, 5.2, 0.4, [[(t, {"size": 16, "bold": True, "color": INK, "font": FONT_T})]])
+        blk_mut(s, txt, x + 0.3, y + 0.66, size=12.5)
     add_text(s, 0.7, 6.55, 11.9, 0.4,
              [[("Nossa operação roda com 6 agentes assim. A mesma tecnologia que entregamos para clientes.",
-                {"size": 13, "color": TEXT, "italic": True})]])
+                {"size": 13, "italic": True, "color": INK})]])
     footer(s, 8)
     s.notes_slide.notes_text_frame.text = (
         "Agentes sob medida são o ticket mais alto (implantação + mensalidade). "
@@ -319,11 +349,11 @@ def build(path):
 
     # ===== Slide 9 — Assistente diário =====
     s = prs.slides.add_slide(blank)
-    add_rect(s, 0, 0, 13.333, 7.5, fill=BG)
-    mini_logo(s, 0.7, 0.5, scale=0.3)
+    add_rect(s, 0, 0, 13.333, 7.5, fill=CANVAS)
+    brand(s, 0.7, 0.5, scale=1.0)
     kicker(s, "Capability · Assistente")
-    title(s, "Pergunte em linguagem natural. Ele entende o seu negócio.", size=29)
-    sub(s, "Um assistente diário — um Hermes trabalhando para você, com o contexto da empresa.", y=2.5)
+    title(s, "Pergunte em linguagem natural. Ele entende o seu", soft="negócio.", size=27)
+    sub(s, "Um assistente diário — um Hermes trabalhando para você, com o contexto da empresa.", y=2.42)
     card(s, 0.7, 3.3, 7.4, 3.1)
     flow = [
         ("1 · Entende o contexto", "Processo, gargalos e histórico da empresa. Não responde no vácuo."),
@@ -333,14 +363,14 @@ def build(path):
     for i, (t, txt) in enumerate(flow):
         y = 3.55 + i * 0.95
         add_text(s, 1.05, y, 6.8, 0.8,
-                 [[(t + "  ", {"size": 14, "bold": True, "color": TEXT, "font": FONT_T}),
-                   (txt, {"size": 13, "color": DIM})]], line_spacing=1.25)
-    card(s, 8.4, 3.3, 4.23, 3.1, fill="0C1024", line=DEEP)
-    add_text(s, 8.75, 3.62, 3.6, 0.4, [[("Exemplo", {"size": 11, "bold": True, "color": ACCENT_LT})]])
-    add_text(s, 8.75, 4.1, 3.6, 2.2,
+                 [[(t + "  ", {"size": 14, "bold": True, "color": INK, "font": FONT_T}),
+                   (txt, {"size": 13, "color": MUT})]], line_spacing=1.25)
+    card(s, 8.4, 3.3, 4.23, 3.1, fill="F8F9FC", line=PILL_LINE)
+    tag(s, "Exemplo", 8.75, 3.62, fill=TAG_BG, w=1.05)
+    add_text(s, 8.75, 4.15, 3.6, 2.1,
              [[("\u201cQuantas propostas foram enviadas este mês e quais estão paradas há mais de uma semana?\u201d",
-                {"size": 13, "color": TEXT, "italic": True})],
-              [("→ Busca, cruza e responde com os números da casa.", {"size": 12.5, "color": DIM})]],
+                {"size": 13, "italic": True, "color": INK, "font": FONT_SERIF})],
+              [("→ Busca, cruza e responde com os números da casa.", {"size": 12.5, "color": MUT})]],
              line_spacing=1.35, space_after=10)
     footer(s, 9)
     s.notes_slide.notes_text_frame.text = (
@@ -349,37 +379,35 @@ def build(path):
 
     # ===== Slide 10 — O método =====
     s = prs.slides.add_slide(blank)
-    add_rect(s, 0, 0, 13.333, 7.5, fill=BG)
-    mini_logo(s, 0.7, 0.5, scale=0.3)
+    add_rect(s, 0, 0, 13.333, 7.5, fill=CANVAS)
+    brand(s, 0.7, 0.5, scale=1.0)
     kicker(s, "Como entra a tecnologia")
-    title(s, "Diagnóstico primeiro. Ferramentas nos pontos de impacto.", size=29)
-    sub(s, "Entendemos as dores do cliente e inserimos as ferramentas exatamente onde elas mudam o dia a dia.", y=2.5)
-    card(s, 0.7, 3.5, 5.8, 2.7)
-    add_text(s, 1.0, 3.85, 5.2, 0.5, [[("1 · Diagnóstico", {"size": 18, "bold": True, "color": ACCENT_LT, "font": FONT_T})]])
-    add_text(s, 1.0, 4.45, 5.2, 1.6,
-             [[("Gargalos e dores mapeados com o cliente: onde o tempo some, onde a decisão trava, onde o conhecimento fica preso.",
-                {"size": 13.5, "color": DIM})]], line_spacing=1.3)
-    add_text(s, 6.9, 4.3, 0.9, 0.9, [[("→", {"size": 40, "bold": True, "color": ACCENT, "font": FONT_T})]])
-    card(s, 7.83, 3.5, 4.8, 2.7)
-    add_text(s, 8.13, 3.85, 4.2, 0.5, [[("2 · Inserção", {"size": 18, "bold": True, "color": ACCENT_LT, "font": FONT_T})]])
-    add_text(s, 8.13, 4.45, 4.2, 1.6,
-             [[("Ferramentas de IA nos pontos de impacto do diagnóstico. Cada uma responde a uma dor mapeada.",
-                {"size": 13.5, "color": DIM})]], line_spacing=1.3)
+    title(s, "Diagnóstico primeiro. Ferramentas nos pontos de", soft="impacto.", size=28)
+    sub(s, "Entendemos as dores do cliente e inserimos as ferramentas exatamente onde elas mudam o dia a dia.", y=2.42)
+    card(s, 0.7, 3.45, 5.8, 2.7)
+    tag(s, "1 · Diagnóstico", 1.0, 3.75, w=2.2)
+    blk_mut(s, "Gargalos e dores mapeados com o cliente: onde o tempo some, onde a decisão trava, "
+               "onde o conhecimento fica preso.", 1.0, 4.4, size=13.5)
+    add_text(s, 6.9, 4.25, 0.9, 0.9, [[("→", {"size": 40, "bold": True, "color": AC, "font": FONT_T})]])
+    card(s, 7.83, 3.45, 4.8, 2.7)
+    tag(s, "2 · Inserção", 8.13, 3.75, w=2.2)
+    blk_mut(s, "Ferramentas de IA nos pontos de impacto do diagnóstico. Cada uma responde a uma dor mapeada.",
+            8.13, 4.4, size=13.5)
     add_text(s, 0.7, 6.55, 11.9, 0.4,
              [[("A IA é uma poderosa ferramenta que usamos para impactar o diagnóstico que fizemos.",
-                {"size": 13, "color": TEXT, "italic": True})]])
+                {"size": 13, "italic": True, "color": INK})]])
     footer(s, 10)
     s.notes_slide.notes_text_frame.text = (
         "O coração da proposta: nada de ferramenta sem diagnóstico. Esse é o slide que separa "
         "a Deep Blue de quem vende IA pronta. Feche com a frase do fundador.")
 
-    # ===== Slide 11 — Vitrine =====
+    # ===== Slide 11 — Prova viva =====
     s = prs.slides.add_slide(blank)
-    add_rect(s, 0, 0, 13.333, 7.5, fill=BG)
-    mini_logo(s, 0.7, 0.5, scale=0.3)
+    add_rect(s, 0, 0, 13.333, 7.5, fill=CANVAS)
+    brand(s, 0.7, 0.5, scale=1.0)
     kicker(s, "Prova viva")
-    title(s, "Usamos o que vendemos.", size=30)
-    sub(s, "Nossa operação roda com agentes de IA. A mesma tecnologia que entregamos para clientes.", y=2.5)
+    title(s, "Usamos o que", soft="vendemos.", size=30)
+    sub(s, "Nossa operação roda com agentes de IA. A mesma tecnologia que entregamos para clientes.", y=2.42)
     team = [
         ("Writer", "Propostas, documentação, conteúdo"),
         ("PM", "Cronogramas, riscos, status"),
@@ -391,10 +419,10 @@ def build(path):
     for i, (t, txt) in enumerate(team):
         col, row = i % 3, i // 3
         x = 0.7 + col * 4.05
-        y = 3.4 + row * 1.7
-        card(s, x, y, 3.75, 1.5)
-        add_text(s, x + 0.3, y + 0.2, 3.15, 0.4, [[("Hermes " + t, {"size": 15, "bold": True, "color": ACCENT_LT, "font": FONT_T})]])
-        add_text(s, x + 0.3, y + 0.68, 3.15, 0.7, [[(txt, {"size": 12, "color": DIM})]], line_spacing=1.2)
+        y = 3.4 + row * 1.65
+        card(s, x, y, 3.75, 1.45)
+        add_text(s, x + 0.3, y + 0.18, 3.15, 0.4, [[("Hermes " + t, {"size": 15, "bold": True, "color": AC, "font": FONT_T})]])
+        add_text(s, x + 0.3, y + 0.66, 3.15, 0.7, [[(txt, {"size": 12, "color": MUT})]], line_spacing=1.2)
     footer(s, 11)
     s.notes_slide.notes_text_frame.text = (
         "Os 6 agentes Hermes internos. Quando o cliente perguntar 'isso funciona?', "
@@ -402,11 +430,11 @@ def build(path):
 
     # ===== Slide 12 — Próximos passos =====
     s = prs.slides.add_slide(blank)
-    add_rect(s, 0, 0, 13.333, 7.5, fill=BG)
-    big_rings(s, 11.2, 1.9, base=2.2)
-    mini_logo(s, 0.7, 0.5, scale=0.3)
+    add_rect(s, 0, 0, 13.333, 7.5, fill=CANVAS)
+    rings(s, 11.4, 1.7, base=2.2)
+    brand(s, 0.7, 0.5, scale=1.0)
     kicker(s, "Próximos passos")
-    title(s, "Conta o seu desafio. A gente mapeia onde a IA agrega.", size=29)
+    title(s, "Conta o seu desafio. A gente mapeia onde a IA", soft="agrega.", size=28)
     steps = [
         ("1", "Diagnóstico gratuito", "Entendemos seu processo e suas dores. Sem compromisso, sem fórmula pronta."),
         ("2", "Mapa de impacto", "Onde a IA agrega valor no seu negócio, com priorização por impacto e viabilidade."),
@@ -415,14 +443,14 @@ def build(path):
     for i, (num, t, txt) in enumerate(steps):
         x = 0.7 + i * 4.05
         card(s, x, 3.4, 3.75, 2.7)
-        add_text(s, x + 0.3, 3.7, 1, 0.6, [[(num, {"size": 28, "bold": True, "color": "64748B", "font": FONT_T})]])
-        add_text(s, x + 0.3, 4.35, 3.15, 0.5, [[(t, {"size": 17, "bold": True, "color": TEXT, "font": FONT_T})]])
-        add_text(s, x + 0.3, 4.95, 3.15, 1.0, [[(txt, {"size": 12.5, "color": DIM})]], line_spacing=1.25)
-    add_text(s, 0.7, 6.45, 11.9, 0.5,
-             [[("deepblue.company  ·  ", {"size": 13, "color": DIM}),
-               ("formly.ink", {"size": 13, "color": ACCENT_LT, "bold": True}),
-               ("  ·  ", {"size": 13, "color": DIM}),
-               ("app.mcp-brain.com", {"size": 13, "color": ACCENT_LT, "bold": True})]])
+        add_text(s, x + 0.3, 3.7, 1, 0.6, [[(num, {"size": 28, "bold": True, "color": "9AA3B2", "font": FONT_MONO})]])
+        add_text(s, x + 0.3, 4.35, 3.15, 0.5, [[(t, {"size": 17, "bold": True, "color": INK, "font": FONT_T})]])
+        blk_mut(s, txt, x + 0.3, 4.95, w=3.15, size=12.5)
+    add_text(s, 0.7, 6.4, 11.9, 0.5,
+             [[("deepblue.company  ·  ", {"size": 13, "color": MUT}),
+               ("formly.ink", {"size": 13, "color": AC, "bold": True}),
+               ("  ·  ", {"size": 13, "color": MUT}),
+               ("app.mcp-brain.com", {"size": 13, "color": AC, "bold": True})]])
     footer(s, 12)
     s.notes_slide.notes_text_frame.text = (
         "Fechamento com ação: agendar o diagnóstico gratuito. O CTA real é a reunião de "
@@ -432,4 +460,4 @@ def build(path):
     print(f"OK -> {path} ({len(prs.slides._sldIdLst)} slides)")
 
 if __name__ == "__main__":
-    build(sys.argv[1] if len(sys.argv) > 1 else "deck-empresa-v1.pptx")
+    build(sys.argv[1] if len(sys.argv) > 1 else "deck-empresa-v2.pptx")
