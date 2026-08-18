@@ -29,7 +29,7 @@ Empresa (landing) → Labs (expandir) → Abrir produto → produto real (usar, 
 
 | Produto | Domínio | Estado | Deploy real hoje |
 |---|---|---|---|
-| Deep Blue (empresa) | `deepblue.company` | ✅ comprado 18/08 (Cloudflare) | hub estático — deploy pendente |
+| Deep Blue (empresa) | `deepblue.company` | ✅ comprado 18/08 (Cloudflare) | ✅ NO AR: `brand-hub-960100281317.southamerica-east1.run.app` (sha-05855ae) — falta domain mapping |
 | Blu | `bluapp.ink` (+ `app.bluapp.ink`) | ✅ comprado 18/08 (Namecheap) | blu_web S3+CloudFront (sem domínio próprio ainda) |
 | Formly | `formly.ink` (+ `app.formly.ink`) | ✅ comprado 18/08 (Namecheap) | `https://formly-web-xkndgpat3q-rj.a.run.app/` (Cloud Run) |
 | Brain MCP | `mcp-brain.com` (+ `app.mcp-brain.com`) | ✅ comprado 18/08 (Cloudflare) | gateway memory_api (deploy próprio) |
