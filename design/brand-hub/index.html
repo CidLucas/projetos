@@ -126,6 +126,10 @@
   .msgbox textarea { width:100%; border:0; outline:0; resize:vertical; background:transparent; font:500 14.5px/1.6 var(--pjs); color:var(--db-ink); min-height:88px; }
   .msgbox textarea::placeholder { color:var(--db-mut); }
   .msgbox .msg-row { display:flex; justify-content:flex-end; align-items:center; gap:10px; margin-top:8px; }
+  .msgbox .mic { width:44px; height:44px; border-radius:12px; border:1px solid var(--db-line); background:#fff; color:var(--db-ac); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:.15s; flex:none; }
+  .msgbox .mic:hover { border-color:var(--db-ac); }
+  .msgbox .mic.rec { background:var(--db-ac); color:#fff; border-color:var(--db-ac); animation:micpulse 1.2s ease-in-out infinite; }
+  @keyframes micpulse { 0%,100%{box-shadow:0 0 0 0 rgba(29,78,216,.35);} 50%{box-shadow:0 0 0 8px rgba(29,78,216,0);} }
   .msgbox .msg-hint { font:500 11px/1.4 var(--mono); color:var(--db-mut); }
   .vstatus { margin-top:12px; font:500 11px/1.5 var(--mono); color:var(--db-mut); max-width:520px; min-height:17px; }
   .vstatus.ok { color:#15803D; }
@@ -263,8 +267,8 @@
 <!-- ===== VIEW EMPRESA ===== -->
 <div class="view on" id="view-empresa">
   <div class="wrap hero">
-    <h1>Sua operação já funciona.<br>Nossas ferramentas de IA fazem ela <span class="soft">render mais.</span></h1>
-    <p>A Deep Blue ajuda empresas a usar inteligência artificial como ferramenta de negócio. Entregamos sistemas que agregam valor, com resultado mensurável.</p>
+    <h1>Sua operação já funciona.<br>A IA para ajudar ela a <span class="soft">render mais.</span></h1>
+    <p>A Deep Blue ajuda empresas a usar inteligência artificial como ferramenta de negócio — e entrega sistemas com resultado mensurável.</p>
     <div class="ctas">
       <a class="btn p" href="#" onclick="show('blu');return false;">Conhecer os produtos <i class="ph ph-arrow-right"></i></a>
     </div>
@@ -327,9 +331,9 @@
 
   <div class="blk l">
     <div class="in">
-      <div class="k">Quem confia</div>
-      <h2>Casos reais.</h2>
-      <p class="sub">Projetos que entregamos, com resultado mensurável. Cada logo abre a história do projeto.</p>
+      <div class="k">Projetos e parcerias</div>
+      <h2>Entregamos. E eles confiaram.</h2>
+      <p class="sub">Projetos com resultado mensurável — e parceiros que seguiram com a gente. Cada logo abre a história.</p>
       <div class="clients">
         <div class="cl-lbl">Com quem já trabalhamos</div>
         <div class="client-strip">
@@ -338,7 +342,7 @@
             <i class="ph ph-arrow-up-right cl-arrow"></i>
           </a>
           <a class="client-badge" href="#" onclick="openDrawer('pf2');return false;">
-            <img src="https://cladtek.com/wp-content/uploads/2025/04/Cladtek-Logo-White-No-Tag-1024x519.png" alt="Cladtek" style="height:20px" onerror="this.outerHTML='<span class=fb>CLADTEK</span>'">
+            <img src="https://cladtek.com/wp-content/uploads/2025/04/Cladtek-Logo-White-No-Tag-1024x519.png" alt="Cladtek" style="height:26px" onerror="this.outerHTML='<span class=fb>CLADTEK</span>'">
             <i class="ph ph-arrow-up-right cl-arrow"></i>
           </a>
           <a class="client-badge" href="#" onclick="openDrawer('pf4');return false;">
@@ -362,10 +366,11 @@
     <div class="in">
       <div class="k">Consultoria</div>
       <h2>Antes da tecnologia, o diagnóstico.</h2>
-      <p class="sub">Todo projeto começa com pessoas: escutamos as dores do cliente, entendemos o processo e mapeamos oportunidades. A IA é a ferramenta que usamos para impactar o diagnóstico.</p>
+      <p class="sub">Todo projeto começa com pessoas: escutamos as dores do cliente, entendemos o processo e mapeamos oportunidades. A IA é a ferramenta que usamos para impactar o diagnóstico. <b>Conta o seu desafio aqui embaixo — com as suas palavras, ou num áudio.</b></p>
       <div class="msgbox">
         <textarea id="msg-text" placeholder="Me conta aqui, com as suas palavras: qual é o desafio da sua operação?"></textarea>
         <div class="msg-row">
+          <button class="mic" id="mic-btn" onclick="toggleRec()" title="Enviar um áudio"><i class="ph ph-microphone" id="mic-ic"></i></button>
           <button class="btn p" id="msg-btn" onclick="sendMsg()">Enviar <i class="ph ph-arrow-right"></i></button>
         </div>
         <div class="vstatus" id="msg-status"></div>
@@ -571,6 +576,49 @@
       st.className = 'vstatus err';
       st.textContent = 'Não deu certo. Tente de novo ou escreva para contato@deepblue.company.';
     }).finally(() => { btn.disabled = false; });
+  }
+
+  // ===== Áudio (mic ao lado do quadro) — Groq Whisper via /api/voice =====
+  let vRec = null, vChunks = [];
+  const micBtn = document.getElementById('mic-btn');
+  const micIc = document.getElementById('mic-ic');
+  function micSet(icon, rec){
+    micIc.className = 'ph ' + icon;
+    micBtn.classList.toggle('rec', !!rec);
+    micBtn.title = rec ? 'Parar gravação' : 'Enviar um áudio';
+  }
+  function toggleRec(){
+    const st = document.getElementById('msg-status');
+    if(vRec && vRec.state === 'recording'){ vRec.stop(); return; }
+    navigator.mediaDevices.getUserMedia({audio:true}).then(s => {
+      vRec = new MediaRecorder(s, {mimeType:'audio/webm'});
+      vChunks = [];
+      vRec.ondataavailable = e => vChunks.push(e.data);
+      vRec.onstop = async () => {
+        s.getTracks().forEach(t => t.stop());
+        const blob = new Blob(vChunks, {type:'audio/webm'});
+        micSet('ph-circle', '');
+        st.className = 'vstatus'; st.textContent = 'Enviando e transcrevendo seu áudio...';
+        const fd = new FormData();
+        fd.append('audio', blob, 'mensagem.webm');
+        try {
+          const r = await fetch(API_BASE + '/api/voice', {method:'POST', body:fd});
+          if(!r.ok) throw new Error('http ' + r.status);
+          st.className = 'vstatus ok';
+          st.innerHTML = 'Recebemos seu áudio. <b>Retornamos em até 48h.</b>';
+        } catch {
+          st.className = 'vstatus err';
+          st.textContent = 'Não deu certo. Tente de novo ou escreva para contato@deepblue.company.';
+        }
+        micSet('ph-microphone', '');
+      };
+      vRec.start();
+      micSet('ph-stop-circle', 'rec');
+      st.className = 'vstatus'; st.textContent = 'Gravando... fale o seu desafio. Clique para parar.';
+    }).catch(() => {
+      st.className = 'vstatus err';
+      st.textContent = 'Microfone indisponível. Escreva no quadro ou para contato@deepblue.company.';
+    });
   }
 </script>
 </body>

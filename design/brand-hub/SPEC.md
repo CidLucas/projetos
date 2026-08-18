@@ -182,6 +182,9 @@ Seções:
 | Drawers de caso (sem `alert()`) | ✅ portados do Soft A (pf1/pf2/pf4 + pf-rastro); Templo abre site externo | ✅ |
 | Botão de áudio no diagnóstico (Groq Whisper) | ✅ frontend no hub + serviço `brand-hub-voice` no monorepo (PENDENTE deploy) | ⚠️ aguarda deploy |
 | Quadro de mensagem "Me conta aqui, com as suas palavras" no diagnóstico | ✅ substitui áudio + e-mail: textarea + Enviar → `POST /api/message` (backend testado local: 200 ok, 400 vazio) | ✅ (backend aguarda deploy) |
+| Mic ao lado do quadro (áudio → Groq Whisper) | ✅ botão 44px com estado de gravação → `POST /api/voice` (endpoint já existe no backend) | ✅ (backend aguarda deploy) |
+| Revisão de texto p/ ir ao ar: hero "Sua operação já funciona. A IA para ajudar ela a render mais." · casos → "Entregamos. E eles confiaram." · Consultoria com CTA "Conta o seu desafio aqui embaixo" | ✅ | ✅ |
+| Logo Cladtek maior no strip | ✅ 26px (era 20px) | ✅ |
 | Marcadores de protótipo removidos (.note, título interno, alerts) | ✅ | ✅ |
 | SEO: title/meta/OG/canonical/favicon/theme-color | ✅ | ✅ |
 | CTAs reais: Formly → `formly.ink`, Brain → `app.mcp-brain.com`, email `contato@deepblue.company` | ✅ | ✅ |
