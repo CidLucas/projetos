@@ -5,8 +5,11 @@
 ## Pronto
 
 - [x] Estrutura do slug `deepblue/` criada (apresentacoes / materiais / docs)
-- [x] **Deck institucional v1** — 12 slides, dark Blu
-      (`apresentacoes/deck-empresa/deck-empresa-v1.pptx` + `.pdf` + roteiro `.md`)
+- [x] **Deck institucional v3** — 12 slides, identidade landing (clara)
+      (`apresentacoes/deck-empresa/deck-empresa-v3.pptx` + `.pdf` + roteiro `.md`)
+- [x] **Google Slides (v3)** — `Hermes - Entregáveis/Apresentações`
+      https://docs.google.com/presentation/d/1N5afNlNAKRIdfVKG00SgPvM8LpMZ0lWykDaYiwwD-W4/edit
+      (conta cid.lucas@gmail.com; link com leitura p/ qualquer um)
 
 ## Em andamento
 
