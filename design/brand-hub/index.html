@@ -3,7 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Deep Blue — Como o usuário nos vê</title>
+<title>Deep Blue — IA como ferramenta de negócio</title>
+<meta name="description" content="A Deep Blue ajuda empresas a usar IA como ferramenta de negócio. Centralizamos dados, diagnosticamos processos e entregamos agentes de IA com resultado mensurável.">
+<link rel="canonical" href="https://deepblue.company/">
+<meta property="og:title" content="Deep Blue — IA como ferramenta de negócio">
+<meta property="og:description" content="Centralizamos dados, diagnosticamos processos e entregamos agentes de IA com resultado mensurável.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://deepblue.company/">
+<meta property="og:site_name" content="Deep Blue">
+<meta name="theme-color" content="#F2F2F0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52 52'%3E%3Ccircle cx='26' cy='26' r='22' fill='none' stroke='%23131F3E' stroke-width='1' opacity='0.15'/%3E%3Ccircle cx='26' cy='26' r='16' fill='none' stroke='%23131F3E' stroke-width='1.5' opacity='0.3'/%3E%3Ccircle cx='26' cy='26' r='10' fill='none' stroke='%231D4ED8' stroke-width='2' opacity='0.7'/%3E%3Ccircle cx='26' cy='26' r='4' fill='%231D4ED8'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
@@ -19,15 +28,17 @@
 
   /* ===== BARRA DE NAVEGAÇÃO DO HUB ===== */
   .hubbar { position:sticky; top:0; z-index:50; background:rgba(242,242,240,.92); backdrop-filter:blur(14px); border-bottom:1px solid var(--db-line); }
-  .hubbar .in { max-width:1120px; margin:0 auto; padding:12px 24px; display:flex; align-items:center; gap:18px; }
-  .hubbar .brand { display:flex; align-items:center; gap:10px; font-weight:800; font-size:15px; letter-spacing:-.02em; text-decoration:none; color:var(--db-ink); }
-  .hubbar .brand .ser { font-family:var(--serif); font-style:italic; font-weight:400; font-size:18px; color:var(--db-ac); }
+  .hubbar .in { max-width:1120px; margin:0 auto; padding:10px 24px; display:flex; align-items:center; gap:14px; }
+  .hubbar .brand { display:inline-flex; align-items:center; gap:10px; font-family:var(--serif); font-size:24px; letter-spacing:-.01em; text-decoration:none; color:var(--db-ink); }
+  .hubbar .brand em { font-style:italic; color:var(--db-mut); }
+  .hubbar .brand svg { flex-shrink:0; }
   .hubbar .sp { flex:1; }
-  .hubbar nav { display:flex; gap:4px; align-items:center; }
-  .hubbar nav a { font:600 12.5px/1 var(--pjs); color:var(--db-mut); text-decoration:none; padding:8px 13px; border-radius:999px; transition:.15s; }
-  .hubbar nav a:hover { color:var(--db-ink); background:#fff; }
-  .hubbar nav a.on { color:#fff; background:var(--db-ac); }
-  .note { max-width:1120px; margin:0 auto; padding:6px 24px; font:500 11px/1.6 var(--mono); color:var(--db-mut); }
+  .pbrands { display:flex; gap:8px; align-items:center; }
+  .chip { display:inline-flex; align-items:center; gap:7px; padding:8px 14px; border-radius:999px; border:1px solid var(--db-line); background:#fff; color:var(--db-ink); font:700 12.5px/1 var(--pjs); text-decoration:none; cursor:pointer; transition:.15s; }
+  .chip:hover { border-color:var(--db-ac); box-shadow:0 1px 4px rgba(16,24,40,.06); }
+  .chip i { font-size:14px; flex-shrink:0; }
+  .chip.b i { color:#8C5FDB; }
+  .chip.f i { color:#7A2E3F; }
 
   .wrap { max-width:1120px; margin:0 auto; padding:0 24px; }
 
@@ -53,9 +64,9 @@
   .sec .k { font:700 11px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--db-ac); margin-bottom:10px; }
   .sec h2 { font-size:clamp(26px,3vw,36px); font-weight:800; letter-spacing:-.02em; }
   .sec .sub { color:var(--db-mut); font-size:15px; line-height:1.6; margin-top:10px; max-width:60ch; }
-  .bento2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:36px; align-items:start; }
+  .bento2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:36px; align-items:stretch; }
   @media (max-width:900px){ .bento2{grid-template-columns:1fr;} }
-  .svc { background:#fff; border:1px solid var(--db-line); border-radius:20px; padding:26px; cursor:pointer; transition:.18s; }
+  .svc { background:#fff; border:1px solid var(--db-line); border-radius:20px; padding:26px; cursor:pointer; transition:.18s; display:flex; flex-direction:column; }
   .svc:hover { border-color:var(--db-ac); }
   .svc.dark { background:#101828; color:#F2F2F0; border-color:#1E293B; }
   .svc.dark:hover { border-color:var(--db-ac2); }
@@ -64,33 +75,30 @@
   .svc .tt { font-size:21px; font-weight:800; letter-spacing:-.02em; margin:10px 0 8px; display:flex; align-items:center; gap:10px; }
   .svc .tt .plus { font:700 20px/1 var(--pjs); color:var(--db-ac); transition:transform .2s; }
   .svc.dark .tt .plus { color:var(--db-ac2); }
-  .svc .t-sub { font-size:13.5px; line-height:1.6; color:var(--db-mut); }
+  .svc .t-sub { font-size:13.5px; line-height:1.6; color:var(--db-mut); min-height:44px; }
   .svc.dark .t-sub { color:rgba(242,242,240,.62); }
   .svc .expand { display:none; margin-top:18px; padding-top:18px; border-top:1px solid var(--db-line); }
   .svc.dark .expand { border-top-color:#1E293B; }
   .svc.open .expand { display:block; }
   .svc.open .tt .plus { transform:rotate(45deg); }
-  .plist { display:flex; flex-direction:column; gap:12px; }
+  .plist, .clist { display:flex; flex-direction:column; gap:12px; }
   .prow { display:flex; align-items:center; gap:13px; padding:12px 14px; border:1px solid var(--db-line); border-radius:14px; background:var(--db-canvas); text-decoration:none; color:var(--db-ink); transition:.15s; }
   .svc.dark .prow { background:#0B1120; border-color:#1E293B; color:#F2F2F0; }
   .prow:hover { border-color:var(--db-ac); }
   .prow .ic { width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:19px; color:#fff; flex:none; }
   .prow .tx { flex:1; min-width:0; }
   .prow .tx b { display:block; font-size:14px; font-weight:700; }
-  .prow .tx span { font-size:12px; color:var(--db-mut); display:block; margin-top:2px; line-height:1.45; }
-  .svc.dark .prow .tx span { color:rgba(242,242,240,.55); }
+  .prow .tx span, .crow .tx span { font-size:12px; color:var(--db-mut); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; margin-top:2px; line-height:1.45; min-height:34.8px; }
+  .svc.dark .prow .tx span, .svc.dark .crow .tx span { color:rgba(242,242,240,.55); }
   .prow .go { font:700 12px/1 var(--pjs); color:var(--db-ac); display:flex; align-items:center; gap:6px; flex:none; }
   .svc.dark .prow .go { color:var(--db-ac2); }
   /* Consulting usa o MESMO componente .prow — elementos gráficos uniformes com Labs */
-  .clist { display:flex; flex-direction:column; gap:12px; }
   .crow { display:flex; align-items:center; gap:13px; padding:12px 14px; border:1px solid var(--db-line); border-radius:14px; background:var(--db-canvas); color:var(--db-ink); }
   .svc.dark .crow { background:#0B1120; border-color:#1E293B; color:#F2F2F0; }
   .crow .ic { width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:19px; color:#fff; flex:none; background:var(--db-ink); }
   .svc.dark .crow .ic { background:var(--db-ac); }
   .crow .tx { flex:1; min-width:0; }
   .crow .tx b { display:block; font-size:14px; font-weight:700; }
-  .crow .tx span { font-size:12px; color:var(--db-mut); display:block; margin-top:2px; line-height:1.45; }
-  .svc.dark .crow .tx span { color:rgba(242,242,240,.55); }
 
   /* ===== CLIENTES (strip de logos, padrão antigo) ===== */
   .clients { margin-top:34px; padding-top:22px; border-top:1px solid var(--db-line); }
@@ -98,8 +106,8 @@
   .client-strip { display:flex; flex-wrap:wrap; gap:12px; }
   .client-badge { display:inline-flex; align-items:center; gap:8px; padding:12px 18px; background:#fff; border:1px solid var(--db-line); border-radius:14px; cursor:pointer; transition:.15s; text-decoration:none; }
   .client-badge:hover { border-color:var(--db-ac); }
-  .client-badge img { height:22px; max-width:150px; object-fit:contain; filter:grayscale(1); opacity:.72; transition:.15s; }
-  .client-badge:hover img { filter:grayscale(0); opacity:1; }
+  .client-badge img { height:22px; max-width:150px; object-fit:contain; filter:brightness(0); opacity:.72; transition:.15s; }
+  .client-badge:hover img { opacity:1; }
   .client-badge .cl-arrow { font-size:13px; color:var(--db-mut); transition:.15s; }
   .client-badge:hover .cl-arrow { color:var(--db-ac); }
   .client-badge .fb { font:700 12px/1 var(--pjs); color:var(--db-ink); }
@@ -118,6 +126,14 @@
   /* cabeçalho do bloco wide alinhado à direita; cards permanecem intactos */
   .blk.r.wide .k, .blk.r.wide h2, .blk.r.wide .sub { text-align:right; }
   .blk.r.wide .sub { margin-left:auto; }
+
+  /* ===== ÁUDIO (diagnóstico) ===== */
+  .vstatus { margin-top:14px; font:500 11px/1.5 var(--mono); color:var(--db-mut); max-width:520px; min-height:17px; }
+  .vstatus.rec { color:#1D4ED8; }
+  .vstatus.ok { color:#15803D; }
+  .vstatus.err { color:#B91C1C; }
+  .vstatus b { font-weight:700; }
+  .vstatus .tx { display:block; margin-top:6px; color:var(--db-mut); font-family:var(--inter); font-size:12.5px; line-height:1.5; }
 
   /* ===== LANDING BLU ===== */
   .blu { background:#03071C; color:#eef0f8; font-family:var(--inter); }
@@ -187,34 +203,48 @@
   .brain .login { max-width:420px; margin:0 auto 70px; background:rgba(255,255,255,.055); backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,.10); border-radius:20px; padding:28px; }
   .brain .login h3 { font-size:17px; font-weight:800; margin-bottom:4px; }
   .brain .login .sub { color:rgba(255,255,255,.55); font-size:12.5px; margin-bottom:18px; }
-  .brain .login .goog { width:100%; display:flex; align-items:center; justify-content:center; gap:9px; background:#fff; color:#111; border:0; border-radius:10px; padding:12px; font:600 13.5px/1 var(--inter); cursor:pointer; transition:.15s; }
+  .brain .login .goog { width:100%; display:flex; align-items:center; justify-content:center; gap:9px; background:#fff; color:#111; border:0; border-radius:10px; padding:12px; font:600 13.5px/1 var(--inter); cursor:pointer; text-decoration:none; transition:.15s; }
   .brain .login .goog:hover { background:#f0f0f5; }
-  .brain .login .goog:disabled { opacity:.55; cursor:default; }
   .brain .login .or { text-align:center; color:rgba(255,255,255,.4); font-size:11.5px; margin:14px 0; position:relative; }
   .brain .login .or::before,.brain .login .or::after { content:''; position:absolute; top:50%; width:38%; height:1px; background:rgba(255,255,255,.12); }
   .brain .login .or::before { left:0; } .brain .login .or::after { right:0; }
-  .brain .login .fld { position:relative; margin-bottom:6px; }
-  .brain .login input { width:100%; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.14); border-radius:10px; padding:12px; color:#eef0f8; font-size:13.5px; outline:0; font-family:var(--inter); transition:border-color .15s; }
-  .brain .login input:focus { border-color:#8C5FDB; }
-  .brain .login input.err { border-color:#f87171; }
-  .brain .login .msg { font:500 11px/1.4 var(--inter); color:#f87171; min-height:15px; margin:0 0 8px; }
-  .brain .login .mail { width:100%; background:#8C5FDB; color:#fff; border:0; border-radius:10px; padding:12px; font:700 13.5px/1 var(--inter); cursor:pointer; transition:.15s; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .brain .login .mail { width:100%; background:#8C5FDB; color:#fff; border:0; border-radius:10px; padding:12px; font:700 13.5px/1 var(--inter); cursor:pointer; transition:.15s; display:flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; }
   .brain .login .mail:hover { background:#7a4cc4; }
-  .brain .login .mail:disabled { opacity:.6; cursor:default; }
-  .brain .login .mail .spin { width:13px; height:13px; border:2px solid rgba(255,255,255,.35); border-top-color:#fff; border-radius:50%; animation:bspin .7s linear infinite; display:none; }
-  .brain .login .mail.loading .spin { display:inline-block; }
-  @keyframes bspin { to { transform:rotate(360deg); } }
-  .brain .login .fgt { display:block; text-align:center; margin-top:14px; font:500 12px/1 var(--inter); color:rgba(255,255,255,.5); text-decoration:none; cursor:pointer; }
+  .brain .login .fgt { display:block; text-align:center; margin-top:14px; font:500 12px/1 var(--inter); color:rgba(255,255,255,.5); text-decoration:none; }
   .brain .login .fgt:hover { color:#a98be8; }
+
+  /* ===== DRAWER DE CASOS ===== */
+  .drawer-backdrop { position:fixed; inset:0; background:rgba(19,31,62,.35); z-index:60; opacity:0; pointer-events:none; transition:opacity .25s; }
+  .drawer-backdrop.open { opacity:1; pointer-events:auto; }
+  .drawer { position:fixed; top:0; right:0; bottom:0; width:min(460px,94vw); background:#FCFCFA; z-index:61; transform:translateX(100%); transition:transform .35s; overflow-y:auto; border-left:1px solid var(--db-line); box-shadow:-20px 0 60px -30px rgba(19,31,62,.3); }
+  .drawer.open { transform:translateX(0); }
+  .drawer-inner { padding:44px 36px 36px; }
+  .drawer-close { all:unset; cursor:pointer; padding:8px; border-radius:999px; float:right; color:var(--db-mut); font-size:18px; background:rgba(19,31,62,.05); width:36px; height:36px; display:flex; align-items:center; justify-content:center; }
+  .drawer-close:hover { background:rgba(19,31,62,.1); }
+  .drawer-inner h2 { font-size:30px; font-weight:700; letter-spacing:-.03em; line-height:1.08; margin:0 0 12px; color:var(--db-ink); }
+  .drawer-tag { display:inline-block; font-family:var(--mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase; padding:4px 12px; border-radius:999px; background:rgba(29,78,216,.1); color:var(--db-ac); margin-bottom:18px; }
+  .drawer-inner p, .drawer-inner li { font-size:14.5px; line-height:1.65; color:var(--db-mut); margin-bottom:12px; font-family:var(--pjs); }
+  .drawer-inner ul { margin:0; padding:0 0 0 18px; }
+  .drawer-inner .dl { font-family:var(--mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--db-ac); margin:22px 0 6px; }
 
   /* ===== RODAPÉ DO HUB ===== */
   .foot { border-top:1px solid var(--db-line); padding:34px 0 44px; }
   .foot .in { max-width:1120px; margin:0 auto; padding:0 24px; display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
-  .foot .brand { display:flex; align-items:center; gap:9px; font-weight:800; font-size:14px; }
-  .foot .brand .ser { font-family:var(--serif); font-style:italic; color:var(--db-ac); font-size:16px; }
-  .foot .ln { display:flex; gap:18px; font-size:12.5px; color:var(--db-mut); }
+  .foot .brand { display:inline-flex; align-items:center; gap:9px; font-family:var(--serif); font-size:19px; }
+  .foot .brand em { font-style:italic; color:var(--db-mut); }
+  .foot .brand svg { flex-shrink:0; }
+  .foot .ln { display:flex; gap:18px; font-size:12.5px; color:var(--db-mut); align-items:center; flex-wrap:wrap; }
   .foot a { color:var(--db-mut); text-decoration:none; }
   .foot a:hover { color:var(--db-ac); }
+  .foot .meta { margin-top:18px; justify-content:space-between; font:500 11px/1 var(--mono); letter-spacing:.06em; color:var(--db-mut); }
+
+  @media (max-width:640px){
+    .hubbar .in { flex-wrap:wrap; gap:8px 10px; padding:10px 16px; }
+    .hubbar .brand { font-size:21px; }
+    .chip { padding:7px 11px; font-size:11.5px; }
+    .wrap { padding:0 16px; }
+    .blk { padding:44px 16px; }
+  }
 </style>
 </head>
 <body>
@@ -222,17 +252,22 @@
 <!-- ===== BARRA DO HUB ===== -->
 <div class="hubbar">
   <div class="in">
-    <a class="brand" href="#" onclick="show('empresa');return false;">Deep <span class="ser">Blue</span></a>
+    <a class="brand" href="#" onclick="show('empresa');return false;">
+      <svg width="28" height="28" viewBox="0 0 52 52" aria-label="Deep Blue">
+        <circle cx="26" cy="26" r="22" fill="none" stroke="#131F3E" stroke-width="1" opacity="0.15"/>
+        <circle cx="26" cy="26" r="16" fill="none" stroke="#131F3E" stroke-width="1.5" opacity="0.3"/>
+        <circle cx="26" cy="26" r="10" fill="none" stroke="#1D4ED8" stroke-width="2" opacity="0.7"/>
+        <circle cx="26" cy="26" r="4" fill="#1D4ED8"/>
+      </svg>
+      Deep<em>Blue</em>
+    </a>
     <div class="sp"></div>
-    <nav>
-      <a href="#" onclick="show('empresa');return false;" id="nav-empresa" class="on">Empresa</a>
-      <a href="#" onclick="show('blu');return false;" id="nav-blu">Blu</a>
-      <a href="#" onclick="show('formly');return false;" id="nav-formly">Formly</a>
-      <a href="#" onclick="show('brain');return false;" id="nav-brain">Brain</a>
-    </nav>
+    <div class="pbrands">
+      <a class="chip b" href="#" onclick="show('blu');return false;"><i class="ph ph-buildings"></i> Blu</a>
+      <a class="chip f" href="#" onclick="show('formly');return false;"><i class="ph ph-chats-circle"></i> formly</a>
+    </div>
   </div>
 </div>
-<div class="note">Protótipo de navegação — landing da empresa + landings dos produtos (como um usuário nos vê).</div>
 
 <!-- ===== VIEW EMPRESA ===== -->
 <div class="view on" id="view-empresa">
@@ -308,23 +343,23 @@
       <div class="clients">
         <div class="cl-lbl">Com quem já trabalhamos</div>
         <div class="client-strip">
-          <a class="client-badge" href="#" onclick="alert('Em breve: página do projeto SENAC.');return false;">
+          <a class="client-badge" href="#" onclick="openDrawer('pf1');return false;">
             <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Senac_logo.svg" alt="SENAC" onerror="this.outerHTML='<span class=fb>SENAC</span>'">
             <i class="ph ph-arrow-up-right cl-arrow"></i>
           </a>
-          <a class="client-badge" href="#" onclick="alert('Em breve: página do projeto Cladtek.');return false;">
-            <img src="https://cladtek.com/wp-content/uploads/2022/08/cropped-Cladtek-logo-icon-blue-1-300x300.png" alt="Cladtek" style="height:22px" onerror="this.outerHTML='<span class=fb>CLADTEK</span>'">
+          <a class="client-badge" href="#" onclick="openDrawer('pf2');return false;">
+            <img src="https://cladtek.com/wp-content/uploads/2025/04/Cladtek-Logo-White-No-Tag-1024x519.png" alt="Cladtek" style="height:20px" onerror="this.outerHTML='<span class=fb>CLADTEK</span>'">
             <i class="ph ph-arrow-up-right cl-arrow"></i>
           </a>
-          <a class="client-badge" href="#" onclick="alert('Em breve: página do projeto Bloqüo.');return false;">
-            <img src="https://bloquo.com/assets/images/logo-dark-blue.svg" alt="Bloqüo" onerror="this.outerHTML='<span class=fb>BLOQÜO</span>'">
+          <a class="client-badge" href="#" onclick="openDrawer('pf4');return false;">
+            <img src="https://bloquo.com/assets/images/logo-white.svg" alt="Bloqüo" onerror="this.outerHTML='<span class=fb>BLOQÜO</span>'">
             <i class="ph ph-arrow-up-right cl-arrow"></i>
           </a>
           <a class="client-badge" href="#" onclick="window.open('https://templo.pro','_blank');return false;">
             <img src="https://templo.pro/wp-content/uploads/2026/05/logo_templo_header.png" alt="Templo" onerror="this.outerHTML='<span class=fb>TEMPLO</span>'">
             <i class="ph ph-arrow-up-right cl-arrow"></i>
           </a>
-          <a class="client-badge" href="#" onclick="alert('Em breve: página do projeto Rastro.');return false;">
+          <a class="client-badge" href="#" onclick="openDrawer('pf-rastro');return false;">
             <img src="https://cdn.prod.website-files.com/62477f9095de2a5592cc7602/6288e24dc80173727026f5e5_Logo%20Azul%20-%20Teste%201.webp" alt="Rastro" onerror="this.outerHTML='<span class=fb>RASTRO</span>'">
             <i class="ph ph-arrow-up-right cl-arrow"></i>
           </a>
@@ -339,8 +374,10 @@
       <h2>Antes da tecnologia, o diagnóstico.</h2>
       <p class="sub">Todo projeto começa com pessoas: escutamos as dores do cliente, entendemos o processo e mapeamos oportunidades. A IA é a ferramenta que usamos para impactar o diagnóstico.</p>
       <div class="ctas" style="margin-top:28px;">
-        <a class="btn g" href="#" onclick="show('empresa');return false;">Agendar um diagnóstico</a>
+        <button class="btn p" id="voice-btn" onclick="toggleRec()"><i class="ph ph-microphone" id="voice-ic"></i><span id="voice-btn-tx">Enviar um áudio</span></button>
+        <a class="btn g" href="mailto:contato@deepblue.company">contato@deepblue.company</a>
       </div>
+      <div class="vstatus" id="voice-status"></div>
     </div>
   </div>
 </div>
@@ -358,7 +395,7 @@
       <p>O Blu centraliza agentes, documentos e conhecimento da sua empresa num ambiente só. A IA prepara, o humano aprova, o agente executa.</p>
       <div class="ctas" style="margin-top:26px;">
         <a class="btn p" href="https://app.bluapp.ink" target="_blank" style="font-family:var(--inter);">Entrar no app <i class="ph ph-arrow-up-right"></i></a>
-        <a class="btn g" href="#" onclick="alert('Fluxo real: app.bluapp.ink — criar conta / planos.');return false;" style="font-family:var(--inter);">Ver planos</a>
+        <a class="btn g" href="https://app.bluapp.ink" target="_blank" style="font-family:var(--inter);">Ver planos</a>
       </div>
     </div>
     <div class="mock">
@@ -381,7 +418,7 @@
   <div class="wrap fbar">
     <div class="brand">formly<b>.</b></div>
     <div class="sp" style="flex:1"></div>
-    <a class="btn p" href="https://formly-web-xkndgpat3q-rj.a.run.app/" target="_blank" style="font-family:'Helvetica Neue',sans-serif;font-size:12.5px;padding:10px 16px;background:#7A2E3F;color:#fff;border:0;">Abrir produto <i class="ph ph-arrow-up-right"></i></a>
+    <a class="btn p" href="https://formly.ink" target="_blank" style="font-family:'Helvetica Neue',sans-serif;font-size:12.5px;padding:10px 16px;background:#7A2E3F;color:#fff;border:0;">Abrir produto <i class="ph ph-arrow-up-right"></i></a>
   </div>
   <div class="wrap hero3">
     <h1>Precisa de um <span class="w">questionário?</span></h1>
@@ -389,7 +426,7 @@
     <div class="qbox">
       <input placeholder="Me fala qual, ou grave um áudio..." value="">
       <button class="mic" title="Gravar áudio">🎙️</button>
-      <button class="go" onclick="window.open('https://formly-web-xkndgpat3q-rj.a.run.app/','_blank')">Criar</button>
+      <button class="go" onclick="window.open('https://formly.ink','_blank')">Criar</button>
     </div>
   </div>
   <div class="wrap cards">
@@ -434,27 +471,45 @@
   <div class="wrap login" id="brain-login">
     <h3>Entrar no Brain MCP</h3>
     <p class="sub">Acesse o painel do dono da sua empresa.</p>
-    <button class="goog" id="brain-google" onclick="brainGoogle()"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Continuar com Google</button>
+    <a class="goog" href="https://app.mcp-brain.com" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Continuar com Google</a>
     <div class="or">ou</div>
-    <div class="fld">
-      <input type="email" id="brain-email" placeholder="voce@empresa.com" oninput="brainClearErr()" onkeydown="if(event.key==='Enter')brainMail()">
-    </div>
-    <div class="msg" id="brain-msg"></div>
-    <button class="mail" id="brain-mail" onclick="brainMail()">Entrar com e-mail <span class="spin"></span></button>
-    <a class="fgt" href="#" onclick="alert('Fluxo real: recuperação de senha via e-mail.');return false;">Esqueci minha senha</a>
+    <a class="mail" href="https://app.mcp-brain.com" target="_blank">Entrar com e-mail</a>
+    <a class="fgt" href="https://app.mcp-brain.com" target="_blank">Esqueci minha senha</a>
   </div>
 </div>
 
 <!-- ===== RODAPÉ ===== -->
 <div class="foot">
   <div class="in">
-    <div class="brand">Deep <span class="ser">Blue</span></div>
+    <div class="brand">
+      <svg width="22" height="22" viewBox="0 0 52 52" aria-label="Deep Blue">
+        <circle cx="26" cy="26" r="22" fill="none" stroke="#131F3E" stroke-width="1" opacity="0.15"/>
+        <circle cx="26" cy="26" r="16" fill="none" stroke="#131F3E" stroke-width="1.5" opacity="0.3"/>
+        <circle cx="26" cy="26" r="10" fill="none" stroke="#1D4ED8" stroke-width="2" opacity="0.7"/>
+        <circle cx="26" cy="26" r="4" fill="#1D4ED8"/>
+      </svg>
+      Deep<em>Blue</em>
+    </div>
     <div class="ln">
       <a href="#" onclick="show('blu');return false;">bluapp.ink</a>
       <a href="#" onclick="show('formly');return false;">formly.ink</a>
       <a href="#" onclick="show('brain');return false;">mcp-brain.com</a>
       <a href="#" onclick="show('empresa');return false;">deepblue.company</a>
+      <a href="mailto:contato@deepblue.company">contato@deepblue.company</a>
     </div>
+  </div>
+  <div class="in meta">
+    <span>© 2026 Deep Blue</span>
+    <span>São Paulo, Brasil</span>
+  </div>
+</div>
+
+<!-- ===== DRAWER DE CASOS ===== -->
+<div class="drawer-backdrop" id="backdrop" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true">
+  <div class="drawer-inner">
+    <button class="drawer-close" onclick="closeDrawer()" aria-label="Fechar"><i class="ph ph-x"></i></button>
+    <div id="drawer-content"></div>
   </div>
 </div>
 
@@ -466,40 +521,83 @@
       const n = document.getElementById('nav-'+v);
       if(n) n.classList.toggle('on', v===id);
     });
+    closeDrawer();
     window.scrollTo({top:0, behavior:'smooth'});
   }
   function toggleSvc(el){ el.classList.toggle('open'); }
-  function scrollToLogin(){
-    const el = document.getElementById('brain-login');
-    if(el) el.scrollIntoView({behavior:'smooth', block:'center'});
+
+  // Deep-link por hash (#blu, #formly, #brain) — carrega a view direto.
+  (function(){
+    var h = location.hash.replace('#','');
+    if(views.indexOf(h) !== -1) show(h);
+  })();
+
+  // ===== Casos reais (drawer) =====
+  const D = {
+    pf1:{tag:'case',title:'SENAC — Relatórios pedagógicos com IA',body:'Sistema agêntico que lê diários de classe do SAVE, cruza com a matriz de competências e gera relatórios individuais de aluno (introdução + 5 capítulos). O que levava horas por aluno agora sai em segundos. Cada afirmação do relatório tem rastreabilidade até o diário de origem.',metrics:'Projeto de 24 semanas | Stack: Agno + OCI GenAI + FastAPI | Dashboard agregado + Q&A em linguagem natural'},
+    pf2:{tag:'case',title:'Cladtek — Pipeline de aprovação de desenhos',body:'Pipeline que extrai dados de desenhos técnicos via API, compara com a especificação do projeto e emite parecer (aprovado / ressalvas / reprovado) com justificativas por item. O revisor humano mantém a palavra final — o sistema elimina a checagem mecânica.',metrics:'Indústria de óleo e gás | Ciclo de dias para minutos | API proprietária'},
+    pf4:{tag:'case',title:'Agente Bloqüo — RAG + MCP autônomo',body:'Agente de IA que conecta bases corporativas e executa tarefas via protocolo MCP. Fizemos também um novo sistema de Onboarding integrado a SumSub.',metrics:'RAG + MCP | Skills (Progressive Disclosure) | FastAPI + Agno'},
+    'pf-rastro':{tag:'case',title:'Rastro — Fluxo de propostas com IA',body:'Consultoria de fluxo de propostas para a Rastro, agência-studio de inteligência criativa no Rio. Mapeamos o processo, medimos o esforço e entregamos um desenho que transforma propostas vencedoras, orçamentos e cases em conhecimento reutilizável.',metrics:'8 semanas | Agência com clientes como Nubank, HBO Max e Globo | 3 entregáveis'},
+  };
+  function openDrawer(id){
+    const d = D[id]; if(!d) return;
+    let h = `<span class="drawer-tag">${d.tag}</span><h2>${d.title}</h2>`;
+    if(d.body) h += `<p>${d.body}</p>`;
+    if(d.metrics) h += `<p class="dl">Sobre</p><p>${d.metrics}</p>`;
+    document.getElementById('drawer-content').innerHTML = h;
+    document.getElementById('backdrop').classList.add('open');
+    document.getElementById('drawer').classList.add('open');
   }
-  // Login Brain — estados de erro/carregando (protótipo)
-  function brainClearErr(){
-    const inp = document.getElementById('brain-email');
-    const msg = document.getElementById('brain-msg');
-    inp.classList.remove('err'); msg.textContent = '';
+  function closeDrawer(){
+    document.getElementById('backdrop').classList.remove('open');
+    document.getElementById('drawer').classList.remove('open');
   }
-  function brainMail(){
-    const inp = document.getElementById('brain-email');
-    const msg = document.getElementById('brain-msg');
-    const btn = document.getElementById('brain-mail');
-    const val = inp.value.trim();
-    if(!val){ inp.classList.add('err'); msg.textContent = 'Digite seu e-mail.'; inp.focus(); return; }
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)){ inp.classList.add('err'); msg.textContent = 'E-mail inválido — confira o formato.'; inp.focus(); return; }
-    inp.classList.remove('err'); msg.textContent = '';
-    btn.classList.add('loading'); btn.disabled = true;
-    setTimeout(() => {
-      btn.classList.remove('loading'); btn.disabled = false;
-      window.open('https://app.mcp-brain.com','_blank');
-    }, 900);
-  }
-  function brainGoogle(){
-    const btn = document.getElementById('brain-google');
-    btn.disabled = true;
-    setTimeout(() => {
-      btn.disabled = false;
-      window.open('https://app.mcp-brain.com','_blank');
-    }, 500);
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeDrawer(); });
+
+  // ===== Diagnóstico por voz (Groq Whisper) =====
+  // Endpoint do serviço Cloud Run brand-hub-voice — atualizar após o deploy se a URL mudar.
+  const VOICE_API = 'https://brand-hub-voice-960100281317.southamerica-east1.run.app/api/voice';
+  let vRec = null, vChunks = [];
+  const vBtn = document.getElementById('voice-btn');
+  const vTx = document.getElementById('voice-btn-tx');
+  const vIc = document.getElementById('voice-ic');
+  const vSt = document.getElementById('voice-status');
+  function vStatus(cls, html){ vSt.className = 'vstatus' + (cls ? ' ' + cls : ''); vSt.innerHTML = html; }
+  function vBtnLabel(ic, tx){ vIc.className = 'ph ' + ic; vTx.textContent = tx; }
+  function toggleRec(){
+    if(vRec && vRec.state === 'recording'){ vRec.stop(); return; }
+    navigator.mediaDevices.getUserMedia({audio:true}).then(s => {
+      vRec = new MediaRecorder(s, {mimeType:'audio/webm'});
+      vChunks = [];
+      vRec.ondataavailable = e => vChunks.push(e.data);
+      vRec.onstop = async () => {
+        s.getTracks().forEach(t => t.stop());
+        const blob = new Blob(vChunks, {type:'audio/webm'});
+        vBtnLabel('ph-circle', 'Enviando...');
+        vStatus('', 'Transcrevendo seu áudio...');
+        const fd = new FormData();
+        fd.append('audio', blob, 'mensagem.webm');
+        try {
+          const r = await fetch(VOICE_API, {method:'POST', body:fd});
+          const j = await r.json().catch(() => ({}));
+          if(r.ok){
+            vBtnLabel('ph-check-circle', 'Áudio enviado');
+            vStatus('ok', 'Recebemos sua mensagem. <b>Retornamos em até 48h.</b>' + (j.transcript ? `<span class="tx">“${j.transcript}”</span>` : ''));
+          } else {
+            vBtnLabel('ph-microphone', 'Enviar um áudio');
+            vStatus('err', 'Não deu certo. Tente de novo ou escreva para contato@deepblue.company.');
+          }
+        } catch {
+          vBtnLabel('ph-microphone', 'Enviar um áudio');
+          vStatus('err', 'Não deu certo. Tente de novo ou escreva para contato@deepblue.company.');
+        }
+      };
+      vRec.start();
+      vBtnLabel('ph-stop-circle', 'Parar gravação');
+      vStatus('rec', 'Gravando... fale sobre o seu desafio. Ao terminar, clique em parar.');
+    }).catch(() => {
+      vStatus('err', 'Microfone indisponível. Escreva para contato@deepblue.company.');
+    });
   }
 </script>
 </body>

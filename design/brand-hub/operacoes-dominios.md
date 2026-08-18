@@ -133,8 +133,11 @@ O `blu_web` já está em S3+CloudFront. Para o domínio:
 
 ## 5. Pendências
 
-- [ ] Deploy do hub (`make brand-hub-deploy`) + domain mapping `deepblue.company`
-- [ ] E-mail Zoho (verificação + MX/SPF/DKIM) e criação das caixas
-- [ ] Custom domain Formly (`formly.ink`) e Brain (`mcp-brain.com` + `app.*`)
-- [ ] Domínio do Blu (`bluapp.ink`) via CloudFront + ACM
+- [x] Deploy do hub (`make brand-hub-deploy`) + domain mapping `deepblue.company` — **no ar 18/08**
+- [x] Custom domain Formly — **`formly.ink` mapeado (Cloud Run), no ar 18/08**
+- [x] Custom domain Brain — **`app.mcp-brain.com` mapeado, no ar 18/08**
+- [ ] **Deploy da finalização do hub** (logo real, chips, drawers, áudio) — commitar `feat/brand-hub` → main → `make brand-hub-deploy`
+- [ ] **Deploy do `brand-hub-voice`** (áudio → Groq Whisper): criar secrets `GROQ_API_KEY`, `SMTP_USER`, `SMTP_PASS` (senha de app do Gmail) e rodar `make brand-hub-voice-deploy`
+- [ ] Domínio do Blu (`bluapp.ink`) via CloudFront + ACM — **`app.bluapp.ink` não resolve ainda (CTAs do hub apontam para ele)**
+- [ ] E-mail Zoho (verificação + MX/SPF/DKIM) e criação das caixas — Cloudflare Email Routing já ativo (contato@ e lucas@ → Gmail)
 - [ ] V2: separar views do hub em páginas reais por domínio

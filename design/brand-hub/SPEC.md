@@ -165,13 +165,23 @@ Seções:
 7. `h1` do hero da empresa: `clamp(34px,3.9vw,50px)` + `max-width:26ch` + `<br>` — medir `h1Lines` no QA (máx 3).
 8. Contraste AA nos temas claros (não usar `--mu` <12px nos cards de texto).
 
-## 10. Status de entrega (revisão #200, 17/08/2026)
+## 10. Status de entrega (revisão #200, 17/08/2026 — atualizada 18/08 pós-finalização)
 
 | Item da spec | Entregue | Status |
 |---|---|---|
-| Login embutido na landing do Brain (card glass: Google + e-mail) | ❌ ausente — só CTA → /login | ⚠️ pendente — entregar card na view Brain |
-| CTA "Entrar no app" → `app.mcp-brain.com` | ✅ trocado 18/08 para o domínio comprado | ✅ v1 |
-| Elementos gráficos Labs e Consulting uniformes | ✅ mesmo componente `.prow`/`.crow` (ícone 40px + título + descrição) | ✅ v1 |
+| Login embutido na landing do Brain (card glass: Google + e-mail) | ✅ card glass com links reais para `app.mcp-brain.com` (sem fakes) | ✅ finalizado |
+| CTA "Entrar no app" → `app.mcp-brain.com` | ✅ | ✅ |
+| Elementos gráficos Labs e Consulting uniformes | ✅ mesmo componente `.prow`/`.crow` | ✅ |
+| Logo real Deep Blue (círculos + wordmark) na barra e rodapé | ✅ referência Soft A (SVG 28px + serif wordmark) | ✅ |
+| Nav Empresa/Blu/Formly/Brain removida; chips das marcas Blu + Formly no canto superior direito | ✅ chips → `show('blu')`/`show('formly')` | ✅ |
+| Cards Labs e Consulting com mesmo tamanho ao expandir | ✅ `align-items:stretch` + span line-clamp 2 + `min-height` (457=457 desktop e mobile) | ✅ |
+| Cladtek visível no strip | ✅ trocado para wordmark 2025 (o PNG 2022 era 100% transparente) + `brightness(0)` | ✅ |
+| Drawers de caso (sem `alert()`) | ✅ portados do Soft A (pf1/pf2/pf4 + pf-rastro); Templo abre site externo | ✅ |
+| Botão de áudio no diagnóstico (Groq Whisper) | ✅ frontend no hub + serviço `brand-hub-voice` no monorepo (PENDENTE deploy) | ⚠️ aguarda deploy |
+| Marcadores de protótipo removidos (.note, título interno, alerts) | ✅ | ✅ |
+| SEO: title/meta/OG/canonical/favicon/theme-color | ✅ | ✅ |
+| CTAs reais: Formly → `formly.ink`, Brain → `app.mcp-brain.com`, email `contato@deepblue.company` | ✅ | ✅ |
+| `app.bluapp.ink` resolvendo | ❌ DNS do Blu pendente (CNAME no Namecheap) | ⚠️ aguarda infra |
 
 Regra da uniformidade: **Labs e Consulting usam o MESMO componente de linha**
 (ícone em quadrado 40px + título bold + descrição 12px + borda + radius 14px).
@@ -184,15 +194,27 @@ A única diferença: Labs tem CTA "Abrir produto" (navega), Consulting não
 (() => { const r = {};
   r.hOverflow = document.documentElement.scrollWidth > window.innerWidth;
   r.h1Lines = Math.round(document.querySelector('#view-empresa h1').getBoundingClientRect().height / parseFloat(getComputedStyle(document.querySelector('#view-empresa h1')).lineHeight));
-  r.phosphor = getComputedStyle(document.querySelector('.prow i')).fontFamily;
+  r.phosphor = getComputedStyle(document.querySelector('.chip i')).fontFamily;
   ['blu','formly','brain'].forEach(v => { show(v); r[v] = document.getElementById('view-'+v).classList.contains('on'); });
   show('empresa');
   return JSON.stringify(r); })()
 ```
-- [ ] hOverflow false · h1Lines ≤ 3 · Phosphor carregado · 4 views alternam
-- [ ] Labs expande com 3 `.prow` ("Abrir produto") · Consulting expande com 3 `.crow`
-- [ ] Todos os CTAs de produto têm `href` real (`app.bluapp.ink`, run.app do Formly até mapear `formly.ink`, `app.mcp-brain.com`) e `target="_blank"`
-- [ ] Preview: `http://100.69.231.7:8899/brand-hub/`
+- [x] hOverflow false · h1Lines ≤ 3 · Phosphor carregado · 4 views alternam
+- [x] Labs expande com 3 `.prow` ("Abrir produto") · Consulting expande com 3 `.crow` — **alturas iguais ao expandir** (desktop e mobile; medir via `getBoundingClientRect` com `.open` nos dois)
+- [x] Todos os CTAs de produto têm `href` real (`app.bluapp.ink`, `formly.ink`, `app.mcp-brain.com`) e `target="_blank"` (quando saem do hub)
+- [x] Logo real (SVG círculos + wordmark) na barra e rodapé; chips Blu/Formly no canto superior direito; nav Empresa/Blu/Formly/Brain ausente
+- [x] Drawers de caso abrem sem `alert()`; Cladtek usa wordmark 2025 + `brightness(0)` (o PNG 2022 é transparente)
+- [x] Botão de áudio: grava (MediaRecorder) → POST `VOICE_API` → estados rec/sending/ok/err
+- [x] Preview: `http://100.69.231.7:8899/brand-hub/` (servidor local em projetos-repo/design/brand-hub)
+
+## 11b. Serviço brand-hub-voice (áudio → Groq Whisper)
+
+- Local: `monorepo/produtos/brand-hub-voice/` (FastAPI + Dockerfile + README).
+- Deploy: `make brand-hub-voice-deploy` (requer secrets `GROQ_API_KEY`, `SMTP_USER`,
+  `SMTP_PASS` no Secret Manager; ver README do serviço).
+- Frontend: constante `VOICE_API` no `index.html` — atualizar se a URL do Cloud Run mudar.
+- Testado localmente: `/health` ok, POST `/api/voice` chega à Groq (falhou só na
+  autenticação porque a chave na EC2 é placeholder — sem chave real nesta máquina).
 
 ## 12. Fora de escopo (v1)
 
