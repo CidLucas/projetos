@@ -30,7 +30,7 @@ Empresa (landing) → Labs (expandir) → Abrir produto → produto real (usar, 
 | Produto | Domínio | Estado | Deploy real hoje |
 |---|---|---|---|
 | Deep Blue (empresa) | `deepblue.company` | ✅ comprado 18/08 (Cloudflare) | hub estático — deploy pendente |
-| Blu | `blu.direct` (+ `app.blu.direct`) | ⚠️ NÃO é nosso (terceiro — WhatsApp) | decisão pendente: comprar do dono / `blu.deepblue.company` / TLD novo |
+| Blu | `bluapp.ink` (+ `app.bluapp.ink`) | ✅ comprado 18/08 (Namecheap) | blu_web S3+CloudFront (sem domínio próprio ainda) |
 | Formly | `formly.ink` (+ `app.formly.ink`) | ✅ comprado 18/08 (Namecheap) | `https://formly-web-xkndgpat3q-rj.a.run.app/` (Cloud Run) |
 | Brain MCP | `mcp-brain.com` (+ `app.mcp-brain.com`) | ✅ comprado 18/08 (Cloudflare) | gateway memory_api (deploy próprio) |
 
@@ -116,11 +116,11 @@ Tokens Blu (canônicos do app):
 - Inter + JetBrains Mono (números) · Phosphor · **emoji proibido** · pt-BR "você"
 
 Seções:
-- **Barra**: brand Blu + CTA primário "Entrar no app" → `https://app.blu.direct` (nova aba).
+- **Barra**: brand Blu + CTA primário "Entrar no app" → `https://app.bluapp.ink` (nova aba).
 - **Hero 2 col** (`1.1fr .9fr`):
   - `h1`: "Seu escritório virtual,<br>com <span class="g">agentes de IA</span> trabalhando." (gradiente `#a98be8→#7ec3ff` no span).
   - Sub: modelo de decisão (IA prepara → humano aprova → agente executa).
-  - CTAs: "Entrar no app" (→ app.blu.direct) · "Ver planos" (placeholder).
+  - CTAs: "Entrar no app" (→ app.bluapp.ink) · "Ver planos" (placeholder).
   - Mock glass à direita: 4 linhas (Clientes 128 · Decisões pendentes 7 · Rotinas ativas 12 · Receita mês R$ 154k) com dots de status.
 - **Features** (3 cards glass): Salas com agentes · IA prepara, você aprova · Rotinas automáticas.
 
@@ -152,7 +152,7 @@ Seções:
 
 ## 8. Rodapé (todas as views)
 
-- Brand Deep Blue + 4 links de domínio (Empresa→deepblue.company, Blu→blu.direct [decisão pendente], Formly→formly.ink, Brain→mcp-brain.com) — no hub, os links de produto abrem a view correspondente.
+- Brand Deep Blue + 4 links de domínio (Empresa→deepblue.company, Blu→bluapp.ink, Formly→formly.ink, Brain→mcp-brain.com) — no hub, os links de produto abrem a view correspondente.
 
 ## 9. Regras inegociáveis
 
@@ -191,7 +191,7 @@ A única diferença: Labs tem CTA "Abrir produto" (navega), Consulting não
 ```
 - [ ] hOverflow false · h1Lines ≤ 3 · Phosphor carregado · 4 views alternam
 - [ ] Labs expande com 3 `.prow` ("Abrir produto") · Consulting expande com 3 `.crow`
-- [ ] Todos os CTAs de produto têm `href` real (`app.blu.direct` pendente de decisão, run.app do Formly até mapear `formly.ink`, `app.mcp-brain.com`) e `target="_blank"`
+- [ ] Todos os CTAs de produto têm `href` real (`app.bluapp.ink`, run.app do Formly até mapear `formly.ink`, `app.mcp-brain.com`) e `target="_blank"`
 - [ ] Preview: `http://100.69.231.7:8899/brand-hub/`
 
 ## 12. Fora de escopo (v1)
@@ -209,5 +209,5 @@ A única diferença: Labs tem CTA "Abrir produto" (navega), Consulting não
 3. Deploy do Formly no `formly.ink` (custom domain no Cloud Run)
 4. Deploy do Brain no `mcp-brain.com` (custom domain no auth-service)
 5. E-mail corporativo (Zoho grátis / Google Workspace / Cloudflare Routing)
-6. Decidir domínio do Blu (`blu.direct` é de terceiro)
+6. ✅ Domínio do Blu comprado (18/08): `bluapp.ink` (Namecheap)
 7. V2: separar as views em páginas reais por domínio
