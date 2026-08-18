@@ -36,6 +36,14 @@ para o Cloudflare é grátis e opcional).
 4. Opcional DKIM no Cloudflare (região/domínio → Email Routing → DKIM) para
    melhor entregabilidade.
 
+**Estado 18/08 (feito via API):** MX route1/2/3 + SPF + DKIM criados
+automaticamente; rotas `contato@` e `lucas@` → `cid.lucas@gmail.com` criadas e
+ativas. SPF atualizado para `v=spf1 include:_spf.mx.cloudflare.net
+include:_spf.google.com ~all` (cobre o envio pelo Gmail "Enviar como").
+Catch-all (endereços não listados) continua **drop** — para encaminhar tudo,
+ativar no painel: Email Routing → Routing rules → Catch-all → Send to
+`cid.lucas@gmail.com` (a API exige permissão de settings que o token atual não tem).
+
 **Limitação honesta:** não há caixa separada com login próprio — é
 encaminhamento; as respostas saem do Gmail com o remetente corporativo. Suficiente
 para 1–3 pessoas; quando precisar de caixas reais (times, IMAP, retenção), migrar
