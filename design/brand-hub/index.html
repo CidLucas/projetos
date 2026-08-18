@@ -82,7 +82,7 @@
   .prow .ic { width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:19px; color:#fff; flex:none; }
   .prow .tx { flex:1; min-width:0; }
   .prow .tx b { display:block; font-size:14px; font-weight:700; }
-  .prow .tx span, .crow .tx span { font-size:12px; color:var(--db-mut); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; margin-top:2px; line-height:1.45; min-height:34.8px; }
+  .prow .tx span, .crow .tx span { font-size:12px; color:var(--db-mut); display:block; margin-top:2px; line-height:1.45; }
   .svc.dark .prow .tx span, .svc.dark .crow .tx span { color:rgba(242,242,240,.55); }
   .prow .go { font:700 12px/1 var(--pjs); color:var(--db-ac); display:flex; align-items:center; gap:6px; flex:none; }
   .svc.dark .prow .go { color:var(--db-ac2); }
@@ -244,6 +244,7 @@
     .hubbar .brand { font-size:21px; }
     .wrap { padding:0 16px; }
     .blk { padding:44px 16px; }
+    .hero h1 { font-size:clamp(28px,8vw,34px); }
   }
 </style>
 </head>
@@ -267,38 +268,39 @@
 <!-- ===== VIEW EMPRESA ===== -->
 <div class="view on" id="view-empresa">
   <div class="wrap hero">
-    <h1>Sua operação já funciona.<br>A IA para ajudar ela a <span class="soft">render mais.</span></h1>
-    <p>A Deep Blue ajuda empresas a usar inteligência artificial como ferramenta de negócio — e entrega sistemas com resultado mensurável.</p>
+    <h1>Sua operação já funciona.<br>A IA pode ser o que falta para ela <span class="soft">render mais.</span></h1>
+    <p>A Deep Blue ajuda empresas a usar inteligência artificial como ferramenta de negócio e entrega sistemas com resultado mensurável.</p>
     <div class="ctas">
       <a class="btn p" href="#" onclick="show('blu');return false;">Conhecer os produtos <i class="ph ph-arrow-right"></i></a>
+      <a class="btn g" href="#como-trabalhamos">Como trabalhamos</a>
     </div>
   </div>
 
-  <div class="blk r wide">
+  <div class="blk r wide" id="como-trabalhamos">
     <div class="in">
       <div class="k">Como trabalhamos</div>
       <h2>Duas frentes, <em style="font-family:var(--serif);font-style:italic;font-weight:400;color:var(--db-ac);">um objetivo.</em></h2>
-      <p class="sub">Produtos em assinatura para quem quer começar rápido. Consultoria para quem precisa de diagnóstico e estratégia sob medida. Os produtos que desenvolvemos são a prova do que entregamos.</p>
+      <p class="sub">Produtos desenvolvidos para resolver dores e garantir qualidade em nossos projetos, que disponibilizamos sob assinatura para quem quer começar rápido. Consultoria para quem precisa de diagnóstico e estratégia sob medida.</p>
       <div class="bento2">
         <div class="svc" onclick="toggleSvc(this)">
           <div class="tag">Labs · assinatura</div>
           <div class="tt">Deep Blue Labs <span class="plus">+</span></div>
-          <div class="t-sub">Ferramentas de IA prontas para usar. Desenvolvemos produtos completos — e eles estão aqui para você ver.</div>
+          <div class="t-sub">Ferramentas de IA prontas para usar. Desenvolvemos produtos para resolver alguns problemas recorrentes no nosso trabalho e os disponibilizamos caso você também precise.</div>
           <div class="expand">
             <div class="plist">
               <a class="prow" href="#" onclick="show('blu');return false;">
                 <div class="ic" style="background:linear-gradient(135deg,#7E5CC8,#3A80D4);"><i class="ph ph-buildings"></i></div>
-                <div class="tx"><b>Blu</b><span>Escritório virtual com IA para PMEs: agentes, documentos e conhecimento num ambiente só.</span></div>
+                <div class="tx"><b>Blu</b><span>Escritório virtual de agentes para PMEs: uma plataforma completa que junta agentes, documentos e conhecimento num lugar só.</span></div>
                 <div class="go">Abrir produto <i class="ph ph-arrow-up-right"></i></div>
               </a>
               <a class="prow" href="#" onclick="show('formly');return false;">
                 <div class="ic" style="background:#7A2E3F;"><i class="ph ph-chats-circle"></i></div>
-                <div class="tx"><b>Formly</b><span>Questionários com resposta por áudio e geração por IA. Do texto curto à matriz de escala.</span></div>
+                <div class="tx"><b>Formly</b><span>Questionários e formulários com transcrição de áudio, distribuição e geração por IA. Todo o ciclo de vida de uma pesquisa, ciclo de entrevistas ou mapeamento de processo de forma escalável, rápida e simplificada.</span></div>
                 <div class="go">Abrir produto <i class="ph ph-arrow-up-right"></i></div>
               </a>
               <a class="prow" href="#" onclick="show('brain');return false;">
                 <div class="ic" style="background:#1D4ED8;"><i class="ph ph-brain"></i></div>
-                <div class="tx"><b>Brain MCP</b><span>Memória corporativa para agentes: uma URL MCP conecta corpus curado e memória viva.</span></div>
+                <div class="tx"><b>Brain MCP</b><span>Memória corporativa para agentes: todo o conhecimento da sua empresa mapeado, direto no agente que você já usa. Além de uma memória viva para o seu agente aprender trabalhando com você e sua equipe.</span></div>
                 <div class="go">Abrir produto <i class="ph ph-arrow-up-right"></i></div>
               </a>
             </div>
@@ -307,20 +309,20 @@
         <div class="svc dark" onclick="toggleSvc(this)">
           <div class="tag">Consulting · escopo fechado</div>
           <div class="tt">Deep Blue Consulting <span class="plus">+</span></div>
-          <div class="t-sub">Diagnóstico e estratégia. Escopo fechado, resultado mensurável.</div>
+          <div class="t-sub">Diagnóstico e estratégia de adoção. Projetos sob medida para a necessidade do seu negócio.</div>
           <div class="expand">
             <div class="clist">
               <div class="crow">
                 <div class="ic"><i class="ph ph-clipboard-text"></i></div>
-                <div class="tx"><b>AI Assessment</b><span>Mapa completo de processos, dados e oportunidades de IA em 2 semanas.</span></div>
+                <div class="tx"><b>AI Assessment</b><span>Levantamento do mapa completo do negócio e dos dados disponíveis para identificar oportunidades de adoção de práticas, processos e ferramentas de IA.</span></div>
               </div>
               <div class="crow">
                 <div class="ic"><i class="ph ph-map-trifold"></i></div>
-                <div class="tx"><b>Transformation Roadmap</b><span>Plano de 12 a 24 meses: arquitetura, capacitação, governança.</span></div>
+                <div class="tx"><b>Transformation Roadmap</b><span>Em geral feito depois de um diagnóstico detalhado, aqui trabalhamos o desenho e a implementação de ferramentas e processos para trazer uma transformação sob medida para o seu negócio.</span></div>
               </div>
               <div class="crow">
                 <div class="ic"><i class="ph ph-handshake"></i></div>
-                <div class="tx"><b>Advisory Retainer</b><span>Acompanhamento mensal com reuniões e suporte contínuo à decisão.</span></div>
+                <div class="tx"><b>Advisory Retainer</b><span>Consultoria estratégica e acompanhamento contínuo da sua operação, identificando gargalos, sugerindo processos e implementando ferramentas e soluções.</span></div>
               </div>
             </div>
           </div>
@@ -332,8 +334,8 @@
   <div class="blk l">
     <div class="in">
       <div class="k">Projetos e parcerias</div>
-      <h2>Entregamos. E eles confiaram.</h2>
-      <p class="sub">Projetos com resultado mensurável — e parceiros que seguiram com a gente. Cada logo abre a história.</p>
+      <h2>Alguns dos nossos clientes e parceiros.</h2>
+      <p class="sub">Empresas que já confiaram na Deep Blue e seguiram com a gente. Cada logo abre a história.</p>
       <div class="clients">
         <div class="cl-lbl">Com quem já trabalhamos</div>
         <div class="client-strip">
@@ -365,8 +367,8 @@
   <div class="blk r">
     <div class="in">
       <div class="k">Consultoria</div>
-      <h2>Antes da tecnologia, o diagnóstico.</h2>
-      <p class="sub">Todo projeto começa com pessoas: escutamos as dores do cliente, entendemos o processo e mapeamos oportunidades. A IA é a ferramenta que usamos para impactar o diagnóstico. <b>Conta o seu desafio aqui embaixo — com as suas palavras, ou num áudio.</b></p>
+      <h2>Antes da ferramenta, o diagnóstico.</h2>
+      <p class="sub">Todo projeto começa com pessoas: escutamos as dores do cliente, entendemos seu processo e mapeamos as oportunidades. <b>Conta o seu desafio aqui embaixo — com as suas palavras, ou num áudio.</b></p>
       <div class="msgbox">
         <textarea id="msg-text" placeholder="Me conta aqui, com as suas palavras: qual é o desafio da sua operação?"></textarea>
         <div class="msg-row">

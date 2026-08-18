@@ -64,11 +64,12 @@ Tokens Soft A (canônicos do site Deep Blue, v3-soft-a):
   mono uppercase é aceito para navegação interna.
 
 ### 4.1 Hero
-- `h1`: "Sua operação já funciona.<br>Nossas ferramentas de IA fazem ela <span class="soft">render mais.</span>"
+- `h1`: "Sua operação já funciona.<br>A IA pode ser o que falta para ela <span class="soft">render mais.</span>" (texto do doc "Sua operação já funciona", 18/08)
   - `clamp(34px,3.9vw,50px)`, `max-width:26ch`, `<br>` explícito entre as 2 frases → 3 linhas.
   - `span.soft`: Instrument Serif itálico, `color:var(--db-ac)`.
-- Sub: "A Deep Blue ajuda empresas a usar inteligência artificial como ferramenta de negócio. Entregamos sistemas que agregam valor, com resultado mensurável."
-- CTAs: `Conhecer os produtos` (primário, → `show('blu')`) · `Ver o Brain MCP` (secundário → `show('brain')`).
+  - Mobile (≤640px): `clamp(28px,8vw,34px)` — sem isso, o h1 quebra em 4+ linhas em viewport 390 (frase 2 do doc é mais longa que a anterior).
+- Sub: "A Deep Blue ajuda empresas a usar inteligência artificial como ferramenta de negócio e entrega sistemas com resultado mensurável."
+- CTAs: `Conhecer os produtos` (primário, → `show('blu')`) · `Como trabalhamos` (secundário, âncora `#como-trabalhamos`).
 
 ### 4.2 Blocos alternados (zig-zag esquerda/direita)
 Os blocos da landing alternam o alinhamento (`margin-left/right:auto` no `.in` de
@@ -83,21 +84,23 @@ até 720px dentro do bloco.
 
 ### 4.3 Duas frentes (seção central — a decisão de produto)
 - Título: "Duas frentes, um objetivo." (com `em` serif itálico azul em "um objetivo").
-- Sub: "Produtos em assinatura para quem quer começar rápido. Consultoria para quem precisa de diagnóstico e estratégia sob medida. Os produtos que desenvolvemos são a prova do que entregamos."
+- Sub: "Produtos desenvolvidos para resolver dores e garantir qualidade em nossos projetos, que disponibilizamos sob assinatura para quem quer começar rápido. Consultoria para quem precisa de diagnóstico e estratégia sob medida."
 - **Card Labs** (claro, expansível):
-  - Tag: `Labs · assinatura` · Título: Deep Blue Labs · Sub: "Ferramentas de IA prontas para usar. Desenvolvemos produtos completos — e eles estão aqui para você ver."
+  - Tag: `Labs · assinatura` · Título: Deep Blue Labs · Sub: "Ferramentas de IA prontas para usar. Desenvolvemos produtos para resolver alguns problemas recorrentes no nosso trabalho e os disponibilizamos caso você também precise."
   - Expandir → lista de 3 produtos (`.prow`), cada um com ícone, nome, descrição 1 linha, CTA **"Abrir produto"** com `arrow-up-right`:
-    - Blu (gradiente `#7E5CC8→#3A80D4`) → `show('blu')`
-    - Formly (`#7A2E3F`) → `show('formly')`
-    - Brain MCP (`#1D4ED8`) → `show('brain')`
+    - Blu (gradiente `#7E5CC8→#3A80D4`) → `show('blu')` — "Escritório virtual de agentes para PMEs: uma plataforma completa que junta agentes, documentos e conhecimento num lugar só."
+    - Formly (`#7A2E3F`) → `show('formly')` — "Questionários e formulários com transcrição de áudio, distribuição e geração por IA. Todo o ciclo de vida de uma pesquisa, ciclo de entrevistas ou mapeamento de processo de forma escalável, rápida e simplificada."
+    - Brain MCP (`#1D4ED8`) → `show('brain')` — "Memória corporativa para agentes: todo o conhecimento da sua empresa mapeado, direto no agente que você já usa. Além de uma memória viva para o seu agente aprender trabalhando com você e sua equipe."
 - **Card Consulting** (escuro `#101828`, expansível):
   - Tag: `Consulting · escopo fechado` · Título: Deep Blue Consulting
-  - Expandir → 3 itens (`.crow`): AI Assessment, Transformation Roadmap, Advisory Retainer (mesma copy do Soft A).
+  - Sub: "Diagnóstico e estratégia de adoção. Projetos sob medida para a necessidade do seu negócio."
+  - Expandir → 3 itens (`.crow`): AI Assessment, Transformation Roadmap, Advisory Retainer (copy do doc "Sua operação já funciona", 18/08).
 - Interação: `toggleSvc(el)` — cada card abre/fecha independente (`classList.toggle('open')`), "+" rotaciona 45°.
+- **NOTA 18/08:** as descrições agora são o texto completo do doc (não mais line-clamp 2 com ellipsis). Isso faz os dois cards terem alturas NATURAIS ao expandir (Labs ≈ 599px, Consulting ≈ 526px desktop) — a igualdade 457=457 só valia com o clamp. Decisão: texto do fundador > altura idêntica.
 
 ### 4.4 Casos reais (strip de logos — padrão antigo)
-- Kicker: `Quem confia` · Título: "Casos reais."
-- Sub: "Projetos que entregamos, com resultado mensurável. Cada logo abre a história do projeto."
+- Kicker: `Projetos e parcerias` · Título: "Alguns dos nossos clientes e parceiros."
+- Sub: "Empresas que já confiaram na Deep Blue e seguiram com a gente. Cada logo abre a história."
 - Label acima da strip: `Com quem já trabalhamos` (mono uppercase, como o Soft A).
 - **Strip de logos** (`.client-badge`): SENAC (SVG wikimedia), Cladtek (site oficial), Bloqüo (logo-white.svg), Templo (logo_templo_header.png, abre o site externo), Rastro (webflow logo).
   - Regra visual: logo `grayscale(1)` + `opacity:.72`; hover → cor + opacidade 1 + borda azul + seta `arrow-up-right`.
@@ -105,9 +108,9 @@ até 720px dentro do bloco.
   - **Clique**: placeholder "Em breve: página do projeto X" até existirem as páginas de projeto; depois, cada badge navega para a página do projeto correspondente.
 
 ### 4.5 Consultoria (CTA final)
-- Kicker: `Consultoria` · Título: "Antes da tecnologia, o diagnóstico."
-- Parágrafo da voz Deep Blue (começa com pessoas, IA como ferramenta do diagnóstico).
-- CTA secundário: "Agendar um diagnóstico" (sem destino real — placeholder).
+- Kicker: `Consultoria` · Título: "Antes da ferramenta, o diagnóstico."
+- Parágrafo: "Todo projeto começa com pessoas: escutamos as dores do cliente, entendemos seu processo e mapeamos as oportunidades."
+- CTA: quadro de mensagem (textarea + mic + Enviar → `POST /api/message`), com "Conta o seu desafio aqui embaixo — com as suas palavras, ou num áudio."
 
 ## 5. View BLU (produto — identidade Blu)
 
