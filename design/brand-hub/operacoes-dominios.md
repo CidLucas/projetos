@@ -11,12 +11,42 @@ Mapa da presença online + instruções de DNS e e-mail corporativo.
 | `formly.ink` | Namecheap | Formly | Cloud Run `formly-web` |
 | `mcp-brain.com` | Cloudflare | Brain MCP | Cloud Run `auth-service` |
 
-## 2. E-mail corporativo — Zoho Mail (Forever Free: 5 caixas, 5GB)
+## 2. E-mail corporativo
+
+⚠️ **Correção 18/08:** o plano "Forever Free" do Zoho **não existe mais** para
+novas organizações (verificado na página oficial BR). Preços atuais: Mail Lite
+R$ 5/usuário/mês (anual, 5GB), Mail Premium R$ 20/usuário/mês (50GB), Workplace
+desde R$ 12/usuário/mês. **A opção de custo zero é o Cloudflare Email Routing**
+(seção 2.0); o Zoho (seção 2.1+) é a opção paga com caixa real.
+
+### 2.0 Custo zero — Cloudflare Email Routing (+ Gmail "Enviar como")
+
+**Recebe** em `@deepblue.company` → encaminha para o Gmail existente (grátis,
+aliases ilimitados: contato@, lucas@, suporte@). **Envia** com o domínio via
+Gmail → Configurações → Contas → "Enviar como". Requer DNS no Cloudflare
+(deepblue.company e mcp-brain.com já estão; formly.ink/bluapp.ink: mover DNS
+para o Cloudflare é grátis e opcional).
+
+1. Cloudflare → domínio → **Email** → Email Routing → Enable → criar rotas
+   (`contato@` → gmail pessoal etc.).
+2. O Cloudflare adiciona automaticamente: MX `route1.mx.cloudflare.net` (10/20/30)
+   + TXT `v=spf1 include:_spf.mx.cloudflare.net ~all`.
+3. Gmail → Configurações → Contas e importação → **Enviar como** →
+   `lucas@deepblue.company` (verifica via código; SMTP do próprio Gmail).
+4. Opcional DKIM no Cloudflare (região/domínio → Email Routing → DKIM) para
+   melhor entregabilidade.
+
+**Limitação honesta:** não há caixa separada com login próprio — é
+encaminhamento; as respostas saem do Gmail com o remetente corporativo. Suficiente
+para 1–3 pessoas; quando precisar de caixas reais (times, IMAP, retenção), migrar
+para Zoho Mail Lite (R$ 5/usuário/mês).
+
+### 2.1 Opção paga — Zoho Mail (caixa real)
 
 Configurar em **um domínio** (recomendado: `deepblue.company`); os demais entram
 como domínios adicionais/aliases na mesma organização Zoho.
 
-### 2.1 Passos no Zoho (https://mail.zoho.com / zoho.com/mail)
+### 2.2 Passos no Zoho (https://mail.zoho.com / zoho.com/mail)
 
 1. Criar conta Zoho Mail → "Add Organization" → nome: **Deep Blue**.
 2. Adicionar domínio `deepblue.company` → escolher **Zoho Mail**.
@@ -30,7 +60,7 @@ como domínios adicionais/aliases na mesma organização Zoho.
    `v=DKIM1; k=rsa; p=...` (selector `zoho`) → adicionar no Cloudflare → clicar
    "Validate". (Opicional mas recomendado — melhora entregabilidade.)
 
-### 2.2 Registros DNS a criar no Cloudflare (`deepblue.company`)
+### 2.3 Registros DNS a criar no Cloudflare (`deepblue.company`)
 
 | Tipo | Nome | Valor | TTL |
 |---|---|---|---|
@@ -44,7 +74,7 @@ como domínios adicionais/aliases na mesma organização Zoho.
 > ⚠️ Se existir TXT SPF antigo no domínio, substituir (só pode haver um).
 > Observação: com Cloudflare, MX/TXT ficam em "DNS only" (cinza), nunca no proxy.
 
-### 2.3 Domínios secundários (formly.ink, mcp-brain.com, bluapp.ink)
+### 2.4 Domínios secundários (formly.ink, mcp-brain.com, bluapp.ink)
 
 No Zoho: Domains → Add Domain → repetir verificação (TXT `zoho-verification`)
 e MX. Para v1, aliases (`suporte@formly.ink` → `contato@deepblue.company`)
