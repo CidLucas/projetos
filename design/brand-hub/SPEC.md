@@ -29,10 +29,10 @@ Empresa (landing) → Labs (expandir) → Abrir produto → produto real (usar, 
 
 | Produto | Domínio | Estado | Deploy real hoje |
 |---|---|---|---|
-| Deep Blue (empresa) | `deepblue.direct` | 🟢 livre p/ comprar | Soft A (protótipo) |
-| Blu | `blu.direct` (+ `app.blu.direct`) | ✅ já comprado | monorepo (Cloud Run + VM) |
-| Formly | `tryformly.app` (+ `app.tryformly.app`) | 🟢 livre p/ comprar | `https://formly-web-xkndgpat3q-rj.a.run.app/` (Cloud Run) |
-| Brain MCP | `brainmcp.app` (+ `app.brainmcp.app`) | 🟢 livre p/ comprar | gateway memory_api (deploy próprio) |
+| Deep Blue (empresa) | `deepblue.company` | ✅ comprado 18/08 (Cloudflare) | hub estático — deploy pendente |
+| Blu | `blu.direct` (+ `app.blu.direct`) | ⚠️ NÃO é nosso (terceiro — WhatsApp) | decisão pendente: comprar do dono / `blu.deepblue.company` / TLD novo |
+| Formly | `formly.ink` (+ `app.formly.ink`) | ✅ comprado 18/08 (Namecheap) | `https://formly-web-xkndgpat3q-rj.a.run.app/` (Cloud Run) |
+| Brain MCP | `mcp-brain.com` (+ `app.mcp-brain.com`) | ✅ comprado 18/08 (Cloudflare) | gateway memory_api (deploy próprio) |
 
 Regra: **todo CTA de produto abre o produto real em nova aba** (`target="_blank"`),
 nunca uma tela de demonstração interna.
@@ -144,7 +144,7 @@ Tokens: herda o dark navy do Blu + marca própria:
 - 4 paletas disponíveis (dark canônico no hub; azul/mono/warm nos protótipos).
 
 Seções:
-- **Barra**: brand Brain MCP + by DeepBlue + CTA "Entrar no app" → `https://app.brainmcp.app` (nova aba).
+- **Barra**: brand Brain MCP + by DeepBlue + CTA "Entrar no app" → `https://app.mcp-brain.com` (nova aba).
 - **Hero 2 col**: "Sua empresa vira um <span class="g">conector MCP</span>." + sub (URL MCP, corpus curado + memória viva, com fontes e citações). CTA "Criar conta" → app real.
   - Mock glass à direita: POL-042 publicado · PRO-117 em aprovação · Q&A via Claude (com citações).
 - **3 passos**: 01 Conecte a URL MCP · 02 Suba políticas e documentos (curadoria, extração depois da aprovação) · 03 O time pergunta no Claude.
@@ -152,7 +152,7 @@ Seções:
 
 ## 8. Rodapé (todas as views)
 
-- Brand Deep Blue + 4 links de domínio (Empresa→deepblue.direct, Blu, Formly, Brain) — no hub, os links de produto abrem a view correspondente.
+- Brand Deep Blue + 4 links de domínio (Empresa→deepblue.company, Blu→blu.direct [decisão pendente], Formly→formly.ink, Brain→mcp-brain.com) — no hub, os links de produto abrem a view correspondente.
 
 ## 9. Regras inegociáveis
 
@@ -170,7 +170,7 @@ Seções:
 | Item da spec | Entregue | Status |
 |---|---|---|
 | Login embutido na landing do Brain (card glass: Google + e-mail) | ❌ ausente — só CTA → /login | ⚠️ pendente — entregar card na view Brain |
-| CTA "Entrar no app" → `app.brainmcp.app` | ❌ CTA → /login (domínio ainda não comprado) | ⚠️ aceitável v1 — trocar para o domínio quando comprado |
+| CTA "Entrar no app" → `app.mcp-brain.com` | ✅ trocado 18/08 para o domínio comprado | ✅ v1 |
 | Elementos gráficos Labs e Consulting uniformes | ✅ mesmo componente `.prow`/`.crow` (ícone 40px + título + descrição) | ✅ v1 |
 
 Regra da uniformidade: **Labs e Consulting usam o MESMO componente de linha**
@@ -191,7 +191,7 @@ A única diferença: Labs tem CTA "Abrir produto" (navega), Consulting não
 ```
 - [ ] hOverflow false · h1Lines ≤ 3 · Phosphor carregado · 4 views alternam
 - [ ] Labs expande com 3 `.prow` ("Abrir produto") · Consulting expande com 3 `.crow`
-- [ ] Todos os CTAs de produto têm `href` real (`app.blu.direct`, run.app do Formly, `app.brainmcp.app`) e `target="_blank"`
+- [ ] Todos os CTAs de produto têm `href` real (`app.blu.direct` pendente de decisão, run.app do Formly até mapear `formly.ink`, `app.mcp-brain.com`) e `target="_blank"`
 - [ ] Preview: `http://100.69.231.7:8899/brand-hub/`
 
 ## 12. Fora de escopo (v1)
@@ -204,9 +204,10 @@ A única diferença: Labs tem CTA "Abrir produto" (navega), Consulting não
 
 ## 13. Próximos passos
 
-1. Comprar domínios: `tryformly.app`, `brainmcp.app`, `deepblue.direct` (F0/F1 do plano-marca)
-2. Deploy do Formly no `tryformly.app` (CNAME → Cloud Run)
-3. Deploy do Brain no `brainmcp.app` (landing + página do dono → gateway)
-4. Landing do Blu em `www.blu.direct` (aponta para `app.blu.direct`)
-5. Site corporativo `deepblue.direct` (Soft A)
-6. V2: separar as views em páginas reais por domínio
+1. ✅ Comprar domínios (18/08): `deepblue.company` + `mcp-brain.com` (Cloudflare), `formly.ink` (Namecheap)
+2. Deploy do hub `deepblue.company` (Cloud Run estático — decidir Cloud Run vs S3+CloudFront)
+3. Deploy do Formly no `formly.ink` (custom domain no Cloud Run)
+4. Deploy do Brain no `mcp-brain.com` (custom domain no auth-service)
+5. E-mail corporativo (Zoho grátis / Google Workspace / Cloudflare Routing)
+6. Decidir domínio do Blu (`blu.direct` é de terceiro)
+7. V2: separar as views em páginas reais por domínio
