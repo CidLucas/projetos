@@ -1,5 +1,9 @@
 # Capability: Consultoria — textos
 
+**Kit técnico:** `formly-api` · `blu_elicitation_service` (coleta e mapeamento em escala)
+**Alinhamento:** mindmap §5 (foco no core) · §1 (sem equipe interna)
+**Dores que ataca:** D1 · D8
+
 ## One-liner
 Antes da ferramenta, o diagnóstico.
 
@@ -21,3 +25,5 @@ fizemos.
 - Ferramentas só nos pontos de impacto
 - Serviços: 3 formas — Diagnóstico e Boas Práticas · Escopo Fechado ·
   Consultoria Estratégica (ver `servicos/README.md`)
+- Coleta e mapeamento em escala (Formly): entrevistas e questionários massivos
+  dentro do diagnóstico

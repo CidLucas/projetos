@@ -21,8 +21,9 @@ daqui — nunca reescrevem do zero.
 textos/
 ├── TEMPLATE-produto-servico.md  ← estrutura obrigatória (dor → para quem → camadas)
 ├── produtos/        ← por produto: blu, formly, brain-mcp
-├── capabilities/    ← o que a Deep Blue faz: plataforma, fluxos de agentes,
-│                      assistente diário, consultoria
+├── capabilities/    ← o KIT TÉCNICO (README + docs): plataformas e produtos,
+│                      agentes e fluxos, assistente com ferramentas, rotinas e
+│                      monitoramento, memória e dados, consultoria
 ├── servicos/        ← 3 FORMAS de trabalho (README + docs): diagnóstico e
 │                      boas práticas · escopo fechado · consultoria estratégica
 ├── exemplos/        ← textos do Lucas (padrão ouro)
