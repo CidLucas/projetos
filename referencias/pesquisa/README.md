@@ -12,7 +12,13 @@ faz sentido para a Deep Blue vem depois, com base na Voz e no catálogo.
 | 02 | Blog Holmes — G. M. Toledo (2025) | blog (produto) | Impacto da IA na gestão empresarial | ✅ salvo (`02-holmes-impacto-ia-gestao.md`) |
 | 03 | NotebookLM (artefato 46ae1559…/c67d948d) | transcrição/briefing | Maximiza IA — IA acessível a PMEs (Meta Talks) | ✅ salvo (`03-notebooklm-maximiza-ia.md`) |
 | 04 | NotebookLM (artefato 8f198737…/3e1c8e7f) | transcrição/guia | IA em gestão de projetos e dashboards (Power BI, Copilot, prompting) | ✅ salvo (`04-notebooklm-ai-projetos-dashboards.md`) |
-| 05 | NotebookLM (artefato 8f198737…/4dea334a) | transcrição de conversa | IA × pequenos/médios empreendedores | ⏳ aguardando texto (colar aqui) |
+| 05 | NotebookLM (artefato 8f198737…/4dea334a) | mindmap/transcrição | Oportunidades de IA para PMEs (candidato a guiar produtos) | ✅ salvo (`05-notebooklm-mindmap-oportunidades-pme.md`) |
+
+## Extração (próximo passo)
+
+Todas as 5 fontes lidas. Próximo: extrair o que faz sentido para a Deep Blue
+(comparando com a Voz, o catálogo e os produtos) — síntese em `textos/` ou doc
+próprio quando o fundador pedir.
 
 ## Como adicionar
 
