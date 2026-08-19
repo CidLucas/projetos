@@ -13,13 +13,12 @@
 - [x] **Estrutura v3 aprovada** — monorepo = design reutilizável; projetos = textos/referências/apresentações
 - [x] **Fase 1** — `textos/` (copy library 4 camadas) + `referencias/` + assets com subpastas
 - [x] **Fase 2** — `apresentacoes/` no lugar definitivo (deck-empresa = padrão)
+- [x] **Fase 3** — monorepo `design/` criado (branch `design/fase-3`): wireframes → `telas/{blu,brain}`, DS → `design-systems/{blu-original,brand-hub}`; sync-brand-hub atualizado; previews 8899 apontando para o monorepo
 
 ## Em andamento
 
-- [ ] Fase 3 — monorepo `design/`: migrar wireframes (telas), DS (design-systems), componentes
-- [ ] Decisão §6.1: identidade brand-hub → DS próprio ou 5º tema do blu-novo ("claro")
-- [ ] Calendário/grade de posts LinkedIn (3-4 primeiros posts)
-- [ ] Posts Instagram — primeiros 3 gráficos (identidade landing clara)
+- [ ] Merge da branch `design/fase-3` no monorepo (via PR)
+- [ ] Fase 4 — formalizar DS `blu-novo` (tokens lintados) e `brand-hub` como DS; componentes/
 
 ## Bloqueios / pendências
 

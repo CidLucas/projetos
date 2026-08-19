@@ -91,8 +91,9 @@ projetos-repo/
 **Migração em fases** (sem quebrar previews da 8899):
 1. Fase 1 (feita) — `textos/` + `referencias/` criados no projetos (seed); mapa nos repos.
 2. Fase 2 (feita) — `apresentacoes/` (deck) movido para o lugar definitivo em projetos.
-3. Fase 3 — criar `monorepo/design/` (branch própria) e migrar wireframes
-   (`git mv` preserva histórico); atualizar symlinks do preview. ✅ aprovado
+3. Fase 3 (feita) — `monorepo/design/` criado na branch `design/fase-3`; wireframes
+   migrados (`telas/blu`, `telas/brain`), DS (`design-systems/blu-original`,
+   `brand-hub`); sync-brand-hub aponta para a nova fonte; previews 8899 ok. ✅
 4. Fase 4 — formalizar DS `blu-novo` + `brand-hub` (tokens lintados) e apps
    passam a importar.
 

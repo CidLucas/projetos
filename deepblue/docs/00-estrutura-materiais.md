@@ -20,7 +20,7 @@ de outro projeto.
 | Copy library (produtos, capabilities, serviços, exemplos) | `projetos-repo/textos/` | md (4 camadas) |
 | Referências de design | `projetos-repo/referencias/` | md |
 | Materiais operacionais (posts, instagram, assets) | `projetos-repo/deepblue/materiais/` | md/svg/png |
-| Design reutilizável (DS, telas, componentes) | **monorepo** `design/` (migração Fase 3) | html/css/ts |
+| Design reutilizável (DS, telas, componentes) | **monorepo** `design/` (branch `design/fase-3`; migrado) | html/css/ts |
 | Site corporativo (brand-hub) | **monorepo** `apps/brand-hub` | html |
 | Propostas de cliente | `projetos-repo/<slug-do-cliente>/` | html→Google Docs |
 | Rascunhos em iteração | `~/.hermes/profiles/design-writer/drafts/` (local) | html/py/md |
