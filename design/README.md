@@ -1,31 +1,24 @@
-# Design — índice geral
+# Design — ponteiro (migrado para o monorepo)
 
-Todos os artefatos de design do Blu concentrados aqui. Cada subpasta tem seu
-próprio README ou é autoexplicativa. Preview dos protótipos servido em
-`http://100.69.231.7:8899/` (raiz = `~/.hermes/profiles/writer/drafts/proposals`,
-com symlink para `design/blu-novo-front`).
+**A partir de 2026-08-18 (Fase 3), o design reutilizável vive no monorepo:**
 
-## Conjuntos
+```
+monorepo/design/
+├── design-systems/     ← blu-original (ex blu-design-system), brand-hub
+├── telas/              ← blu (ex blu-novo-front), brain (ex blu-memory-api)
+└── componentes/        ← UI kits (Fase 4)
+```
 
-| Pasta | Conteúdo | Fonte canônica |
-|---|---|---|
-| `blu-novo-front/` | Novo front (blu_web v2): DESIGN.md (tokens multi-tema), wireframe v3 (Cliente), sala Financeiro (referência de sala), opções de Clientes, **mobile.html** (casca mobile navegável) + README | **esta pasta** (movida de `drafts/blu-site`) |
-| `blu-design-system/` | Design system do app: 10 HTML de referência (charts, tables, cards/kanban, chat, forms, navigation shell, docs financeiros, estratégia, v3) | snapshot de `monorepo/docs/design-system` |
-| `blu-memory-api/` | Design da página do dono (Memory API / F3): `pagina-do-dono.html`, index, blu.css | snapshot de `monorepo/docs/memory_api/referencia` |
-| `brand-hub/` | Hub de marca (Deep Blue → produtos): **SPEC.md** (spec de desenvolvimento) + `index.html` (protótipo navegável — empresa + Blu + Formly + Brain) | **esta pasta** |
+| Antes (aqui) | Agora (monorepo) |
+|---|---|
+| `blu-novo-front/` | `design/telas/blu/` |
+| `blu-memory-api/` | `design/telas/brain/` |
+| `blu-design-system/` | `design/design-systems/blu-original/` |
+| `brand-hub/` | `design/design-systems/brand-hub/` (fonte de edição do site; deploy via `scripts/local/sync-brand-hub.sh`) |
 
-## Novo front — atalhos
+Motivo: monorepo = design reutilizável em código (DS, telas, componentes,
+identidade). Projetos fica com a comunicação (textos/, referencias/,
+apresentacoes/) — ver `deepblue/docs/01-proposta-estrutura-documentos.md`.
 
-- Wireframe v3 (Cliente): `blu-novo-front/wireframe.html`
-- Sala Financeiro (referência): `blu-novo-front/financeiro.html`
-- Mobile (casca mobile, frame de telefone): `blu-novo-front/mobile.html`
-  - Deep links: `#decisoes #salas #atividade #conta #sala #processos #fluxo #contas #rotinas #builder #rotina-r1 #d1`
-  - Tema no hash: `#salas-warm`, `#rotinas-azul`, `#rotina-r4-warm`
-- Spec/tokens: `blu-novo-front/DESIGN.md` · índice do conjunto: `blu-novo-front/README.md`
-
-## Fluxo de trabalho
-
-- Trabalho de design novo → editar aqui e commitar.
-- Preview: `design/blu-novo-front` está espelhado via symlink em
-  `drafts/proposals/blu-site` (servido na 8899).
-- Screenshots de validação: `previews/blu-mobile/` (fora do repo, descartáveis).
+Previews na 8899 apontam para o monorepo (symlinks em
+`~/.hermes/profiles/design-writer/drafts/proposals/`).
