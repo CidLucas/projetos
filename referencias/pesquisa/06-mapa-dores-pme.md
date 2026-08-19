@@ -92,10 +92,11 @@ roadmap, a transformação não acontece.
 \* AtendAI está no catálogo do Labs (agente de atendimento multicanal) — ainda
 sem doc de referência próprio; entra na próxima leva.
 
-Serviço novo: **Adoção de IA** (estrutura empresas para usar IA — capacitação,
-governança, hand-off) — ataca D1 · D8 · D10; doc: `textos/servicos/adocao-ia.md`.
-O **Advisory** cobre D1 · D8 (direcionamento estratégico; com equipe, vira
-consultoria de estruturação).
+Serviços de consultoria: **3 formas de trabalho** (ver `textos/servicos/README.md`):
+1 Diagnóstico e Boas Práticas (D1·D8) · 2 Escopo Fechado (D5·D7·D9·D10, piloto
+opcional como porta de entrada) · 3 Consultoria Estratégica (D1·D8·D10, formatos:
+direção, ferramenta, estruturação de equipe). Pilot e Adoção de IA absorvidos
+nas formas 2 e 3 — poucas opções, que se falam.
 
 ## Regra de uso
 

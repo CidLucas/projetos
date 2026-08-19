@@ -23,8 +23,8 @@ textos/
 ├── produtos/        ← por produto: blu, formly, brain-mcp
 ├── capabilities/    ← o que a Deep Blue faz: plataforma, fluxos de agentes,
 │                      assistente diário, consultoria
-├── servicos/        ← serviços prestados (Consulting): readiness (+quick-win),
-│                      pilot, roadmap, advisory, adocao-ia
+├── servicos/        ← 3 FORMAS de trabalho (README + docs): diagnóstico e
+│                      boas práticas · escopo fechado · consultoria estratégica
 ├── exemplos/        ← textos do Lucas (padrão ouro)
 └── apresentacao/    ← estrutura padrão do deck
 ```
