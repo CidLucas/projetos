@@ -29,6 +29,12 @@ atende um cliente ou fecha uma venda, a operação anda sem supervisão.
 PME de serviço que já roda (vendas, atendimento, documentos) mas sente que a
 informação some e a decisão depende de uma pessoa só.
 
+**Não é só para o dono.** A plataforma é multi-usuário: uma empresa com 50
+pessoas se beneficia tanto quanto uma de 5. Cada área — comercial, financeiro,
+operação, atendimento — acessa as ferramentas que usa, com a visão que
+precisa; o dono enxerga o consolidado. A visão do dono importa, e o valor de
+ser multi-usuário também: o conhecimento deixa de depender de uma pessoa.
+
 ## One-liner
 
 Plataforma Blu. O escritório virtual da sua empresa.
@@ -54,6 +60,9 @@ ninguém. Sem analista no meio: perguntou, respondeu com o número da casa.
 - Sala de estratégia com busca semântica — pergunta em linguagem natural, resposta com contexto
 - Gestão de conhecimento: o que a equipe sabe vira ativo da empresa
 - Um ambiente só para o que estava em planilha, e-mail e Drive
+- **Multi-usuário**: cada área acessa as ferramentas que usa (comercial,
+  financeiro, operação, atendimento), com a visão que precisa; o dono vê o
+  consolidado
 
 ## Por que acessível
 

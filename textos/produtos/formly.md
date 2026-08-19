@@ -27,6 +27,10 @@ dono não tem tempo de tocar isso com a equipe que tem.
   e entregam o questionário como parte do serviço ao cliente.
 - **Gestores de processo** — quem precisa mapear como a operação funciona hoje
   (fluxo, gargalo, rotina) e não tem estrutura de pesquisa montada.
+- **Equipes internas (multi-perfil)** — qualquer área da empresa pode usar:
+  uma equipe com diferentes perfis, cada um mapeando o processo da própria
+  área — RH mapeia o onboarding, operação mapeia o fluxo, comercial mapeia a
+  venda.
 
 ## Aplicações
 

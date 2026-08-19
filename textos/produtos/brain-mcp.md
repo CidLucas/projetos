@@ -3,8 +3,10 @@
 **Alinhamento:** mindmap §3 (gestão em tempo real) · §4 (orquestração de IAs com contexto) · §1 (IA as a service)
 **Dores que ataca:** D2 · D4
 **Posicionamento:** ferramenta **corporativa** — infraestrutura de memória e
-acesso aos dados da empresa; não é ferramenta para consumidor final. A Deep
-Blue usa nos próprios projetos; empresas assinam para os agentes delas.
+acesso aos dados da empresa. Pode ser usada por consumidor final, mas esse
+consumidor é alguém **técnico** (dev, tech lead, entusiasta que opera o
+próprio agente). O grosso do valor está nas empresas: a Deep Blue usa nos
+próprios projetos e empresas assinam para os agentes delas.
 
 ## A dor que resolve
 
@@ -28,7 +30,8 @@ memória das pessoas — e nenhuma ferramenta consulta isso na hora de responder
 Empresa que usa agentes ou assistentes de IA e quer resposta com o contexto do
 próprio negócio — sem re-explicar a empresa para a ferramenta. Também para
 quem está começando a usar IA e quer que a memória da casa já nasça
-estruturada.
+estruturada. E o **profissional técnico individual**: dev ou tech lead que
+opera o próprio agente e quer dar memória de longo prazo a ele.
 
 ## One-liner
 
