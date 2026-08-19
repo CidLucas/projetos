@@ -2,6 +2,9 @@
 
 **Alinhamento:** mindmap §3 (gestão em tempo real) · §4 (orquestração de IAs com contexto) · §1 (IA as a service)
 **Dores que ataca:** D2 · D4
+**Posicionamento:** ferramenta **corporativa** — infraestrutura de memória e
+acesso aos dados da empresa; não é ferramenta para consumidor final. A Deep
+Blue usa nos próprios projetos; empresas assinam para os agentes delas.
 
 ## A dor que resolve
 
@@ -13,13 +16,19 @@ memória das pessoas — e nenhuma ferramenta consulta isso na hora de responder
   diferentes; a ferramenta não tem de onde tirar o contexto da empresa.
 - **D4 · Conhecimento preso** — o que o gerente da unidade A faz bem não chega
   na unidade B. O que a equipe sabe não vira ativo consultável.
+- **Sem acesso centralizado** — a empresa não tem documentos acessíveis e
+  buscáveis por qualquer pessoa (ou agente). O Brain provê essa
+  infraestrutura: acesso centralizado aos dados da casa, com contexto
+  compartilhado.
 - Agente sem memória é atendente novo todo dia: toda pergunta começa do zero,
   sem histórico e sem o jeito da casa de fazer as coisas.
 
 ## Para quem
 
-Empresa que já usa agentes ou assistentes de IA e quer resposta com o contexto
-do próprio negócio — sem re-explicar a empresa para a ferramenta.
+Empresa que usa agentes ou assistentes de IA e quer resposta com o contexto do
+próprio negócio — sem re-explicar a empresa para a ferramenta. Também para
+quem está começando a usar IA e quer que a memória da casa já nasça
+estruturada.
 
 ## One-liner
 
@@ -36,17 +45,18 @@ aprender trabalhando com você e sua equipe.
 O Brain MCP dá memória de longo prazo aos agentes de IA: o conhecimento da
 empresa — documentos, processos, decisões, contexto — fica mapeado e acessível
 na hora da resposta. O agente consulta o que a casa sabe antes de responder, e
-aprende com o uso diário. Conhecimento isolado deixa de existir: o que o
-gerente da unidade A faz bem chega à unidade B. Perguntou em linguagem natural,
-respondeu com o número e o histórico da empresa.
+aprende com o uso diário. É a infraestrutura que transforma dados espalhados
+em contexto compartilhado: qualquer pessoa ou agente consulta o mesmo
+conhecimento, buscável e acessível. Conhecimento isolado deixa de existir: o
+que o gerente da unidade A faz bem chega à unidade B.
 
 ## O que entrega (bullets)
 
-- Conhecimento da empresa mapeado e acessível aos agentes
+- Conhecimento da empresa mapeado e acessível aos agentes (e às pessoas)
+- Documentos acessíveis e buscáveis, com contexto compartilhado
 - Respostas com contexto da casa, não texto genérico
 - Memória viva: o agente aprende trabalhando com você
 - Integra com o agente que você já usa (padrão MCP)
-- Consulta em linguagem natural, com histórico e decisões da empresa
 
 ## Por que acessível
 

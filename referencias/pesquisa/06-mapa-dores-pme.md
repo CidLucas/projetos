@@ -92,6 +92,11 @@ roadmap, a transformação não acontece.
 \* AtendAI está no catálogo do Labs (agente de atendimento multicanal) — ainda
 sem doc de referência próprio; entra na próxima leva.
 
+Serviço novo: **Adoção de IA** (estrutura empresas para usar IA — capacitação,
+governança, hand-off) — ataca D1 · D8 · D10; doc: `textos/servicos/adocao-ia.md`.
+O **Advisory** cobre D1 · D8 (direcionamento estratégico; com equipe, vira
+consultoria de estruturação).
+
 ## Regra de uso
 
 - Todo doc de produto/serviço cita no header as dores que ataca (D1…D10).

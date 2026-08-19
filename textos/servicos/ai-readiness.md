@@ -38,11 +38,20 @@ oportunidades de adoção de IA priorizadas — onde a ferramenta agrega valor d
 verdade e onde seria enfeite. O dono volta a focar no produto; a direção de IA
 fica com quem entende (mindmap §5).
 
+## Quick-win (sempre incluso)
+
+Todo Readiness entrega, junto do diagnóstico, um **quick-win**: uma ou duas
+ações de baixo esforço e impacto imediato que já ficam prontas dentro do
+projeto. São boas práticas aplicadas na hora — uma automação simples, um
+processo reorganizado, uma ferramenta configurada — para o cliente sentir
+resultado antes do fim do contrato, não depois.
+
 ## O que entrega (bullets)
 
 - Mapa completo do negócio e dos dados
 - Oportunidades de adoção de IA priorizadas (impacto × viabilidade)
 - Entrevistas com as pessoas, não só com os dados
+- **Quick-win**: 1-2 ações de baixo esforço e alto impacto já entregues
 - Recomendação clara: por onde começar e por que
 
 ## Por que acessível
