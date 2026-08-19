@@ -19,16 +19,22 @@ daqui — nunca reescrevem do zero.
 
 ```
 textos/
+├── TEMPLATE-produto-servico.md  ← estrutura obrigatória (dor → para quem → camadas)
 ├── produtos/        ← por produto: blu, formly, brain-mcp
 ├── capabilities/    ← o que a Deep Blue faz: plataforma, fluxos de agentes,
 │                      assistente diário, consultoria
-├── servicos/        ← serviços prestados (Consulting)
+├── servicos/        ← serviços prestados (Consulting): readiness, pilot,
+│                      roadmap, advisory
 ├── exemplos/        ← textos do Lucas (padrão ouro)
 └── apresentacao/    ← estrutura padrão do deck
 ```
 
 ## Regras
 
+- **Dor primeiro.** Todo produto/serviço abre com "A dor que resolve", na
+  linguagem do consumidor — as camadas de texto nascem dela.
+- **Alinhamento com o mindmap** (`referencias/pesquisa/05-…`): cada doc cita no
+  header de onde a necessidade veio (referências §1–§5).
 - **Um canônico por conceito.** Se o texto mudou em algum lugar, atualiza aqui
   e propaga — nunca o contrário.
 - **Camadas sempre preenchidas.** Arquivo sem as 4 camadas está em draft.
