@@ -1,6 +1,7 @@
 # Formly — texto de referência
 
 **Alinhamento:** mindmap §5 (foco no core business) · §1 (ferramenta pronta, sem equipe) — coleta de dados sem fricção
+**Dores que ataca:** D5
 
 ## A dor que resolve
 
@@ -8,6 +9,14 @@ Toda pesquisa, ciclo de entrevistas ou mapeamento de processo é lento e
 manual: formulário, e-mail, planilha, alguém transcrevendo áudio e juntando
 tudo. Quem precisa de resposta (mercado, cliente, processo interno) espera
 semanas — e o dono não tem tempo de tocar isso com a equipe que tem.
+
+- **D5 · Trabalho manual repetitivo** — criar o questionário, distribuir,
+  cobrar resposta, transcrever áudio, montar a planilha. Cada etapa é manual e
+  cada novo ciclo recomeça do zero.
+- A voz do cliente fica presa em gravador e e-mail; o aprendizado não vira
+  dado estruturado que a empresa consegue consultar depois.
+- Sem estrutura de coleta, o diagnóstico (de mercado, de processo, de
+  satisfação) demora e sai pela metade — quando sai.
 
 ## Para quem
 

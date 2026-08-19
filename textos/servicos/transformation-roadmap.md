@@ -1,13 +1,20 @@
 # AI Transformation Roadmap — texto de referência
 
 **Alinhamento:** mindmap §4 (orquestração de modelos) · §3 (gestão em tempo real) · §5 (delegação de burocracia)
+**Dores que ataca:** D10
 
 ## A dor que resolve
 
 O piloto deu certo, mas aí vem o vazio: e agora? Adotar IA de verdade exige
 desenho — quais processos entram, em que ordem, com qual ferramenta, quem
-governa. Sem roadmap, a empresa compra ferramentas soltas que não conversam
-entre si e a transformação não acontece.
+governa.
+
+- **D10 · Sem direção pós-piloto** — sem roadmap, a empresa compra ferramentas
+  soltas que não conversam entre si e a transformação não acontece.
+- **D4 · Conhecimento preso** — sem governança, o aprendizado de cada área
+  continua ilhado: o que o comercial aprendeu não vira padrão da operação.
+- Cada etapa do roadmap responde a uma dor mapeada — a tecnologia entra nos
+  pontos de impacto, não em tudo ao mesmo tempo.
 
 ## Para quem
 

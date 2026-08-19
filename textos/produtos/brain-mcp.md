@@ -1,14 +1,20 @@
 # Brain MCP — texto de referência
 
 **Alinhamento:** mindmap §3 (gestão em tempo real) · §4 (orquestração de IAs com contexto) · §1 (IA as a service)
+**Dores que ataca:** D2 · D4
 
 ## A dor que resolve
 
 A empresa já usa (ou vai usar) agentes de IA, mas eles respondem sem saber
 nada da casa. O conhecimento está espalhado em documentos, processos e na
 memória das pessoas — e nenhuma ferramenta consulta isso na hora de responder.
-O que o gerente da unidade A faz bem não chega na unidade B. Agente sem memória
-é atendente novo todo dia.
+
+- **D2 · Informação espalhada** — documentos, processos e decisões em lugares
+  diferentes; a ferramenta não tem de onde tirar o contexto da empresa.
+- **D4 · Conhecimento preso** — o que o gerente da unidade A faz bem não chega
+  na unidade B. O que a equipe sabe não vira ativo consultável.
+- Agente sem memória é atendente novo todo dia: toda pergunta começa do zero,
+  sem histórico e sem o jeito da casa de fazer as coisas.
 
 ## Para quem
 

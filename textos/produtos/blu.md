@@ -1,14 +1,28 @@
 # Plataforma Blu — texto de referência
 
 **Alinhamento:** mindmap §3 (gestão e análise em tempo real, linguagem natural) · §1 (plataforma modular, assinatura) · §5 (foco no core business)
+**Dores que ataca:** D1 · D2 · D3 · D4 · D5 · D7
 
 ## A dor que resolve
 
-A operação do dono de PME está espalhada: planilha, e-mail, Drive e a cabeça
-do gerente. Os números não estão na mão na hora de decidir — "quanto vendi
-ontem?" vira uma caçada por planilhas. O conhecimento da equipe não vira ativo
-da empresa: quando alguém sai, sai junto com o que sabia. O dono decide
-sozinho, sem apoio estruturado.
+O dono de PME carrega um volume de coisas que não para de crescer — agenda,
+atendimento, estoque, finanças, prazos — e nada disso está consolidado em um
+lugar só. Ele não consegue estar em todo lugar ao mesmo tempo: enquanto
+atende um cliente ou fecha uma venda, a operação anda sem supervisão.
+
+- **D2 · Informação espalhada** — planilha, e-mail, Drive e a cabeça do
+  gerente. "Quanto vendi ontem?" vira uma caçada por arquivos.
+- **D3 · Muita coisa pra acompanhar** — agenda, atendimento, números e prazos
+  sem monitoramento; o dono descobre o problema depois que ele aconteceu.
+- **D7 · Documentos sem estrutura** — do lead ao contrato, cada documento
+  nasce do zero: proposta, orçamento, contrato, relatório. Sem pipeline, sem
+  rastreabilidade, sem padrão.
+- **D1 · Decisão solitária** — o dono decide sozinho, sem apoio estruturado e
+  sem os números na mão na hora de decidir.
+- **D4 · Conhecimento preso** — o que a equipe sabe não vira ativo da empresa;
+  quando alguém sai, sai junto com o que sabia.
+- **D5 · Trabalho manual repetitivo** — relatório, proposta e rotina do zero,
+  toda vez. Tempo que deveria gerar negócio é gasto repetindo processo.
 
 ## Para quem
 

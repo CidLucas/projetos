@@ -1,13 +1,20 @@
 # AI Pilot Program — texto de referência
 
 **Alinhamento:** mindmap §1 (plataformas semiprontas, entrega rápida) · §2 (aplicação prática: atendimento, vendas, orçamento)
+**Dores que ataca:** D9 · D5
 
 ## A dor que resolve
 
 O dono tem receio legítimo: "IA funciona no meu negócio?" Promessa não
-convence — prova convence. Escolher um caso de uso real, implementar e medir o
-antes e o depois tira o risco da decisão: ou vale a pena e escala, ou não vale
-e ninguém perdeu o ano.
+convence — prova convence.
+
+- **D9 · Sem prova de valor** — comprometer orçamento grande sem ver resultado
+  é risco demais; o medo de "gastar e não servir" trava a decisão.
+- **D5 · Trabalho manual repetitivo** — a dor que mais pesa no dia a dia
+  (atendimento, orçamentos, rotina operacional) é a candidata natural do piloto:
+  é nela que o ganho aparece mais rápido.
+- Escolher um caso de uso real, implementar e medir o antes e o depois tira o
+  risco da decisão: ou vale a pena e escala, ou não vale e ninguém perdeu o ano.
 
 ## Para quem
 

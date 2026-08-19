@@ -1,13 +1,18 @@
 # AI Advisory Retainer — texto de referência
 
 **Alinhamento:** mindmap §5 (delegação de burocracia, foco no core) · §1 (IA as a service)
+**Dores que ataca:** D1 · D8
 
 ## A dor que resolve
 
 A empresa está usando IA, mas o mundo muda rápido e o dono não tem tempo de
 acompanhar: qual ferramenta avaliar, quando trocar, o que a concorrência já
-faz. Sem apoio contínuo, a decisão de tecnologia volta a ser solitária — o
-gargalo do empreendedor faz-tudo.
+faz.
+
+- **D1 · Decisão solitária** — sem apoio contínuo, a decisão de tecnologia
+  volta a ser solitária: o gargalo do empreendedor faz-tudo.
+- **D8 · Medo de decisão errada** — escolher a ferramenta errada (ou ficar para
+  trás) pesa em quem decide sozinho; ter um parceiro acompanhando tira o peso.
 
 ## Para quem
 

@@ -1,13 +1,21 @@
 # AI Readiness Assessment — texto de referência
 
 **Alinhamento:** mindmap §5 (foco no core business, menos burocracia) · §1 (sem equipe interna de IA)
+**Dores que ataca:** D1 · D8
 
 ## A dor que resolve
 
 O dono ouve falar de IA, sente que precisa usar, mas não sabe por onde
 começar. Não falta vontade — falta um mapa: quais processos têm oportunidade
-real, quais dados existem, onde a ferramenta agrega e onde é enfeite. Começar
-sem diagnóstico é comprar ferramenta antes de entender o negócio.
+real, quais dados existem, onde a ferramenta agrega e onde é enfeite.
+
+- **D8 · Medo e custo percebido** — o dono acha que IA é caro e é pra grande
+  empresa; sem direção, ou não começa, ou compra ferramenta solta que não
+  resolve nada.
+- **D1 · Decisão solitária** — decidir "por onde começar com IA" sozinho, sem
+  apoio estruturado, é mais um peso nas costas de quem já decide tudo.
+- Começar sem diagnóstico é comprar ferramenta antes de entender o negócio —
+  o inverso do que a Deep Blue faz.
 
 ## Para quem
 

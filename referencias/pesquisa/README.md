@@ -13,6 +13,7 @@ faz sentido para a Deep Blue vem depois, com base na Voz e no catálogo.
 | 03 | NotebookLM (artefato 46ae1559…/c67d948d) | transcrição/briefing | Maximiza IA — IA acessível a PMEs (Meta Talks) | ✅ salvo (`03-notebooklm-maximiza-ia.md`) |
 | 04 | NotebookLM (artefato 8f198737…/3e1c8e7f) | transcrição/guia | IA em gestão de projetos e dashboards (Power BI, Copilot, prompting) | ✅ salvo (`04-notebooklm-ai-projetos-dashboards.md`) |
 | 05 | NotebookLM (artefato 8f198737…/4dea334a) | mindmap/transcrição | Oportunidades de IA para PMEs (candidato a guiar produtos) | ✅ salvo (`05-notebooklm-mindmap-oportunidades-pme.md`) |
+| 06 | Síntese interna | mapa de dores | Dores centrais do empreendedor de PME (D1–D10) + matriz dor → produto/serviço | ✅ criado (`06-mapa-dores-pme.md`) |
 
 ## Extração (próximo passo)
 
