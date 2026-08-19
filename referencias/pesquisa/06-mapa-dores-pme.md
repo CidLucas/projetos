@@ -58,36 +58,36 @@ contrato, relatório. Sem pipeline, sem rastreabilidade, sem padrão.
 O dono acha que IA é caro, é pra grande empresa, exige equipe técnica. Não
 sabe por onde começar — e comprar ferramenta sem diagnóstico não resolve.
 - *Origem:* mindmap §1 (desconstrução do paradigma de alto custo)
-- *Ataca na Deep Blue:* **Readiness** (porta de entrada), **assinaturas** (custo acessível)
+- *Ataca na Deep Blue:* **F1 Diagnóstico** (porta de entrada), **assinaturas** (custo acessível)
 
 ### D9 · Sem prova de valor
 "IA funciona no meu negócio?" Promessa não convence. Comprometer orçamento
 grande sem ver resultado é risco demais.
 - *Origem:* mindmap §1 (entrega rápida, semipronta); guia 04 (teste prático)
-- *Ataca na Deep Blue:* **Pilot Program** (métricas antes/depois)
+- *Ataca na Deep Blue:* **F2 Escopo Fechado** (piloto opcional: métricas antes/depois)
 
 ### D10 · Sem direção depois do piloto
 O piloto deu certo — e agora? Ferramentas soltas que não conversam; sem
 roadmap, a transformação não acontece.
 - *Origem:* mindmap §4 (orquestração de modelos); guia 04 (integração)
-- *Ataca na Deep Blue:* **Transformation Roadmap**
+- *Ataca na Deep Blue:* **F2 Escopo Fechado** (direção combinada) · **F3 Consultoria Estratégica**
 
 ---
 
 ## Matriz dor → produto/serviço
 
-| Dor | Blu | Formly | Brain | AtendAI* | Agentes sob medida | Readiness | Pilot | Roadmap | Advisory |
-|---|---|---|---|---|---|---|---|---|---|
-| D1 decisão solitária | ● | | ● | | | ● | | | ● |
-| D2 info espalhada | ● | | ● | | | | | | |
-| D3 volume p/ acompanhar | ● | | | ● | ● | | | | |
-| D4 conhecimento preso | ● | | ● | | | | | | |
-| D5 trabalho manual | ● | ● | | | ● | | | | |
-| D6 atendimento escapa | ● | | | ● | ● | | | | |
-| D7 documentos sem estrutura | ● | | | | ● | | | | |
-| D8 medo/custo da IA | | | | | | ● | | | |
-| D9 sem prova de valor | | | | | | | ● | | |
-| D10 sem direção pós-piloto | | | | | | | | ● | |
+| Dor | Blu | Formly | Brain | AtendAI* | Agentes sob medida | F1 Diagnóstico | F2 Escopo | F3 Consultoria |
+|---|---|---|---|---|---|---|---|---|
+| D1 decisão solitária | ● | | ● | | | ● | | ● |
+| D2 info espalhada | ● | | ● | | | | | |
+| D3 volume p/ acompanhar | ● | | | ● | ● | | | |
+| D4 conhecimento preso | ● | | ● | | | | | |
+| D5 trabalho manual | ● | ● | | | ● | | ● | |
+| D6 atendimento escapa | ● | | | ● | ● | | | |
+| D7 documentos sem estrutura | ● | | | | ● | | ● | |
+| D8 medo/custo da IA | | | | | | ● | | ● |
+| D9 sem prova de valor | | | | | | | ● | |
+| D10 sem direção pós-piloto | | | | | | | ● | ● |
 
 \* AtendAI está no catálogo do Labs (agente de atendimento multicanal) — ainda
 sem doc de referência próprio; entra na próxima leva.

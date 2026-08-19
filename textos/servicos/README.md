@@ -8,8 +8,9 @@ Deep Blue:
 > A gente mapeia, diagnostica e dá um norte.
 
 Levantamento completo da operação: processos, dados, gargalos, oportunidades.
-Entrega o mapa + boas práticas de como seguir — e um quick-win já aplicado.
-Sem compromisso de implementação.
+Entrega o mapa + boas práticas de como seguir — e um quick-win já aplicado
+(uma entrega pequena, de baixo esforço). Sem compromisso com implementação de
+soluções maiores — isso é a forma 2.
 
 - Arquivo: `ai-readiness.md`
 

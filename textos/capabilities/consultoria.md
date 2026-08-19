@@ -19,4 +19,5 @@ fizemos.
 - Diagnóstico primeiro (escutar → entender → mapear)
 - Mapa de impacto priorizado por impacto e viabilidade
 - Ferramentas só nos pontos de impacto
-- Serviços: AI Readiness, Pilot Program, Transformation Roadmap, Advisory
+- Serviços: 3 formas — Diagnóstico e Boas Práticas · Escopo Fechado ·
+  Consultoria Estratégica (ver `servicos/README.md`)

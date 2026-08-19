@@ -47,7 +47,8 @@ Todo diagnóstico entrega, junto do mapa, um **quick-win**: uma ou duas ações
 de baixo esforço e impacto imediato que já ficam prontas dentro do projeto.
 São boas práticas aplicadas na hora — uma automação simples, um processo
 reorganizado, uma ferramenta configurada — para o cliente sentir resultado
-antes do fim do contrato, não depois.
+antes do fim do contrato, não depois. O quick-win é uma entrega pequena dentro
+do escopo do diagnóstico; implementação de solução maior é a forma 2.
 
 ## O que entrega (bullets)
 
@@ -65,4 +66,5 @@ Consultoria Estratégica (forma 3).
 
 ## Por que acessível
 
-Escopo fechado, prazo curto, sem compromisso com implementação.
+Escopo fechado, prazo curto, sem compromisso com implementação de soluções
+maiores (isso é a forma 2).
