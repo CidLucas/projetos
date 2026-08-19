@@ -10,9 +10,9 @@ faz sentido para a Deep Blue vem depois, com base na Voz e no catálogo.
 |---|---|---|---|---|
 | 01 | REASE v11 n.12 (2025) — Costa & Saraiva | artigo acadêmico | IA como ferramenta na gestão de micro e pequenos negócios | ✅ salvo (`01-rease-ia-gestao-mpns.md`) |
 | 02 | Blog Holmes — G. M. Toledo (2025) | blog (produto) | Impacto da IA na gestão empresarial | ✅ salvo (`02-holmes-impacto-ia-gestao.md`) |
-| 03 | NotebookLM (artefato 46ae1559…/c67d948d) | transcrição de conversa | oportunidades de uso de IA | ⏳ exige login Google — aguardando texto |
-| 04 | NotebookLM (artefato 8f198737…/3e1c8e7f) | transcrição de conversa | IA × pequenos/médios empreendedores | ⏳ exige sessão (JS/API) — aguardando texto |
-| 05 | NotebookLM (artefato 8f198737…/4dea334a) | transcrição de conversa | IA × pequenos/médios empreendedores | ⏳ exige sessão (JS/API) — aguardando texto |
+| 03 | NotebookLM (artefato 46ae1559…/c67d948d) | transcrição/briefing | Maximiza IA — IA acessível a PMEs (Meta Talks) | ✅ salvo (`03-notebooklm-maximiza-ia.md`) |
+| 04 | NotebookLM (artefato 8f198737…/3e1c8e7f) | transcrição de conversa | IA × pequenos/médios empreendedores | ⏳ aguardando texto (colar aqui) |
+| 05 | NotebookLM (artefato 8f198737…/4dea334a) | transcrição de conversa | IA × pequenos/médios empreendedores | ⏳ aguardando texto (colar aqui) |
 
 ## Como adicionar
 
