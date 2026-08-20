@@ -8,6 +8,7 @@
 |---|---|---|
 | **Produção de código** | [pipeline-issues-fases.md](./producao-de-codigo/pipeline-issues-fases.md) — issues → specs → agentes → verificação → PR | ✅ Vigente (validado F0) |
 | **Conteúdo LinkedIn** | [procedimento.md](./conteudo-linkedin/procedimento.md) | 📝 Esqueleto (a refinar) |
+| **Rotinas** | [rotinas/](./rotinas/) — rotinas diárias, cadência de conteúdo, **inventário de crons** | 📝 Proposta |
 | **Gerência de projetos** | *(a criar)* — ADRs, decisions, status de projeto | ⏳ |
 | **Deploy** | *(a criar)* — GCP, Neon, Cloud Run | ⏳ |
 | **Memória e agentes** | *(a criar)* — Mnemosyne, skills, profiles | ⏳ |
