@@ -14,13 +14,18 @@ automações e produtos de IA para PMEs e clientes corporativos.
 
 | Pasta | Conteúdo |
 |---|---|
-| [00-empresa/](./00-empresa/) | Contexto da empresa: visão, stack, clientes, posicionamento |
+| [00-empresa/](./00-empresa/) | Contexto da empresa: visão, stack, **clientes**, posicionamento |
 | [01-procedimentos/](./01-procedimentos/) | **★ Padrões operacionais por área** — como fazemos as coisas (consultáveis e editáveis) |
 | [02-projetos/](./02-projetos/) | Um diretório por projeto ativo (visão, arquitetura, roadmap, decisions) |
 | [03-referencias/](./03-referencias/) | Referências: design systems, marcas, pesquisa |
 | `__profiles__/` | Entregáveis por profile/agente (pm, writer, ...) |
 | `TEMPLATE-PROJETO.md` | Template base para novos projetos |
 | `TEMPLATE-DELIVERABLE.md` | Padrão de entrega para todos os profiles |
+
+## 🤝 Clientes
+
+Resumo comercial de cada cliente (propostas, apresentações, docs):
+[00-empresa/clientes/](./00-empresa/clientes/) — SENAC, Cladtek, Rastro, Guanabara, Formly, MCP Brain.
 
 ## 🧭 Procedimentos (como fazemos)
 
