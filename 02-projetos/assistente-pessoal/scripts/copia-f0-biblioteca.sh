@@ -32,7 +32,7 @@ cp "$SRC_CTRL/identity_adapter.py" "$DST/control/identity_adapter.py"
 touch "$DST/control/__init__.py"
 
 echo "==> 3. Migrations — aplicador + SQL com schema agent_runtime"
-cp "$SRC_DB/migrate.py" libs/blu_agno_runtime/db/migrate.py
+cp "$SRC_DB/migrate.py" libs/blu_agno_runtime/db/migrate.py 2>/dev/null || cp services/memory_api/src/memory_api/db/migrate.py libs/blu_agno_runtime/db/migrate.py
 touch libs/blu_agno_runtime/db/__init__.py
 
 echo "==> 4. Edição de interfaces: memory_api.* → blu_agno_runtime.*"

@@ -1,72 +1,49 @@
-# 📂 Projetos Ativos
+# 🏢 Deep Blue
 
-Repositório de documentação padrão para os projetos em andamento.
-Todo profile Hermes entrega os artefatos aqui seguindo o [`TEMPLATE-DELIVERABLE.md`](./TEMPLATE-DELIVERABLE.md).
+> **Repo:** CidLucas/deepBlue — documentação, padrões e procedimentos da empresa.
+> **Índice central:** este arquivo.
 
-## 🗂 Estrutura
+---
 
-```structure
-.
-├── README.md                      ← este arquivo
-├── TEMPLATE-PROJETO.md            ← template base pra novos projetos
-├── TEMPLATE-DELIVERABLE.md        ← padrão de entrega pra todos os profiles
-├── __profiles__/                  ← entregáveis por profile/agente
-├── senac/                          ← Projeto SENAC
-├── cladtek/                        ← Projeto Cladtek
-├── mcp-brain/                      ← Projeto MCP Brain
-├── plataforma-blu/                 ← Plataforma Blu (escritório virtual IA)
-├── agente-bloquo/                  ← Agente Bloqüo (RAG + MCP)
-└── rastro/                        ← Projeto Rastro
-```
+## Quem somos
 
-Cada projeto segue o mesmo padrão:
+Deep Blue é uma empresa de IA aplicada a negócios. Construímos agentes,
+automações e produtos de IA para PMEs e clientes corporativos.
 
-```
-<projeto>/
-├── README.md          ← visão geral + índice
-├── STATUS.md          ← saúde atual, blockers, próximas ações
-├── docs/
-│   ├── 01-visao.md        ← problema, público, proposta de valor
-│   ├── 02-arquitetura.md  ← stack, componentes, fluxos
-│   ├── 03-roadmap.md      ← fases, milestones, tarefas de alto nível
-│   └── 04-reunioes.md     ← log cronológico de conversas/decisões
-├── decisions/         ← ADRs (Architecture Decision Records)
-└── assets/            ← diagramas, prints, exports
-```
+## 📚 Estrutura do repositório
 
-Os perfis de agente documentam seus entregáveis em `__profiles__/<nome>/`.
+| Pasta | Conteúdo |
+|---|---|
+| [00-empresa/](./00-empresa/) | Contexto da empresa: visão, stack, clientes, posicionamento |
+| [01-procedimentos/](./01-procedimentos/) | **★ Padrões operacionais por área** — como fazemos as coisas (consultáveis e editáveis) |
+| [02-projetos/](./02-projetos/) | Um diretório por projeto ativo (visão, arquitetura, roadmap, decisions) |
+| [03-referencias/](./03-referencias/) | Referências: design systems, marcas, pesquisa |
+| `__profiles__/` | Entregáveis por profile/agente (pm, writer, ...) |
+| `TEMPLATE-PROJETO.md` | Template base para novos projetos |
+| `TEMPLATE-DELIVERABLE.md` | Padrão de entrega para todos os profiles |
 
-## 📋 Projetos
+## 🧭 Procedimentos (como fazemos)
 
-| Slug | Nome | Cliente / Tipo | Fase |
-|---|---|---|---|
-| [plataforma-blu](./plataforma-blu) | Plataforma Blu — Escritório virtual com IA | Produto próprio | Build |
-| [agente-bloquo](./agente-bloquo) | Agente Bloqüo — RAG + MCP autônomo | Produto próprio | Build |
-| [assistente pessoal](./assistente%20pessoal) | Assistente pessoal — navegação web autônoma (pesquisa) | Produto próprio | Pesquisa |
-| [senac](./senac) | SENAC — Relatórios de Diário de Bordo com IA | SENAC (via Templo) | Pré-kickoff |
-| [cladtek](./cladtek) | Cladtek — Sistema agêntico de engenharia (desenhos + BID) | Cladtek (via Templo) | Pré-contrato |
-| [mcp-brain](./mcp-brain) | Conector de agentes IA a bases corporativas | Produto B2B próprio | Descoberta |
-| [rastro](./rastro) | Consultoria de Fluxo de Propostas + MCP Brain Lite | Rastro (agência de publicidade) | Pré-proposta |
+- [**Produção de código**](./01-procedimentos/producao-de-codigo/) — pipeline de issues → specs → agentes → verificação → PR (o que estamos usando hoje)
+- [**Conteúdo LinkedIn**](./01-procedimentos/conteudo-linkedin/) — fluxo de criação de conteúdo
+- [**Gerência de projetos**](./01-procedimentos/gerencia-de-projetos/) — ADRs, decisions, status
+- [**Deploy**](./01-procedimentos/deploy/) — padrões de deploy (GCP, Neon, Cloud Run)
+- *(em construção — cada área ganha seu procedimento)*
 
-## 🔧 Como adicionar um novo projeto
+## 📋 Projetos ativos
 
-1. Copie `TEMPLATE-PROJETO.md` para `<novo-slug>/README.md`
-2. Crie a estrutura: `mkdir -p <novo-slug>/{docs,decisions,assets}`
-3. Preencha os 4 docs padrão
-4. Atualize a tabela acima
-5. Commit: `feat: add <novo-slug> project`
+| Projeto | Tipo | Fase |
+|---|---|---|
+| [assistente-pessoal](./02-projetos/assistente-pessoal/) | Produto próprio | Build (F0 entregue) |
+| [plataforma-blu](./02-projetos/plataforma-blu/) | Produto próprio | Build |
+| [agente-bloquo](./02-projetos/agente-bloquo/) | Produto próprio | Build |
+| [mcp-brain](./02-projetos/mcp-brain/) | Produto B2B próprio | Descoberta |
+| [senac](./02-projetos/senac/) | SENAC | Pré-kickoff |
+| [cladtek](./02-projetos/cladtek/) | Cladtek | Pré-contrato |
+| [rastro](./02-projetos/rastro/) | Rastro | Pré-proposta |
 
-## 📦 Como entregar artefatos (todos os profiles)
+## ⚙️ Stack da empresa
 
-Consulte [`TEMPLATE-DELIVERABLE.md`](./TEMPLATE-DELIVERABLE.md) para saber:
-- Onde entregar cada tipo de artefato (GitHub / Google Drive / EC2 Preview)
-- O formato esperado
-- O checklist de entrega
-
-## 🔗 Preview Server (Tailscale)
-
-Previews HTML são servidos em:
-```
-http://100.69.231.7:8080/previews/<projeto>/
-```
-Acessível apenas via Tailscale (tailnet).
+FastAPI · React+TS+Vite · Supabase · Neon (Postgres) · Agno (agentes) ·
+LangGraph (legado, migrando) · MCP · Playwright · Hermes Agent (orquestração)
+— detalhes em [00-empresa/visao-da-empresa/](./00-empresa/visao-da-empresa/).
