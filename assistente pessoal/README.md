@@ -33,3 +33,5 @@ Assistente pessoal com IA capaz de **navegar a web de forma autônoma**: control
 - **Dossiê de pesquisa:** [navegação web/dossie-pesquisa.md](./navegação%20web/dossie-pesquisa.md)
 - **Escopo:** [docs/01-visao.md](./docs/01-visao.md) · **Arquitetura:** [docs/02-arquitetura.md](./docs/02-arquitetura.md)
 - **Roadmap:** [docs/03-roadmap.md](./docs/03-roadmap.md) · **Requisitos:** [docs/04-requisitos.md](./docs/04-requisitos.md)
+- **Sessão 2026-08-20 (conhecimento acumulado):** [docs/05-sessao-20260820.md](./docs/05-sessao-20260820.md)
+- **Issues no GitHub:** [CidLucas/monorepo — label `proj:assistente-pessoal`](https://github.com/CidLucas/monorepo/issues?q=label%3Aproj%3Aassistente-pessoal) (35 issues, fases 0-3)
