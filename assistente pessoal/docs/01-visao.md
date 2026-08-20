@@ -1,57 +1,64 @@
-# 👁 Visão — Assistente Pessoal (MVP)
+# 📐 Escopo — Assistente Pessoal (MVP)
 
-> **Status:** Rascunho inicial (decisão de arquitetura fechada; escopo de MVP em definição)
+> **Status:** Consolidado (2026-08-20) — decisões ADR-001, ADR-002, ADR-003
+> **Docs relacionados:** [02-arquitetura](./02-arquitetura.md) · [03-roadmap](./03-roadmap.md) · [04-requisitos](./04-requisitos.md)
 
 ---
 
-## Problema
+## 1. Visão em 1 parágrafo
 
-O dono gerencia múltiplos projetos, integrações (Google Workspace, Notion,
-bancos, memórias) e navega na web diariamente. Não existe um agente único que
-una: navegação web autônoma (como um humano), acesso a ferramentas
-(Google Docs/Agenda, Notion) e memória persistente — com isolamento
-multi-tenant no banco.
+Um assistente pessoal multi-tenant que recebe tarefas em linguagem natural e as
+executa de verdade: **navega na web** como um humano (remote control +
+simplified view), **opera Google Docs/Agenda, Notion e WhatsApp**, e **controla
+as finanças via Open Finance (Polp)** — classificação de gastos, saldos e
+relatórios. Tudo atrás de uma API única (FastAPI) sobre um runtime Agno
+multi-tenant (`blu_agno_runtime`), com frontend pequeno de relatórios e admin.
 
-## Proposta de valor
+## 2. Decisões de arquitetura (fechadas)
 
-Um assistente pessoal que recebe tarefas em linguagem natural e as executa de
-verdade: navega na web (remote control + simplified view), lê/escreve no
-Google Docs e Agenda, gerencia Notion, e lembra contexto entre sessões — tudo
-atrás de uma API única (FastAPI) sobre um runtime Agno multi-tenant.
+| # | Decisão | ADR |
+|---|---------|-----|
+| 1 | **Lib comum `blu_agno_runtime`** (Agno multi-tenant no Neon) em vez de segunda Agent API | [001](../decisions/001-lib-agno-runtime-multitenant.md) |
+| 2 | **Canal WhatsApp via Twilio** (lib `blu_twilio_client` compartilhada com o Blu) + **frontend admin pequeno** | [002](../decisions/002-whatsapp-twilio-frontend-admin.md) |
+| 3 | **Open Finance (Polp)** — controle financeiro e classificação de gastos | [003](../decisions/003-open-finance-polp.md) |
 
-## Público
+## 3. Escopo funcional (resumo)
 
-- **Primário:** o próprio dono (single-user no MVP, multi-tenant por design)
-- **Futuro:** outros usuários/empresas (o control plane já nasce multi-tenant)
+| Área | MVP | Fase |
+|---|---|---|
+| **Navegação web** | Playwright embutido, observation AX tree/Markdown, ações click/type/navigate, allowlist de domínios | F1 |
+| **Google** | Docs (client já existe), Agenda (create/update), Gmail/Sheets via tool_pool | F1 |
+| **Notion** | Tool nova no tool_pool: criar página, buscar, ler | F1 |
+| **WhatsApp** | Twilio via tool_pool (send/batch/status já existem) + webhook de entrada com validação HMAC | F1 |
+| **Open Finance** | Consumir dados Polp já sincronizados: saldos, transações, categorização de gastos | F2 |
+| **Frontend admin** | Relatórios (sessões, tools, custos, erros, financeiro) + gestão (tenants, usuários, grants, integrações) | F2 |
+| **Multi-tenancy** | Control plane + sessions no Neon (schema `agent_runtime`), identidade só do token | F0 |
 
-## Escopo do MVP (proposta — a refinar)
+## 4. Fora de escopo (agora)
 
-**Inclui:**
-1. Lib `blu_agno_runtime` no monorepo (auth multi-tenant, MCP connection, storage)
-2. `assistente_api` — FastAPI + Agno, chat por **WhatsApp (Twilio, lib compartilhada com o Blu)** + endpoint HTTP
-3. Tools: navegação web (Playwright, observation AX tree/Markdown), Google Docs
-   (client já existe na lib) + Agenda (query_calendar já existe no tool_pool),
-   Notion (tool nova no tool_pool)
-4. Neon: schema `agent_runtime` + migrations (control plane + sessions)
-5. Sessões persistentes por tenant (TenantPostgresDb)
-6. **Frontend admin pequeno** (`apps/assistente-admin`, React+Vite): relatórios
-   (sessões, uso de tools, custos, erros) + gestão (tenants, usuários, grants)
+- Frontend de chat (chat é WhatsApp)
+- Integração Telegram
+- Migração LangGraph → Agno (só validação na F3)
+- Browser worker separado (F3; MVP usa Playwright embutido)
+- Novas ferramentas (Slack, Drive, etc.) — entram via tool_pool sob demanda
+- Nada específico do Blu na lib (agente-bloquo = cliente, não tocar)
 
-**Fica para depois (Fase 2+):**
-- Browser worker separado (Playwright+Chromium) se o browser for central
-- Portar agents_api (LangGraph) para a lib Agno
-- Frontend/webchat do assistente
-- Notion/Google fora do tool_pool (decisão: tudo no tool_pool = hub)
+## 5. Reuso do monorepo (pouco trabalho novo)
 
-## Métricas de sucesso do MVP
+| Peça | Estado | Ação |
+|---|---|---|
+| `blu_twilio_client` | Pronta + em uso pelo Blu | Consumir via tool_pool (zero código Twilio novo) |
+| `send_whatsapp_message` / `send_whatsapp_batch` / `check_whatsapp_status` | Tools MCP prontas no tool_pool | Expor ao assistente |
+| `GoogleDocsClient`, `GoogleCalendarClient`, `GoogleSheetsClient`, `GoogleGmailClient` | Prontos na lib | Expor @mcp.tool() faltantes |
+| `query_calendar` | Tool pronta | Reusar |
+| **Polp (Open Finance)** | backend_api: connect/sync/webhook prontos; routines: FIN-01 (saldos), FIN-02 (gastos por categoria); tabelas `polp_accounts/transactions/bills/integrations/webhook_events` | Expor como tools ao assistente |
+| `blu_llm_service` (tiers) | Pronta | Usar no factory da lib |
+| `blu_auth` (Supabase) | Pronta | Usar no AuthGate |
+| `blu_lgpd` | Obrigatória | Dados financeiros pessoais = dados pessoais |
 
-- Conseguir uma tarefa ponta-a-ponta: "leia este doc, me resuma e agende uma
-  reunião" → execução real via Google + resposta final
-- Sessões de 2 tenants diferentes isoladas (nunca vazam contexto)
-- Cold start do assistente < 5s; resposta com tools < 30s
+## 6. Métricas de sucesso do MVP
 
-## Fora de escopo (regra de ouro)
-
-- Não vira mais uma Agent API LangGraph
-- Não mistura escopo do Blu (agents_api continua LangGraph até Fase 3)
-- Não usa o repo agente-bloquo como base direta (é do cliente Bloquo)
+- Tarefa ponta-a-ponta: "leia este doc, me resuma e agende reunião" → execução real
+- "quanto gastei em restaurantes este mês?" → resposta com dados reais do Polp
+- 2 tenants com sessões isoladas (nunca vazam contexto)
+- Cold start < 5s; resposta com tools < 30s
