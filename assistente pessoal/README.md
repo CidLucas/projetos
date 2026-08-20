@@ -24,9 +24,11 @@ Assistente pessoal com IA capaz de **navegar a web de forma autônoma**: control
 |---|---------|------|-----|
 | 1 | Paradigma do sistema: remote control + simplified view (AX tree/Markdown) | 2026-08-20 | (na pesquisa) |
 | 2 | **Lib comum `blu_agno_runtime` (Agno multi-tenant no Neon) em vez de segunda Agent API** | 2026-08-20 | [decisions/001](./decisions/001-lib-agno-runtime-multitenant.md) |
+| 3 | **Canal WhatsApp via Twilio (lib compartilhada) + frontend admin pequeno** | 2026-08-20 | [decisions/002](./decisions/002-whatsapp-twilio-frontend-admin.md) |
 
 ## 🔗 Links úteis
 
-- **Repo de código (proposto):** lib `blu_agno_runtime` no monorepo + `assistente_api`
+- **Repo de código (proposto):** lib `blu_agno_runtime` no monorepo + `assistente_api` + `apps/assistente-admin`
 - **Dossiê de pesquisa:** [navegação web/dossie-pesquisa.md](./navegação%20web/dossie-pesquisa.md)
 - **Arquitetura:** [docs/02-arquitetura.md](./docs/02-arquitetura.md)
+- **Roadmap:** [docs/03-roadmap.md](./docs/03-roadmap.md)

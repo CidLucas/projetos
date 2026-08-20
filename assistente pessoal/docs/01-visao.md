@@ -28,12 +28,14 @@ atrás de uma API única (FastAPI) sobre um runtime Agno multi-tenant.
 
 **Inclui:**
 1. Lib `blu_agno_runtime` no monorepo (auth multi-tenant, MCP connection, storage)
-2. `assistente_api` — FastAPI + Agno, 1 endpoint de chat/tarefa, AuthGate com Principal
+2. `assistente_api` — FastAPI + Agno, chat por **WhatsApp (Twilio, lib compartilhada com o Blu)** + endpoint HTTP
 3. Tools: navegação web (Playwright, observation AX tree/Markdown), Google Docs
    (client já existe na lib) + Agenda (query_calendar já existe no tool_pool),
    Notion (tool nova no tool_pool)
 4. Neon: schema `agent_runtime` + migrations (control plane + sessions)
 5. Sessões persistentes por tenant (TenantPostgresDb)
+6. **Frontend admin pequeno** (`apps/assistente-admin`, React+Vite): relatórios
+   (sessões, uso de tools, custos, erros) + gestão (tenants, usuários, grants)
 
 **Fica para depois (Fase 2+):**
 - Browser worker separado (Playwright+Chromium) se o browser for central
